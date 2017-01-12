@@ -41,15 +41,15 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
+    
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>480</session-timeout>
     </session-config>
+    
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>global/index.jsf</welcome-file>
     </welcome-file-list>
     
     <!-- Captura de errores -->
