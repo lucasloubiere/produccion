@@ -6,23 +6,17 @@
 package com.stock.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,12 +25,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "st_producto")
 @XmlRootElement
-//@NamedQueries({
-//    @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p"),
-//    @NamedQuery(name = "Producto.findByCodigo", query = "SELECT p FROM Producto p WHERE p.codigo = :codigo"),
-//    @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion"),
-//    @NamedQuery(name = "Producto.findByGestionaStock", query = "SELECT p FROM Producto p WHERE p.gestionaStock = :gestionaStock"),
-//    @NamedQuery(name = "Producto.findByCodigoDeBarra", query = "SELECT p FROM Producto p WHERE p.codigoDeBarra = :codigoDeBarra")})
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -70,19 +58,19 @@ public class Producto implements Serializable {
   
     @JoinColumns({
         @JoinColumn(name = "rubro1", referencedColumnName = "codigo", nullable = false),
-        @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false)})
+        @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Rubro1 rubro1;
     
     @JoinColumns({
         @JoinColumn(name = "rubro2", referencedColumnName = "codigo"),
-        @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false)})
+        @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false,insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Rubro2 rubro2;
     
     @JoinColumns({
         @JoinColumn(name = "rubro3", referencedColumnName = "codigo"),
-        @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false)})
+        @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false,insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Rubro3 rubro3;
 

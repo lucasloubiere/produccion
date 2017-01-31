@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,8 +24,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "sg_menuparametro")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "MenuParametro.findAll", query = "SELECT m FROM MenuParametro m")})
 public class MenuParametro implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -12,17 +12,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,8 +25,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "sg_menu")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m")})
 public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -96,13 +88,9 @@ public class Menu implements Serializable {
     @NotNull
     @Column(name = "menuPrincipal")
     private int menuPrincipal;
-    @JoinTable(name = "sg_itemmenusuariopk", joinColumns = {
-        @JoinColumn(name = "idMenu", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "idUsuario", referencedColumnName = "id")})
-    @ManyToMany
-    private Collection<Usuario> usuarioCollection;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
-    private Collection<MenuParametro> menuParametroCollection;
+    private Collection<MenuParametro> parametros;
 
     public Menu() {
     }
@@ -231,24 +219,15 @@ public class Menu implements Serializable {
         this.menuPrincipal = menuPrincipal;
     }
 
-    @XmlTransient
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
+    public Collection<MenuParametro> getParametros() {
+        return parametros;
     }
 
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
+    public void setParametros(Collection<MenuParametro> parametros) {
+        this.parametros = parametros;
     }
-
-    @XmlTransient
-    public Collection<MenuParametro> getMenuParametroCollection() {
-        return menuParametroCollection;
-    }
-
-    public void setMenuParametroCollection(Collection<MenuParametro> menuParametroCollection) {
-        this.menuParametroCollection = menuParametroCollection;
-    }
-
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
