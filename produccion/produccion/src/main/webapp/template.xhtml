@@ -7,7 +7,7 @@
   
     <f:metadata>        
         <ui:insert name="meta-data">              
-            <f:event type="preRenderView" listener="#{usuarioSessionBean.checkLogin()}"/>                     
+            <f:event type="preRenderView" listener="#{usuarioSession.checkLogin}"/>                     
         </ui:insert>
     </f:metadata>
     
@@ -81,7 +81,8 @@
 
         </ui:insert>    
 
-     
+        <ui:include src="/template/exceptionHandler.xhtml" />
+        <ui:include src="/template/ajaxStatus-footer.xhtml"  />        
     
     </h:body>
 

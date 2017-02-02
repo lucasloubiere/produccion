@@ -7,25 +7,40 @@
     <h:head>
         <title>Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <h:outputStylesheet name="estructura.css" library="css" />
+        <h:outputStylesheet name="estilos.css" library="css" />
+        
     </h:head>
     
-    <h:body>
+    <h:body style="background-color: #11523a">
         
-        <h:form prependId="false" >
-        
-            <p:inputText value="#{usuarioSessionBean.nUsuario}"  placeholder="Usuario" />
-            <p:inputText value="#{usuarioSessionBean.sPassword}" placeholder="Password" />                
-        
-            <p:commandButton value="Ingresar" actionListener="#{usuarioSessionBean.login()}" 
-                             process="@form" 
-                             update="@form" />
-            
-            <br/>
-            <p:messages showDetail="true" />
-            
-            <h:outputText value="#{usuarioSessionBean.usuario.nombre}" />            
+        <div class="ui-g ui-fluid">            
+            <div class="ui-g-12">                
+                <h:form prependId="false" >
+                    
+                    <p:panel header="Ingreso al sistema" styleClass="panelLogin" >
+                        
+                        <p:messages showDetail="true" />
+                        
+                        <p:panelGrid layout="grid" columns="1"  >
+                            
+                            <p:inputText value="#{usuarioSessionBean.nUsuario}"  placeholder="Usuario" />
+                            <p:inputText value="#{usuarioSessionBean.sPassword}" placeholder="Password" />                
 
-        </h:form>
+                            <p:commandButton value="Ingresar" action="#{usuarioSessionBean.login()}" 
+                                             process="@form" 
+                                             update="@form" 
+                                             ajax="false" />
+                            
+                        </p:panelGrid>
+                        
+                    </p:panel>
+                </h:form>
+                
+
+            </div>
+        </div>    
         
     </h:body>
 </html>

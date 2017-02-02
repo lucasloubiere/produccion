@@ -8,11 +8,13 @@ package com.seguridad.web;
 
 import com.seguridad.modelo.Usuario;
 import com.seguridad.rn.UsuarioRN;
+import java.io.IOException;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 /**
@@ -38,7 +40,7 @@ public class UsuarioSessionBean implements Serializable {
         
     }
     
-    public void login(){
+    public String login(){
         
         usuario = null;
         estaRegistrado = false;      
@@ -48,18 +50,33 @@ public class UsuarioSessionBean implements Serializable {
             
             FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encontró usuario");
             FacesContext.getCurrentInstance().addMessage(null, facesMsg);           
-           return;
+           return "";
         }
 
         if(!usuAux.getPassword().equals(sPassword)){
             FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Password incorrecto");
             FacesContext.getCurrentInstance().addMessage(null, facesMsg);           
-            return;
+            return "";
         }
 
         usuario = usuAux;
-        estaRegistrado = true;
+        estaRegistrado = true;      
+        
+        
+        return "home";
     } 
+    
+    public void checkLogin() throws IOException {
+        
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        
+        System.err.println(usuario);
+        
+        if (usuario==null) {
+            
+//            context.redirect(context.getRequestContextPath()+"/seguridad/login.jsf");
+        }
+    }
 
     public String getnUsuario() {
         return nUsuario;

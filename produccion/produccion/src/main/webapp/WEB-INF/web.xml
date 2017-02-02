@@ -49,7 +49,7 @@
     </session-config>
     
     <welcome-file-list>
-        <welcome-file>global/index.jsf</welcome-file>
+        <welcome-file>seguridad/login.jsf</welcome-file>
     </welcome-file-list>
     
     <!-- Captura de errores -->
