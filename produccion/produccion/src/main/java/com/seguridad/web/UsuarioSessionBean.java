@@ -69,9 +69,6 @@ public class UsuarioSessionBean implements Serializable {
     public void checkLogin() throws IOException {
         
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        
-        System.err.println(usuario);
-        
         if (usuario==null) {
             
 //            context.redirect(context.getRequestContextPath()+"/seguridad/login.jsf");

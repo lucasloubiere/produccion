@@ -5,10 +5,12 @@
  */
 package com.seguridad.modelo;
 
+import com.global.modelo.Auditoria;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -56,19 +58,20 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "tipo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TipoUsuario tipo;
+    
+    @Embedded
+    private Auditoria auditoria;
 
-    public Usuario() {
+    public Usuario(){
+        
+        this.auditoria = new Auditoria();
+        
     }
 
-    public Usuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public Usuario(Integer id, String usuario, String password, String nombre) {
+    public Usuario(String usuario){
         
         this.usuario = usuario;
-        this.password = password;
-        this.nombre = nombre;
+        this.auditoria = new Auditoria();
     }
 
     public String getUsuario() {
@@ -119,6 +122,14 @@ public class Usuario implements Serializable {
         this.tipo = tipo;
     }
 
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

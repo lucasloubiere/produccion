@@ -7,11 +7,13 @@ package com.seguridad.dao;
 
 import com.global.dao.BaseDAO;
 import com.seguridad.modelo.Usuario;
+import com.stock.modelo.Deposito;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 
 /**
  *
@@ -24,13 +26,31 @@ public class UsuarioDAO extends BaseDAO {
         return getObjeto(Usuario.class, id);
     }      
 
-    public List<Usuario> getLista() {
-        return getLista(Usuario.class, true, -1, -1);
+    public List<Usuario> getUsuarioByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+        try {
+            
+            String sQuery = "SELECT e FROM Usuario e "
+                    + " WHERE (e.usuario LIKE :usuario OR e.nombre LIKE :nombre OR e.email LIKE :email) "
+                    + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
+                    + " ORDER BY e.codigo";
+            
+            Query q = em.createQuery(sQuery);            
+            q.setParameter("usuario", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
+            q.setParameter("nombre", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
+            q.setParameter("email", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
+            
+            if(cantMax>0){
+                q.setMaxResults(cantMax);
+            }
+          
+            return q.getResultList();            
+            
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "getUsuarioByBusqueda", e.getCause());
+            return new ArrayList<Usuario>();
+        }  
     }
-
-    public List<Usuario> getLista(int maxResults, int firstResult) {
-        return getLista(Usuario.class, false, maxResults, firstResult);
-    }   
+    
     
     public Usuario getUsuarioByEmail(String email) {
         return getObjeto(Usuario.class,"email", email);

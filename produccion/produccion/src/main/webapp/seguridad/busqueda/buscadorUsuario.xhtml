@@ -1,0 +1,51 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" >
+
+    <p:dialog id="buscadorDepositoI" header="Usuarios"
+              widgetVar="dlgUsuario"
+              resizable="false"
+              draggable="false"
+              width="730" minHeight="400" style="max-width: 650px;"
+              showEffect="slide" hideEffect="slide"> 
+        
+        <h:form prependId="false" >
+            
+            <p:dataTable value="#{usuarioBean.lista}"  reflow="true" var="i"
+                         emptyMessage="No se encontraron datos"                         
+                         rows="15" paginator="true"
+                         selectionMode="single" 
+                         selection="#{usuarioBean.usuario}" rowKey="#{i}">
+            
+                <p:ajax event="rowSelect" listener="#{usuarioBean.onSelect}" update="@form" 
+                        oncomplete="PF('dlg_usuarioI').hide(), procesarDepositoI()" />
+
+                <p:column headerText="Usuario" sortBy="#{i.usuario}"  width="25%" style="text-align: center;"  >
+                    <h:outputText value="#{i.usuario}" />
+                </p:column>
+
+                <p:column headerText="Nombre" sortBy="#{i.nombre}" width="75%"  filterBy="#{i.nombre}"
+                          filterMatchMode="contains" >
+                    <h:outputText value="#{i.nombre}" />
+                </p:column>
+                
+                <p:column headerText="Email" sortBy="#{i.email}" width="75%"  filterBy="#{i.email}"
+                          filterMatchMode="contains" >
+                    <h:outputText value="#{i.email}" />
+                </p:column>
+                
+                <p:column headerText="Clave" sortBy="#{i.password}" width="75%"  filterBy="#{i.password}"
+                          filterMatchMode="contains" >
+                    <h:outputText value="#{i.password}" />
+                </p:column>
+                
+            </p:dataTable>     
+        </h:form>        
+
+
+    </p:dialog>
+
+</ui:composition>

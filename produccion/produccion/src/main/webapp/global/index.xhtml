@@ -7,7 +7,9 @@
   
     <f:metadata>        
         <ui:insert name="meta-data">              
+            <!--
             <f:event type="preRenderView" listener="#{usuarioSessionBean.checkLogin()}"/>                     
+            -->
         </ui:insert>
     </f:metadata>
     
@@ -50,7 +52,7 @@
             <div class="ui-g-12 ui-md-12">
                 <div class="ui-g">
                     <div class="ui-g-4" >
-                        <h:graphicImage value="images/logo.png" />
+                        <h:graphicImage value="/resources/images/logo.jpg" style="width: 200px;" />
                     </div>
                     <div class="ui-g-8" >
                         
