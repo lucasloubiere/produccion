@@ -4,7 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"  >
-  
+
     <f:metadata>        
         <ui:insert name="meta-data">              
             <!--
@@ -12,42 +12,46 @@
             -->
         </ui:insert>
     </f:metadata>
-    
+
     <h:head>
-        
+
         <title>
             <ui:insert name="titulo">
-                
+
             </ui:insert>
         </title>
-        
+
         <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>        
         <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
+        
+        <h:outputStylesheet name="estructura.css" library="css" />
+        <h:outputStylesheet name="estilos.css" library="css" />
+        
         <h:outputScript library="js" name="calendar_es.js" />
-        
+
         <ui:insert name="head"></ui:insert>  
-        
+
         <ui:insert name="script" >            
             <script type="text/javascript">
-                            
-                function heightSize(){
-                    
+
+                function heightSize() {
+
                     f = document.getElementById('frame');
-                    
-                    if(f!==null){
-                        f.height = screen.height -200;
-                    }else{
-                        
+
+                    if (f !== null) {
+                        f.height = screen.height - 200;
+                    } else {
+
                     }
                 }
-            
+
             </script>
         </ui:insert>        
-        
+
     </h:head>
-    
+
     <h:body>
-        
+
         <div class="ui-g">
             <div class="ui-g-12 ui-md-12">
                 <div class="ui-g">
@@ -55,17 +59,28 @@
                         <h:graphicImage value="/resources/images/logo.jpg" style="width: 200px;" />
                     </div>
                     <div class="ui-g-8" >
-                        
+
                     </div>
                 </div>
             </div>
             <div class="ui-g-12 ui-md-12">                
-                <ui:insert name="menu" >
-                    Menu
-                </ui:insert>
+
+                <p:menubar>
+                    <p:submenu label="Seguridad" icon="fa fa-user-circle-o" >                            
+                        <p:menuitem value="Usuarios" url="/seguridad/tablas/usuario.jsf" target="_blank" />                            
+                        <p:menuitem value="Estado de usuario" url="/seguridad/tablas/estadoUsuario.jsf" target="_blank" />
+                        <p:menuitem value="Tipos de usuario" url="/seguridad/tablas/tipoUsuario.jsf" target="_blank" />
+                    </p:submenu>
+
+                    <f:facet name="options">                            
+                        <p:inputText style="margin-right:10px" placeholder="Search"/>
+                        <p:commandButton type="button" value="Salir" icon="ui-icon-extlink" />
+                    </f:facet>
+                </p:menubar>
+
             </div>
             <div class="ui-g-12 ui-md-12 ui-g-nopad">
-                
+
                 <ui:insert name="contenido" >
                     Contenido
                 </ui:insert>

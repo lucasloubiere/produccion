@@ -5,9 +5,11 @@
  */
 package com.seguridad.modelo;
 
+import com.global.modelo.Auditoria;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -35,9 +37,14 @@ public class EstadoUsuario implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "descripcion")
     private String descripcion;
+    
+    
+    @Embedded
+    private Auditoria auditoria;
 
 
     public EstadoUsuario() {
+        this.auditoria = new Auditoria();
     }
 
     public EstadoUsuario(Integer id) {
@@ -65,6 +72,14 @@ public class EstadoUsuario implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

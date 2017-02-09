@@ -7,8 +7,8 @@ package com.seguridad.web;
 
 import com.global.util.GenericBean;
 import com.global.util.JsfUtil;
-import com.seguridad.modelo.Usuario;
-import com.seguridad.rn.UsuarioRN;
+import com.seguridad.modelo.EstadoUsuario;
+import com.seguridad.rn.EstadoUsuarioRN;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,14 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean
 @ViewScoped
-public class UsuarioBean extends GenericBean implements Serializable {
+public class EstadoUsuarioBean extends GenericBean implements Serializable {
 
-  private Usuario usuario;
-  private List<Usuario> lista;
+  private EstadoUsuario estadoUsuario;
+  private List<EstadoUsuario> lista;
   
-  @EJB private UsuarioRN usuarioRN;
+  @EJB private EstadoUsuarioRN estadoUsuarioRN;
     
-    public UsuarioBean(){
+    public EstadoUsuarioBean(){
         
     }
     
@@ -50,15 +50,15 @@ public class UsuarioBean extends GenericBean implements Serializable {
         
         esNuevo = true;
         buscaMovimiento = false;
-        usuario = new Usuario();
+        estadoUsuario = new EstadoUsuario();
     }
     
     public void guardar(boolean nuevo){
         
         try {
-            if (usuario != null) {
+            if (estadoUsuario != null) {
                 
-                usuarioRN.guardar(usuario, esNuevo);
+                estadoUsuarioRN.guardar(estadoUsuario, esNuevo);
                 esNuevo = false;
                 buscar();                
                 JsfUtil.addInfoMessage("Los datos seguardaron correctamente");                
@@ -69,7 +69,7 @@ public class UsuarioBean extends GenericBean implements Serializable {
                 JsfUtil.addInfoMessage("No hay datos para guardar");
             }
         } catch (Exception ex) {
-            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EstadoUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage("No es posible guardar los datos " + ex);
         }
     }
@@ -77,20 +77,20 @@ public class UsuarioBean extends GenericBean implements Serializable {
     public void habilitaDeshabilita(String habDes){
         
         try {
-            usuario.getAuditoria().setDebaja(habDes);
-            usuarioRN.guardar(usuario, false);
+            estadoUsuario.getAuditoria().setDebaja(habDes);
+            estadoUsuarioRN.guardar(estadoUsuario, false);
             buscar();            
             JsfUtil.addInfoMessage("Los datos se actualizaron correctamente");
             
         } catch (Exception ex) {
-            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EstadoUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage("No es posible actualizar los datos " + ex);
         }
     }
     
     public void eliminar(){
         try {
-            usuarioRN.eliminar(usuario);
+            estadoUsuarioRN.eliminar(estadoUsuario);
             nuevo();
             buscar();            
             JsfUtil.addInfoMessage("Los datos fueron borrados");
@@ -101,53 +101,53 @@ public class UsuarioBean extends GenericBean implements Serializable {
     }
     
     public void buscar(){
-        lista = usuarioRN.getLista(txtBusqueda, mostrarDebaja, cantidadRegistros);
+        lista = estadoUsuarioRN.getListaByBusqueda(txtBusqueda, mostrarDebaja, cantidadRegistros);
     }
     
-    public List<Usuario> complete(String query) {
+    public List<EstadoUsuario> complete(String query) {
         try {
-            lista = usuarioRN.getLista(txtBusqueda, mostrarDebaja, cantidadRegistros);
+            lista = estadoUsuarioRN.getListaByBusqueda(txtBusqueda, mostrarDebaja, cantidadRegistros);
             return lista;
             
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-            return new ArrayList<Usuario>();
+            return new ArrayList<EstadoUsuario>();
         }
     }
     
     public void onSelect(SelectEvent event) {
-        usuario = (Usuario) event.getObject();
+        estadoUsuario = (EstadoUsuario) event.getObject();
         esNuevo = false;
         buscaMovimiento = false;
     }
     
-    public void seleccionar (Usuario d){
+    public void seleccionar(EstadoUsuario d){
         
-        usuario = d;
+        estadoUsuario = d;
         esNuevo = false;
         buscaMovimiento = false;
     }
     
     public void imprimir(){
         
-        if(usuario==null){
-            JsfUtil.addErrorMessage("Usuario no seleccionado, nada para imprimir");
+        if(estadoUsuario==null){
+            JsfUtil.addErrorMessage("EstadoUsuario no seleccionado, nada para imprimir");
         }
     }
     
-    public Usuario getUsuario() {
-        return usuario;
+    public EstadoUsuario getEstadoUsuario() {
+        return estadoUsuario;
     }
 
-    public void setUsuario(Usuario deposito) {
-        this.usuario = deposito;
+    public void setEstadoUsuario(EstadoUsuario deposito) {
+        this.estadoUsuario = deposito;
     }
 
-    public List<Usuario> getLista() {
+    public List<EstadoUsuario> getLista() {
         return lista;
     }
 
-    public void setLista(List<Usuario> lista) {
+    public void setLista(List<EstadoUsuario> lista) {
         this.lista = lista;
     }
 }

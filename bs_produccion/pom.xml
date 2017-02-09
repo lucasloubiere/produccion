@@ -40,11 +40,6 @@
             <scope>provided</scope>
         </dependency>
         
-        <dependency>
-            <groupId>net.sf.jacob-project</groupId>
-            <artifactId>jacob</artifactId>
-            <version>1.18</version>
-        </dependency>
         
         <!-- MySQL Java Connector library -->
         <dependency>
@@ -87,11 +82,6 @@
         </dependency>
         -->
         
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>  
-            <artifactId>volt-theme</artifactId>  
-            <version>2.0.2</version>  
-        </dependency>
         
         <dependency>
             <groupId>commons-fileupload</groupId>
