@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+    
+    <f:metadata>        
+        
+    </f:metadata>
+
+    <ui:define name="titulo" >
+        #{usuarioBean.titulo}
+    </ui:define>
+
+    <ui:define name="contenido" >
+                        
+        <h:form id="formulario" prependId="false">
+                     
+            <!-- MENU -->                        
+            <p:menubar id="menuBar">               
+                
+                <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                           actionListener="#{usuarioBean.nuevo}"
+                           process="@this"
+                           update="@form"
+                           immediate="true" />
+               
+                <p:menuitem value="Guardar" icon="fa fa-save"
+                            actionListener="#{usuarioBean.guardar(false)}"       
+                            rendered="#{not usuarioBean.buscaMovimiento}"
+                            update="@form" />
+                
+                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                            actionListener="#{usuarioBean.guardar(true)}"                            
+                            rendered="#{not usuarioBean.buscaMovimiento}"
+                            oncomplete="btnNew.click()"
+                            update="@form" />
+                
+                <p:menuitem value="Buscar" icon="fa fa-search"     
+                            rendered="#{not usuarioBean.buscaMovimiento}"
+                            immediate="true"
+                            update="@form" >
+                    <f:setPropertyActionListener value="true" target="#{usuarioBean.buscaMovimiento}" />
+                </p:menuitem>
+                                
+                <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                            actionListener="#{usuarioBean.habilitaDeshabilita('S')}"
+                            rendered="#{not empty usuarioBean.deposito and not usuarioBean.esNuevo and usuarioBean.deposito.auditoria.debaja eq 'N'}"
+                            process="@this"
+                            update="@form" />
+                
+                <p:menuitem value="Habilitar" icon="fa fa-check"
+                            actionListener="#{usuarioBean.habilitaDeshabilita('N')}"
+                            rendered="#{not empty usuarioBean.deposito and not usuarioBean.esNuevo and usuarioBean.deposito.auditoria.debaja eq 'S'}"
+                            process="@this"
+                            update="@form" />
+            </p:menubar>
+            
+            <p:sticky target="menuBar" />
+            
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+            
+            <p:spacer width="100%" height="1em" />             
+            
+            <!-- BUSQUEDA -->
+            <p:panel header="Busqueda" rendered="#{usuarioBean.buscaMovimiento}" >
+                    
+                <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-10" >
+
+                    <p:inputText value="#{usuarioBean.txtBusqueda}" size="40" placeholder="Ingrese busqueda" >
+                        <p:ajax event="keyup" process="@this" update="tablaDeposito" listener="#{usuarioBean.buscar}"/>
+                    </p:inputText>
+                </p:panelGrid>       
+
+                <p:dataTable id="tablaDeposito"  reflow="true" var="e"
+                             value="#{usuarioBean.lista}" 
+                             emptyMessage="No se encontraron resultados"
+                             rows="10" paginator="true">
+
+
+                    <!-- Deja de funcionar el alta en la versión 5.2
+                             selectionMode="single" 
+                             selection="#{usuarioBean.deposito}" rowKey="#{e}" >
+
+                    <p:ajax event="rowSelect" listener="#{usuarioBean.onSelect}" 
+                            update="@form" 
+                            oncomplete="PF('accordion').select(1)"  />
+                    -->
+
+                    <p:column headerText="Código" width="10%" style="text-align: center;"
+                              sortBy="#{e.codigo}"   >                         
+                        <h:outputText value="#{e.codigo}" />
+                    </p:column>
+
+                    <p:column headerText="Descripción" width="25%" style="text-align: left;"
+                              sortBy="#{e.descripcion}" >                    
+                        <h:outputText value="#{e.descripcion}" />                                        
+                    </p:column>
+
+                    <p:column headerText="Dirección" width="15%" style="text-align: left;"
+                              sortBy="#{e.direccion}" >
+                        <h:outputText value="#{e.direccion}" />  
+                    </p:column>
+
+                    <p:column headerText="Signo" width="20%" style="text-align: left;"
+                              sortBy="#{e.signo}" >
+                        <h:outputText value="#{e.signo}" />  
+                    </p:column>
+
+
+                    <p:column headerText="" width="10%" style="text-align: center;" >
+                        <p:commandButton icon="fa fa-edit"
+                                         actionListener="#{usuarioBean.seleccionar(e)}"  
+                                         process="@this"
+                                         update="@form"  />
+                    </p:column> 
+
+
+                </p:dataTable>  
+
+                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-6,ui-grid-col-6"  >
+
+                    <h:panelGroup layout="block" style="text-align: left; padding-top: 2em;" >   
+
+                        <h:outputText value="Mostrar registros deshabilitados" />
+
+                        <p:selectBooleanCheckbox value="#{usuarioBean.mostrarDebaja}" >
+                            <p:ajax process="@this" update="tablaDeposito" listener="#{usuarioBean.buscar}" />
+                        </p:selectBooleanCheckbox>
+
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" style="text-align: left; padding-top: 2em;" >                                                        
+                        <h:outputText value="Cantidad de Registros: " />
+                        <p:inputText id="cantRegistros" value="#{usuarioBean.cantidadRegistros}" size="4" />
+                        <p:commandButton value="Aplicar" 
+                                         actionListener="#{usuarioBean.buscar()}"
+                                         process="@this,cantRegistros" update="tablaDeposito" />
+                    </h:panelGroup>
+
+                </p:panelGrid>  
+
+            </p:panel>
+                            
+            <!-- DATOS -->
+            <p:panel header="Datos" rendered="#{not usuarioBean.buscaMovimiento}" >
+                    
+                <p:panelGrid columns="2" layout="grid" columnClasses="colLabel ui-grid-col-2,colDato ui-grid-col-10"                 
+                             style="border: none !important;" >  
+
+                    <h:outputText value="Código" />
+                    <h:outputText value="#{usuarioBean.deposito.codigo}" rendered="#{not usuarioBean.esNuevo}" />
+                    <p:inputText value="#{usuarioBean.deposito.codigo}" rendered="#{usuarioBean.esNuevo}" 
+                                 required="true"
+                                 requiredMessage="El código es necesario" />
+
+                    <h:outputText value="Descripción" />                                                  
+                    <p:inputText value="#{usuarioBean.deposito.descripcion}" size="60" 
+                                 required="true"
+                                 requiredMessage="La descripción es necesaria" />
+
+                    <h:outputText value="Dirección" />                                                  
+                    <p:inputText value="#{usuarioBean.deposito.direccion}"  size="60" />
+
+                    <h:outputText value="Signo" />
+                    <p:selectOneMenu value="#{usuarioBean.deposito.signo}"
+                                     required="true" requiredMessage="Seleccione el signo para el stock"  >
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Positivo" itemValue="+" />
+                        <f:selectItem itemLabel="Negativo" itemValue="-" />                                    
+                    </p:selectOneMenu>
+
+                </p:panelGrid>                    
+            </p:panel>    
+              
+        </h:form>
+        
+    </ui:define>
+    
+    <ui:define name="dialogos" >  
+      
+        
+    </ui:define>
+
+</ui:composition>
+
+</html>
+
