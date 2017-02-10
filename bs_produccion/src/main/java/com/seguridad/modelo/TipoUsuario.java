@@ -5,9 +5,11 @@
  */
 package com.seguridad.modelo;
 
+import com.global.modelo.Auditoria;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -37,6 +39,19 @@ public class TipoUsuario implements Serializable {
     private String descripcion;
 
 
+    
+    @Embedded
+    private Auditoria auditoria;
+
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+    
+    
     public TipoUsuario() {
     }
 
