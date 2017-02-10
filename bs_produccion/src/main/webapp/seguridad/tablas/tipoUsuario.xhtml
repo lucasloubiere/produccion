@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+    
+    <f:metadata>        
+        
+    </f:metadata>
+
+    <ui:define name="titulo" >
+        Tipo usuario
+    </ui:define>
+    
+    <ui:define name="menu">
+        <!-- MENU -->                        
+        <p:menubar id="menuBar"  >               
+
+            <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew" title="Nuevo usuario"
+                        actionListener="#{tipoUsuarioBean.nuevo()}"
+                        process="@this"
+                        update="@form"
+                        immediate="true" />
+           
+            <p:menuitem value="Guardar" icon="fa fa-save"
+                        actionListener="#{tipoUsuarioBean.guardar(false)}"       
+                        rendered="#{not tipoUsuarioBean.buscaMovimiento}"
+                        update="@form" />
+            
+            <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                        actionListener="#{tipoUsuarioBean.guardar(true)}"                            
+                        rendered="#{not tipoUsuarioBean.buscaMovimiento}"
+                        oncomplete="btnNew.click()"
+                        update="@form" />            
+            
+            <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                        actionListener="#{tipoUsuarioBean.habilitaDeshabilita('S')}"
+                        rendered="#{not empty tipoUsuarioBean.tipoUsuario and not tipoUsuarioBean.esNuevo and tipoUsuarioBean.tipoUsuario.auditoria.debaja eq 'N'}"
+                        process="@this"
+                        update="@form" />
+
+            <p:menuitem value="Habilitar" icon="fa fa-check"
+                        actionListener="#{tipoUsuarioBean.habilitaDeshabilita('N')}"
+                        rendered="#{not empty tipoUsuarioBean.tipoUsuario and not tipoUsuarioBean.esNuevo and tipoUsuarioBean.tipoUsuario.auditoria.debaja eq 'S'}"
+                        process="@this"
+                        update="@form" />
+            
+           <!-- <p:menuitem value="Buscar" icon="fa fa-search" 
+                        actionListener="#{tipoUsuarioBean.buscar()}"
+                        update="buscadorEstadoUsuario"
+                        process="@this" 
+                        oncomplete="PF('dlgEstadoUsuario').show()" 
+                        immediate="true" />-->
+            
+        </p:menubar>
+    </ui:define>
+
+    <ui:define name="contenido" >     
+        
+        
+        <p:remoteCommand name="procesarTipoUsuario" process="@this" update="@form" />
+        
+        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+        <p:spacer width="100%" height="1em" />             
+
+        <!-- DATOS -->
+        <p:panel header="Datos"  >
+
+            <p:panelGrid columns="4" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="Container40, Container60 ui-datafield" >
+               
+                <h:outputText value="Id" />                                                  
+                <p:inputText value="#{tipoUsuarioBean.tipoUsuario.id}" 
+                             required="true"
+                             requiredMessage="El id es necesario" />
+                
+                
+                <h:outputText value="Descripción" />                                                  
+                <p:inputText value="#{tipoUsuarioBean.tipoUsuario.descripcion}" 
+                             required="true"
+                             requiredMessage="La descripción es necesaria" />
+
+            </p:panelGrid>                    
+        </p:panel>    
+        
+    </ui:define>
+    
+    <!--ui:define name="dialogos" >  
+      
+        
+       <!-- <ui:include src="/seguridad/busqueda/buscadorEstadoUsuario.xhtml" />
+       
+    </ui:define>-->
+
+</ui:composition>
+
+</html>
