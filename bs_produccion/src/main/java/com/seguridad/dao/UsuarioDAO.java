@@ -7,7 +7,6 @@ package com.seguridad.dao;
 
 import com.global.dao.BaseDAO;
 import com.seguridad.modelo.Usuario;
-import com.stock.modelo.Deposito;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,12 +26,16 @@ public class UsuarioDAO extends BaseDAO {
     }      
 
     public List<Usuario> getUsuarioByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
-        try {
-            
+        
+        System.err.println("txtBusqueda " + txtBusqueda);
+        System.err.println("mostrarDeBaja " + mostrarDeBaja);
+        System.err.println("cantMax " + cantMax);                
+        
+        try {            
             String sQuery = "SELECT e FROM Usuario e "
                     + " WHERE (e.usuario LIKE :usuario OR e.nombre LIKE :nombre OR e.email LIKE :email) "
                     + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
-                    + " ORDER BY e.codigo";
+                    + " ORDER BY e.usuario";
             
             Query q = em.createQuery(sQuery);            
             q.setParameter("usuario", "%"+txtBusqueda.replaceAll(" ", "%")+"%");

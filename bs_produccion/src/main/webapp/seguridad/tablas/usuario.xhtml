@@ -5,121 +5,121 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/template.xhtml" >
-    
-    <f:metadata>        
-        <f:viewParam name="TITULO" value="#{usuarioBean.titulo}"/>
-    </f:metadata>
+    <ui:composition template="/template.xhtml" >
 
-    <ui:define name="titulo" >
-        #{usuarioBean.titulo}
-    </ui:define>
-    
-    <ui:define name="menu" >
-        <!-- MENU -->                        
-        <p:menubar id="menuBar">               
+        <f:metadata>        
+            <f:viewParam name="TITULO" value="#{usuarioBean.titulo}"/>
+        </f:metadata>
 
-            <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew" title="Nuevo usuario"
-                       actionListener="#{usuarioBean.nuevo}"
-                       process="@this"
-                       update="@form"
-                       immediate="true" />
+        <ui:define name="titulo" >
+            #{usuarioBean.titulo}
+        </ui:define>
 
-            <p:menuitem value="Guardar" icon="fa fa-save"
-                        actionListener="#{usuarioBean.guardar(false)}"       
-                        rendered="#{not usuarioBean.buscaMovimiento}"
-                        update="@form" />
+        <ui:define name="menu" >
+            <!-- MENU -->                        
+            <p:menubar id="menuBar">               
 
-            <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
-                        actionListener="#{usuarioBean.guardar(true)}"                            
-                        rendered="#{not usuarioBean.buscaMovimiento}"
-                        oncomplete="btnNew.click()"
-                        update="@form" />
+                <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew" title="Nuevo usuario"
+                            actionListener="#{usuarioBean.nuevo}"
+                            process="@this"
+                            update="@form"
+                            immediate="true" />
 
-            <p:menuitem value="Deshabilitar" icon="fa fa-ban"
-                        actionListener="#{usuarioBean.habilitaDeshabilita('S')}"
-                        rendered="#{not empty usuarioBean.usuario and not usuarioBean.esNuevo and usuarioBean.usuario.estado.id ne 9}"
-                        process="@this"
-                        update="@form" />
+                <p:menuitem value="Guardar" icon="fa fa-save"
+                            actionListener="#{usuarioBean.guardar(false)}"       
+                            rendered="#{not usuarioBean.buscaMovimiento}"
+                            update="@form" />
 
-            <p:menuitem value="Habilitar" icon="fa fa-check"
-                        actionListener="#{usuarioBean.habilitaDeshabilita('N')}"
-                        rendered="#{not empty usuarioBean.usuario and not usuarioBean.esNuevo and usuarioBean.usuario.estado.id ne 1}"
-                        process="@this"
-                        update="@form" />
+                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                            actionListener="#{usuarioBean.guardar(true)}"                            
+                            rendered="#{not usuarioBean.buscaMovimiento}"
+                            oncomplete="btnNew.click()"
+                            update="@form" />
 
-            <p:menuitem value="Buscar" icon="fa fa-search" 
-                        actionListener="#{usuarioBean.buscar()}"
-                        update="buscadorUsuario"
-                        process="@this" 
-                        oncomplete="PF('dlg_usuario').show()" 
-                        immediate="true" />
-        </p:menubar>
-    </ui:define>
+                <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                            actionListener="#{usuarioBean.habilitaDeshabilita('S')}"
+                            rendered="#{not empty usuarioBean.usuario and not usuarioBean.esNuevo and usuarioBean.usuario.estado.id ne 9}"
+                            process="@this"
+                            update="@form" />
 
-    <ui:define name="contenido" >
+                <p:menuitem value="Habilitar" icon="fa fa-check"
+                            actionListener="#{usuarioBean.habilitaDeshabilita('N')}"
+                            rendered="#{not empty usuarioBean.usuario and not usuarioBean.esNuevo and usuarioBean.usuario.estado.id ne 1}"
+                            process="@this"
+                            update="@form" />
 
-        <p:remoteCommand name="procesarUsuario" process="@this" update="@form" />
-        
-        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+                <p:menuitem value="Buscar" icon="fa fa-search" 
+                            actionListener="#{usuarioBean.buscar()}"
+                            update="buscadorUsuario"
+                            process="@this" 
+                            oncomplete="PF('dlgUsuario').show()" 
+                            immediate="true" />
+            </p:menubar>
+        </ui:define>
 
-        <p:spacer width="100%" height="1em" />             
+        <ui:define name="contenido" >
 
-        <!-- DATOS -->
-        <p:panel header="Datos" rendered="#{not usuarioBean.buscaMovimiento}" >
+            <p:remoteCommand name="procesarUsuario" process="@this" update="@form" />
 
-            <p:panelGrid columns="2" layout="grid"                               
-                         styleClass="ui-panelgrid-blank"
-                         columnClasses="Container40, Container60 ui-datafield" >
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
 
-                <h:outputText value="Usuario" />
-                <h:outputText value="#{usuarioBean.usuario.usuario}" rendered="#{not usuarioBean.esNuevo}" />
-                <p:inputText value="#{usuarioBean.usuario.usuario}" rendered="#{usuarioBean.esNuevo}" 
-                             required="true"
-                             requiredMessage="El usuario es necesario" />
-                
-                <h:outputText value="Clave" />                                                  
-                <p:inputText value="#{usuarioBean.usuario.password}" 
-                             required="true"
-                             requiredMessage="La clave es necesaria" />
+            <p:spacer width="100%" height="1em" />             
 
-                <h:outputText value="Nombre" />                                                  
-                <p:inputText value="#{usuarioBean.usuario.nombre}" 
-                             required="true"
-                             requiredMessage="El nombre es necesario" />
+            <!-- DATOS -->
+            <p:panel header="Datos" rendered="#{not usuarioBean.buscaMovimiento}" >
 
-                <h:outputText value="E-mail" />                                                  
-                <p:inputText value="#{usuarioBean.usuario.email}"   />
+                <p:panelGrid columns="2" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container40, Container60 ui-datafield" >
 
-                <h:outputText value="Tipo" />
-                <p:selectOneMenu value="#{usuarioBean.usuario.tipo}"                                  
-                                 required="true" requiredMessage="Seleccione el tipo"
-                                 converter="#{conversoresSeguridad.tipo}"                                      
-                                 effect="fade" filter="true" >  
-                    <p:ajax process="@this" />
-                    <f:selectItem itemValue="" itemLabel="Seleccionar" />
-                    <f:selectItems value="#{tipoUsuarioBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}" />                                    
-                </p:selectOneMenu>
-                
-                <h:outputText value="Estado" />
-                <p:selectOneMenu value="#{usuarioBean.usuario.estado}"                                  
-                                 required="true" requiredMessage="Seleccione el estado"
-                                 converter="#{conversoresSeguridad.estado}"                                      
-                                 effect="fade" filter="true" >  
-                    <p:ajax process="@this" />
-                    <f:selectItem itemValue="" itemLabel="Seleccionar" />
-                    <f:selectItems value="#{estadoUsuarioBean.lista}" var="e" itemLabel="#{e.descripcion}" itemValue="#{e}" />                                    
-                </p:selectOneMenu>
-                
-            </p:panelGrid>                    
-        </p:panel>    
+                    <h:outputText value="Usuario" />
+                    <h:outputText value="#{usuarioBean.usuario.usuario}" rendered="#{not usuarioBean.esNuevo}" />
+                    <p:inputText value="#{usuarioBean.usuario.usuario}" rendered="#{usuarioBean.esNuevo}" 
+                                 required="true"
+                                 requiredMessage="El usuario es necesario" />
 
-    </ui:define>
-    
-    <ui:define name="dialogos" >  
-        <ui:include src="/seguridad/busqueda/buscadorUsuario.xhtml" />                
-    </ui:define>
+                    <h:outputText value="Clave" />                                                  
+                    <p:inputText value="#{usuarioBean.usuario.password}" 
+                                 required="true"
+                                 requiredMessage="La clave es necesaria" />
 
-</ui:composition>
+                    <h:outputText value="Nombre" />                                                  
+                    <p:inputText value="#{usuarioBean.usuario.nombre}" 
+                                 required="true"
+                                 requiredMessage="El nombre es necesario" />
+
+                    <h:outputText value="E-mail" />                                                  
+                    <p:inputText value="#{usuarioBean.usuario.email}"   />
+
+                    <h:outputText value="Tipo" />
+                    <p:selectOneMenu value="#{usuarioBean.usuario.tipo}" 
+                                     required="true" requiredMessage="Seleccione el tipo"
+                                     converter="#{conversoresSeguridad.tipo}"                                      
+                                     effect="fade" filter="true" >  
+                        <p:ajax process="@this" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{tipoUsuarioBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}"  />                                    
+                    </p:selectOneMenu>
+
+                    <h:outputText value ="Estado" />
+                    <p:selectOneMenu value="#{usuarioBean.usuario.estado}"
+                                     required="true" requiredMessage="seleccione Estado Usuario"
+                                     converter="#{conversoresSeguridad.estado}"
+                                     effect="fade" filter="true">
+                        <p:ajax process="@this"/>
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{estadoUsuarioBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}" />
+                    </p:selectOneMenu>
+
+                </p:panelGrid>                    
+            </p:panel>    
+
+        </ui:define>
+
+        <ui:define name="dialogos" >  
+            <ui:include src="/seguridad/busqueda/buscadorUsuario.xhtml" />                
+        </ui:define>
+
+    </ui:composition>
 
 </html>

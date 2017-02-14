@@ -27,7 +27,7 @@ public class UsuarioRN {
             if(usuarioDAO.getObjeto(Usuario.class, usuario.getUsuario())!=null){
                 throw new ExcepcionGeneralSistema("El usuario "+usuario.getUsuario()+" ya existe");
             }            
-            usuarioDAO.crear(esNuevo);            
+            usuarioDAO.crear(usuario);            
         }else{
             usuarioDAO.editar(usuario);
         }        

@@ -26,7 +26,7 @@ public class TipoUsuarioRN {
             if(tipoUsuarioDAO.getObjeto(TipoUsuario.class, tipo.getId())!=null){
                 throw new ExcepcionGeneralSistema("El usuario "+tipo.getId()+" ya existe");
             }            
-            tipoUsuarioDAO.crear(esNuevo);            
+            tipoUsuarioDAO.crear(tipo);            
         }else{
             tipoUsuarioDAO.editar(tipo);
         }        
@@ -50,4 +50,8 @@ public class TipoUsuarioRN {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    public TipoUsuario getTipo(Integer idTipo) {
+        return tipoUsuarioDAO.getObjeto(TipoUsuario.class, idTipo);
+    }
 }

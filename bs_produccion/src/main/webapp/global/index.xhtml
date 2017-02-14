@@ -23,10 +23,10 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>        
         <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
-        
+
         <h:outputStylesheet name="estructura.css" library="css" />
         <h:outputStylesheet name="estilos.css" library="css" />
-        
+
         <h:outputScript library="js" name="calendar_es.js" />
 
         <ui:insert name="head"></ui:insert>  
@@ -52,44 +52,45 @@
 
     <h:body>
 
-        <div class="ui-g">
-            <div class="ui-g-12 ui-md-12">
-                <div class="ui-g">
-                    <div class="ui-g-4" >
-                        <h:graphicImage value="/resources/images/logo.jpg" style="width: 200px;" />
-                    </div>
-                    <div class="ui-g-8" >
+        <h:form prependId="false" >
 
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-12">
+                    <div class="ui-g">
+                        <div class="ui-g-4" >
+                            <h:graphicImage value="/resources/images/logo.jpg" style="width: 200px;" />
+                        </div>
+                        <div class="ui-g-8" >
+
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="ui-g-12 ui-md-12">                
+                <div class="ui-g-12 ui-md-12">                
 
-                <p:menubar>
-                    <p:submenu label="Seguridad" icon="fa fa-user-circle-o" >                            
-                        <p:menuitem value="Usuarios" url="/seguridad/tablas/usuario.jsf" target="_blank" />                            
-                        <p:menuitem value="Estado de usuario" url="/seguridad/tablas/estadoUsuario.jsf" target="_blank" />
-                        <p:menuitem value="Tipos de usuario" url="/seguridad/tablas/tipoUsuario.jsf" target="_blank" />
-                    </p:submenu>
+                    <p:menubar>
+                        <p:submenu label="Seguridad" icon="fa fa-user-circle-o" >                            
+                            <p:menuitem value="Usuarios" url="/seguridad/tablas/usuario.jsf" target="_blank" />                            
+                            <p:menuitem value="Estado de usuario" url="/seguridad/tablas/estadoUsuario.jsf" target="_blank" />
+                            <p:menuitem value="Tipos de usuario" url="/seguridad/tablas/tipoUsuario.jsf" target="_blank" />
+                        </p:submenu>
 
-                    <f:facet name="options">                            
-                        <p:inputText style="margin-right:10px" placeholder="Search"/>
-                        <p:commandButton type="button" value="Salir" icon="ui-icon-extlink" />
-                    </f:facet>
-                </p:menubar>
+                        <f:facet name="options">                            
+                            <p:inputText style="margin-right:10px" placeholder="Buscar"/>
+                            <p:commandButton action="#{usuarioSessionBean.logout()}"                                                                                         
+                                             value="Salir" icon="ui-icon-extlink" />
+                        </f:facet>
+                    </p:menubar>
 
-            </div>
-            <div class="ui-g-12 ui-md-12 ui-g-nopad">
+                </div>
+                <div class="ui-g-12 ui-md-12 ui-g-nopad">
 
-                <ui:insert name="contenido" >
-                    Contenido
-                </ui:insert>
-            </div>            
-        </div>    
+                    <ui:insert name="contenido" >
+                        Contenido
+                    </ui:insert>
+                </div>            
+            </div>    
 
-        <ui:insert name="dialogos" >
-
-        </ui:insert>    
+        </h:form>
 
     </h:body>
 

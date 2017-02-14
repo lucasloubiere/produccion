@@ -48,12 +48,12 @@
                         process="@this"
                         update="@form" />
             
-           <!-- <p:menuitem value="Buscar" icon="fa fa-search" 
-                        actionListener="#{tipoUsuarioBean.buscar()}"
-                        update="buscadorEstadoUsuario"
+          <p:menuitem value="Buscar" icon="fa fa-search" 
+                       actionListener="#{tipoUsuarioBean.buscar()}"
+                        update="buscadorTipoUsuario"
                         process="@this" 
-                        oncomplete="PF('dlgEstadoUsuario').show()" 
-                        immediate="true" />-->
+                        oncomplete="PF('dlgTipoUsuario').show()" 
+                        immediate="true" />
             
         </p:menubar>
     </ui:define>
@@ -90,12 +90,12 @@
         
     </ui:define>
     
-    <!--ui:define name="dialogos" >  
+    <ui:define name="dialogos" >  
       
         
-       <!-- <ui:include src="/seguridad/busqueda/buscadorEstadoUsuario.xhtml" />
+       <ui:include src="/seguridad/busqueda/buscadorTipoUsuario.xhtml" />
        
-    </ui:define>-->
+    </ui:define>
 
 </ui:composition>
 

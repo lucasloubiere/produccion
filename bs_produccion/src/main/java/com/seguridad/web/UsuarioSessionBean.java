@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -65,6 +66,18 @@ public class UsuarioSessionBean implements Serializable {
         
         return "home";
     } 
+    
+    public String logout() {
+      
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);        
+              
+        usuario = null;        
+        estaRegistrado = false;
+        session.invalidate();
+        
+        return "login";
+    }
     
     public void checkLogin() throws IOException {
         

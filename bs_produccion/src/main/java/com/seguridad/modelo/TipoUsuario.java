@@ -38,21 +38,13 @@ public class TipoUsuario implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-
     
     @Embedded
     private Auditoria auditoria;
-
-    public Auditoria getAuditoria() {
-        return auditoria;
-    }
-
-    public void setAuditoria(Auditoria auditoria) {
-        this.auditoria = auditoria;
-    }
     
     
     public TipoUsuario() {
+        this.auditoria = new Auditoria();
     }
 
     public TipoUsuario(Integer id) {
@@ -80,6 +72,14 @@ public class TipoUsuario implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

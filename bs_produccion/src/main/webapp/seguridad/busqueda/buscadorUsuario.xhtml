@@ -12,55 +12,56 @@
               minHeight="400" 
               style="max-width: 900px;" responsive="true" 
               showEffect="fade" hideEffect="fade"> 
-        
+
         <h:form prependId="false" >
 
             <p:inputText value="#{usuarioBean.txtBusqueda}" placeholder="Ingrese busqueda" >
                 <p:ajax event="keyup" process="@this" update="tablaUsuario" listener="#{usuarioBean.buscar}"/>
             </p:inputText>
-            
+
             <div class="EmptyBox10" />
-            
+
             <p:dataTable id="tablaUsuario" value="#{usuarioBean.lista}"  reflow="true" var="i"
                          emptyMessage="No se encontraron datos"                         
                          rows="10" paginator="true"
                          selectionMode="single" 
                          selection="#{usuarioBean.usuario}" rowKey="#{i}">
-            
+
                 <p:ajax event="rowSelect" listener="#{usuarioBean.onSelect}" update="@form" 
-                        oncomplete="PF('dlg_usuario').hide(), procesarUsuario()" />
+                        oncomplete="PF('dlgUsuario').hide(), procesarUsuario()" />
 
                 <p:column headerText="Usuario" style="text-align: center;"
-                          sortBy="#{e.usuario}"   >                         
-                    <h:outputText value="#{e.usuario}" />
+                          sortBy="#{i.usuario}"   >                         
+                    <h:outputText value="#{i.usuario}" />
                 </p:column>
-                
+
                 <p:column headerText="Clave" style="text-align: center;"
-                          sortBy="#{e.password}"   >                         
-                    <h:outputText value="#{e.password}" />
+                          sortBy="#{i.password}"   >                         
+                    <h:outputText value="#{i.password}" />
                 </p:column>
 
                 <p:column headerText="Nombre" width="25%" style="text-align: left;"
-                          sortBy="#{e.nombre}" >                    
-                    <h:outputText value="#{e.nombre}" />                                        
+                          sortBy="#{i.nombre}" >                    
+                    <h:outputText value="#{i.nombre}" />                                        
                 </p:column>
 
                 <p:column headerText="E-mail" width="15%" style="text-align: left;"
-                          sortBy="#{e.email}" >
-                    <h:outputText value="#{e.email}" />  
+                          sortBy="#{i.email}" >
+                    <h:outputText value="#{i.email}" />  
                 </p:column>
-                
+
                 <p:column headerText="Tipo" width="20%" style="text-align: left;"
-                          sortBy="#{e.tipo.descripcion}" >
-                    <h:outputText value="#{e.tipo.descripcion}" />  
+                          sortBy="#{i.tipo.descripcion}" >
+                    <h:outputText value="#{i.tipo.descripcion}" />  
                 </p:column>
 
                 <p:column headerText="Estado" width="20%" style="text-align: left;"
-                          sortBy="#{e.estado.descripcion}" >
-                    <h:outputText value="#{e.estado.descripcion}" />  
+                          sortBy="#{i.estado.descripcion}" >
+                    <h:outputText value="#{i.estado.descripcion}" />  
                 </p:column>
+
             </p:dataTable>
-            
+
             <div class="EmptyBox10" />            
             <p:panelGrid columns="2" layout="grid"                               
                          styleClass="ui-panelgrid-blank"
@@ -82,7 +83,7 @@
                                      process="@this,cantRegistroUsuario" update="tablaUsuario" />
                 </h:panelGroup>
             </p:panelGrid>
-            
+
         </h:form>        
 
 

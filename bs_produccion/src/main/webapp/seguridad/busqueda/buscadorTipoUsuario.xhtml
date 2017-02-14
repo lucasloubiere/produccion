@@ -1,0 +1,72 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" >
+
+    <p:dialog id="buscadorTipoUsuario" header="Tipo Usuarios" modal="true"
+              widgetVar="dlgTipoUsuario"
+              resizable="false"
+              draggable="false"
+              minHeight="400" 
+              style="max-width: 900px;" responsive="true" 
+              showEffect="fade" hideEffect="fade"> 
+        
+        <h:form prependId="false" >
+
+            <p:inputText value="#{tipoUsuarioBean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                <p:ajax event="keyup" process="@this" listener="#{tipoUsuarioBean.buscar}" update="tablaTipoUsuario" />
+            </p:inputText>
+            
+            <div class="EmptyBox10" />
+            
+            <p:dataTable id="tablaTipoUsuario" value="#{tipoUsuarioBean.lista}"  reflow="true" var="i"
+                         emptyMessage="No se encontraron datos"                         
+                         rows="10" paginator="true"
+                         selectionMode="single" 
+                         selection="#{tipoUsuarioBean.tipoUsuario}" rowKey="#{i}">
+            
+                <p:ajax event="rowSelect" listener="#{tipoUsuarioBean.onSelect}" update="@form" 
+                        oncomplete="PF('dlgTipoUsuario').hide(), procesarTipoUsuario()" />
+
+                <p:column headerText="Id" style="text-align: center;"
+                          sortBy="#{i.id}"   >                         
+                    <h:outputText value="#{i.id}" />
+                </p:column>
+                
+                <p:column headerText="Descripción" style="text-align: center;"
+                          sortBy="#{i.descripcion}" >                         
+                    <h:outputText value="#{i.descripcion}" />
+                </p:column>
+                
+            </p:dataTable>
+            
+            <div class="EmptyBox10" />            
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="Container40, Container60" >
+
+                <h:panelGroup layout="block" >                       
+                    <p:selectBooleanCheckbox value="#{tipoUsuarioBean.mostrarDebaja}" >
+                        <p:ajax process="@this" update="tablaTipoUsuario" listener="#{tipoUsuarioBean.buscar}" />
+                    </p:selectBooleanCheckbox>                    
+                    <h:outputText value="Mostrar registros deshabilitados" />                    
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" >                                                        
+                    <h:outputText value="Cantidad de Registros: " />                    
+                    <p:inputText id="cantRegistroTipoUsuario" value="#{tipoUsuarioBean.cantidadRegistros}" style="max-width: 80px;"/>                    
+                    <p:commandButton value="Aplicar" icon="fa fa-check"
+                                     style="max-width: 100px; margin-left: 1px;"
+                                     actionListener="#{tipoUsuarioBean.buscar}"
+                                     process="@this,cantRegistroTipoUsuario" update="tablaTipoUsuario" />
+                </h:panelGroup>
+            </p:panelGrid>
+            
+        </h:form>        
+
+
+    </p:dialog>
+
+</ui:composition>

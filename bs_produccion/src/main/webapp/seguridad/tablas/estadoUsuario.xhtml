@@ -75,7 +75,8 @@
                          columnClasses="Container40, Container60 ui-datafield" >
                
                 <h:outputText value="Id" />                                                  
-                <p:inputText value="#{estadoUsuarioBean.estadoUsuario.id}" 
+                <h:outputText value="#{estadoUsuarioBean.estadoUsuario.id}" rendered="#{not estadoUsuarioBean.esNuevo}"  />                                                  
+                <p:inputText value="#{estadoUsuarioBean.estadoUsuario.id}"  rendered="#{estadoUsuarioBean.esNuevo}" 
                              required="true"
                              requiredMessage="El id es necesario" />
                 

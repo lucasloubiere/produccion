@@ -20,7 +20,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.event.SelectEvent;
 
-
 /**
  *
  * @author lloubiere
@@ -28,45 +27,49 @@ import org.primefaces.event.SelectEvent;
 @ManagedBean
 @ViewScoped
 
-public class TipoUsuarioBean extends GenericBean implements Serializable{
+public class TipoUsuarioBean extends GenericBean implements Serializable {
 
     private TipoUsuario tipoUsuario;
     private List<TipoUsuario> lista;
-  
-  @EJB private TipoUsuarioRN tipoUsuarioRN;
-  
-  public TipoUsuarioBean(){
-    
-  }
-   @PostConstruct
-    public void init(){
-        
+
+    @EJB
+    private TipoUsuarioRN tipoUsuarioRN;
+
+    public TipoUsuarioBean() {
+
+    }
+
+    @PostConstruct
+    public void init() {
+
         txtBusqueda = "";
         mostrarDebaja = false;
         nuevo();
         buscar();
     }
-    
-    public void nuevo(){
-        
+
+    public void nuevo() {
+
         esNuevo = true;
         buscaMovimiento = false;
         tipoUsuario = new TipoUsuario();
     }
-    
-    public void guardar(boolean nuevo){
-        
+
+    public void guardar(boolean nuevo) {
+
         try {
             if (tipoUsuario != null) {
                 
+                tipoUsuario.setDescripcion(tipoUsuario.getDescripcion().toUpperCase());
+
                 tipoUsuarioRN.guardar(tipoUsuario, esNuevo);
                 esNuevo = false;
-                buscar();                
-                JsfUtil.addInfoMessage("Los datos seguardaron correctamente");                
-                if (nuevo){
+                buscar();
+                JsfUtil.addInfoMessage("Los datos seguardaron correctamente");
+                if (nuevo) {
                     nuevo();
                 }
-            }else{
+            } else {
                 JsfUtil.addInfoMessage("No hay datos para guardar");
             }
         } catch (Exception ex) {
@@ -74,64 +77,64 @@ public class TipoUsuarioBean extends GenericBean implements Serializable{
             JsfUtil.addErrorMessage("No es posible guardar los datos " + ex);
         }
     }
-    
-    public void habilitaDeshabilita(String habDes){
-        
+
+    public void habilitaDeshabilita(String habDes) {
+
         try {
             tipoUsuario.getAuditoria().setDebaja(habDes);
             tipoUsuarioRN.guardar(tipoUsuario, false);
-            buscar();            
+            buscar();
             JsfUtil.addInfoMessage("Los datos se actualizaron correctamente");
-            
+
         } catch (Exception ex) {
             Logger.getLogger(TipoUsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage("No es posible actualizar los datos " + ex);
         }
     }
-    
-    public void eliminar(){
+
+    public void eliminar() {
         try {
             tipoUsuarioRN.eliminar(tipoUsuario);
             nuevo();
-            buscar();            
+            buscar();
             JsfUtil.addInfoMessage("Los datos fueron borrados");
         } catch (Exception ex) {
             Logger.getLogger(getClass().getSimpleName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage("No es posible borrar los datos " + ex);
-        }        
+        }
     }
-    
-    public void buscar(){
+
+    public void buscar() {
         lista = tipoUsuarioRN.getListaByBusqueda(txtBusqueda, mostrarDebaja, cantidadRegistros);
     }
-    
+
     public List<TipoUsuario> complete(String query) {
         try {
             lista = tipoUsuarioRN.getListaByBusqueda(txtBusqueda, mostrarDebaja, cantidadRegistros);
             return lista;
-            
+
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             return new ArrayList<TipoUsuario>();
         }
     }
-    
+
     public void onSelect(SelectEvent event) {
         tipoUsuario = (TipoUsuario) event.getObject();
         esNuevo = false;
         buscaMovimiento = false;
     }
-    
-    public void seleccionar(TipoUsuario d){
-        
+
+    public void seleccionar(TipoUsuario d) {
+
         tipoUsuario = d;
         esNuevo = false;
         buscaMovimiento = false;
     }
-    
-    public void imprimir(){
-        
-        if(tipoUsuario==null){
+
+    public void imprimir() {
+
+        if (tipoUsuario == null) {
             JsfUtil.addErrorMessage("TipoUsuario no seleccionado, nada para imprimir");
         }
     }

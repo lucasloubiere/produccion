@@ -28,7 +28,7 @@ public class EstadoUsuarioRN {
             if(estadoUsuarioDAO.getObjeto(EstadoUsuario.class, estado.getId())!=null){
                 throw new ExcepcionGeneralSistema("El usuario "+estado.getId()+" ya existe");
             }            
-            estadoUsuarioDAO.crear(esNuevo);            
+            estadoUsuarioDAO.crear(estado);            
         }else{
             estadoUsuarioDAO.editar(estado);
         }        
@@ -46,5 +46,11 @@ public class EstadoUsuarioRN {
 
     public void eliminar(EstadoUsuario estadoUsuario) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public EstadoUsuario getEstado(Integer idEstado) {
+        
+        return estadoUsuarioDAO.getObjeto(EstadoUsuario.class, idEstado);
+        
     }
 }
