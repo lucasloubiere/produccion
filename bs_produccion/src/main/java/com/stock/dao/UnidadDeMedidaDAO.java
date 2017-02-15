@@ -60,4 +60,8 @@ public List<UnidadDeMedida> getTipoProductoByBusqueda(String txtBusqueda, boolea
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    public List<UnidadDeMedida> getListaByBusqueda(String txtBusqueda, boolean mostrarDebaja, int cantidadRegistros) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

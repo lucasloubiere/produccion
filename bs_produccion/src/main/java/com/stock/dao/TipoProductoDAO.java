@@ -61,4 +61,8 @@ public class TipoProductoDAO extends BaseDAO {
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    public List<TipoProducto> getListaByBusqueda(String string, boolean mostrarDebaja, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
