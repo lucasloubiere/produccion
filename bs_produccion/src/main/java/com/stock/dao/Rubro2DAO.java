@@ -6,7 +6,8 @@
 package com.stock.dao;
 
 import com.global.dao.BaseDAO;
-import com.stock.modelo.UnidadDeMedida;
+import com.stock.modelo.Rubro2;
+import com.stock.modelo.TipoProducto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,22 +19,29 @@ import javax.persistence.Query;
  * @author lloubiere
  */
 @Stateless
-public class UnidadDeMedidaDAO extends BaseDAO{
-    
-    public UnidadDeMedida getUnidadMedida(String codigo) {
-        return getObjeto(UnidadDeMedida.class, codigo);
+public class Rubro2DAO extends BaseDAO {
+
+    public Rubro2 getRubro2(String codigo) {
+        return getObjeto(Rubro2.class, codigo);
     }
-public List<UnidadDeMedida> getTipoProductoByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+    
+    public TipoProducto getTipoProducto(String codigo) {
+
+        return getObjeto(TipoProducto.class, codigo);
+    }
+    
+    public List<Rubro2> getTipoRubro1ByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
         
         System.err.println("txtBusqueda " + txtBusqueda);
         System.err.println("mostrarDeBaja " + mostrarDeBaja);
         System.err.println("cantMax " + cantMax);                
         
         try {            
-            String sQuery = "SELECT e FROM UnidadDeMedida e "
+             String sQuery = "SELECT e FROM Rubro2 e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
+               //     + (codigo==null ? " ": " AND e.tipoProducto.codigo = :tipoProducto ")
                     + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
-                    + " ORDER BY e.codigo";
+                    + " ORDER BY e.tippro, e.codigo";
             
             Query q = em.createQuery(sQuery);            
             q.setParameter("codigo", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
@@ -47,16 +55,16 @@ public List<UnidadDeMedida> getTipoProductoByBusqueda(String txtBusqueda, boolea
             
         } catch (Exception e) {
             log.log(Level.SEVERE, "getListaByBusqueda", e.getCause());
-            return new ArrayList<UnidadDeMedida>();
+            return new ArrayList<Rubro2>();
         }  
     }
     
-     public UnidadDeMedida getUnidadDeMedidaByCodigo(String codigo) {
-        return getObjeto(UnidadDeMedida.class, "codigo", codigo);
+     public Rubro2 getRubro2ByCodigo(String codigo) {
+        return getObjeto(Rubro2.class, "codigo", codigo);
     }
 
-    public UnidadDeMedida getUnidadDeMedidaByDescripcion(String descripcion) {
-        return getObjeto(UnidadDeMedida.class, "descripcion", descripcion);
+    public Rubro2 getRubro2ByDescripcion(String descripcion) {
+        return getObjeto(Rubro2.class, "descripcion", descripcion);
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

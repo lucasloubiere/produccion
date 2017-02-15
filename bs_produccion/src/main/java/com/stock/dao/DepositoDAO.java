@@ -6,7 +6,7 @@
 package com.stock.dao;
 
 import com.global.dao.BaseDAO;
-import com.stock.modelo.TipoProducto;
+import com.stock.modelo.Deposito;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,20 +18,20 @@ import javax.persistence.Query;
  * @author lloubiere
  */
 @Stateless
-public class TipoProductoDAO extends BaseDAO {
+public class DepositoDAO extends BaseDAO {
 
-    public TipoProducto getTipoProducto(String codigo) {
-        return getObjeto(TipoProducto.class, codigo);
+    public Deposito getDeposito(String codigo) {
+        return getObjeto(Deposito.class, codigo);
     }
 
-    public List<TipoProducto> getTipoProductoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
+    public List<Deposito> getTipoProductoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
 
         System.err.println("txtBusqueda " + txtBusqueda);
         System.err.println("mostrarDeBaja " + mostrarDeBaja);
         System.err.println("cantMax " + cantMax);
 
         try {
-            String sQuery = "SELECT e FROM TipoProducto e "
+            String sQuery = "SELECT e FROM Deposito e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
                     + (mostrarDeBaja ? " " : " AND e.auditoria.debaja = 'N' ")
                     + " ORDER BY e.codigo";
@@ -47,17 +47,17 @@ public class TipoProductoDAO extends BaseDAO {
             return q.getResultList();
 
         } catch (Exception e) {
-            log.log(Level.SEVERE, "getTipoProductoByBusqueda", e.getCause());
-            return new ArrayList<TipoProducto>();
+            log.log(Level.SEVERE, "getListaByBusqueda", e.getCause());
+            return new ArrayList<Deposito>();
         }
     }
 
-    public TipoProducto getTipoProductoByCodigo(String codigo) {
-        return getObjeto(TipoProducto.class, "codigo", codigo);
+    public Deposito getDepositoByCodigo(String codigo) {
+        return getObjeto(Deposito.class, "codigo", codigo);
     }
 
-    public TipoProducto getTipoProductoByDescripcion(String descripcion) {
-        return getObjeto(TipoProducto.class, "descripcion", descripcion);
+    public Deposito getDepositoByDescripcion(String descripcion) {
+        return getObjeto(Deposito.class, "descripcion", descripcion);
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
