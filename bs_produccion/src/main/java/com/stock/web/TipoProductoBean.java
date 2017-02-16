@@ -18,8 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -27,7 +27,7 @@ import org.primefaces.event.SelectEvent;
  * @author lloubiere
  */
 @ManagedBean
-@Stateless
+@ViewScoped
 public class TipoProductoBean extends GenericBean implements Serializable {
 
     @EJB
