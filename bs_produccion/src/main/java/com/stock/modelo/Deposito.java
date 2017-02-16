@@ -5,11 +5,13 @@
  */
 package com.stock.modelo;
 
+import com.global.modelo.Auditoria;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -52,16 +54,21 @@ public class Deposito implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "signo", nullable = false, length = 45)
     private String signo;
+    @Embedded
+    private Auditoria auditoria;
 
 
     public Deposito() {
+        this.auditoria = new Auditoria();
     }
 
     public Deposito(String codigo) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
     }
 
     public Deposito(String codigo, String descripcion, String signo) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.signo = signo;
@@ -89,6 +96,14 @@ public class Deposito implements Serializable {
 
     public void setSigno(String signo) {
         this.signo = signo;
+    }
+
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
     }
 
     

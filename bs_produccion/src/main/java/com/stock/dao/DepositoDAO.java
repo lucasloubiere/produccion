@@ -20,6 +20,16 @@ import javax.persistence.Query;
 @Stateless
 public class DepositoDAO extends BaseDAO {
 
+
+    public List<Deposito> getLista() {
+        return getLista(Deposito.class, true, -1, -1);
+    }
+
+    public List<Deposito> getLista(int maxResults, int firstResult) {
+        return getLista(Deposito.class, false, maxResults, firstResult);
+    }
+    
+    
     public Deposito getDeposito(String codigo) {
         return getObjeto(Deposito.class, codigo);
     }
@@ -61,4 +71,14 @@ public class DepositoDAO extends BaseDAO {
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    public List<Deposito> getLista(boolean mostrarDebaja) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+  
+    public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
+ 
+    

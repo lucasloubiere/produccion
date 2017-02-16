@@ -5,9 +5,12 @@
  */
 package com.stock.modelo;
 
+import com.global.modelo.Auditoria;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -41,16 +44,22 @@ public class TipoProducto implements Serializable {
     @Size(min = 1, max = 1)
     @Column(name = "gestionaStock", nullable = false, length = 1)
     private String gestionaStock;
+    
+    @Embedded
+    private Auditoria auditoria;
 
 
     public TipoProducto() {
+         this.auditoria = new Auditoria();
     }
 
     public TipoProducto(String codigo) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
     }
 
     public TipoProducto(String codigo, String descripcion, String gestionaStock) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.gestionaStock = gestionaStock;
@@ -80,6 +89,16 @@ public class TipoProducto implements Serializable {
         this.gestionaStock = gestionaStock;
     }
 
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+    
+    
+
    
     @Override
     public int hashCode() {
@@ -105,5 +124,5 @@ public class TipoProducto implements Serializable {
     public String toString() {
         return "com.stock.modelo.TipoProducto[ codigo=" + codigo + " ]";
     }
-    
+
 }

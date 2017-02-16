@@ -5,9 +5,11 @@
  */
 package com.stock.modelo;
 
+import com.global.modelo.Auditoria;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -73,15 +75,21 @@ public class Producto implements Serializable {
         @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false,insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Rubro3 rubro3;
+    
+    @Embedded
+    private Auditoria auditoria;
 
     public Producto() {
+        this.auditoria = new Auditoria();
     }
 
     public Producto(String codigo) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
     }
 
     public Producto(String codigo, String descripcion, String gestionaStock) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.gestionaStock = gestionaStock;
@@ -161,6 +169,16 @@ public class Producto implements Serializable {
         this.rubro3 = rubro3;
     }
 
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -5,16 +5,16 @@
  */
 package com.stock.modelo;
 
+import com.global.modelo.Auditoria;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,11 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "st_stock")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Stock.findAll", query = "SELECT s FROM Stock s"),
-    @NamedQuery(name = "Stock.findByCodigoProducto", query = "SELECT s FROM Stock s WHERE s.stockPK.codigoProducto = :codigoProducto"),
-    @NamedQuery(name = "Stock.findByCodigoDeposito", query = "SELECT s FROM Stock s WHERE s.stockPK.codigoDeposito = :codigoDeposito"),
-    @NamedQuery(name = "Stock.findByStock", query = "SELECT s FROM Stock s WHERE s.stock = :stock")})
+
 public class Stock implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,24 +46,31 @@ public class Stock implements Serializable {
     @JoinColumn(name = "unidadDeMedida", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(optional = false)
     private UnidadDeMedida unidadDeMedida;
-
+    @Embedded
+    private Auditoria auditoria;
+    
     public Stock() {
+       this.auditoria = new Auditoria();
     }
 
     public Stock(StockPK stockPK) {
+       this.auditoria = new Auditoria();
         this.stockPK = stockPK;
     }
 
     public Stock(StockPK stockPK, BigDecimal stock) {
+        this.auditoria = new Auditoria();
         this.stockPK = stockPK;
         this.stock = stock;
     }
 
     public Stock(String codigoProducto, String codigoDeposito) {
+        this.auditoria = new Auditoria();
         this.stockPK = new StockPK(codigoProducto, codigoDeposito);
     }
 
     public StockPK getStockPK() {
+        
         return stockPK;
     }
 
@@ -106,6 +109,15 @@ public class Stock implements Serializable {
     public void setUnidadDeMedida(UnidadDeMedida unidadDeMedida) {
         this.unidadDeMedida = unidadDeMedida;
     }
+
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+    
 
     @Override
     public int hashCode() {

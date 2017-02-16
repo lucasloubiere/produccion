@@ -5,23 +5,19 @@
  */
 package com.stock.modelo;
 
+import com.global.modelo.Auditoria;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -49,21 +45,27 @@ public class Rubro3 implements Serializable {
     @JoinColumn(name = "tipoProducto", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private TipoProducto tipoProducto1;
+    @Embedded
+    private Auditoria auditoria;
 
 
     public Rubro3() {
+        this.auditoria = new Auditoria();
     }
 
     public Rubro3(Rubro3PK rubro3PK) {
         this.rubro3PK = rubro3PK;
+        this.auditoria = new Auditoria();
     }
 
     public Rubro3(Rubro3PK rubro3PK, String descripcion) {
+        this.auditoria = new Auditoria();
         this.rubro3PK = rubro3PK;
         this.descripcion = descripcion;
     }
 
     public Rubro3(String codigo, String tipoProducto) {
+        this.auditoria = new Auditoria();
         this.rubro3PK = new Rubro3PK(codigo, tipoProducto);
     }
 
@@ -89,6 +91,14 @@ public class Rubro3 implements Serializable {
 
     public void setTipoProducto1(TipoProducto tipoProducto1) {
         this.tipoProducto1 = tipoProducto1;
+    }
+
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
     }
 
  

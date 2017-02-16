@@ -30,7 +30,7 @@ public class Rubro1DAO extends BaseDAO {
         return getObjeto(TipoProducto.class, codigo);
     }
     
-    public List<Rubro1> getTipoRubro1ByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+    public List<Rubro1> getListaByBusqueda(String codTipo, String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
         
         System.err.println("txtBusqueda " + txtBusqueda);
         System.err.println("mostrarDeBaja " + mostrarDeBaja);
@@ -39,13 +39,17 @@ public class Rubro1DAO extends BaseDAO {
         try {            
              String sQuery = "SELECT e FROM Rubro1 e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
-                 //   + (codigo==null ? " ": " AND e.tipoProducto.codigo = :tipoProducto ")
+                    + (codTipo==null ? " ": " AND e.tipoProducto = :tipoProducto ")
                     + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
                     + " ORDER BY e.tippro, e.codigo";
             
             Query q = em.createQuery(sQuery);            
             q.setParameter("codigo", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
             q.setParameter("descripcion", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
+            
+            if(codTipo!=null){
+                q.setParameter("tipoProucto", codTipo);
+            }
             
             if(cantMax>0){
                 q.setMaxResults(cantMax);
@@ -67,6 +71,5 @@ public class Rubro1DAO extends BaseDAO {
         return getObjeto(Rubro1.class, "descripcion", descripcion);
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    
 }

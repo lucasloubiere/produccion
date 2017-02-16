@@ -5,21 +5,17 @@
  */
 package com.stock.modelo;
 
+import com.global.modelo.Auditoria;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,11 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "st_unidaddemedida")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "UnidadDeMedida.findAll", query = "SELECT u FROM UnidadDeMedida u"),
-    @NamedQuery(name = "UnidadDeMedida.findByCodigo", query = "SELECT u FROM UnidadDeMedida u WHERE u.codigo = :codigo"),
-    @NamedQuery(name = "UnidadDeMedida.findByDescripcion", query = "SELECT u FROM UnidadDeMedida u WHERE u.descripcion = :descripcion"),
-    @NamedQuery(name = "UnidadDeMedida.findByFormato", query = "SELECT u FROM UnidadDeMedida u WHERE u.formato = :formato")})
+
 public class UnidadDeMedida implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,16 +42,20 @@ public class UnidadDeMedida implements Serializable {
     @Size(max = 45)
     @Column(name = "Formato", length = 45)
     private String formato;
-
+    @Embedded
+    private Auditoria auditoria;
 
     public UnidadDeMedida() {
+        this.auditoria = new Auditoria();
     }
 
     public UnidadDeMedida(String codigo) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
     }
 
     public UnidadDeMedida(String codigo, String descripcion) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
@@ -88,6 +84,15 @@ public class UnidadDeMedida implements Serializable {
         this.formato = formato;
     }
 
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -112,5 +117,5 @@ public class UnidadDeMedida implements Serializable {
     public String toString() {
         return "com.stock.modelo.UnidadDeMedida[ codigo=" + codigo + " ]";
     }
-    
+
 }

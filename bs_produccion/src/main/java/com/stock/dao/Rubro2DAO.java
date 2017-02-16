@@ -29,6 +29,7 @@ public class Rubro2DAO extends BaseDAO {
 
         return getObjeto(TipoProducto.class, codigo);
     }
+  
     
     public List<Rubro2> getTipoRubro1ByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
         
