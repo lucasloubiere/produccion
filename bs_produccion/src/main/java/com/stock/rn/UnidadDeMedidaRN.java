@@ -38,9 +38,9 @@ public class UnidadDeMedidaRN implements Serializable {
        }     
     }
    
-   public void eliminar(UnidadDeMedida unidadMedida) throws Exception {
+   public void eliminar(UnidadDeMedida unidadDeMedida) throws Exception {
         
-        unidadDeMedidaDAO.eliminar(unidadMedida);
+        unidadDeMedidaDAO.eliminar(unidadDeMedida);
         
     }
    
