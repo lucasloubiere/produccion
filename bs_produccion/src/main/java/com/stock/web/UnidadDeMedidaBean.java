@@ -58,7 +58,7 @@ public class UnidadDeMedidaBean extends GenericBean {
     public void guardar(boolean nuevo) {
 
         try {
-            if (unidadDeMedida == null) {
+            if (unidadDeMedida != null) {
                 unidadDeMedidaRN.guardar(unidadDeMedida, esNuevo);
                 esNuevo = false;
                 buscar(); 
