@@ -76,9 +76,29 @@ public class DepositoDAO extends BaseDAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
   
-    public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+        try {
+            
+            String sQuery = "SELECT e FROM Deposito e "
+                    + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
+                    + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
+                    + " ORDER BY e.codigo";
+            
+            Query q = em.createQuery(sQuery);            
+            q.setParameter("codigo", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
+            q.setParameter("descripcion", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
+            
+            if(cantMax>0){
+                q.setMaxResults(cantMax);
+            }
+          
+            return q.getResultList();            
+            
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "getDepositoByBusqueda", e.getCause());
+            return new ArrayList<Deposito>();
+        }  
+   }
 }
  
     

@@ -8,8 +8,6 @@ package com.stock.web;
 import com.global.util.GenericBean;
 import com.global.util.JsfUtil;
 import com.stock.modelo.TipoProducto;
-import com.stock.rn.Rubro1RN;
-import com.stock.rn.Rubro2RN;
 import com.stock.rn.TipoProductoRN;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,17 +30,10 @@ public class TipoProductoBean extends GenericBean implements Serializable {
 
     @EJB
     private TipoProductoRN tipoProductoRN;
-    @EJB
-    private Rubro1RN rubro1RN;
-    @EJB
-    private Rubro2RN rubro2RN;
 
     private List<TipoProducto> lista;
     private TipoProducto tipoProducto;
-
-    private boolean mostrarRubro1Baja;
-    private boolean mostrarRubro2Baja;
-
+   
     /**
      * Creates a new instance of TipoProductoBean
      */
@@ -226,38 +217,4 @@ public class TipoProductoBean extends GenericBean implements Serializable {
         this.tipoProducto = tipoProducto;
     }
 
-//    public Rubro1Bean getRubro1Bean() {
-//        return rubro1Bean;
-//    }
-//
-//    public void setRubro1Bean(Rubro1Bean rubro1Bean) {
-//        this.rubro1Bean = rubro1Bean;
-//    }
-//
-//    public Rubro2Bean getRubro2Bean() {
-//        return rubro2Bean;
-//    }
-//
-//    public void setRubro2Bean(Rubro2Bean rubro2Bean) {
-//        this.rubro2Bean = rubro2Bean;
-//    }
-
-    public boolean isMostrarRubro1Baja() {
-        return mostrarRubro1Baja;
-    }
-
-    public void setMostrarRubro1Baja(boolean mostrarRubro1Baja) {
-        this.mostrarRubro1Baja = mostrarRubro1Baja;
-    }
-
-    public boolean isMostrarRubro2Baja() {
-        return mostrarRubro2Baja;
-    }
-
-    public void setMostrarRubro2Baja(boolean mostrarRubro2Baja) {
-        this.mostrarRubro2Baja = mostrarRubro2Baja;
-    }
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 }

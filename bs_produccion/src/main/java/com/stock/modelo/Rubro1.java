@@ -47,6 +47,7 @@ public class Rubro1 implements Serializable {
     @Size(min = 1, max = 80)
     @Column(name = "descripcion", nullable = false, length = 80)
     private String descripcion;
+    
     @Embedded
     private Auditoria auditoria;
 

@@ -53,7 +53,7 @@
                             update="buscadorUnidadDeMedida"
                             oncomplete="PF('dlg_unidad_medida').show()"                         
                             immediate="true" />                
-                                     
+
             </p:menubar>
         </ui:define>
 
@@ -66,23 +66,21 @@
             <!-- DATOS -->
             <p:panel header="Datos">
 
-                 <p:panelGrid columns="4" layout="grid"                               
+                <p:panelGrid columns="2" layout="grid"                               
                              styleClass="ui-panelgrid-blank"
                              columnClasses="Container40, Container60 ui-datafield" >
 
-                    <h:outputText value="Código" />
-                    <h:outputText value="#{unidadDeMedidaBean.unidadDeMedida.codigo}" rendered="#{not unidadDeMedidaBean.esNuevo}"  />                                                  
-                    <p:inputText value="#{unidadDeMedidaBean.unidadDeMedida.codigo}"  rendered="#{unidadDeMedidaBean.esNuevo}" 
-                             required="true"
-                             requiredMessage="El codigo es necesario" />
-            
-                 
-                    <h:outputText value="Descripción" />                                                  
-                    <h:outputText value="#{unidadDeMedidaBean.unidadDeMedida.descripcion}" rendered="#{not unidadDeMedidaBean.esNuevo}"  />                                                  
-                    <p:inputText value="#{unidadDeMedidaBean.unidadDeMedida.descripcion}"  rendered="#{unidadDeMedidaBean.esNuevo}" 
-                             required="true"
-                             requiredMessage="La Descripcion es necesaria" />
-                
+                    <h:outputText value="Código" />                    
+                    <p:inputText value="#{unidadDeMedidaBean.unidadDeMedida.codigo}"  
+                                 required="true" readonly="#{not unidadDeMedidaBean.esNuevo}"
+                                 requiredMessage="El codigo es necesario" />
+
+
+                    <h:outputText value="Descripción" />                                                                                                            
+                    <p:inputText value="#{unidadDeMedidaBean.unidadDeMedida.descripcion}"   
+                                 required="true"
+                                 requiredMessage="La Descripcion es necesaria" />
+
 
                 </p:panelGrid>
 

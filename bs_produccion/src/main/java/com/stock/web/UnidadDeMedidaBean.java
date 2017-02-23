@@ -73,7 +73,7 @@ public class UnidadDeMedidaBean extends GenericBean {
         }
     }
 
-    public void habilitaDesahabilita(String habDes) {
+    public void habilitaDeshabilita(String habDes) {
         try {
             unidadDeMedida.getAuditoria().setDebaja(habDes);
             unidadDeMedidaRN.guardar(unidadDeMedida, false);
@@ -117,7 +117,7 @@ public class UnidadDeMedidaBean extends GenericBean {
     }
 
     
-    public void onselec(SelectEvent event) {
+    public void onSelect(SelectEvent event) {
         unidadDeMedida = (UnidadDeMedida) event.getObject(); 
         esNuevo = false;
         buscaMovimiento = false;

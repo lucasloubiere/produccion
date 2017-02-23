@@ -5,39 +5,37 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui" >
 
-    <p:dialog id="buscadorUnidadDeMedida" header="Unidad de Medida"
-              widgetVar="dlg_unidad_medida" resizable="false" draggable="false" modal="true"
-              minHeight="400" style="max-width: 700px;" responsive="true"
+    <p:dialog id="buscadorDeposito" header="Depositos" modal="true"
+              widgetVar="dlg_deposito"
+              resizable="false"
+              draggable="false"
+              minHeight="400" 
+              style="max-width: 650px;" responsive="true" 
               showEffect="fade" hideEffect="fade"> 
         
         <h:form prependId="false" >
-            
-            <p:focus for="txtBusquedaUni"/>
-            
-            <p:panelGrid columns="1" layout="grid"
-                         style="max-width: 400px;"
-                         styleClass="ui-panelgrid-blank" >
-                               
-                <p:inputText id="txtBusquedaUni" value="#{unidadDeMedidaBean.txtBusqueda}" placeholder="Ingrese busqueda" >
-                    <p:ajax event="keyup" process="@this" update="tablaUnidadDeMedida" listener="#{unidadDeMedidaBean.buscar}"/>
-                </p:inputText>
 
-            </p:panelGrid>
+            <p:inputText id="txtBusquedaDeposito" value="#{depositoBean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                <p:ajax event="keyup" process="@this" update="tablaDeposito" listener="#{depositoBean.buscar}"/>
+            </p:inputText>
             
-            <p:dataTable id="tablaUnidadDeMedida" value="#{unidadDeMedidaBean.lista}" reflow="true"  var="i"
+            <div class="EmptyBox10" />
+            
+            <p:dataTable id="tablaDeposito" value="#{depositoBean.lista}"  reflow="true" var="i"
                          emptyMessage="No se encontraron datos"                         
                          rows="10" paginator="true"
                          selectionMode="single" 
-                         selection="#{unidadDeMedidaBean.unidadDeMedida}" rowKey="#{i}">
+                         selection="#{depositoBean.deposito}" rowKey="#{i}">
             
-                <p:ajax event="rowSelect" listener="#{unidadDeMedidaBean.onSelect}" update="@form" 
-                        oncomplete="PF('dlg_unidad_medida').hide(), procesarUnidadDeMedida()" />
+                <p:ajax event="rowSelect" listener="#{depositoBean.onSelect}" update="@form" 
+                        oncomplete="PF('dlg_deposito').hide(), procesarDeposito()" />
 
                 <p:column headerText="Código" sortBy="#{i.codigo}"  width="25%" style="text-align: center;"  >
                     <h:outputText value="#{i.codigo}" />
                 </p:column>
 
-                <p:column headerText="Descripción" sortBy="#{i.descripcion}" width="75%"  >
+                <p:column headerText="Descripción" sortBy="#{i.descripcion}" width="75%"  filterBy="#{i.descripcion}"
+                          filterMatchMode="contains" >
                     <h:outputText value="#{i.descripcion}" />
                 </p:column>
             </p:dataTable>
@@ -48,22 +46,24 @@
                          columnClasses="Container40, Container60" >
 
                 <h:panelGroup layout="block" >                       
-                    <p:selectBooleanCheckbox value="#{unidadDeMedidaBean.mostrarDebaja}" >
-                        <p:ajax process="@this" update="tablaUnidadDeMedida" listener="#{unidadDeMedidaBean.buscar}" />
+                    <p:selectBooleanCheckbox value="#{depositoBean.mostrarDebaja}" >
+                        <p:ajax process="@this" update="tablaDeposito" listener="#{depositoBean.buscar}" />
                     </p:selectBooleanCheckbox>                    
                     <h:outputText value="Mostrar registros deshabilitados" />                    
                 </h:panelGroup>
 
                 <h:panelGroup layout="block" >                                                        
                     <h:outputText value="Cantidad de Registros: " />                    
-                    <p:inputText id="cantRegistroUnidadMedida" value="#{unidadDeMedidaBean.cantidadRegistros}" style="max-width: 80px;"/>                    
+                    <p:inputText id="cantRegistrosDeposito" value="#{depositoBean.cantidadRegistros}" style="max-width: 80px;"/>                    
                     <p:commandButton value="Aplicar" icon="fa fa-check"
                                      style="max-width: 100px; margin-left: 1px;"
-                                     actionListener="#{unidadDeMedidaBean.buscar}"
-                                     process="@this,cantRegistroUnidadMedida" update="tablaUnidadDeMedida" />
+                                     actionListener="#{depositoBean.buscar}"
+                                     process="@this,cantRegistrosDeposito" update="tablaDeposito" />
                 </h:panelGroup>
             </p:panelGrid>
+            
         </h:form>        
+
 
     </p:dialog>
 

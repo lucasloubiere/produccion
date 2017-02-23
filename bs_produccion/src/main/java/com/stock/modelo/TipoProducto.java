@@ -7,7 +7,6 @@ package com.stock.modelo;
 
 import com.global.modelo.Auditoria;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
