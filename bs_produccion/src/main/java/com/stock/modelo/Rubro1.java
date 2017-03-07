@@ -87,8 +87,9 @@ public class Rubro1 implements Serializable {
 
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
+        
     }
-
+    
     
     
     @Override
@@ -124,6 +125,6 @@ public class Rubro1 implements Serializable {
     public String toString() {
         return "Rubro1{" + "codigo=" + codigo + ", tipoProducto=" + tipoProducto + '}';
     }
-    
-    
+
+      
 }

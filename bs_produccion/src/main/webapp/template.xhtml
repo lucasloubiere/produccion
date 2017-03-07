@@ -45,23 +45,23 @@
     </h:head>
 
     <h:body>
-        
+
         <p:tooltip  />
 
         <h:form id="formulario" prependId="false">
-            
-        <div class="ui-g ui-fluid">
-            <div class="ui-g-12 ui-md-12">
-                <div class="ui-g">
-                    <div class="ui-g-4" >
-                        <h:graphicImage value="/resources/images/logo.jpg" style="width: 200px;" title="Logo" />
-                    </div>
-                    <div class="ui-g-8" >
 
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-12">
+                    <div class="ui-g">
+                        <div class="ui-g-4" >
+                            <h:graphicImage value="/resources/images/logo.jpg" style="width: 200px;" title="Logo" />
+                        </div>
+                        <div class="ui-g-8" >
+
+                        </div>
                     </div>
                 </div>
-            </div>
-            
+
                 <div class="ui-g-12 ui-md-12 " style="padding-left: 10px; padding-right: 10px;" >                
                     <ui:insert name="menu" >
                         AQUI VA EL MENU
@@ -76,12 +76,15 @@
                 </div>            
 
 
-        </div>    
+            </div>    
         </h:form>
 
-        <ui:insert name="dialogos" >
+        <div class="ui-fluid">
+            <ui:insert name="dialogos" >
 
-        </ui:insert>    
+            </ui:insert>    
+
+        </div>
 
         <!--
         <ui:include src="/template/exceptionHandler.xhtml" />

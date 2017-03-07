@@ -1,0 +1,89 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" >
+
+    <p:dialog id="buscadorRubro1" header="Rubro"
+              widgetVar="dlgRubro1" 
+              resizable="false" 
+              draggable="false" 
+              minHeight="400" modal="true"
+              style="max-width: 900px;" 
+              responsive="true"
+              showEffect="fade" hideEffect="fade">   
+
+        <h:form prependId="false" >
+
+            <p:focus for="txtBusquedaRubro1"/>
+
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-g-6,ui-g-6" >
+
+                <p:inputText id="txtBusquedaRubro1" value="#{rubro1Bean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                    <p:ajax event="keyup" process="@this,tipoProducto" update="tablaRubro1" listener="#{rubro1Bean.buscar}"/>
+                </p:inputText>
+
+                <p:selectOneMenu id="tipoProducto" value="#{rubro1Bean.tipoProducto}"
+                                 converter="#{conversoresStock.tipoProducto}"  >
+                    <f:selectItem itemLabel="Todos" itemValue="" />
+                    <f:selectItems value="#{tipoProductoBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}"  />          
+                    <p:ajax process="@this,txtBusquedaRubro1" update="tablaRubro1" listener="#{rubro1Bean.buscar}"/>
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+
+
+            <div class="EmptyBox10" />            
+
+            <p:dataTable id="tablaRubro1" value="#{rubro1Bean.lista}" reflow="true"  var="i"  
+                         emptyMessage="No se encontraron resultados"
+                         rows="10" paginator="true"
+                         selectionMode="single" 
+                         selection="#{rubro1Bean.rubro}" rowKey="#{i}" >
+
+                <p:ajax event="rowSelect" listener="#{rubro1Bean.onSelect}" update="@form" 
+                        oncomplete="PF('dlgRubro1').hide(), procesarRubro1()" />
+
+
+                <p:column headerText="Código" width="20%" style="text-align: center;"
+                          sortBy="#{i.codigo}"   >                         
+                    <h:outputText value="#{i.codigo}" />
+                </p:column>
+
+                <p:column headerText="Descripción" width="40%" style="text-align: left;"
+                          sortBy="#{i.descripcion}" >                    
+                    <h:outputText value="#{i.descripcion}" />                                        
+                </p:column>
+
+
+
+            </p:dataTable> 
+
+            <div class="EmptyBox10" />            
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="Container40, Container60" >
+
+                <h:panelGroup layout="block" >                       
+                    <p:selectBooleanCheckbox value="#{rubro1Bean.mostrarDebaja}" >
+                        <p:ajax process="@this" update="tablaRubro1" listener="#{rubro1Bean.buscar}" />
+                    </p:selectBooleanCheckbox>                    
+                    <h:outputText value="Mostrar registros deshabilitados" />                    
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" >                                                        
+                    <h:outputText value="Cantidad de Registros: " />                    
+                    <p:inputText id="cantRegistroRubro1" value="#{rubro1Bean.cantidadRegistros}" style="max-width: 80px;"/>                    
+                    <p:commandButton value="Aplicar" icon="fa fa-check"
+                                     style="max-width: 100px; margin-left: 1px;"
+                                     actionListener="#{rubro1Bean.buscar}"
+                                     process="@this,cantRegistroRubro1" update="tablaRubro1" />
+                </h:panelGroup>
+            </p:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>

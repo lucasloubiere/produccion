@@ -5,12 +5,99 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml" >
+
+        <f:metadata>                
+        </f:metadata>
+
+        <ui:define name="titulo" >
+            Tipo de Productos
+        </ui:define>
+
+        <ui:define name="menu">
+            <!-- MENU -->
+            <p:menubar id="menuBar">
+
+                <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                            actionListener="#{tipoProductoBean.nuevo}"
+                            process="@this"
+                            update="@form"
+                            immediate="true"  />
+
+                <p:menuitem value="Guardar" icon="fa fa-save"
+                            actionListener="#{tipoProductoBean.guardar(false)}"                            
+                            rendered="#{not tipoProductoBean.buscaMovimiento}"
+                            update="@form" />
+
+                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                            actionListener="#{tipoProductoBean.guardar(true)}"                            
+                            rendered="#{not tipoProductoBean.buscaMovimiento}"
+                            oncomplete="btnNew.click()"
+                            update="@form" />
+
+                <p:menuitem value="Buscar" icon="fa fa-search" 
+                            actionListener="#{tipoProductoBean.buscar()}"
+                            process="@this" 
+                            update="buscadorTipoProducto"
+                            oncomplete="PF('dlgTipoProducto').show()"                         
+                            immediate="true" />                
+
+            </p:menubar>
+        </ui:define>
+
+       
+        <ui:define name="contenido" >
+
+            <p:remoteCommand name="procesarTipoProducto" process="@this" update="@form" />
+
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+            <!-- DATOS -->
+            <p:panel header="Datos">
+
+                <p:panelGrid columns="2" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container40, Container60 ui-datafield" >
+
+                    <h:outputText value="Código" />                    
+                    <p:inputText value="#{tipoProductoBean.tipoProducto.codigo}"  
+                                 required="true" readonly="#{not tipoProductoBean.esNuevo}"
+                                 requiredMessage="El codigo es necesario" />
+
+
+                    <h:outputText value="Descripción" />                                                                                                            
+                    <p:inputText value="#{tipoProductoBean.tipoProducto.descripcion}"   
+                                 required="true"
+                                 requiredMessage="La Descripcion es necesaria" />
+                                      
+                    
+                    <h:outputText value="Gestiona stock *" />
+                        <p:selectOneMenu value="#{tipoProductoBean.tipoProducto.gestionaStock}" 
+                                         required="true" requiredMessage="Seleccione el tipo de gestión de stock"  >
+                            <p:ajax process="@this" />
+                            <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                            <f:selectItem itemLabel="Si" itemValue="S" />
+                            <f:selectItem itemLabel="No" itemValue="N" />                                            
+                        </p:selectOneMenu>
+
+
+                </p:panelGrid>
+
+            </p:panel>      
+
+        </ui:define>
+       
+                <ui:define name="dialogos" >        
+
+                            <ui:include src="/stock/busqueda/buscadorTipoProducto.xhtml" />
+
+               </ui:define>
+       </ui:composition>
+   
+  </html>

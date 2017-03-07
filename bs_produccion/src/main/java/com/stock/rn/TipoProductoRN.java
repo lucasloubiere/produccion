@@ -8,7 +8,6 @@ package com.stock.rn;
 import com.global.excepciones.ExcepcionGeneralSistema;
 import com.stock.dao.TipoProductoDAO;
 import com.stock.modelo.TipoProducto;
-import com.stock.modelo.UnidadDeMedida;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -26,18 +25,31 @@ public class TipoProductoRN {
     private TipoProductoDAO tipoProductoDAO;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    
+    
+     public void guardar(TipoProducto tipo, boolean esNuevo) throws ExcepcionGeneralSistema {
+        
+        if(esNuevo){     
+            if(tipoProductoDAO.getObjeto(TipoProducto.class, tipo.getCodigo())!=null){
+                throw new ExcepcionGeneralSistema("El usuario "+tipo.getCodigo()+" ya existe");
+            }            
+            tipoProductoDAO.crear(tipo);            
+        }else{
+            tipoProductoDAO.editar(tipo);
+        }        
+    }    
 
-    public void guardar(TipoProducto tipoProducto, boolean esNuevo) throws Exception {
-
-        if (esNuevo) {
-            if (tipoProductoDAO.getObjeto(UnidadDeMedida.class, tipoProducto.getCodigo()) != null) {
-                throw new ExcepcionGeneralSistema("Ya existe unidad de medida con el código" + tipoProducto.getCodigo());
-            }
-            tipoProductoDAO.crear(tipoProducto);
-        } else {
-            tipoProductoDAO.editar(tipoProducto);
-        }
-    }
+//    public void guardar(TipoProducto tipoProducto, boolean esNuevo) throws Exception {
+//
+//        if (esNuevo) {
+//            if (tipoProductoDAO.getObjeto(UnidadDeMedida.class, tipoProducto.getCodigo()) != null) {
+//                throw new ExcepcionGeneralSistema("Ya existe unidad de medida con el código" + tipoProducto.getCodigo());
+//            }
+//            tipoProductoDAO.crear(tipoProducto);
+//        } else {
+//            tipoProductoDAO.editar(tipoProducto);
+//        }
+//    }
 
     public TipoProducto getTipoProducto(String codigo) {
 

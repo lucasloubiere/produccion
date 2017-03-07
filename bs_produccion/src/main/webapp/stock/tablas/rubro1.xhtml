@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml" >
+        
+        <f:metadata>        
+            <f:viewParam name="TITULO" value="#{rubro1Bean.titulo}"/>
+        </f:metadata>
+        
+        <ui:define name="titulo" >
+             #{rubro1Bean.titulo}
+        </ui:define>
+
+        <ui:define name="menu">
+            <!-- MENU -->
+            <p:menubar id="menuBar">
+
+                <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                            actionListener="#{rubro1Bean.nuevo}"
+                            process="@this"
+                            update="@form"
+                            immediate="true"  />
+
+                <p:menuitem value="Guardar" icon="fa fa-save"
+                            actionListener="#{rubro1Bean.guardar(false)}"                            
+                            rendered="#{not rubro1Bean.buscaMovimiento}"
+                            update="@form" />
+
+                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                            actionListener="#{rubro1Bean.guardar(true)}"                            
+                            rendered="#{not rubro1Bean.buscaMovimiento}"
+                            oncomplete="btnNew.click()"
+                            update="@form" />
+
+                <p:menuitem value="Buscar" icon="fa fa-search" 
+                            actionListener="#{rubro1Bean.buscar()}"
+                            process="@this" 
+                            update="buscadorRubro1"
+                            oncomplete="PF('dlgRubro1').show()"                         
+                            immediate="true" />                
+
+            </p:menubar>
+        </ui:define>
+
+       
+        <ui:define name="contenido" >
+
+            <p:remoteCommand name="procesarRubro1" process="@this" update="@form" />
+
+            <p:messages id="message" showDetail="true" />           
+            <p:growl id="messageg" showDetail="true" life="4000" />
+
+            <!-- DATOS -->
+            <p:panel header="Datos Rubro1">
+
+                <p:panelGrid columns="2" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container40, Container60 ui-datafield" >
+
+                    <h:outputText value="Tipo Producto *" />
+                    <p:selectOneMenu value="#{rubro1Bean.tipoProducto}" 
+                                     required="true" requiredMessage="Seleccione el tipo"
+                                     converter="#{conversoresStock.tipoProducto}"                                      
+                                     effect="fade" filter="true" >  
+                        <p:ajax process="@this" listener="#{rubro1Bean.asignarTipo()}" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{tipoProductoBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}"  />                                    
+                    </p:selectOneMenu>
+                    
+                    <h:outputText value="Código" />                    
+                    <p:inputText value="#{rubro1Bean.rubro.codigo}"  
+                                 required="true" 
+                                 requiredMessage="El codigo es necesario" 
+                                 readonly="#{not rubro1Bean.esNuevo}"/>
+
+                    <h:outputText value="Descripción" />                                                                                                            
+                    <p:inputText value="#{rubro1Bean.rubro.descripcion}"   
+                                 required="true"
+                                 requiredMessage="La Descripcion es necesaria" />
+
+                </p:panelGrid>
+
+            </p:panel>      
+
+        </ui:define>
+       
+                <ui:define name="dialogos" >        
+
+                            <ui:include src="/stock/busqueda/buscadorRubro1.xhtml" />
+
+               </ui:define>
+       </ui:composition>
+   
+  </html>

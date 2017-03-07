@@ -62,7 +62,27 @@ public class TipoProductoDAO extends BaseDAO {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 
-    public List<TipoProducto> getListaByBusqueda(String string, boolean mostrarDebaja, int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<TipoProducto> getListaByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+        try {
+            
+            String sQuery = "SELECT e FROM TipoProducto e "
+                    + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
+                    + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
+                    + " ORDER BY e.codigo";
+            
+            Query q = em.createQuery(sQuery);            
+            q.setParameter("codigo", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
+            q.setParameter("descripcion", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
+            
+            if(cantMax>0){
+                q.setMaxResults(cantMax);
+            }
+          
+            return q.getResultList();            
+            
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "getListaByBusqueda", e.getCause());
+            return new ArrayList<TipoProducto>();
+        }  
     }
 }

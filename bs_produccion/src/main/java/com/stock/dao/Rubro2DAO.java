@@ -31,31 +31,28 @@ public class Rubro2DAO extends BaseDAO {
     }
   
     
-    public List<Rubro2> getTipoRubro1ByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
-        
-        System.err.println("txtBusqueda " + txtBusqueda);
-        System.err.println("mostrarDeBaja " + mostrarDeBaja);
-        System.err.println("cantMax " + cantMax);                
+    public List<Rubro2> getListaByBusqueda(String codTipo, String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+               
         
         try {            
              String sQuery = "SELECT e FROM Rubro2 e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
-               //     + (codigo==null ? " ": " AND e.tipoProducto.codigo = :tipoProducto ")
+                    + (codTipo==null ? " ": " AND e.tipoProducto = :tipoProducto ")
                     + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
-                    + " ORDER BY e.tippro, e.codigo";
+                    + " ORDER BY e.tipoProducto, e.codigo";
             
             Query q = em.createQuery(sQuery);            
             q.setParameter("codigo", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
             q.setParameter("descripcion", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
             
-            if(cantMax>0){
-                q.setMaxResults(cantMax);
+          if(codTipo!=null){
+                q.setParameter("tipoProducto", codTipo);
             }
           
             return q.getResultList();            
             
         } catch (Exception e) {
-            log.log(Level.SEVERE, "getListaByBusqueda", e.getCause());
+            log.log(Level.SEVERE, "getListaByBusqueda", e);
             return new ArrayList<Rubro2>();
         }  
     }
