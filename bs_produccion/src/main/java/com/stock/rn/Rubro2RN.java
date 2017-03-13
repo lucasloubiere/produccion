@@ -48,9 +48,9 @@ public class Rubro2RN implements Serializable {
         return rubroDAO.getObjeto(Rubro2.class, idPK);
     }
 
-    public Rubro2 getRubro2(String codigo,String tipo ) {
+    public Rubro2 getRubro2(String tipo,String codigo) {
 
-        Rubro2PK idPK = new Rubro2PK(codigo,tipo);
+        Rubro2PK idPK = new Rubro2PK(tipo,codigo);
         return rubroDAO.getObjeto(Rubro2.class, idPK);
     }
 

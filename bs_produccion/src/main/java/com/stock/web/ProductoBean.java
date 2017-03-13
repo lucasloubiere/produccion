@@ -18,8 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.event.SelectEvent;
 
@@ -27,7 +27,6 @@ import org.primefaces.event.SelectEvent;
  *
  * @author lloubiere
  */
-@Stateless
 @ManagedBean
 @ViewScoped
 public class ProductoBean extends GenericBean implements Serializable{
@@ -44,11 +43,11 @@ public class ProductoBean extends GenericBean implements Serializable{
     
     private boolean mostrarEquivalenciaDebaja;
   
-//    @ManagedProperty(value = "#{rubro01Bean}")
-//    private Rubro01Bean rubro01Bean;
-//    
-//    @ManagedProperty(value = "#{rubro02Bean}")
-//    private Rubro02Bean rubro02Bean; 
+    @ManagedProperty(value = "#{rubro1Bean}")
+    private Rubro1Bean rubro1Bean;
+    
+    @ManagedProperty(value = "#{rubro2Bean}")
+    private Rubro2Bean rubro2Bean; 
    
 
     
@@ -194,44 +193,50 @@ public class ProductoBean extends GenericBean implements Serializable{
     
     public void asignarCodigoProducto(){
         
+        System.err.println("asignarCodigoProducto");
+        
         if(producto.getTipoProducto()==null){
             JsfUtil.addWarningMessage("Seleccione el tipo para poder generar el código del producto");
             producto.setCodigo("");
             return;
         }
         
-//        if(producto.getRubr01() == null){
-//            JsfUtil.addWarningMessage("Seleccione el rubro para poder generar el código del producto");
-//            producto.setCodigo("");
-//            return;
-//        }
-//        
-//        if(producto.getRubr02() == null){
-//            JsfUtil.addWarningMessage("Seleccione el sub-rubro para poder generar el código del producto");
-//            producto.setCodigo("");
-//            return;
-//        }
-//        
-//        String codigo = productoRN.getProximoCodigo(producto.getTipoProducto().getCodigo(), 
-//                producto.getRubr01().getCodigo(), 
-//                producto.getRubr02().getCodigo());
+        if(producto.getRubro1() == null){
+            JsfUtil.addWarningMessage("Seleccione el rubro para poder generar el código del producto");
+            producto.setCodigo("");
+            return;
+        }
         
-//        producto.setCodigo(codigo);
+        if(producto.getRubro2() == null){
+            JsfUtil.addWarningMessage("Seleccione el sub-rubro para poder generar el código del producto");
+            producto.setCodigo("");
+            return;
+        }
+        
+        String codigo = productoRN.getProximoCodigo(producto.getTipoProducto().getCodigo(), 
+                producto.getRubro1().getCodigo(), 
+                producto.getRubro2().getCodigo());
+        
+        producto.setCodigo(codigo);
         
     }
     
-//    public void limpiarCodigo(){
-//        
-//        rubro01Bean.setTipoProducto(tipoProducto);
-//        rubro01Bean.buscar();
-//
-//        rubro02Bean.setTipoProducto(tipoProducto);
-//        rubro02Bean.buscar();
-//        
-////        producto.setRubr01(null);
-////        producto.setRubr02(null);
-//        producto.setCodigo("");
-//    }
+    public void limpiarCodigo(){
+                
+        if(producto.getTipoProducto()!=null){
+            tipoProducto = producto.getTipoProducto();
+        }
+        
+        rubro1Bean.setTipoProducto(tipoProducto);
+        rubro1Bean.buscar();
+
+        rubro2Bean.setTipoProducto(tipoProducto);
+        rubro2Bean.buscar();
+        
+        producto.setRubro1(null);
+        producto.setRubro2(null);
+        producto.setCodigo("");
+    }
    
    
    
@@ -270,22 +275,22 @@ public class ProductoBean extends GenericBean implements Serializable{
 
   
 
-//    public Rubro01Bean getRubro01Bean() {
-//        return rubro01Bean;
-//    }
-//
-//    public void setRubro01Bean(Rubro01Bean rubro01Bean) {
-//        this.rubro01Bean = rubro01Bean;
-//    }
-//
-//    public Rubro02Bean getRubro02Bean() {
-//        return rubro02Bean;
-//    }
-//
-//    public void setRubro02Bean(Rubro02Bean rubro02Bean) {
-//        this.rubro02Bean = rubro02Bean;
-//    }
-// 
+    public Rubro1Bean getRubro1Bean() {
+        return rubro1Bean;
+    }
+
+    public void setRubro1Bean(Rubro1Bean rubro1Bean) {
+        this.rubro1Bean = rubro1Bean;
+    }
+
+    public Rubro2Bean getRubro2Bean() {
+        return rubro2Bean;
+    }
+
+    public void setRubro2Bean(Rubro2Bean rubro2Bean) {
+        this.rubro2Bean = rubro2Bean;
+    }
+ 
 
     public boolean isMostrarEquivalenciaDebaja() {
         return mostrarEquivalenciaDebaja;

@@ -21,7 +21,7 @@ public class Rubro2PK implements Serializable {
     public Rubro2PK() {
     }
 
-    public Rubro2PK(String codigo, String tipoProducto) {
+    public Rubro2PK(String tipoProducto,String codigo) {
         this.codigo = codigo;
         this.tipoProducto = tipoProducto;
     }

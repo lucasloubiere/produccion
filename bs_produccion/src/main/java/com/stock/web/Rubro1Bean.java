@@ -118,8 +118,8 @@ public class Rubro1Bean extends GenericBean implements Serializable{
         if(tipoProducto!=null){
             codTipo = tipoProducto.getCodigo();
         }
-        
-        lista = rubroRN.getListaByBusqueda(codTipo,txtBusqueda, mostrarDebaja,cantidadRegistros);
+    
+        lista = rubroRN.getListaByBusqueda(codTipo,txtBusqueda, mostrarDebaja,cantidadRegistros);        
     }
     
     

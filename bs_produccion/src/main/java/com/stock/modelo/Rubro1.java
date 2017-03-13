@@ -123,8 +123,9 @@ public class Rubro1 implements Serializable {
 
     @Override
     public String toString() {
-        return "Rubro1{" + "codigo=" + codigo + ", tipoProducto=" + tipoProducto + '}';
+        return "tipoProducto=" + tipoProducto+",codigo=" + codigo;
     }
+
 
       
 }

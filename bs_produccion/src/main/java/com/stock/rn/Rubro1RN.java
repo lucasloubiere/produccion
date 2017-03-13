@@ -9,7 +9,6 @@ import com.global.excepciones.ExcepcionGeneralSistema;
 import com.stock.dao.Rubro1DAO;
 import com.stock.modelo.Rubro1;
 import com.stock.modelo.Rubro1PK;
-import com.stock.modelo.TipoProducto;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -49,9 +48,9 @@ public class Rubro1RN implements Serializable {
         return rubroDAO.getObjeto(Rubro1.class, idPK);
     }
 
-    public Rubro1 getRubro1(String codigo,String tipo ) {
+    public Rubro1 getRubro1(String tipo,String codigo) {
 
-        Rubro1PK idPK = new Rubro1PK(codigo,tipo);
+        Rubro1PK idPK = new Rubro1PK(tipo,codigo);
         return rubroDAO.getObjeto(Rubro1.class, idPK);
     }
 

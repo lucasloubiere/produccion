@@ -119,7 +119,8 @@ public class Rubro2Bean extends GenericBean implements Serializable{
             codTipo = tipoProducto.getCodigo();
         }
         
-        lista = rubroRN.getListaByBusqueda(codTipo,txtBusqueda, mostrarDebaja,cantidadRegistros);
+        lista = rubroRN.getListaByBusqueda(codTipo,txtBusqueda, mostrarDebaja,cantidadRegistros);        
+        
     }
     
     

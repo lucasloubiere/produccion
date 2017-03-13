@@ -67,8 +67,8 @@ public class ProductoDAO extends BaseDAO implements Serializable{
             String sQuery = "select IFNULL(CAST(RIGHT(MAX(st_producto.CODIGO),4) AS SIGNED),0) +1  "
                     + " from st_producto "
                     + " WHERE "
-                    + " st_producto.TIPPRO = '"+tippro+"' "
-            + " and st_producto.RUBRO1 = '"+rub01+"' " ;
+                    + " st_producto.tipoProducto = '"+tippro+"' "
+            + " and st_producto.rubro1 = '"+rub01+"' " ;
 //            + " and st_producto.RUBR02 = '"+rub02+"' ";
 
             Query q = em.createNativeQuery(sQuery);
