@@ -134,6 +134,15 @@
                             <f:selectItems value="#{unidadDeMedidaBean.lista}" var="i" itemLabel="#{i.descripcion}" itemValue="#{i}"/>                            
                         </p:selectOneMenu>
                         
+                        <h:outputText value="Gestiona stock *" />
+                        <p:selectOneMenu value="#{productoBean.producto.gestionaStock}" 
+                                         required="true" requiredMessage="Seleccione el tipo de gestión de stock"  >
+                            <p:ajax process="@this" />
+                            <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                            <f:selectItem itemLabel="Si" itemValue="S" />
+                            <f:selectItem itemLabel="No" itemValue="N" />                                            
+                        </p:selectOneMenu>
+                        
                     </p:panelGrid>
 
                    

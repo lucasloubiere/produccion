@@ -42,7 +42,7 @@ public class BaseDAO implements Serializable {
         this.em = em;
     }
     
-//    @TransactionAttribute(TransactionAttributeType.REQUIRED)    
+     @TransactionAttribute(TransactionAttributeType.REQUIRED)    
     public void crear(Object objeto) {
         em.persist(objeto);
         em.flush();
