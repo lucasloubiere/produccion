@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml" >
+
+        <f:metadata>        
+            <f:viewParam name="TITULO" value="#{composicionFormulaBean.titulo}"/>
+        </f:metadata>
+
+        <ui:define name="titulo" >
+            Composició de Formula
+        </ui:define>
+
+        <ui:define name="menu">
+            <!-- MENU -->                        
+            <p:menubar id="menuBar">               
+
+                <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                            actionListener="#{composicionFormulaBean.nuevo}"
+                            process="@this"
+                            update="@form"
+                            immediate="true" />
+
+                <p:menuitem value="Guardar" icon="fa fa-save"
+                            actionListener="#{composicionFormulaBean.guardar(false)}"       
+                            rendered="#{not composicionFormulaBean.buscaMovimiento}"
+                            update="@form" />
+
+                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                            actionListener="#{composicionFormulaBean.guardar(true)}"                            
+                            rendered="#{not composicionFormulaBean.buscaMovimiento}"
+                            oncomplete="btnNew.click()"
+                            update="@form" />
+
+                <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                            actionListener="#{composicionFormulaBean.habilitaDeshabilita('S')}"
+                            rendered="#{not empty composicionFormulaBean.composicionFormula and not composicionFormulaBean.esNuevo and composicionFormulaBean.composicionFormula.auditoria.debaja eq 'N'}"
+                            process="@this"
+                            update="@form" />
+
+                <p:menuitem value="Habilitar" icon="fa fa-check"
+                            actionListener="#{composicionFormulaBean.habilitaDeshabilita('N')}"
+                            rendered="#{not empty composicionFormulaBean.composicionFormula and not composicionFormulaBean.esNuevo and composicionFormulaBean.composicionFormula.auditoria.debaja eq 'S'}"
+                            process="@this"
+                            update="@form" />
+
+                <p:menuitem value="Buscar" icon="fa fa-search" 
+                            actionListener="#{composicionFormulaBean.buscar()}"
+                            update="buscadorComposicionFormula"
+                            process="@this" 
+                            oncomplete="PF('dlgComposicionFormula').show()" 
+                            immediate="true" /> 
+
+            </p:menubar>
+        </ui:define>
+
+        <ui:define name="contenido" >
+
+            <p:remoteCommand name="procesarComposicionFormula" process="@this" update="@form" />
+
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+            <p:spacer width="100%" height="1em" />             
+
+            <!-- DATOS -->
+            <p:panel header="Datos"  >
+
+                <p:panelGrid columns="2" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container40, Container60 ui-datafield" >
+
+                    <h:outputText value="Fecha Inicio" />
+                    <p:calendar value="#{composicionFormulaBean.composicionFormula.fechainicio}" 
+                                readonly="#{not composicionFormulaBean.esNuevo}" 
+                                required="true"
+                                requiredMessage="La Fecha es necesario" >
+                        <p:ajax event="dateSelect"  process="@this"  />
+                    </p:calendar>
+
+                    <h:outputText value="Formula" />                                                  
+                    <p:selectOneMenu id="formula" value="#{composicionFormulaBean.composicionFormula.formula}" 
+                                     rendered="#{composicionFormulaBean.esNuevo}" 
+                                     converter="#{conversoresStock.formula}" 
+                                     required="true" filter="true" filterMatchMode="startsWith"
+                                     requiredMessage="Seleccione formula" >
+                        <p:ajax  process="@this" listener="#{composicionFormulaBean.procesarFormula()}" />
+                        <f:selectItem itemLabel="Selecccionar" itemValue="" />
+                        <f:selectItems value="#{formulaBean.lista}" var="i" itemLabel="#{i.descripcion}" itemValue="#{i}"/> 
+                    </p:selectOneMenu>
+                    <p:inputText value="#{composicionFormulaBean.composicionFormula.formula.descripcion}" rendered="#{not composicionFormulaBean.esNuevo}" readonly="true"/> 
+
+                    <h:panelGroup layout="block" >                        
+                        <h:outputText value="Producto" /> 
+                        <p:commandButton icon="fa fa-search" style="float: right; width: 20px;"
+                                         process="@this" oncomplete="PF('dlgProducto').show()"                                              
+                                         rendered="#{composicionFormulaBean.esNuevo and not empty composicionFormulaBean.composicionFormula}" />                            
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" >  
+                        <p:remoteCommand name="procesarProducto" process="@this" update="@form"  actionListener="#{composicionFormulaBean.procesarProducto}" />
+                        <p:inputText value="#{composicionFormulaBean.composicionFormula.producto.descripcion}" readonly="true"/>     
+                    </h:panelGroup>
+
+                </p:panelGrid>  
+
+
+                <p:dataTable value="#{composicionFormulaBean.composicionFormula.itemsComposicion}" var="i"
+                             emptyMessage="No se encontraron items para esta composición">
+                    
+                    <f:facet name="footer">
+                        <p:commandButton icon="fa fa-plus" value="Agegar item" actionListener="#{composicionFormulaBean.agregarItem()}" 
+                                         update="@form" process="@form"/>
+                    </f:facet>
+
+                    <p:column headerText="Produccto">                        
+                        <p:autoComplete value="#{i.producto}" completeMethod="#{productoBean.complete}"
+                                        var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" converter="#{conversoresStock.producto}" forceSelection="true" />                        
+                    </p:column>
+
+                    <p:column headerText="Cantidad" width="200">
+                        <p:inputText value="#{i.cantidad}" />
+                    </p:column>
+                    
+                    <p:column headerText="U.M." width="100">
+                        <h:outputText value="#{i.producto.unidadDeMedida.codigo}" />
+                    </p:column>                    
+                    
+                    <p:column headerText="Eliminar" width="100">
+                        <p:commandButton icon="fa fa-cancel" actionListener="#{composicionFormulaBean.eliminarItem(i)}" 
+                                         update="@form" process="@form" >
+                            <p:confirm header="Confirmación" message="¿Está seguro que desea eliminar el item?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>                                        
+
+                </p:dataTable>                
+            </p:panel>    
+
+        </ui:define>
+
+
+        <div class="EmptyBox10" />
+
+        <ui:define name="dialogos" >  
+
+            <ui:include src="/stock/busqueda/buscadorComposicionFormula.xhtml" />
+            <ui:include src="/stock/busqueda/buscadorProducto.xhtml" />
+
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

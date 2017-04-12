@@ -6,7 +6,7 @@
     xmlns:p="http://primefaces.org/ui" >
 
     <p:dialog id="buscadorProducto" header="Productos" modal="true"
-              widgetVar="dlg_producto" 
+              widgetVar="dlgProducto" 
               resizable="false" 
               draggable="false" 
               minHeight="400" 
@@ -42,7 +42,7 @@
                      selection="#{productoBean.producto}" rowKey="#{prd}">
                 
                 <p:ajax event="rowSelect" listener="#{productoBean.onSelect}" update="@form" 
-                        oncomplete="PF('dlg_producto').hide(), procesarProducto()" />
+                        oncomplete="PF('dlgProducto').hide(), procesarProducto()" />
 
                 <p:column headerText="Código"
                           sortBy="#{prd.codigo}"  width="100" style="text-align: center;" >

@@ -6,11 +6,7 @@
 package com.stock.modelo;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -18,20 +14,9 @@ import javax.validation.constraints.Size;
  */
 @Embeddable
 public class ComposicionFormulaItemPK implements Serializable {
-
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "nroitem", nullable = false)
+    
     private int nroitem;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "artcod", nullable = false, length = 20)
     private String artcod;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
-    @Column(name = "codfor", nullable = false, length = 6)
     private String codfor;
 
     public ComposicionFormulaItemPK() {

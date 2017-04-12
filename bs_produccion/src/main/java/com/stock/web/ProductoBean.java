@@ -180,7 +180,7 @@ public class ProductoBean extends GenericBean implements Serializable{
                 codTipo = tipoProducto.getCodigo();            
             }
                         
-            lista = productoRN.getListaByBusqueda(codTipo, query,mostrarDebaja,10);
+            lista = productoRN.getListaByBusqueda("", query,mostrarDebaja,10);
             return lista;
             
         } catch (Exception ex) {

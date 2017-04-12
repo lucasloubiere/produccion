@@ -5,10 +5,14 @@
 
 package com.stock.web;
 
+import com.stock.modelo.Formula;
+import com.stock.modelo.Producto;
 import com.stock.modelo.Rubro1;
 import com.stock.modelo.Rubro2;
 import com.stock.modelo.TipoProducto;
 import com.stock.modelo.UnidadDeMedida;
+import com.stock.rn.FormulaRN;
+import com.stock.rn.ProductoRN;
 import com.stock.rn.Rubro1RN;
 import com.stock.rn.Rubro2RN;
 import com.stock.rn.TipoProductoRN;
@@ -29,10 +33,37 @@ import javax.faces.convert.Converter;
 @ViewScoped
 public class ConversoresStock implements Serializable{
     
+    @EJB private ProductoRN productoRN;
     @EJB private TipoProductoRN tipoProductoRN;
     @EJB private UnidadDeMedidaRN unidadDeMedidaRN;
     @EJB private Rubro1RN rubro1RN;
     @EJB private Rubro2RN rubro2RN;
+    @EJB private FormulaRN formulaRN;
+    
+    public Converter getProducto() {
+        return new Converter() {
+
+            @Override
+            public Object getAsObject(FacesContext context, UIComponent component, String value) {
+                if (value.trim().equals("") || value == null) {
+                    return null;
+                }
+
+                Producto t = productoRN.getProducto(value);
+                return t;
+            }
+
+            @Override
+            public String getAsString(FacesContext context, UIComponent component, Object value) {
+                if (value == null || value.equals("")) {
+                    return "";
+                } else {
+                    return ((Producto) value).getCodigo()+ "";
+                }
+            }
+        };
+    }
+             
     
     public Converter getTipoProducto() {
         return new Converter() {
@@ -57,6 +88,31 @@ public class ConversoresStock implements Serializable{
             }
         };
     }
+    
+    public Converter getFormula() {
+        return new Converter() {
+
+            @Override
+            public Object getAsObject(FacesContext context, UIComponent component, String value) {
+                if (value.trim().equals("") || value == null) {
+                    return null;
+                }
+
+                Formula f = formulaRN.getFormula(value);
+                return f;
+            }
+
+            @Override
+            public String getAsString(FacesContext context, UIComponent component, Object value) {
+                if (value == null || value.equals("")) {
+                    return "";
+                } else {
+                    return ((Formula) value).getCodigo()+ "";
+                }
+            }
+        };
+    }
+    
     public Converter getUnidadMedida() {
         return new Converter() {
 

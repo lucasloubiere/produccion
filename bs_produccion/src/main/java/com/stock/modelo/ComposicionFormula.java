@@ -7,19 +7,23 @@ package com.stock.modelo;
 
 import com.global.modelo.Auditoria;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,49 +34,69 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "st_composicion_formula")
 @XmlRootElement
+@IdClass(ComposicionFormulaPK.class)
 public class ComposicionFormula implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ComposicionFormulaPK composicionFormulaPK;
+    
+    @Id
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "artcod", nullable = false, length = 20)
+    private String artcod;
+    @Id
+    @NotNull
+    @Size(min = 1, max = 6)
+    @Column(name = "codfor", nullable = false, length = 6)
+    private String codfor;
+    
     @Column(name = "fechainicio")
     @Temporal(TemporalType.DATE)
     private Date fechainicio;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "composicionFormula")
-    private List<ComposicionFormulaItem> composicionFormulaItemList;
     @JoinColumn(name = "codfor", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Formula formula;
+    
+    @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Producto producto;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "composicionFormula")
+    private List<ComposicionFormulaItem> itemsComposicion;    
     
     @Embedded
     private Auditoria auditoria;
 
     public ComposicionFormula() {
         this.auditoria = new Auditoria();
+        this.itemsComposicion = new ArrayList<ComposicionFormulaItem>();
     }
 
-    public ComposicionFormula(ComposicionFormulaPK composicionFormulaPK) {
-        this.composicionFormulaPK = composicionFormulaPK;
+    public String getArtcod() {
+        return artcod;
     }
 
-    public ComposicionFormula(ComposicionFormulaPK composicionFormulaPK, String debaja) {
-        this.composicionFormulaPK = composicionFormulaPK;
-      
+    public void setArtcod(String artcod) {
+        this.artcod = artcod;
     }
 
-    public ComposicionFormula(String artcod, String codfor) {
-        this.composicionFormulaPK = new ComposicionFormulaPK(artcod, codfor);
+    public String getCodfor() {
+        return codfor;
     }
 
-    public ComposicionFormulaPK getComposicionFormulaPK() {
-        return composicionFormulaPK;
+    public void setCodfor(String codfor) {
+        this.codfor = codfor;
     }
 
-    public void setComposicionFormulaPK(ComposicionFormulaPK composicionFormulaPK) {
-        this.composicionFormulaPK = composicionFormulaPK;
+    public Producto getProducto() {
+        return producto;
     }
 
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+    
     public Date getFechainicio() {
         return fechainicio;
     }
@@ -89,15 +113,13 @@ public class ComposicionFormula implements Serializable {
         this.auditoria = auditoria;
     }
 
- 
-
     @XmlTransient
-    public List<ComposicionFormulaItem> getComposicionFormulaItemList() {
-        return composicionFormulaItemList;
+    public List<ComposicionFormulaItem> getItemsComposicion() {
+        return itemsComposicion;
     }
 
-    public void setComposicionFormulaItemList(List<ComposicionFormulaItem> composicionFormulaItemList) {
-        this.composicionFormulaItemList = composicionFormulaItemList;
+    public void setItemsComposicion(List<ComposicionFormulaItem> itemsComposicion) {
+        this.itemsComposicion = itemsComposicion;
     }
 
     public Formula getFormula() {
@@ -110,19 +132,28 @@ public class ComposicionFormula implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (composicionFormulaPK != null ? composicionFormulaPK.hashCode() : 0);
+        int hash = 3;
+        hash = 41 * hash + (this.artcod != null ? this.artcod.hashCode() : 0);
+        hash = 41 * hash + (this.codfor != null ? this.codfor.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ComposicionFormula)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        ComposicionFormula other = (ComposicionFormula) object;
-        if ((this.composicionFormulaPK == null && other.composicionFormulaPK != null) || (this.composicionFormulaPK != null && !this.composicionFormulaPK.equals(other.composicionFormulaPK))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ComposicionFormula other = (ComposicionFormula) obj;
+        if ((this.artcod == null) ? (other.artcod != null) : !this.artcod.equals(other.artcod)) {
+            return false;
+        }
+        if ((this.codfor == null) ? (other.codfor != null) : !this.codfor.equals(other.codfor)) {
             return false;
         }
         return true;
@@ -130,7 +161,8 @@ public class ComposicionFormula implements Serializable {
 
     @Override
     public String toString() {
-        return "com.stock.modelo.ComposicionFormula[ composicionFormulaPK=" + composicionFormulaPK + " ]";
+        return "ComposicionFormula{" + "artcod=" + artcod + ", codfor=" + codfor + '}';
     }
+    
     
 }
