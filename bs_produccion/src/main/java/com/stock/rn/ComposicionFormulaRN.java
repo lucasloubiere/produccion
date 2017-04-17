@@ -79,11 +79,11 @@ public class ComposicionFormulaRN {
         return composicionFormulaDAO.getComposicionFormula(idPK);
     }
 
-    public ComposicionFormula getComprosicionFormula(String tipro,String artcod,String formul){        
+    public ComposicionFormula getComprosicionFormula(String artcod,String formul){        
 
         ComposicionFormulaPK idPK = new ComposicionFormulaPK(artcod,formul);
         return composicionFormulaDAO.getComposicionFormula(idPK);
-
+        
     }
     
     public void eliminar(ComposicionFormula composicionFormula) {
@@ -95,6 +95,22 @@ public class ComposicionFormulaRN {
     }
 
     public void eliminarItem(ComposicionFormulaItem ci) throws Exception {
+        
+        if(ci==null){
+            return;
+        }
+        
+        if(ci.getArtcod()==null || ci.getArtcod().isEmpty()){
+            return;
+        }
+        
+        if(ci.getCodfor()==null || ci.getCodfor().isEmpty()){
+            return;
+        }
+        
+        if(ci.getProducto()==null){
+            return;
+        }
         
         
         ComposicionFormulaItemPK idPk = new ComposicionFormulaItemPK(ci.getNroitem(), ci.getArtcod(), ci.getCodfor());

@@ -16,12 +16,17 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  *
  * @author lloubiere
  */
 @Stateless
+@Path("/producto/")
 public class ProductoRN implements Serializable {
 
     @EJB private ProductoDAO productoDAO;
@@ -49,6 +54,13 @@ public class ProductoRN implements Serializable {
     public Producto getProducto(String codigo){
     
         return productoDAO.getProducto(codigo);        
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON+ ";charset=utf-8")
+    @Path("lista")
+    public List<Producto> getListaByBusqueda(){
+        return productoDAO.getListaByBusqueda(null, "", "", false, 15);
     }
     
     public List<Producto> getListaByBusqueda(String codTipo , String txtBusqueda, boolean mostrarDebaja){

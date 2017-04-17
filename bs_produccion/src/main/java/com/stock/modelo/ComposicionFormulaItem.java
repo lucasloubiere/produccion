@@ -60,7 +60,7 @@ public class ComposicionFormulaItem implements Serializable {
     private Producto producto;
     
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "La cantidad no puede estar vacía")    
     @Column(name = "cantidad", nullable = false, precision = 20, scale = 4)
     private BigDecimal cantidad;
         
@@ -70,6 +70,7 @@ public class ComposicionFormulaItem implements Serializable {
 
     public ComposicionFormulaItem() {
         this.auditoria = new Auditoria();
+        this.cantidad = BigDecimal.ZERO;
     }
 
     public int getNroitem() {

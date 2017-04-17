@@ -89,6 +89,7 @@ public class BaseDAO implements Serializable {
     public void eliminar(Object objeto) throws Exception{
         
         em.remove(objeto);
+        em.flush();
     }
 
     /**
