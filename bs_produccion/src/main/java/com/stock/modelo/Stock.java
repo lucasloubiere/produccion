@@ -37,10 +37,10 @@ public class Stock implements Serializable {
     @NotNull
     @Column(name = "stock", nullable = false, precision = 20, scale = 2)
     private BigDecimal stock;
-    @JoinColumn(name = "codigoDeposito", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "deposi", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Deposito deposito;
-    @JoinColumn(name = "codigoProducto", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Producto producto;
     @JoinColumn(name = "unidadDeMedida", referencedColumnName = "codigo", nullable = false)

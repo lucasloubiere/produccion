@@ -69,6 +69,11 @@
         <welcome-file>seguridad/login.jsf</welcome-file>
     </welcome-file-list>
     
+    <context-param>  
+        <param-name>primefaces.THEME</param-name>  
+        <param-value>barcelona-green</param-value>  
+    </context-param> 
+    
     <!-- Captura de errores -->
     
     

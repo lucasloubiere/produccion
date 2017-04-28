@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+    
+    <f:metadata>        
+        <f:viewParam name="TITULO" value="#{sucursalBean.titulo}"/>
+    </f:metadata>
+
+    <ui:define name="titulo" >
+        Sucursal
+    </ui:define>
+    
+    <ui:define name="menu">
+        <!-- MENU -->                        
+        <p:menubar id="menuBar">               
+
+            <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                       actionListener="#{sucursalBean.nuevo}"
+                       process="@this"
+                       update="@form"
+                       immediate="true" />
+
+            <p:menuitem value="Guardar" icon="fa fa-save"
+                        actionListener="#{sucursalBean.guardar(false)}"       
+                        rendered="#{not sucursalBean.buscaMovimiento}"
+                        update="@form" />
+
+            <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                        actionListener="#{sucursalBean.guardar(true)}"                            
+                        rendered="#{not sucursalBean.buscaMovimiento}"
+                        oncomplete="btnNew.click()"
+                        update="@form" />
+
+            <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                        actionListener="#{sucursalBean.habilitaDeshabilita('S')}"
+                        rendered="#{not empty sucursalBean.sucursal and not sucursalBean.esNuevo and sucursalBean.sucursal.auditoria.debaja eq 'N'}"
+                        process="@this"
+                        update="@form" />
+
+            <p:menuitem value="Habilitar" icon="fa fa-check"
+                        actionListener="#{sucursalBean.habilitaDeshabilita('N')}"
+                        rendered="#{not empty sucursalBean.sucursal and not sucursalBean.esNuevo and sucursalBean.sucursal.auditoria.debaja eq 'S'}"
+                        process="@this"
+                        update="@form" />
+
+            <p:menuitem value="Buscar" icon="fa fa-search" 
+                        actionListener="#{sucursalBean.buscar()}"
+                        update="buscadorSucursal"
+                        process="@this" 
+                        oncomplete="PF('dlgSucursal').show()" 
+                        immediate="true" /> 
+            
+        </p:menubar>
+    </ui:define>
+
+    <ui:define name="contenido" >
+        
+        <p:remoteCommand name="procesarSucursal" process="@this" update="@form" />
+
+        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+        <p:spacer width="100%" height="1em" />             
+
+        <!-- DATOS -->
+        <p:panel header="Datos"  >
+
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="Container40, Container60 ui-datafield" >
+
+                <h:outputText value="Código" />
+                <p:inputText value="#{sucursalBean.sucursal.codigo}" 
+                             readonly="#{not sucursalBean.esNuevo}" 
+                             required="true"
+                             requiredMessage="El código es necesario" />
+
+                <h:outputText value="Descripción" />                                                  
+                <p:inputText value="#{sucursalBean.sucursal.descripcion}"  
+                             required="true"
+                             requiredMessage="La descripción es necesaria" />
+                
+            </p:panelGrid>                    
+        </p:panel>    
+
+    </ui:define>
+    
+       
+        <div class="EmptyBox10" />
+    
+    <ui:define name="dialogos" >  
+                
+        <ui:include src="/global/busqueda/buscadorSucursal.xhtml" />
+        
+        
+    </ui:define>
+
+</ui:composition>
+
+</html>
+

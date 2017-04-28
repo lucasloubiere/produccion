@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+    
+    <f:metadata>        
+        <f:viewParam name="TITULO" value="#{moduloBean.titulo}"/>
+    </f:metadata>
+
+    <ui:define name="titulo" >
+        Modulo
+    </ui:define>
+    
+    <ui:define name="menu">
+        <!-- MENU -->                        
+        <p:menubar id="menuBar">               
+
+            <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                       actionListener="#{moduloBean.nuevo}"
+                       process="@this"
+                       update="@form"
+                       immediate="true" />
+
+            <p:menuitem value="Guardar" icon="fa fa-save"
+                        actionListener="#{moduloBean.guardar(false)}"       
+                        rendered="#{not moduloBean.buscaMovimiento}"
+                        update="@form" />
+
+            <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                        actionListener="#{moduloBean.guardar(true)}"                            
+                        rendered="#{not moduloBean.buscaMovimiento}"
+                        oncomplete="btnNew.click()"
+                        update="@form" />
+
+            <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                        actionListener="#{moduloBean.habilitaDeshabilita('S')}"
+                        rendered="#{not empty moduloBean.modulo and not moduloBean.esNuevo and moduloBean.modulo.auditoria.debaja eq 'N'}"
+                        process="@this"
+                        update="@form" />
+
+            <p:menuitem value="Habilitar" icon="fa fa-check"
+                        actionListener="#{moduloBean.habilitaDeshabilita('N')}"
+                        rendered="#{not empty moduloBean.modulo and not moduloBean.esNuevo and moduloBean.modulo.auditoria.debaja eq 'S'}"
+                        process="@this"
+                        update="@form" />
+
+            <p:menuitem value="Buscar" icon="fa fa-search" 
+                        actionListener="#{moduloBean.buscar()}"
+                        update="buscadorModulo"
+                        process="@this" 
+                        oncomplete="PF('dlgModulo').show()" 
+                        immediate="true" /> 
+            
+        </p:menubar>
+    </ui:define>
+
+    <ui:define name="contenido" >
+        
+        <p:remoteCommand name="procesarModulo" process="@this" update="@form" />
+
+        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+        <p:spacer width="100%" height="1em" />             
+
+        <!-- DATOS -->
+        <p:panel header="Datos"  >
+
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="Container40, Container60 ui-datafield" >
+
+                <h:outputText value="Código" />
+                <p:inputText value="#{moduloBean.modulo.codigo}" 
+                             readonly="#{not moduloBean.esNuevo}" 
+                             required="true"
+                             requiredMessage="El código es necesario" />
+
+                <h:outputText value="Descripción" />                                                  
+                <p:inputText value="#{moduloBean.modulo.descripcion}"  
+                             required="true"
+                             requiredMessage="La descripción es necesaria" />
+                
+            </p:panelGrid>                    
+        </p:panel>    
+
+    </ui:define>
+    
+       
+        <div class="EmptyBox10" />
+    
+    <ui:define name="dialogos" >  
+                
+        <ui:include src="/global/busqueda/buscadorModulo.xhtml" />
+        
+        
+    </ui:define>
+
+</ui:composition>
+
+</html>
+
