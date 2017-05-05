@@ -12,21 +12,21 @@
               minHeight="400" 
               style="max-width: 900px;" responsive="true" 
               showEffect="fade" hideEffect="fade"> 
-        
+
         <h:form prependId="false" >
 
-            <p:inputText value="#{estadoUsuarioBean.txtBusqueda}" placeholder="Ingrese busqueda" >
-                <p:ajax event="keyup" process="@this" listener="#{estadoUsuarioBean.buscar}" update="tablaEstadoUsuario" />
-            </p:inputText>
-            
-            <div class="EmptyBox10" />
-            
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
+                <p:inputText value="#{estadoUsuarioBean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                    <p:ajax event="keyup" process="@this" listener="#{estadoUsuarioBean.buscar}" update="tablaEstadoUsuario" />
+                </p:inputText>
+            </p:panelGrid>
+
             <p:dataTable id="tablaEstadoUsuario" value="#{estadoUsuarioBean.lista}"  reflow="true" var="i"
                          emptyMessage="No se encontraron datos"                         
                          rows="10" paginator="true"
                          selectionMode="single" 
                          selection="#{estadoUsuarioBean.estadoUsuario}" rowKey="#{i}">
-            
+
                 <p:ajax event="rowSelect" listener="#{estadoUsuarioBean.onSelect}" update="@form" 
                         oncomplete="PF('dlgEstadoUsuario').hide(), procesarEstadoUsuario()" />
 
@@ -34,14 +34,14 @@
                           sortBy="#{i.id}"   >                         
                     <h:outputText value="#{i.id}" />
                 </p:column>
-                
+
                 <p:column headerText="Descripción" style="text-align: center;"
                           sortBy="#{i.descripcion}" >                         
                     <h:outputText value="#{i.descripcion}" />
                 </p:column>
-                
+
             </p:dataTable>
-            
+
             <div class="EmptyBox10" />            
             <p:panelGrid columns="2" layout="grid"                               
                          styleClass="ui-panelgrid-blank"
@@ -63,7 +63,7 @@
                                      process="@this,cantRegistroEstadoUsuario" update="tablaEstadoUsuario" />
                 </h:panelGroup>
             </p:panelGrid>
-            
+
         </h:form>        
 
 

@@ -5,45 +5,55 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"  >
     <h:head>
-        <title>Login</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>        
-        <h:outputStylesheet name="estructura.css" library="css" />
-        <h:outputStylesheet name="estilos.css" library="css" />
-
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>        
+        <h:outputScript name="js/ripple.js" library="barcelona-layout" />
+        <h:outputScript name="js/layout.js" library="barcelona-layout" />
     </h:head>
 
-    <h:body style="background-color: #11523a">
+    <h:body styleClass="login-body">
 
-        <div class="ui-g ui-fluid">            
-            <div class="ui-g-12">                
-                <h:form prependId="false" >
+        <h:form>
 
-                    <p:panel header="Ingreso al sistema" styleClass="panelLogin" >
-
-                        <h:graphicImage value="/resources/images/logo.jpg" style="width: 200px; margin-left: auto; margin-right: auto;" />
-
-                        <p:messages showDetail="true" />
-
-                        <p:panelGrid layout="grid" columns="1"  >
-
-                            <p:inputText value="#{usuarioSessionBean.nUsuario}"  placeholder="Usuario" />
-                            <p:password value="#{usuarioSessionBean.sPassword}" placeholder="Password" />                
-
-                            <p:commandButton value="Ingresar" action="#{usuarioSessionBean.login()}" 
-                                             process="@form" 
-                                             update="@form" 
-                                             ajax="false" />
-                           
-                        </p:panelGrid>
-
-                    </p:panel>
-
-
-                </h:form>
-
-
+            <div class="login-panel ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 login-header">
+                        <div style="margin-left: auto; margin-right: auto; position: relative; width: 60%;"  >   
+                            <h:graphicImage value="/resources/images/victransparente.png" style="width: 100%; " />
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <p:messages showDetail="true" />                    
+                    </div>
+                    <div class="ui-g-12">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{usuarioSessionBean.nUsuario}"  />
+                            <label>Usuario</label>
+                        </h:panelGroup>
+                    </div>
+                    <div class="ui-g-12">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:password value="#{usuarioSessionBean.sPassword}"  />           
+                            <label>Password</label>
+                        </h:panelGroup>
+                    </div>                
+                    <div class="ui-g-12 button-container">
+                        <p:commandButton value="Ingresar" action="#{usuarioSessionBean.login()}" icon="ui-icon-person"
+                                         process="@form" 
+                                         update="@form" 
+                                         ajax="false" />                    
+                    </div>
+                </div>
             </div>
-        </div>    
+        </h:form>
 
+
+        <h:outputStylesheet name="css/layout-green.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="barcelona-layout" />
     </h:body>
+
 </html>

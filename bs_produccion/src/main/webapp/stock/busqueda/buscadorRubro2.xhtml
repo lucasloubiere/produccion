@@ -18,7 +18,7 @@
 
             <p:focus for="txtBusquedaRubro2"/>
 
-            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-g-6,ui-g-6" >
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
 
                 <p:inputText id="txtBusquedaRubro2" value="#{rubro2Bean.txtBusqueda}" placeholder="Ingrese busqueda" >
                     <p:ajax event="keyup" process="@this,tipoProducto" update="tablaRubro2" listener="#{rubro2Bean.buscar}"/>

@@ -13,7 +13,7 @@
         </f:metadata>
 
         <ui:define name="titulo" >
-            #{unidadDeMedidaBean.titulo}
+            Unidad de medida
         </ui:define>
 
         <ui:define name="menu">
@@ -66,9 +66,9 @@
             <!-- DATOS -->
             <p:panel header="Datos">
 
-                <p:panelGrid columns="2" layout="grid"                               
+                <p:panelGrid columns="2" layout="grid"              
                              styleClass="ui-panelgrid-blank"
-                             columnClasses="Container40, Container60 ui-datafield" >
+                             columnClasses="ui-g-12 ui-md-4 ui-lg-3, ui-g-12 ui-md-8 ui-lg-6" >
 
                     <h:outputText value="Código" />                    
                     <p:inputText value="#{unidadDeMedidaBean.unidadDeMedida.codigo}"  

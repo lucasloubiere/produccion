@@ -28,6 +28,9 @@
         <h:outputStylesheet name="estilos.css" library="css" />
 
         <h:outputScript library="js" name="calendar_es.js" />
+        <h:outputScript name="js/nanoscroller.js" library="barcelona-layout" />
+        <h:outputScript name="js/layout.js" library="barcelona-layout" />
+        <h:outputScript name="js/ripple.js" library="barcelona-layout" />
 
         <ui:insert name="head"></ui:insert>  
 
@@ -58,7 +61,7 @@
                 <div class="ui-g-12 ui-md-12">
                     <div class="ui-g">
                         <div class="ui-g-4" >
-                            <h:graphicImage value="/resources/images/logo.jpg" style="width: 200px;" />
+                            <h:graphicImage value="/resources/images/victransparente.png" style="width: 200px;" />
                         </div>
                         <div class="ui-g-8" >
 
@@ -74,18 +77,28 @@
                             <p:menuitem value="Tipos de usuario" url="/seguridad/tablas/tipoUsuario.jsf" target="_blank" />
                         </p:submenu>
 
-                        <p:submenu label="Stock" icon="fa fa-user-circle-o" >                            
-                            <p:menuitem value="Tipo de Productos" url="/stock/tablas/tipoProducto.jsf" target="_blank" />                            
-                            <p:menuitem value="Unidad de Medida" url="/stock/tablas/unidadDeMedida.jsf" target="_blank" />
-                            <p:menuitem value="Deposito" url="/stock/tablas/deposito.jsf" target="_blank" />
-                            <p:menuitem value="Rubro1" url="/stock/tablas/rubro1.jsf" target="_blank" />
-                            <p:menuitem value="Rubro2" url="/stock/tablas/rubro2.jsf" target="_blank" />
-                            <p:menuitem value="Producto" url="/stock/tablas/producto.jsf" target="_blank" />
-                            <p:menuitem value="Formula" url="/stock/tablas/formula.jsf" target="_blank" />
-                            <p:menuitem value="Composicion Formula" url="/stock/tablas/composicionFormula.jsf" target="_blank" />
+                        <p:submenu label="Stock" icon="fa fa-user-circle-o" >
                             
-                        </p:submenu>
-                        
+                            <p:submenu label="Movimientos" icon="fa fa-user-circle-o" >
+                                <p:menuitem value="Ajuste" url="/stock/movimiento/movimiento.jsf" target="_blank" />                            
+                                <p:menuitem value="Egreso" url="/stock/movimiento/movimiento.jsf" target="_blank" />                            
+                                <p:menuitem value="Ingreso" url="/stock/movimiento/movimiento.jsf" target="_blank" />                            
+                                <p:menuitem value="Transferencia" url="/stock/movimiento/movimiento.jsf" target="_blank" />  
+                            </p:submenu>
+                            
+                            <p:submenu label="Tablas" icon="fa fa-user-circle-o" >                            
+                                <p:menuitem value="Tipo de Productos" url="/stock/tablas/tipoProducto.jsf" target="_blank" />                            
+                                <p:menuitem value="Unidad de Medida" url="/stock/tablas/unidadDeMedida.jsf" target="_blank" />
+                                <p:menuitem value="Deposito" url="/stock/tablas/deposito.jsf" target="_blank" />
+                                <p:menuitem value="Rubro1" url="/stock/tablas/rubro1.jsf" target="_blank" />
+                                <p:menuitem value="Rubro2" url="/stock/tablas/rubro2.jsf" target="_blank" />
+                                <p:menuitem value="Producto" url="/stock/tablas/producto.jsf" target="_blank" />
+                                <p:menuitem value="Formula" url="/stock/tablas/formula.jsf" target="_blank" />
+                                <p:menuitem value="Composicion Formula" url="/stock/tablas/composicionFormula.jsf" target="_blank" />
+                                <p:menuitem value="Formula" url="/stock/tablas/formulario.jsf" target="_blank" />
+                            </p:submenu>                            
+                        </p:submenu>                        
+
                         <p:submenu label="Global" icon="fa fa-user-circle-o">
                             <p:menuitem value="Modulo" url="/global/tablas/modulo.jsf" target="_blank" />
                             <p:menuitem value="Sucursal" url="/global/tablas/sucursal.jsf" target="_blank" />
@@ -97,12 +110,18 @@
                                              value="Salir" icon="ui-icon-extlink" />
                         </f:facet>
                     </p:menubar>
-
+                        
                 </div>
+                
+                 <div class="ui-g-6 ui-md-6">
+                        <p:panel header="Calendar" style="height:100%" styleClass="ui-shadow-content ">
+                            <p:schedule value="#{scheduleView.eventModel}" leftHeaderTemplate="prev,next"/>
+                        </p:panel>
+                    </div> 
                 <div class="ui-g-12 ui-md-12 ui-g-nopad">
 
                     <ui:insert name="contenido" >
-                        
+
                         <div style="height:500px">
                             <h:form>
                                 <p:growl id="msgs" showDetail="true" />
@@ -129,16 +148,24 @@
                                     <p:panel id="politics" header="Politics">
                                         <h:outputText value="Politics Content" />
                                     </p:panel>
+                                    
                                 </p:dashboard>
 
                                 <div style="clear:both" />
                             </h:form>
                         </div>
                     </ui:insert>
-                </div>            
+                </div>  
             </div>    
 
+
         </h:form>
+
+        <h:outputStylesheet name="css/nanoscroller.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/animate.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/layout-green.css" library="barcelona-layout" />
+
 
     </h:body>
 

@@ -15,11 +15,13 @@
 
         <h:form prependId="false" >
 
-            <p:inputText value="#{usuarioBean.txtBusqueda}" placeholder="Ingrese busqueda" >
-                <p:ajax event="keyup" process="@this" update="tablaUsuario" listener="#{usuarioBean.buscar}"/>
-            </p:inputText>
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
 
-            <div class="EmptyBox10" />
+                <p:inputText value="#{usuarioBean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                    <p:ajax event="keyup" process="@this" update="tablaUsuario" listener="#{usuarioBean.buscar}"/>
+                </p:inputText>
+
+            </p:panelGrid>
 
             <p:dataTable id="tablaUsuario" value="#{usuarioBean.lista}"  reflow="true" var="i"
                          emptyMessage="No se encontraron datos"                         

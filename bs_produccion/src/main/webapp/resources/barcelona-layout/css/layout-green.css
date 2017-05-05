@@ -605,10 +605,11 @@ body .ui-g-12 {
         font-weight: normal;
         margin-top: 0; }
       .login-body .login-panel .login-header img {
-        width: 64px;
+/*        width: 64px;
         position: absolute;
         top: 24px;
-        right: 30px; }
+        right: 30px; */
+      }
       .login-body .login-panel .login-header.ui-g-12 {
         padding: 20px 30px; }
     .login-body .login-panel .ui-g-12 {

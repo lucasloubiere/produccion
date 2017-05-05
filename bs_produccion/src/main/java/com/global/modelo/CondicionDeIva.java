@@ -27,9 +27,9 @@ public class CondicionDeIva implements Serializable {
     @Id
     @Size(max = 6)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="CODIGO",length=6)
+    @Column(name="codigo",length=6)
     private String codigo;
-    @Column(name="DESCRP",length=60)
+    @Column(name="descrp",length=60)
     private String descripcion;
     
     @Embedded

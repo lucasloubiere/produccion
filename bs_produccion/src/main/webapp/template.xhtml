@@ -21,6 +21,11 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>        
         <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
+        
+        <h:outputScript name="js/nanoscroller.js" library="barcelona-layout" />
+        <h:outputScript name="js/layout.js" library="barcelona-layout" />
+        <h:outputScript name="js/ripple.js" library="barcelona-layout" />
+        
         <h:outputScript library="js" name="calendar_es.js" />
         <h:outputStylesheet name="estructura.css" library="css" />
         <h:outputStylesheet name="estilos.css" library="css" />
@@ -67,7 +72,7 @@
                         AQUI VA EL MENU
                     </ui:insert>
                 </div>
-                <div class="ui-g-12 ui-md-12" style="padding: 10px;">
+                <div class="ui-g-12 ui-md-12" style="padding-top: 1px; padding-left: 10px; padding-right: 10px;">
 
                     <ui:insert name="contenido" >
                         AQUI VA EL CONTENIDO
@@ -83,7 +88,6 @@
             <ui:insert name="dialogos" >
 
             </ui:insert>    
-
         </div>
 
         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -95,6 +99,11 @@
         <ui:include src="/template/exceptionHandler.xhtml" />
         <ui:include src="/template/ajaxStatus-footer.xhtml"  />        
         -->
+        
+        <h:outputStylesheet name="css/nanoscroller.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/animate.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/layout-green.css" library="barcelona-layout" />
 
     </h:body>
 

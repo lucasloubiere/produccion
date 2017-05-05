@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+    
+    <f:metadata>        
+        <f:viewParam name="TITULO" value="#{formularioStockBean.titulo}"/>
+    </f:metadata>
+
+    <ui:define name="titulo" >
+        #{formularioStockBean.titulo}
+    </ui:define>
+    
+    <ui:define name="menu">
+        <!-- MENU -->        
+        <p:menubar id="menuBar">               
+           <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                       action="#{formularioStockBean.nuevo()}"
+                       process="@this"
+                       update="@form"
+                       immediate="true" />
+
+            <p:menuitem value="Guardar" icon="fa fa-save"
+                        action="#{formularioStockBean.guardar(false)}"                            
+                        rendered="#{not formularioStockBean.buscaMovimiento}"
+                        update="@form" />
+
+            <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                        action="#{formularioStockBean.guardar(true)}"                            
+                        rendered="#{not formularioStockBean.buscaMovimiento}"
+                        oncomplete="btnNew.click()"
+                        update="@form" />
+
+            <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                        actionListener="#{formularioStockBean.habilitaDeshabilita('S')}"
+                        rendered="#{not empty formularioStockBean.formulario and not formularioStockBean.esNuevo and formularioStockBean.formulario.auditoria.debaja eq 'N' and not formularioStockBean.buscaMovimiento}"
+                        process="@this"
+                        update="@form" />
+
+            <p:menuitem value="Habilitar" icon="fa fa-check"
+                        actionListener="#{formularioStockBean.habilitaDeshabilita('N')}"
+                        rendered="#{not empty formularioStockBean.formulario and not formularioStockBean.esNuevo and formularioStockBean.formulario.auditoria.debaja eq 'S' and not formularioStockBean.buscaMovimiento}"
+                        process="@this"
+                        update="@form" />
+            
+            <p:menuitem value="Buscar" icon="fa fa-search" 
+                        actionListener="#{formularioStockBean.buscar()}"
+                        process="@this" 
+                        oncomplete="PF('dlg_formulario_stock').show()" 
+                        update="buscadorFormularioStock"
+                        immediate="true" /> 
+            
+        </p:menubar>
+    </ui:define>
+
+    <ui:define name="contenido" >
+        
+        <p:remoteCommand name="procesarFormularioStock" process="@this" update="@form" />
+                
+        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+        <p:spacer width="100%" height="1em" />             
+
+        <!-- DATOS -->
+        <p:panel header="Datos" >
+
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="Container40, Container60 ui-datafield" >
+
+                <h:outputText value="Código" />                
+                <p:inputText value="#{formularioStockBean.formulario.codigo}" 
+                             readonly="#{not formularioStockBean.esNuevo}" 
+                             required="true"
+                             requiredMessage="El código es necesario" />
+
+                <h:outputText value="Descripción" />                                                  
+                <p:inputText value="#{formularioStockBean.formulario.descripcion}" 
+                             required="true"
+                             requiredMessage="La descripción es necesaria" />
+
+                <h:outputText value="Sucursal" />
+                <p:selectOneMenu value="#{formularioStockBean.formulario.sucursal}" 
+                                 required="true" requiredMessage="Seleccione la sucursal"
+                                 converter="#{conversoresGeneral.sucursal}" 
+
+                                 effect="fade" style="min-width:160px" filter="true" >  
+                    <p:ajax process="@this" />
+                    <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                    <f:selectItems value="#{sucursalBean.lista}" var="s" itemLabel="#{s.descripcion}" itemValue="#{s}" />
+                </p:selectOneMenu>
+
+                <h:outputText value="Letra" />                                                  
+                <p:inputText value="#{formularioStockBean.formulario.letra}"  
+                             required="true"
+                             requiredMessage="La letra es necesaria"/>
+
+                <h:outputText value="Codigo AFIP" />                                                  
+                <p:inputText value="#{formularioStockBean.formulario.codigoDGI}"   />
+
+                <h:outputText value="Nombre del reporte" /> 
+                <p:inputText value="#{formularioStockBean.formulario.nombreReporte}"   />
+
+                <h:outputText value="Último número" />                                                  
+                <p:inputText value="#{formularioStockBean.formulario.ultimoNumero}"   />
+
+                <h:outputText value="Última fecha" />                                                  
+                <p:calendar value="#{formularioStockBean.formulario.ultimaFecha}" pattern="dd/MM/yyyy"  
+                            required="true"
+                            requiredMessage="última fecha es obligatoria"/>
+
+                <h:outputText value="Tipo Numeración" /> 
+                <p:selectOneMenu value="#{formularioStockBean.formulario.tipoNumeracion}"
+                                 required="true" requiredMessage="Seleccione el tipo de numeración"  >
+                    <p:ajax process="@this" />
+                    <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                    <f:selectItem itemLabel="Automático" itemValue="A" />
+                    <f:selectItem itemLabel="Renumeración Mensual" itemValue="R" />                                    
+                    <f:selectItem itemLabel="Semiautomática" itemValue="S" />                                    
+                    <f:selectItem itemLabel="Irrestricta" itemValue="I" />                                    
+                </p:selectOneMenu>
+
+                <h:outputText value="Modo Recuperación de fecha" /> 
+                <p:selectOneMenu value="#{formularioStockBean.formulario.tipoNumeracion}"
+                                 required="true" requiredMessage="Seleccione el tipo de numeración"  >
+                    <p:ajax process="@this" />
+                    <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                    <f:selectItem itemLabel="Fecha actual" itemValue="A" />
+                    <f:selectItem itemLabel="Última fecha" itemValue="U" />                                                                
+                </p:selectOneMenu>
+                
+                <h:outputText value="Modifica fecha" /> 
+                <p:selectOneMenu value="#{formularioStockBean.formulario.modificaFecha}"
+                                 required="true" requiredMessage="Seleccione si se modifica la fecha"  >
+                    <p:ajax process="@this" />
+                    <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                    <f:selectItem itemLabel="Si" itemValue="S" />
+                    <f:selectItem itemLabel="No" itemValue="N" />                                                                
+                </p:selectOneMenu>
+                
+                <h:outputText value="Modifica numeración" /> 
+                <p:selectOneMenu value="#{formularioStockBean.formulario.modificaNumeracion}"
+                                 required="true" requiredMessage="Seleccione si se modifica la numeración"  >
+                    <p:ajax process="@this" />
+                    <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                    <f:selectItem itemLabel="Si" itemValue="S" />
+                    <f:selectItem itemLabel="No" itemValue="N" />                                                                
+                </p:selectOneMenu>
+
+                <h:outputText value="Cant. Max items" /> 
+                <p:inputText value="#{formularioStockBean.formulario.cantidadMaximaItems}"   />
+
+                <h:outputText value="Observaciones" />
+                <p:inputTextarea style="width: 100%" rows="3" value="#{formularioStockBean.formulario.textos}" />
+
+            </p:panelGrid>
+
+        </p:panel>              
+
+    </ui:define>
+    
+    <ui:define name="dialogos" > 
+        <ui:include src="/stock/busqueda/buscadorFormulario.xhtml" />
+    </ui:define>
+
+</ui:composition>
+
+</html>
+

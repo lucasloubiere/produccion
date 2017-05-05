@@ -15,25 +15,25 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class FormularioPK implements Serializable {
 
-    private String modulo;
+    private String modfor;
     private String codigo;
 
     public FormularioPK() {
     }
 
     public FormularioPK(String modulo, String codigo) {
-        this.modulo = modulo;
+        this.modfor = modulo;
         this.codigo = codigo;
     }
 
-    public String getModulo() {
-        return modulo;
+    public String getModfor() {
+        return modfor;
     }
 
-    public void setModulo(String modulo) {
-        this.modulo = modulo;
+    public void setModfor(String modfor) {
+        this.modfor = modfor;
     }
-
+    
     public String getCodigo() {
         return codigo;
     }
@@ -45,7 +45,7 @@ public class FormularioPK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (modulo != null ? modulo.hashCode() : 0);
+        hash += (modfor != null ? modfor.hashCode() : 0);
         hash += (codigo != null ? codigo.hashCode() : 0);
         return hash;
     }
@@ -57,7 +57,7 @@ public class FormularioPK implements Serializable {
             return false;
         }
         FormularioPK other = (FormularioPK) object;
-        if ((this.modulo == null && other.modulo != null) || (this.modulo != null && !this.modulo.equals(other.modulo))) {
+        if ((this.modfor == null && other.modfor != null) || (this.modfor != null && !this.modfor.equals(other.modfor))) {
             return false;
         }
         if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
@@ -68,7 +68,7 @@ public class FormularioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.stock.modelo.FormularioPK[ modulo=" + modulo + ", codigo=" + codigo + " ]";
+        return "com.stock.modelo.FormularioPK[ modfor=" + modfor + ", codigo=" + codigo + " ]";
     }
     
 }

@@ -21,10 +21,10 @@
             <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
                              
                 <p:inputText id="txtBusquedaProducto" value="#{productoBean.txtBusqueda}" placeholder="Ingrese busqueda" >
-                    <p:ajax event="keyup" process="@this,tipoProducto" update="tablaProductos" listener="#{productoBean.buscar}"/>
+                    <p:ajax event="keyup" process="@this,tipoProductob" update="tablaProductos" listener="#{productoBean.buscar}"/>
                 </p:inputText>
 
-                <p:selectOneMenu id="tipoProducto" value="#{productoBean.tipoProducto}"
+                <p:selectOneMenu id="tipoProductob" value="#{productoBean.tipoProducto}"
                                  converter="#{conversoresStock.tipoProducto}"  >
                     <f:selectItem itemLabel="Todos" itemValue="" />
                     <f:selectItems value="#{productoBean.tipos}"

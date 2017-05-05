@@ -14,9 +14,7 @@
 
             <p:focus for="txtBusquedaTipoProducto"/>
                         
-            <p:panelGrid columns="1" layout="grid"
-                     style="max-width: 400px;"
-                     styleClass="ui-panelgrid-blank" >
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
 
                 <p:inputText id="txtBusquedaTipoProducto" value="#{tipoProductoBean.txtBusqueda}" placeholder="Ingrese busqueda" >
                     <p:ajax event="keyup" process="@this" update="tablaTipoProducto" listener="#{tipoProductoBean.buscar}"/>

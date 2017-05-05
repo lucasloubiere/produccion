@@ -75,8 +75,6 @@
     </context-param> 
     
     <!-- Captura de errores -->
-    
-    
     <error-page>
         <error-code>400</error-code>
         <location>/WEB-INF/error/400.jsf</location>        

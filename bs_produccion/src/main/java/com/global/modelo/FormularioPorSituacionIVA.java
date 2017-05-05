@@ -28,33 +28,33 @@ public class FormularioPorSituacionIVA implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "MODCOM", nullable = false, length = 2)
+    @Column(name = "modcom", nullable = false, length = 2)
     private String modcom;
     @Id
-    @Column(name = "CODCOM", nullable = false, length = 6)
+    @Column(name = "codcom", nullable = false, length = 6)
     private String codcom;
     @Id
-    @Column(name = "CNDIVA", nullable = false, length = 6)
+    @Column(name = "cndiva", nullable = false, length = 6)
     private String cndiva;
     @Id
-    @Column(name = "SUCURS", nullable = false, length = 6)
+    @Column(name = "sucurs", nullable = false, length = 6)
     private String sucurs;
 
      /**
      * Comprobante 
      */
     @JoinColumns({
-    @JoinColumn(name = "MODCOM", referencedColumnName = "MODCOM", nullable = false,insertable=false, updatable=false),
-    @JoinColumn(name = "CODCOM", referencedColumnName = "CODCOM", nullable = false,insertable=false, updatable=false)
+    @JoinColumn(name = "modcom", referencedColumnName = "modcom", nullable = false,insertable=false, updatable=false),
+    @JoinColumn(name = "codcom", referencedColumnName = "codcom", nullable = false,insertable=false, updatable=false)
     })
     @ManyToOne(fetch = FetchType.LAZY)
     Comprobante comprobante;
 
-    @JoinColumn(name = "SUCURS", referencedColumnName = "CODIGO", nullable = false, insertable=false, updatable=false)
+    @JoinColumn(name = "sucurs", referencedColumnName = "codigo", nullable = false, insertable=false, updatable=false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Sucursal sucursal;
 
-    @JoinColumn(name = "CNDIVA", referencedColumnName = "CODIGO", nullable = false, insertable=false, updatable=false)
+    @JoinColumn(name = "cndiva", referencedColumnName = "codigo", nullable = false, insertable=false, updatable=false)
     @ManyToOne(fetch = FetchType.LAZY)
     private CondicionDeIva condicionDeIva;
     
@@ -62,8 +62,8 @@ public class FormularioPorSituacionIVA implements Serializable {
      * Formulario
      */
     @JoinColumns({
-    @JoinColumn(name = "MODFOR", referencedColumnName = "MODFOR", nullable = false),
-    @JoinColumn(name = "CODFOR", referencedColumnName = "CODFOR", nullable = false)
+    @JoinColumn(name = "modfor", referencedColumnName = "modfor", nullable = false),
+    @JoinColumn(name = "codfor", referencedColumnName = "codfor", nullable = false)
     })
     @ManyToOne(fetch = FetchType.LAZY)
     Formulario formulario;

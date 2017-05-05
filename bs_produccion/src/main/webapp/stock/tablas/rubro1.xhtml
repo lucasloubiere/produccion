@@ -12,7 +12,7 @@
         </f:metadata>
         
         <ui:define name="titulo" >
-             #{rubro1Bean.titulo}
+            Rubro
         </ui:define>
 
         <ui:define name="menu">
@@ -55,14 +55,15 @@
             <p:growl id="messageg" showDetail="true" life="4000" />
 
             <!-- DATOS -->
-            <p:panel header="Datos Rubro1">
+            <p:panel header="Datos">
 
-                <p:panelGrid columns="2" layout="grid"                               
+                <p:panelGrid columns="2" layout="grid"              
                              styleClass="ui-panelgrid-blank"
-                             columnClasses="Container40, Container60 ui-datafield" >
+                             columnClasses="ui-g-12 ui-md-4 ui-lg-3, ui-g-12 ui-md-8 ui-lg-6" >
 
                     <h:outputText value="Tipo Producto *" />
-                    <p:selectOneMenu value="#{rubro1Bean.tipoProducto}" 
+                    <p:inputText value="#{rubro1Bean.tipoProducto.descripcion}" rendered="#{not rubro1Bean.esNuevo}" readonly="true" />
+                    <p:selectOneMenu value="#{rubro1Bean.tipoProducto}" rendered="#{rubro1Bean.esNuevo}"
                                      required="true" requiredMessage="Seleccione el tipo"
                                      converter="#{conversoresStock.tipoProducto}"                                      
                                      effect="fade" filter="true" >  

@@ -34,51 +34,51 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "gr_comprobante")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "MODCOM", discriminatorType = DiscriminatorType.STRING, length = 2)
+@DiscriminatorColumn(name = "modcom", discriminatorType = DiscriminatorType.STRING, length = 2)
 @IdClass(ComprobantePK.class)
 @XmlRootElement
 public class Comprobante implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "MODCOM",nullable = false, length = 2)
+    @Column(name = "modcom",nullable = false, length = 2)
     private String modulo;
    
     @Id
-    @Column(name = "CODCOM", nullable = false, length = 6)
+    @Column(name = "codcom", nullable = false, length = 6)
     private String codigo;
 
-    @Column(name = "DESCRP", nullable = false, length = 60)
+    @Column(name = "descrp", nullable = false, length = 60)
     private String descripcion;
     
-    @Column(name = "TITULO", length = 60)
+    @Column(name = "titulo", length = 60)
     private String titulo;
 
-    @Column(name = "COPIAS")
+    @Column(name = "copias")
     private Integer copias;  
     
-    @Column(name = "RECFEC", length = 1)
+    @Column(name = "recfec", length = 1)
     private String recuperacionFecha;
         
     /**
      * Deposito emisor
      */
-    @JoinColumn(name = "DEPTRA", referencedColumnName = "CODIGO",nullable = true)
+    @JoinColumn(name = "deptra", referencedColumnName = "codigo",nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)
     private Deposito depositoTransferencia;
 
      /**
      * Deposito receptor
      */
-    @JoinColumn(name = "DEPOSI", referencedColumnName = "CODIGO",nullable = true)
+    @JoinColumn(name = "deposi", referencedColumnName = "codigo",nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)
     private Deposito deposito;
 
     @Lob
-    @Column(name = "TEXTOS", length = 2147483647)
+    @Column(name = "textos", length = 2147483647)
     private String textos;
     
-    @Column(name = "COMREV", length = 1)
+    @Column(name = "comrev", length = 1)
     private String esComprobanteReversion;
    
     @Embedded
