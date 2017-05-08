@@ -6,6 +6,7 @@
 package com.global.util;
 
 
+import com.global.modelo.Formulario;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class GenericBean implements Serializable {
     protected boolean beanIniciado = false;
     protected boolean mostrarDebaja;
     protected boolean esNuevo;
+    protected boolean detalleVacio;
     protected String txtBusqueda;
     protected int cantidadRegistros;
     
@@ -51,11 +53,10 @@ public class GenericBean implements Serializable {
     protected String informacionAdicional;
     protected boolean muestraReporte;
     protected boolean solicitaEmail; 
-    
-    
+        
     // VARIABLES PARA BUSQUEDA DE COMPROBANTES
     protected boolean buscaMovimiento;
-//    protected Formulario formulario;
+    protected Formulario formulario;
     protected Integer numeroFormularioDesde;
     protected Integer numeroFormularioHasta;
     protected Date fechaMovimientoDesde;
@@ -390,6 +391,21 @@ public class GenericBean implements Serializable {
     public void setIndexTab5(int indexTab5) {
         this.indexTab5 = indexTab5;
     }
-    
-    
+
+    public Formulario getFormulario() {
+        return formulario;
+    }
+
+    public void setFormulario(Formulario formulario) {
+        this.formulario = formulario;
+    }
+
+    public boolean isDetalleVacio() {
+        return detalleVacio;
+    }
+
+    public void setDetalleVacio(boolean detalleVacio) {
+        this.detalleVacio = detalleVacio;
+    }
+        
 }

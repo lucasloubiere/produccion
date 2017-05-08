@@ -14,6 +14,7 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +23,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -55,24 +57,56 @@ public abstract class ItemMovimientoStock implements Serializable {
     @NotNull
     @Column(name = "cantidad")
     private BigDecimal cantidad;
+
+    @JoinColumn(name = "unimed", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UnidadMedida unidadMedida;
+
+    @JoinColumn(name = "deposi", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Deposito deposito;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "NATRI1")
-    private String natri1;
+    @Column(name = "natri1")
+    private String atributo1;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "NATRI2")
-    private String natri2;
+    @Column(name = "natri2")
+    private String atributo2;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "NATRI3")
-    private String natri3;
+    @Column(name = "natri3")
+    private String atributo3;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "natri4")
+    private String atributo4;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "natri5")
+    private String atributo5;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "natri6")
+    private String atributo6;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "natri7")
+    private String atributo7;
 
     @Embedded
     private Auditoria auditoria;
+
+    @Transient
+    private boolean todoOk;
 
     public ItemMovimientoStock() {
         this.auditoria = new Auditoria();
@@ -86,9 +120,9 @@ public abstract class ItemMovimientoStock implements Serializable {
     public ItemMovimientoStock(Integer id, int idcab, String artcod, BigDecimal cantidad, String natri1, String natri2, String natri3) {
         this.id = id;
         this.cantidad = cantidad;
-        this.natri1 = natri1;
-        this.natri2 = natri2;
-        this.natri3 = natri3;
+        this.atributo1 = natri1;
+        this.atributo2 = natri2;
+        this.atributo3 = natri3;
         this.auditoria = new Auditoria();
     }
 
@@ -124,28 +158,28 @@ public abstract class ItemMovimientoStock implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public String getNatri1() {
-        return natri1;
+    public String getAtributo1() {
+        return atributo1;
     }
 
-    public void setNatri1(String natri1) {
-        this.natri1 = natri1;
+    public void setAtributo1(String atributo1) {
+        this.atributo1 = atributo1;
     }
 
-    public String getNatri2() {
-        return natri2;
+    public String getAtributo2() {
+        return atributo2;
     }
 
-    public void setNatri2(String natri2) {
-        this.natri2 = natri2;
+    public void setAtributo2(String atributo2) {
+        this.atributo2 = atributo2;
     }
 
-    public String getNatri3() {
-        return natri3;
+    public String getAtributo3() {
+        return atributo3;
     }
 
-    public void setNatri3(String natri3) {
-        this.natri3 = natri3;
+    public void setAtributo3(String atributo3) {
+        this.atributo3 = atributo3;
     }
 
     public Auditoria getAuditoria() {
@@ -154,6 +188,62 @@ public abstract class ItemMovimientoStock implements Serializable {
 
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
+    }
+
+    public String getAtributo4() {
+        return atributo4;
+    }
+
+    public void setAtributo4(String atributo4) {
+        this.atributo4 = atributo4;
+    }
+
+    public String getAtributo5() {
+        return atributo5;
+    }
+
+    public void setAtributo5(String atributo5) {
+        this.atributo5 = atributo5;
+    }
+
+    public String getAtributo6() {
+        return atributo6;
+    }
+
+    public void setAtributo6(String atributo6) {
+        this.atributo6 = atributo6;
+    }
+
+    public String getAtributo7() {
+        return atributo7;
+    }
+
+    public void setAtributo7(String atributo7) {
+        this.atributo7 = atributo7;
+    }
+
+    public UnidadMedida getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(UnidadMedida unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public Deposito getDeposito() {
+        return deposito;
+    }
+
+    public void setDeposito(Deposito deposito) {
+        this.deposito = deposito;
+    }
+    
+    public boolean isTodoOk() {
+        return todoOk;
+    }
+
+    public void setTodoOk(boolean todoOk) {
+        this.todoOk = todoOk;
     }
 
     @Override

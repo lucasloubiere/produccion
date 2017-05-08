@@ -13,7 +13,6 @@ import com.stock.modelo.ItemMovimientoStock;
 import com.stock.modelo.ItemProductoStock;
 import com.stock.modelo.MovimientoStock;
 import com.stock.modelo.Producto;
-import com.stock.modelo.Stock;
 import com.stock.rn.MovimientoStockRN;
 import java.io.Serializable;
 import java.util.Date;
@@ -27,7 +26,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -179,8 +177,7 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
             ItemProductoStock ip = m.getItemsProducto().get(m.getItemsProducto().size()-1);
             
             ip.setProducto(p);            
-            ip.setUnidadMedida(p.getUnidadDeMedida());                        
-            ip.setPrecio(p.getPrecioReposicion());
+            ip.setUnidadMedida(p.getUnidadDeMedida());                                    
             ip.setAtributo1("");
             ip.setAtributo2("");
             ip.setAtributo3("");
@@ -192,21 +189,21 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
         }
     } 
     
-    public void procesarStock(){
-      
-        if(consultaStock.getItemStock()!=null && m!=null && item!=null){
-                   
-            Stock s = consultaStock.getItemStock();
-                        
-            item.setAtributo1(s.getAtributo1());
-            item.setAtributo2(s.getAtributo2());
-            item.setAtributo3(s.getAtributo3());
-            item.setAtributo4(s.getAtributo4());
-            item.setAtributo5(s.getAtributo5());
-            item.setAtributo6(s.getAtributo6());
-            item.setAtributo7(s.getAtributo7());             
-        }
-    } 
+//    public void procesarStock(){
+//      
+//        if(consultaStock.getItemStock()!=null && m!=null && item!=null){
+//                   
+//            Stock s = consultaStock.getItemStock();
+//                        
+//            item.setAtributo1(s.getAtributo1());
+//            item.setAtributo2(s.getAtributo2());
+//            item.setAtributo3(s.getAtributo3());
+//            item.setAtributo4(s.getAtributo4());
+//            item.setAtributo5(s.getAtributo5());
+//            item.setAtributo6(s.getAtributo6());
+//            item.setAtributo7(s.getAtributo7());             
+//        }
+//    } 
       
     public void nuevaBusqueda(){
                 
@@ -301,6 +298,7 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
         }
     }
     
+    /**
     public void procesarMascaraStock(){
       
         if(mascaraStockBean.getMascaraStock()!=null && m!=null){
@@ -333,6 +331,7 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
             }
         }
     } 
+    */
     
     public void imprimir(){
 
@@ -351,7 +350,7 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
             parameters.put("ID", m.getId());
             parameters.put("CANT_COPIAS", m.getComprobante().getCopias());
            
-            reportFactory.exportReportToPdfFile(pathReport, nombreArchivo, parameters);
+//            reportFactory.exportReportToPdfFile(pathReport, nombreArchivo, parameters);
             muestraReporte = true;
 
         } catch (NullPointerException npe) {
@@ -360,9 +359,9 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
         } catch (ExcepcionGeneralSistema e){            
             JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
             muestraReporte = false;
-        } catch (JRException e) {
-            JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
-            muestraReporte = false;
+//        } catch (JRException e) {
+//            JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
+//            muestraReporte = false;
         }
     }
     
@@ -398,14 +397,6 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
 
     public void setFechaMinima(Date fechaMinima) {
         this.fechaMinima = fechaMinima;
-    }
-
-    public ReportFactory getReportFactory() {
-        return reportFactory;
-    }
-
-    public void setReportFactory(ReportFactory reportFactory) {
-        this.reportFactory = reportFactory;
     }
 
     public DepositoBean getDepositoBean() {
@@ -482,29 +473,13 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     public void setDetalleVacio(boolean detalleVacio) {
         this.detalleVacio = detalleVacio;
     }
-
-    public ConsultaStock getConsultaStock() {
-        return consultaStock;
-    }
-
-    public void setConsultaStock(ConsultaStock consultaStock) {
-        this.consultaStock = consultaStock;
-    }
-
+    
     public ItemProductoStock getItem() {
         return item;
     }
 
     public void setItem(ItemProductoStock item) {
         this.item = item;
-    }
-
-    public MascaraStockBean getMascaraStockBean() {
-        return mascaraStockBean;
-    }
-
-    public void setMascaraStockBean(MascaraStockBean mascaraStockBean) {
-        this.mascaraStockBean = mascaraStockBean;
-    }
+    }    
     
 }

@@ -16,7 +16,7 @@ import com.stock.modelo.ItemMovimientoStock;
 import com.stock.modelo.ItemProductoStock;
 import com.stock.modelo.ItemTransferenciaStock;
 import com.stock.modelo.MovimientoStock;
-import com.stock.modelo.Stock;
+import com.stock.modelo.TipoItemMovimiento;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,8 +123,8 @@ public class MovimientoStockRN {
         }        
         
         MovimientoStock m = new MovimientoStock();        
-        Moneda moneda = monedaRN.getMoneda("USD");
-        BigDecimal cotizacion  = monedaRN.getCotizacionDia("USD");
+//        Moneda moneda = monedaRN.getMoneda("USD");
+//        BigDecimal cotizacion  = monedaRN.getCotizacionDia("USD");
 
         m.setPersistido(false);
         m.setFormulario(formulario);
@@ -133,9 +133,9 @@ public class MovimientoStockRN {
         m.setFechaMovimiento(new Date());
         m.setSucursal(sucursal);
         m.setTipoMovimiento(comprobante.getTipoMovimiento());
-        m.setMonedaSecundaria(moneda);
-        m.setMonedaRegistracion(monedaRN.getMoneda("ARS"));
-        m.setCotizacion(cotizacion);
+//        m.setMonedaSecundaria(moneda);
+//        m.setMonedaRegistracion(monedaRN.getMoneda("ARS"));
+//        m.setCotizacion(cotizacion);
 
         if(comprobante.getDeposito()!=null ){
             m.setDeposito(comprobante.getDeposito());            
@@ -174,19 +174,19 @@ public class MovimientoStockRN {
             nItem = new ItemTransferenciaStock();
         }        
         
-        nItem.setNroitm(m.getItemsProducto().size()+1);
-        nItem.setSucursal(m.getSucursal().getCodigo());
-        nItem.setFechaMovimiento(m.getFechaMovimiento());
-        nItem.setMonedaSecundaria(m.getMonedaSecundaria());
-        nItem.setCotizacion(m.getCotizacion());
+//        nItem.setNroitm(m.getItemsProducto().size()+1);
+//        nItem.setSucursal(m.getSucursal().getCodigo());
+//        nItem.setFechaMovimiento(m.getFechaMovimiento());
+//        nItem.setMonedaSecundaria(m.getMonedaSecundaria());
+//        nItem.setCotizacion(m.getCotizacion());
         
         nItem.setAtributo1(m.getAtributo1()!=null?m.getAtributo1():"");
         nItem.setAtributo2(m.getAtributo2()!=null?m.getAtributo2():"");
         nItem.setAtributo3(m.getAtributo3()!=null?m.getAtributo3():"");
-        nItem.setAtributo4(m.getAtributo4()!=null?m.getAtributo4():"");
-        nItem.setAtributo5(m.getAtributo5()!=null?m.getAtributo5():"");
-        nItem.setAtributo6(m.getAtributo6()!=null?m.getAtributo6():"");
-        nItem.setAtributo7(m.getAtributo7()!=null?m.getAtributo7():"");
+//        nItem.setAtributo4(m.getAtributo4()!=null?m.getAtributo4():"");
+//        nItem.setAtributo5(m.getAtributo5()!=null?m.getAtributo5():"");
+//        nItem.setAtributo6(m.getAtributo6()!=null?m.getAtributo6():"");
+//        nItem.setAtributo7(m.getAtributo7()!=null?m.getAtributo7():"");
               
         nItem.setMovimiento(m);
 
@@ -412,25 +412,25 @@ public class MovimientoStockRN {
             
             if(m.getTipoMovimiento().equals("E")){
                 
-                Stock s = stockRN.nuevoStock(i);
+//                Stock s = stockRN.nuevoStock(i);
                 //Es un egreso de stock por lo tanto convertimos la cantidad a negativo
-                s.setStocks(s.getStocks().negate());  
+//                s.setStocks(s.getStocks().negate());  
                 
-                if(!stockRN.isProductoDisponible(s)){
-    
-                    String mensaje = "Stock suficiente para "
-                            + i.getProducto().getDescripcion() + " | Deposito " + i.getDeposito().getCodigo()
-                            + (i.getProducto().getAdministraAtributo1().equals("S")? "| Atributo1 " + i.getAtributo1() :"")
-                            + (i.getProducto().getAdministraAtributo2().equals("S")? "| Atributo2 " + i.getAtributo2():"")
-                            + (i.getProducto().getAdministraAtributo3().equals("S")? "| Atributo3 " + i.getAtributo3():"")
-                            + (i.getProducto().getAdministraAtributo4().equals("S")? "| Atributo4 " + i.getAtributo4():"")
-                            + (i.getProducto().getAdministraAtributo5().equals("S")? "| Atributo5 " + i.getAtributo5():"")
-                            + (i.getProducto().getAdministraAtributo6().equals("S")? "| Atributo6 " + i.getAtributo6():"")
-                            + (i.getProducto().getAdministraAtributo7().equals("S")? "| Atributo7 " + i.getAtributo7():"");
-
-                    throw new ExcepcionGeneralSistema(mensaje);                            
-
-                }                
+//                if(!stockRN.isProductoDisponible(s)){
+//    
+//                    String mensaje = "Stock suficiente para "
+//                            + i.getProducto().getDescripcion() + " | Deposito " + i.getDeposito().getCodigo()
+//                            + (i.getProducto().getAdministraAtributo1().equals("S")? "| Atributo1 " + i.getAtributo1() :"")
+//                            + (i.getProducto().getAdministraAtributo2().equals("S")? "| Atributo2 " + i.getAtributo2():"")
+//                            + (i.getProducto().getAdministraAtributo3().equals("S")? "| Atributo3 " + i.getAtributo3():"")
+//                            + (i.getProducto().getAdministraAtributo4().equals("S")? "| Atributo4 " + i.getAtributo4():"")
+//                            + (i.getProducto().getAdministraAtributo5().equals("S")? "| Atributo5 " + i.getAtributo5():"")
+//                            + (i.getProducto().getAdministraAtributo6().equals("S")? "| Atributo6 " + i.getAtributo6():"")
+//                            + (i.getProducto().getAdministraAtributo7().equals("S")? "| Atributo7 " + i.getAtributo7():"");
+//
+//                    throw new ExcepcionGeneralSistema(mensaje);                            
+//
+//                }                
             }
         }
 
@@ -438,11 +438,11 @@ public class MovimientoStockRN {
 
             for(ItemTransferenciaStock i: m.getItemTransferencia()){
 
-                Stock s = stockRN.nuevoStock(i);
-                if(!stockRN.isProductoDisponible(s)){
-                     throw new ExcepcionGeneralSistema("No existe stock suficiente para el producto "
-                            + "" + i.getProducto().getDescripcion() + " en el deposito " + i.getDeposito().getCodigo());
-                }                
+//                Stock s = stockRN.nuevoStock(i);
+//                if(!stockRN.isProductoDisponible(s)){
+//                     throw new ExcepcionGeneralSistema("No existe stock suficiente para el producto "
+//                            + "" + i.getProducto().getDescripcion() + " en el deposito " + i.getDeposito().getCodigo());
+//                }                
             }
         }
     }
@@ -469,7 +469,7 @@ public class MovimientoStockRN {
                     ItemTransferenciaStock t = nuevoItemTransferencia(m);
                     t.setProducto(i.getProducto());  
                     t.setUnidadMedida(i.getUnidadMedida());                    
-                    t.setPrecio(i.getPrecio());                    
+//                    t.setPrecio(i.getPrecio());                    
                     t.setAtributo1(i.getAtributo1());
                     t.setAtributo2(i.getAtributo2());
                     t.setAtributo3(i.getAtributo3());
@@ -483,7 +483,7 @@ public class MovimientoStockRN {
                     }
 
                     t.setCantidad(i.getCantidad());
-                    t.setStocks(i.getCantidad().negate());
+//                    t.setStocks(i.getCantidad().negate());
                     m.getItemTransferencia().add(t);
                 }
             }
@@ -501,16 +501,16 @@ public class MovimientoStockRN {
 
         for(ItemProductoStock i: m.getItemsProducto()){
            
-            Stock nStock = stockRN.nuevoStock(i);
-            stockRN.guardar(nStock);
+//            Stock nStock = stockRN.nuevoStock(i);
+//            stockRN.guardar(nStock);
         }
 
         if(m.getItemTransferencia()!=null){
 
             for(ItemTransferenciaStock i: m.getItemTransferencia()){
 
-                Stock nStock = stockRN.nuevoStock(i);
-                stockRN.guardar(nStock);
+//                Stock nStock = stockRN.nuevoStock(i);
+//                stockRN.guardar(nStock);
             }
         }
     }
@@ -544,15 +544,15 @@ public class MovimientoStockRN {
                 
             //Si es un egreso actualizamos el stock en negativo
             if(m.getTipoMovimiento().equals("E")){
-                i.setStocks(i.getCantidad().negate());                
+//                i.setStocks(i.getCantidad().negate());                
             }else{
-                i.setStocks(i.getCantidad());                   
+//                i.setStocks(i.getCantidad());                   
             } 
         }
         
         if(m.getItemTransferencia()!=null){
             for(ItemMovimientoStock i: m.getItemTransferencia()){
-                i.setStocks(i.getCantidad().negate());
+//                i.setStocks(i.getCantidad().negate());
             }
         }
     }
@@ -636,135 +636,7 @@ public class MovimientoStockRN {
 
         return fItemBorrado;
     }   
-
-    public MovimientoStock generarComprobante(MovimientoFacturacion mf) throws ExcepcionGeneralSistema, Exception {
-        
-        Formulario formulario = formularioRN.getFormulario(mf.getComprobanteStock(),mf.getSucursalStock(),"X"); 
-        
-        MovimientoStock ms = crearMovimiento(mf.getComprobanteStock(),formulario,mf.getSucursalStock());
-        
-        ms.setFechaMovimiento(mf.getFechaMovimiento()); 
-        ms.setMonedaSecundaria(mf.getMonedaSecundaria());
-        ms.setMonedaRegistracion(mf.getMonedaRegistracion());
-        ms.setCotizacion(mf.getCotizacion());                
-        ms.setEntidadComercial(mf.getCliente());
-
-        ms.setDeposito(mf.getDeposito());
-        ms.setDepositoTransferencia(mf.getDepositoTransferencia());
-        
-        ms.getItemsProducto().clear();
-                
-        for(ItemProductoFacturacion ipf: mf.getItemsProducto()){
-                        
-            if(ipf.getProducto()!=null 
-                    && ipf.getProducto().getTipoProducto().getGestionaStock().equals("S")
-                    && ipf.getProducto().getGestionaStock().equals("S")){
-                                
-                ItemProductoStock ips = nuevoItemProducto(ms);
-                ips.setProducto(ipf.getProducto());
-                ips.setObservaciones(ipf.getObservaciones());
-                               
-                ips.setAtributo1(ipf.getAtributo1()!=null? ipf.getAtributo1():"");
-                ips.setAtributo2(ipf.getAtributo2()!=null? ipf.getAtributo2():"");
-                ips.setAtributo3(ipf.getAtributo3()!=null? ipf.getAtributo3():"");
-                ips.setAtributo4(ipf.getAtributo4()!=null? ipf.getAtributo4():"");
-                ips.setAtributo5(ipf.getAtributo5()!=null? ipf.getAtributo5():"");
-                ips.setAtributo6(ipf.getAtributo6()!=null? ipf.getAtributo6():"");
-                ips.setAtributo7(ipf.getAtributo7()!=null? ipf.getAtributo7():"");
-                
-                ips.setCantidad(ipf.getCantidad());
-                ips.setUnidadMedida(ipf.getProducto().getUnidadDeMedida());                        
-                ips.setPrecio(ipf.getProducto().getPrecioReposicion());
-                ips.setTodoOk(true);
-                
-                ips.setMovimiento(ms);
-                ms.getItemsProducto().add(ips);
-            }
-        } 
-        
-        borrarItemsNoValidos(ms);
-        generarItemTransferencia(ms);
-        asignarDepositoItems(ms);   
-        asignarCantidadStock(ms);
-        controlComprobante(ms,true);       
-        generarStock(ms);
-        
-//        if(ms.getItemsProducto().isEmpty()){
-//            ms = null;
-//        }   
-        
-        return ms;
-        
-    }
     
-    /**
-     * 
-     * @param mc Movimiento de compras a partir del cual se genera el movimiento de stock
-     * @return Movimiento de stock generado
-     * @throws ExcepcionGeneralSistema
-     * @throws Exception 
-     */
-    public MovimientoStock generarComprobante(MovimientoCompra mc) throws ExcepcionGeneralSistema, Exception {
-        
-        Formulario formulario = formularioRN.getFormulario(mc.getComprobanteStock(),mc.getSucursalStock(),"X"); 
-        
-        MovimientoStock ms = crearMovimiento(mc.getComprobanteStock(),formulario,mc.getSucursalStock());
-        
-        ms.setFechaMovimiento(mc.getFechaMovimiento()); 
-        ms.setMonedaSecundaria(mc.getMonedaSecundaria());
-        ms.setMonedaRegistracion(mc.getMonedaRegistracion());
-        
-        ms.setCotizacion(mc.getCotizacion());                
-        ms.setEntidadComercial(mc.getProveedor());
-        
-        ms.getItemsProducto().clear();
-                
-        for(ItemProductoCompra ipc: mc.getItemsProducto()){
-                        
-            if(ipc.getProducto()!=null 
-                    && ipc.getProducto().getTipoProducto().getGestionaStock().equals("S")
-                    && ipc.getProducto().getGestionaStock().equals("S")){
-                                
-                for(DetalleItemMovimientoCompra idc:ipc.getItemsDetalle()){
-                    
-                    ItemProductoStock ips = nuevoItemProducto(ms);
-                    ips.setProducto(idc.getProducto());
-                    ips.setObservaciones(ipc.getObservaciones());                             
-                    
-                    ips.setAtributo1(ipc.getAtributo1()!=null? idc.getAtributo1():"");
-                    ips.setAtributo2(ipc.getAtributo2()!=null? idc.getAtributo2():"");
-                    ips.setAtributo3(ipc.getAtributo3()!=null? idc.getAtributo3():"");
-                    ips.setAtributo4(ipc.getAtributo4()!=null? idc.getAtributo4():"");
-                    ips.setAtributo5(ipc.getAtributo5()!=null? idc.getAtributo5():"");
-                    ips.setAtributo6(ipc.getAtributo6()!=null? idc.getAtributo6():"");
-                    ips.setAtributo7(ipc.getAtributo7()!=null? idc.getAtributo7():"");
-                    
-                    ips.setCantidad(idc.getCantidad());
-                    ips.setUnidadMedida(idc.getUnidadMedida());                        
-                    ips.setPrecio(idc.getProducto().getPrecioReposicion());
-                    ips.setTodoOk(true);
-
-                    ips.setMovimiento(ms);
-                    ms.getItemsProducto().add(ips);
-                }
-            }
-        } 
-        
-        borrarItemsNoValidos(ms);
-        generarItemTransferencia(ms);
-        asignarDepositoItems(ms);  
-        asignarCantidadStock(ms);
-        controlComprobante(ms,true);       
-        generarStock(ms);
-        
-        if(ms.getItemsProducto().isEmpty()){
-            ms = null;
-        }   
-        
-        return ms;
-        
-    }
-
     public List<MovimientoStock> getListaByBusqueda(Map<String, String> filtro, int cantidadRegistros) {
         
         return inventarioDAO.getListaByBusqueda(filtro, cantidadRegistros);  

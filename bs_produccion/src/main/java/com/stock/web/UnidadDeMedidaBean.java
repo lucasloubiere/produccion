@@ -7,7 +7,7 @@ package com.stock.web;
 
 import com.global.util.GenericBean;
 import com.global.util.JsfUtil;
-import com.stock.modelo.UnidadDeMedida;
+import com.stock.modelo.UnidadMedida;
 import com.stock.rn.UnidadDeMedidaRN;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ import org.primefaces.event.SelectEvent;
 @ViewScoped
 public class UnidadDeMedidaBean extends GenericBean {
 
-    private UnidadDeMedida unidadDeMedida;
-    private List<UnidadDeMedida> lista;
+    private UnidadMedida unidadDeMedida;
+    private List<UnidadMedida> lista;
     @EJB
     private UnidadDeMedidaRN unidadDeMedidaRN;
 
@@ -52,7 +52,7 @@ public class UnidadDeMedidaBean extends GenericBean {
 
         esNuevo = true;
         buscaMovimiento = false;
-        unidadDeMedida = new UnidadDeMedida();
+        unidadDeMedida = new UnidadMedida();
     }
 
     public void guardar(boolean nuevo) {
@@ -104,7 +104,7 @@ public class UnidadDeMedidaBean extends GenericBean {
     
     }
 
-    public List<UnidadDeMedida> complete(String query) {
+    public List<UnidadMedida> complete(String query) {
         try {
             lista = unidadDeMedidaRN.getListaByBusqueda(query, false, cantidadRegistros);    
             return lista;
@@ -112,38 +112,38 @@ public class UnidadDeMedidaBean extends GenericBean {
         } catch (Exception ex) {
 
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-            return new ArrayList<UnidadDeMedida>();
+            return new ArrayList<UnidadMedida>();
         }
     }
 
     
     public void onSelect(SelectEvent event) {
-        unidadDeMedida = (UnidadDeMedida) event.getObject(); 
+        unidadDeMedida = (UnidadMedida) event.getObject(); 
         esNuevo = false;
         buscaMovimiento = false;
         
     }
 
-    public void seleccionar(UnidadDeMedida u) {
+    public void seleccionar(UnidadMedida u) {
         unidadDeMedida = u;
         esNuevo = false;
         buscaMovimiento = false;
 
     }
 
-    public UnidadDeMedida getUnidadDeMedida() {
+    public UnidadMedida getUnidadDeMedida() {
         return unidadDeMedida;
     }
 
-    public void setUnidadDeMedida(UnidadDeMedida unidadDeMedida) {
+    public void setUnidadDeMedida(UnidadMedida unidadDeMedida) {
         this.unidadDeMedida = unidadDeMedida;
     }
 
-    public List<UnidadDeMedida> getLista() {
+    public List<UnidadMedida> getLista() {
         return lista;
     }
 
-    public void setLista(List<UnidadDeMedida> lista) {
+    public void setLista(List<UnidadMedida> lista) {
         this.lista = lista;
     }
 

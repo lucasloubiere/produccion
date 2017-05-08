@@ -49,73 +49,97 @@ public class MovimientoStock implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+
+    /**
+     * Comprobante de stock
+     */
+    @JoinColumns({
+        @JoinColumn(name = "modcom", referencedColumnName = "MODCOM", nullable = false),
+        @JoinColumn(name = "codcom", referencedColumnName = "CODCOM", nullable = false)
+    })
+    @ManyToOne(fetch = FetchType.LAZY)
+    ComprobanteStock comprobante;
+
+    @JoinColumns({
+        @JoinColumn(name = "modulo", referencedColumnName = "modulo"),
+        @JoinColumn(name = "codfor", referencedColumnName = "codigo")})
+    @ManyToOne(optional = false)
+    private Formulario formulario;
+
+    @JoinColumn(name = "codsuc", referencedColumnName = "codigo")
+    @ManyToOne(optional = false)
+    private Sucursal sucursal;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "numero")
     private int numeroFormulario;
-    @Basic(optional = false)
+        
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
-    private Date fecha;
-    @Basic(optional = false)
+    private Date fechaMovimiento;
+    
     @NotNull
     @Lob
     @Size(min = 1, max = 65535)
     @Column(name = "observaciones")
     private String observaciones;
 
-    @JoinColumn(name = "codsuc", referencedColumnName = "codigo")
-    @ManyToOne(optional = false)
-    private Sucursal sucursal;
-    @JoinColumns({
-        @JoinColumn(name = "modulo", referencedColumnName = "modulo"),
-        @JoinColumn(name = "codfor", referencedColumnName = "codigo")})
-    @ManyToOne(optional = false)
-    private Formulario formulario;
     
     /**
-     * Tipo de movimiento
-     * A = Ajuste
-     * I = Ingreso
-     * E = Egreso
-     * T = Transferencia
-     */    
-    @Column(name = "tipmov", length = 1,nullable = false)
+     * Tipo de movimiento A = Ajuste I = Ingreso E = Egreso T = Transferencia
+     */
+    @Column(name = "tipmov", length = 1, nullable = false)
     private String tipoMovimiento;
-        
+
     /**
      * Deposito ingreso
      */
     @JoinColumn(name = "deposi", referencedColumnName = "CODIGO")
     @ManyToOne(fetch = FetchType.LAZY)
     private Deposito deposito;
-    
+
     /**
      * Deposito egreso
      */
     @JoinColumn(name = "deptra", referencedColumnName = "CODIGO")
     @ManyToOne(fetch = FetchType.LAZY)
     private Deposito depositoTransferencia;
-    
+
     @Column(name = "isanul", length = 1)
     private String esAnulacion;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_mrev", referencedColumnName = "ID")        
+    @JoinColumn(name = "id_mrev", referencedColumnName = "ID")
     private MovimientoStock movimientoReversion;
-            
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch=FetchType.LAZY)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch = FetchType.LAZY)
     private List<ItemProductoStock> itemsProducto;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch=FetchType.LAZY)
-    private List<ItemTransferenciaStock> itemTransferencia; 
-    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch = FetchType.LAZY)
+    private List<ItemTransferenciaStock> itemTransferencia;
+
     @Embedded
     private Auditoria auditoria;
-    
-    @Transient 
+
+    @Transient
     private boolean persistido;
+    
+    @Transient
+    private String atributo1;
+    @Transient
+    private String atributo2;
+    @Transient
+    private String atributo3;
+    @Transient
+    private String atributo4;
+    @Transient
+    private String atributo5;
+    @Transient
+    private String atributo6;
+    @Transient
+    private String atributo7;
 
     public MovimientoStock() {
         this.auditoria = new Auditoria();
@@ -129,7 +153,7 @@ public class MovimientoStock implements Serializable {
     public MovimientoStock(Integer id, int numero, Date fecha, String observaciones, String debaja) {
         this.id = id;
         this.numeroFormulario = numero;
-        this.fecha = fecha;
+        this.fechaMovimiento = fecha;
         this.observaciones = observaciones;
         this.auditoria = new Auditoria();
     }
@@ -150,16 +174,14 @@ public class MovimientoStock implements Serializable {
         this.numeroFormulario = numeroFormulario;
     }
 
+    public Date getFechaMovimiento() {
+        return fechaMovimiento;
+    }
+
+    public void setFechaMovimiento(Date fechaMovimiento) {
+        this.fechaMovimiento = fechaMovimiento;
+    }
     
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
     public String getObservaciones() {
         return observaciones;
     }
@@ -183,7 +205,6 @@ public class MovimientoStock implements Serializable {
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
     }
- 
 
     public Formulario getFormulario() {
         return formulario;
@@ -256,10 +277,70 @@ public class MovimientoStock implements Serializable {
     public void setPersistido(boolean persistido) {
         this.persistido = persistido;
     }
-    
-    
-    
-    
+
+    public ComprobanteStock getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(ComprobanteStock comprobante) {
+        this.comprobante = comprobante;
+    }
+
+    public String getAtributo1() {
+        return atributo1;
+    }
+
+    public void setAtributo1(String atributo1) {
+        this.atributo1 = atributo1;
+    }
+
+    public String getAtributo2() {
+        return atributo2;
+    }
+
+    public void setAtributo2(String atributo2) {
+        this.atributo2 = atributo2;
+    }
+
+    public String getAtributo3() {
+        return atributo3;
+    }
+
+    public void setAtributo3(String atributo3) {
+        this.atributo3 = atributo3;
+    }
+
+    public String getAtributo4() {
+        return atributo4;
+    }
+
+    public void setAtributo4(String atributo4) {
+        this.atributo4 = atributo4;
+    }
+
+    public String getAtributo5() {
+        return atributo5;
+    }
+
+    public void setAtributo5(String atributo5) {
+        this.atributo5 = atributo5;
+    }
+
+    public String getAtributo6() {
+        return atributo6;
+    }
+
+    public void setAtributo6(String atributo6) {
+        this.atributo6 = atributo6;
+    }
+
+    public String getAtributo7() {
+        return atributo7;
+    }
+
+    public void setAtributo7(String atributo7) {
+        this.atributo7 = atributo7;
+    }
     
     @Override
     public int hashCode() {
@@ -285,5 +366,5 @@ public class MovimientoStock implements Serializable {
     public String toString() {
         return "com.stock.modelo.Movimiento[ id=" + id + " ]";
     }
-    
+
 }

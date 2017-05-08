@@ -12,7 +12,7 @@ import com.stock.modelo.Rubro1;
 import com.stock.modelo.Rubro2;
 import com.global.modelo.Sucursal;
 import com.stock.modelo.TipoProducto;
-import com.stock.modelo.UnidadDeMedida;
+import com.stock.modelo.UnidadMedida;
 import com.stock.rn.FormulaRN;
 import com.global.rn.ModuloRN;
 import com.stock.rn.ProductoRN;
@@ -180,7 +180,7 @@ public class ConversoresStock implements Serializable{
                     return null;
                 }
 
-                UnidadDeMedida d = unidadDeMedidaRN.getUnidadMedida(value);
+                UnidadMedida d = unidadDeMedidaRN.getUnidadMedida(value);
                 return d;
             }
 
@@ -190,7 +190,7 @@ public class ConversoresStock implements Serializable{
                     return "";
                 } else {
 
-                    return ((UnidadDeMedida) value).getCodigo()+ "";
+                    return ((UnidadMedida) value).getCodigo()+ "";
                 }
             }
         };

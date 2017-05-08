@@ -45,7 +45,7 @@ public class Stock implements Serializable {
     private Producto producto;
     @JoinColumn(name = "unidadDeMedida", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(optional = false)
-    private UnidadDeMedida unidadDeMedida;
+    private UnidadMedida unidadDeMedida;
     @Embedded
     private Auditoria auditoria;
     
@@ -102,11 +102,11 @@ public class Stock implements Serializable {
         this.producto = producto;
     }
 
-    public UnidadDeMedida getUnidadDeMedida() {
+    public UnidadMedida getUnidadDeMedida() {
         return unidadDeMedida;
     }
 
-    public void setUnidadDeMedida(UnidadDeMedida unidadDeMedida) {
+    public void setUnidadDeMedida(UnidadMedida unidadDeMedida) {
         this.unidadDeMedida = unidadDeMedida;
     }
 

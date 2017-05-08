@@ -7,8 +7,12 @@ package com.stock.rn;
 
 import com.global.dao.FormularioDAO;
 import com.global.excepciones.ExcepcionGeneralSistema;
+import com.global.modelo.Comprobante;
 import com.global.modelo.Formulario;
 import com.global.modelo.FormularioPK;
+import com.global.modelo.FormularioPorSituacionIVA;
+import com.global.modelo.Sucursal;
+import com.global.rn.FormularioPorSituacionIVARN;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,7 +30,7 @@ import javax.ejb.TransactionAttributeType;
 public class FormularioRN {
 
     @EJB private FormularioDAO formularioDAO;
-    
+    @EJB private FormularioPorSituacionIVARN formularioPorSituacionIVARN;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)     
     public void guardar(Formulario formulario, boolean esNuevo) throws ExcepcionGeneralSistema {
@@ -62,6 +66,38 @@ public class FormularioRN {
         }else{
             formularioDAO.editar(formulario);
         }
+    }
+     
+    public Formulario getFormulario(Comprobante comprobante, Sucursal sucursal, String cndIva) throws ExcepcionGeneralSistema {
+
+        
+        if(comprobante==null){
+            throw new ExcepcionGeneralSistema("No es posible obtener formulario, comprobante en blanco");
+        }
+        
+        if(cndIva==null){
+            throw new ExcepcionGeneralSistema("No es posible obtener formulario, la entidad comercial seleccionado no tienen condición de iva asignada");
+        }
+        
+        if(sucursal==null){
+            throw new ExcepcionGeneralSistema("No es posible obtener formulario, sucursal en blanco");
+        }
+        
+        /**
+         * Validamos el tipo de movimiento para buscar el formulario por situacion de iva
+         * lo correcto es verificar desde donde registra para ver si se busca la situacion de iva
+         */
+        FormularioPorSituacionIVA fpsi;
+        fpsi = formularioPorSituacionIVARN.getFormulario(comprobante.getModulo(), 
+                comprobante.getCodigo(),
+                sucursal.getCodigo(),
+                cndIva);
+        
+        if(fpsi==null) throw new ExcepcionGeneralSistema("No se encontró formulario por situación de iva para comprobante "
+                + "("+ comprobante.getModulo()+"-"+comprobante.getCodigo()+")"+ comprobante.getDescripcion() 
+                + " Condición de IVA: " + cndIva);
+        
+        return  fpsi.getFormulario();
     }
     
     public void actualizarUltimoNumero(Formulario formulario) throws Exception {

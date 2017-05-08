@@ -7,7 +7,7 @@ package com.stock.rn;
 
 import com.global.excepciones.ExcepcionGeneralSistema;
 import com.stock.dao.UnidadDeMedidaDAO;
-import com.stock.modelo.UnidadDeMedida;
+import com.stock.modelo.UnidadMedida;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -25,11 +25,11 @@ public class UnidadDeMedidaRN implements Serializable {
    @EJB private UnidadDeMedidaDAO unidadDeMedidaDAO;
 
    @TransactionAttribute(TransactionAttributeType.REQUIRED)     
-   public void guardar(UnidadDeMedida unidadDeMedida, boolean esNuevo) throws Exception{
+   public void guardar(UnidadMedida unidadDeMedida, boolean esNuevo) throws Exception{
        
        if (esNuevo){
            
-           if(unidadDeMedidaDAO.getObjeto(UnidadDeMedida.class, unidadDeMedida.getCodigo())!=null){
+           if(unidadDeMedidaDAO.getObjeto(UnidadMedida.class, unidadDeMedida.getCodigo())!=null){
                throw new ExcepcionGeneralSistema("Ya existe unidad de medida con el código"+ unidadDeMedida.getCodigo());
            }
            unidadDeMedidaDAO.crear(unidadDeMedida);
@@ -38,18 +38,18 @@ public class UnidadDeMedidaRN implements Serializable {
        }     
     }
    
-   public void eliminar(UnidadDeMedida unidadDeMedida) throws Exception {
+   public void eliminar(UnidadMedida unidadDeMedida) throws Exception {
         
         unidadDeMedidaDAO.eliminar(unidadDeMedida);
         
     }
    
    
-    public UnidadDeMedida getUnidadMedida(String cod){
+    public UnidadMedida getUnidadMedida(String cod){
         return unidadDeMedidaDAO.getUnidadMedida(cod);
     }
  
-    public List<UnidadDeMedida> getListaByBusqueda(String txtBusqueda, boolean mostrarDebaja, int cantidadRegistros) {
+    public List<UnidadMedida> getListaByBusqueda(String txtBusqueda, boolean mostrarDebaja, int cantidadRegistros) {
         
         return unidadDeMedidaDAO.getListaByBusqueda(txtBusqueda, mostrarDebaja, cantidadRegistros);
     }    

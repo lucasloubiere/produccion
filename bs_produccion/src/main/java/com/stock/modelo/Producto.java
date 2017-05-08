@@ -52,7 +52,7 @@ public class Producto implements Serializable {
 
     @JoinColumn(name = "unidadDeMedida", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(optional = false)
-    private UnidadDeMedida unidadDeMedida;
+    private UnidadMedida unidadDeMedida;
   
     @JoinColumn(name = "tipoProducto", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(optional = false)
@@ -75,6 +75,27 @@ public class Producto implements Serializable {
         @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false,insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private Rubro3 rubro3;
+    
+    @Column(name = "adatr1", length = 1)
+    private String administraAtributo1;
+      
+    @Column(name = "adatr2", length = 1)
+    private String administraAtributo2;
+    //Numero de envase
+    @Column(name = "adatr3", length = 1)
+    private String administraAtributo3;
+    //Numero otros
+    @Column(name = "adatr4", length = 1)
+    private String administraAtributo4;
+    //Numero de atributo
+    @Column(name = "adatr5", length = 1)
+    private String administraAtributo5;
+    //Numero de estante
+    @Column(name = "adatr6", length = 1)
+    private String administraAtributo6;
+    
+    @Column(name = "adatr7", length = 1)
+    private String administraAtributo7;
     
     @Embedded
     private Auditoria auditoria;
@@ -127,11 +148,11 @@ public class Producto implements Serializable {
         this.codigoDeBarra = codigoDeBarra;
     }
 
-    public UnidadDeMedida getUnidadDeMedida() {
+    public UnidadMedida getUnidadDeMedida() {
         return unidadDeMedida;
     }
 
-    public void setUnidadDeMedida(UnidadDeMedida unidadDeMedida) {
+    public void setUnidadDeMedida(UnidadMedida unidadDeMedida) {
         this.unidadDeMedida = unidadDeMedida;
     }
 
@@ -176,6 +197,64 @@ public class Producto implements Serializable {
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
     }
+
+    public String getAdministraAtributo1() {
+        return administraAtributo1;
+    }
+
+    public void setAdministraAtributo1(String administraAtributo1) {
+        this.administraAtributo1 = administraAtributo1;
+    }
+
+    public String getAdministraAtributo2() {
+        return administraAtributo2;
+    }
+
+    public void setAdministraAtributo2(String administraAtributo2) {
+        this.administraAtributo2 = administraAtributo2;
+    }
+
+    public String getAdministraAtributo3() {
+        return administraAtributo3;
+    }
+
+    public void setAdministraAtributo3(String administraAtributo3) {
+        this.administraAtributo3 = administraAtributo3;
+    }
+
+    public String getAdministraAtributo4() {
+        return administraAtributo4;
+    }
+
+    public void setAdministraAtributo4(String administraAtributo4) {
+        this.administraAtributo4 = administraAtributo4;
+    }
+
+    public String getAdministraAtributo5() {
+        return administraAtributo5;
+    }
+
+    public void setAdministraAtributo5(String administraAtributo5) {
+        this.administraAtributo5 = administraAtributo5;
+    }
+
+    public String getAdministraAtributo6() {
+        return administraAtributo6;
+    }
+
+    public void setAdministraAtributo6(String administraAtributo6) {
+        this.administraAtributo6 = administraAtributo6;
+    }
+
+    public String getAdministraAtributo7() {
+        return administraAtributo7;
+    }
+
+    public void setAdministraAtributo7(String administraAtributo7) {
+        this.administraAtributo7 = administraAtributo7;
+    }
+    
+    
 
     
     
