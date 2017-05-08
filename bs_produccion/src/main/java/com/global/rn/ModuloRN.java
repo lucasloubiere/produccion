@@ -8,7 +8,6 @@ package com.global.rn;
 import com.global.excepciones.ExcepcionGeneralSistema;
 import com.global.dao.ModuloDAO;
 import com.global.modelo.Modulo;
-import com.global.modelo.Sucursal;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -53,11 +52,7 @@ public class ModuloRN {
     public Modulo getModulo(String value) {
         
         return moduloDAO.getModulo(value);
-    }
-
-    public Sucursal getSucursal(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    }   
 }
 
 

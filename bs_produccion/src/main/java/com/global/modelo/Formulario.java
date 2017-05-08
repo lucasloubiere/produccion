@@ -85,11 +85,7 @@ public class Formulario implements Serializable {
      */
     @Column(name = "MAXITM")
     private Short cantidadMaximaItems;
-    /**
-     * Nivel de impresión
-     */
-    @Column(name = "IMPRES")
-    private Short nivelImpresion;
+    
     /**
      * Nombre del reporte
      */
@@ -104,39 +100,14 @@ public class Formulario implements Serializable {
     @Column(name = "RECFEC", nullable = false, length = 1)
     private String recuperacionFecha;
 
-    /**
-     * Número de cai
-     */
-    @Column(name = "NROCAI", length = 20)
-    private String numeroCAI;
-
-    /**
-     * Fecha de cai
-     */
-    @Column(name = "FCHCAI")
-    @Temporal(TemporalType.DATE)
-    private Date fechaCAI;
-    /**
-     * Corresponde factua credito
-     */
-    @Column(name = "TRAFCR")
-    private Character correspondeFacturaCredito;
-    /**
-     * Cantidad de hojas ocupadas por el formulario en impresion
-     */
-    @Column(name = "HSTFOR")
-    private Integer hojaFormulario;
+    
     /**
      * Observaciones
      */
     @Lob
     @Column(name = "TEXTOS", length = 2147483647)
     private String Textos;
-    /**
-     * Numeracion personalizada
-     */
-    @Column(name = "PERSON")
-    private Character numeracionPersonalizada;
+    
     /**
      * Permite modificar numeracion
      */
@@ -147,21 +118,7 @@ public class Formulario implements Serializable {
      */
     @Column(name = "MODFEC")
     private String modificaFecha;
-    /**
-     *     Controla secuencialidad de numeración
-     */
-    @Column(name = "SECNUM")
-    private Character controlaSecuenciaNumeracion;
-    /**
-     * Controla secuencialidad de fecha
-     */
-    @Column(name = "SECFEC")
-    private Character controlaSecuenciaFecha;
-    /**
-     * permite registrar en períodos cerrados
-     */
-    @Column(name = "REPECE")
-    private Character registraPeriodosCerrados;
+    
     /**
      * Código DGI
      */
@@ -171,7 +128,6 @@ public class Formulario implements Serializable {
 
     @Embedded
     private Auditoria auditoria;
-
 
 
     public Formulario() {
@@ -230,28 +186,12 @@ public class Formulario implements Serializable {
         this.codigoDGI = codigoDGI;
     }
 
-    public Character getControlaSecuenciaFecha() {
-        return controlaSecuenciaFecha;
+    public String getModfor() {
+        return modfor;
     }
 
-    public void setControlaSecuenciaFecha(Character controlaSecuenciaFecha) {
-        this.controlaSecuenciaFecha = controlaSecuenciaFecha;
-    }
-
-    public Character getControlaSecuenciaNumeracion() {
-        return controlaSecuenciaNumeracion;
-    }
-
-    public void setControlaSecuenciaNumeracion(Character controlaSecuenciaNumeracion) {
-        this.controlaSecuenciaNumeracion = controlaSecuenciaNumeracion;
-    }
-
-    public Character getCorrespondeFacturaCredito() {
-        return correspondeFacturaCredito;
-    }
-
-    public void setCorrespondeFacturaCredito(Character correspondeFacturaCredito) {
-        this.correspondeFacturaCredito = correspondeFacturaCredito;
+    public void setModfor(String modfor) {
+        this.modfor = modfor;
     }
 
     public String getDescripcion() {
@@ -262,116 +202,12 @@ public class Formulario implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaCAI() {
-        return fechaCAI;
-    }
-
-    public void setFechaCAI(Date fechaCAI) {
-        this.fechaCAI = fechaCAI;
-    }
-
-    public Integer getHojaFormulario() {
-        return hojaFormulario;
-    }
-
-    public void setHojaFormulario(Integer hojaFormulario) {
-        this.hojaFormulario = hojaFormulario;
-    }
-
-    public String getLetra() {
-        return letra;
-    }
-
-    public void setLetra(String letra) {
-        this.letra = letra;
-    }
-
-    public String getModfor() {
-        return modfor;
-    }
-
-    public void setModfor(String modfor) {
-        this.modfor = modfor;
-    }
-
-    public String getModificaFecha() {
-        return modificaFecha;
-    }
-
-    public void setModificaFecha(String modificaFecha) {
-        this.modificaFecha = modificaFecha;
-    }
-
-    public String getModificaNumeracion() {
-        return modificaNumeracion;
-    }
-
-    public void setModificaNumeracion(String modificaNumeracion) {
-        this.modificaNumeracion = modificaNumeracion;
-    }
-
-    public Short getNivelImpresion() {
-        return nivelImpresion;
-    }
-
-    public void setNivelImpresion(Short nivelImpresion) {
-        this.nivelImpresion = nivelImpresion;
-    }
-
-    public String getNombreReporte() {
-        return nombreReporte;
-    }
-
-    public void setNombreReporte(String nombreReporte) {
-        this.nombreReporte = nombreReporte;
-    }
-
-    public Character getNumeracionPersonalizada() {
-        return numeracionPersonalizada;
-    }
-
-    public void setNumeracionPersonalizada(Character numeracionPersonalizada) {
-        this.numeracionPersonalizada = numeracionPersonalizada;
-    }
-
-    public String getNumeroCAI() {
-        return numeroCAI;
-    }
-
-    public void setNumeroCAI(String numeroCAI) {
-        this.numeroCAI = numeroCAI;
-    }
-
-    public String getRecuperacionFecha() {
-        return recuperacionFecha;
-    }
-
-    public void setRecuperacionFecha(String recuperacionFecha) {
-        this.recuperacionFecha = recuperacionFecha;
-    }
-
-    public Character getRegistraPeriodosCerrados() {
-        return registraPeriodosCerrados;
-    }
-
-    public void setRegistraPeriodosCerrados(Character registraPeriodosCerrados) {
-        this.registraPeriodosCerrados = registraPeriodosCerrados;
-    }
-
     public String getTipoNumeracion() {
         return tipoNumeracion;
     }
 
     public void setTipoNumeracion(String tipoNumeracion) {
         this.tipoNumeracion = tipoNumeracion;
-    }
-
-    public Date getUltimaFecha() {
-        return ultimaFecha;
-    }
-
-    public void setUltimaFecha(Date ultimaFecha) {
-        this.ultimaFecha = ultimaFecha;
     }
 
     public Integer getUltimoNumero() {
@@ -382,6 +218,54 @@ public class Formulario implements Serializable {
         this.ultimoNumero = ultimoNumero;
     }
 
+    public Date getUltimaFecha() {
+        return ultimaFecha;
+    }
+
+    public void setUltimaFecha(Date ultimaFecha) {
+        this.ultimaFecha = ultimaFecha;
+    }
+
+    public String getLetra() {
+        return letra;
+    }
+
+    public void setLetra(String letra) {
+        this.letra = letra;
+    }
+
+    public String getNombreReporte() {
+        return nombreReporte;
+    }
+
+    public void setNombreReporte(String nombreReporte) {
+        this.nombreReporte = nombreReporte;
+    }
+
+    public String getRecuperacionFecha() {
+        return recuperacionFecha;
+    }
+
+    public void setRecuperacionFecha(String recuperacionFecha) {
+        this.recuperacionFecha = recuperacionFecha;
+    }
+
+    public String getModificaNumeracion() {
+        return modificaNumeracion;
+    }
+
+    public void setModificaNumeracion(String modificaNumeracion) {
+        this.modificaNumeracion = modificaNumeracion;
+    }
+
+    public String getModificaFecha() {
+        return modificaFecha;
+    }
+
+    public void setModificaFecha(String modificaFecha) {
+        this.modificaFecha = modificaFecha;
+    }
+
     public Auditoria getAuditoria() {
         return auditoria;
     }
@@ -389,6 +273,9 @@ public class Formulario implements Serializable {
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
     }
+    
+    
+
     
     @Override
     public boolean equals(Object obj) {

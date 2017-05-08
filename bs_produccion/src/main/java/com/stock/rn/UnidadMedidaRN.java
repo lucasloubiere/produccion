@@ -6,7 +6,7 @@
 package com.stock.rn;
 
 import com.global.excepciones.ExcepcionGeneralSistema;
-import com.stock.dao.UnidadDeMedidaDAO;
+import com.stock.dao.UnidadMedidaDAO;
 import com.stock.modelo.UnidadMedida;
 import java.io.Serializable;
 import java.util.List;
@@ -20,9 +20,9 @@ import javax.ejb.TransactionAttributeType;
  * @author lloubiere
  */
 @Stateless
-public class UnidadDeMedidaRN implements Serializable {
+public class UnidadMedidaRN implements Serializable {
 
-   @EJB private UnidadDeMedidaDAO unidadDeMedidaDAO;
+   @EJB private UnidadMedidaDAO unidadDeMedidaDAO;
 
    @TransactionAttribute(TransactionAttributeType.REQUIRED)     
    public void guardar(UnidadMedida unidadDeMedida, boolean esNuevo) throws Exception{

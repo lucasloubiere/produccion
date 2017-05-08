@@ -8,6 +8,7 @@ package com.stock.rn;
 import com.global.excepciones.ExcepcionGeneralSistema;
 import com.global.modelo.Formulario;
 import com.global.modelo.Sucursal;
+import com.global.rn.FormularioRN;
 import com.global.rn.SucursalRN;
 import com.stock.dao.ComprobanteStockDAO;
 import com.stock.dao.MovimientoStockDAO;

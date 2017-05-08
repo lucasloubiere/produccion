@@ -8,9 +8,9 @@ package com.stock.web;
 
 
 import com.global.modelo.Formulario;
+import com.global.rn.FormularioRN;
 import com.global.util.GenericBean;
 import com.global.util.JsfUtil;
-import com.stock.rn.FormularioRN;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

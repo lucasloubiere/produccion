@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:bs="http://java.sun.com/jsf/composite/components/beansoft">
+
+    <ui:composition template="/template.xhtml" >
+
+        <f:metadata>        
+            <f:viewParam name="TITULO" value="#{comprobanteStockBean.titulo}"/>
+        </f:metadata>
+
+        <ui:define name="titulo" >
+            #{comprobanteStockBean.titulo}
+        </ui:define>
+
+        <ui:define name="menu">
+            <!-- MENU -->
+            <p:menubar id="menuBar">               
+                <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                            actionListener="#{comprobanteStockBean.nuevo}"
+                            process="@this"
+                            update="@form" 
+                            immediate="true" >
+                    <p:confirm header="Confirmacion" message="¿Está seguro? Perderá todos los cambios no guardados" icon="ui-icon-alert" />
+                </p:menuitem>
+
+                <p:menuitem value="Guardar" icon="fa fa-save"
+                            actionListener="#{comprobanteStockBean.guardar(false)}"       
+                            rendered="#{not comprobanteStockBean.buscaMovimiento}"
+                            update="@form" />
+                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                            actionListener="#{comprobanteStockBean.guardar(true)}"                            
+                            rendered="#{not comprobanteStockBean.buscaMovimiento}"
+                            oncomplete="btnNew.click()"
+                            update="@form" />
+
+                <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                            actionListener="#{comprobanteStockBean.habilitaDeshabilita('S')}"
+                            rendered="#{not empty comprobanteStockBean.comprobante and not comprobanteStockBean.esNuevo and comprobanteStockBean.comprobante.auditoria.debaja eq 'N'}"
+                            process="@this"
+                            update="@form" />
+
+                <p:menuitem value="Habilitar" icon="fa fa-check"
+                            actionListener="#{comprobanteStockBean.habilitaDeshabilita('N')}"
+                            rendered="#{not empty comprobanteStockBean.comprobante and not comprobanteStockBean.esNuevo and comprobanteStockBean.comprobante.auditoria.debaja eq 'S'}"
+                            process="@this"
+                            update="@form" />
+
+                <p:menuitem value="Buscar" icon="fa fa-search" 
+                            actionListener="#{comprobanteStockBean.buscar()}"
+                            process="@this" 
+                            oncomplete="PF('dlg_comprobante_stock').show()" 
+                            update="buscadorComprobanteStock"
+                            immediate="true" /> 
+            </p:menubar>
+        </ui:define>
+
+        <ui:define name="contenido" >
+
+            <p:remoteCommand name="procesarComprobanteStock" process="@this" update="@form" />
+
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+            <p:spacer width="100%" height="1em" />             
+
+            <!-- DATOS -->
+            <p:panel header="Datos" >
+
+                <p:panelGrid columns="2" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container40, Container60 ui-datafield" >
+
+                    <h:outputText value="Código" />                        
+                    <p:inputText value="#{comprobanteStockBean.comprobante.codigo}" 
+                                 readonly="#{not comprobanteStockBean.esNuevo}"                                     
+                                 required="true" 
+                                 requiredMessage="El código es necesario" />
+
+                    <h:outputText value="Descripción" />                                                  
+                    <p:inputText value="#{comprobanteStockBean.comprobante.descripcion}" 
+                                 required="true" 
+                                 requiredMessage="La descripción es necesaria" />
+
+                    <h:outputText value="Título" />                                                  
+                    <p:inputText value="#{comprobanteStockBean.comprobante.titulo}" 
+                                 required="true" 
+                                 requiredMessage="El título es necesario" />
+
+                    <h:outputText value="Deposito egreso" />
+                    <p:selectOneMenu value="#{comprobanteStockBean.comprobante.depositoTransferencia}" 
+                                     required="false" requiredMessage="Seleccione el depósito de egreso"
+                                     converter="#{conversoresStock.deposito}" 
+                                     effect="fade"  filter="true" >  
+                        <p:ajax process="@this" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Deposito ingreso" />
+                    <p:selectOneMenu value="#{comprobanteStockBean.comprobante.deposito}" 
+                                     required="false" requiredMessage="Seleccione el depósito de ingreso"
+                                     converter="#{conversoresStock.deposito}" 
+                                     effect="fade"  filter="true" >  
+                        <p:ajax process="@this" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Es Comprobante de Reversión *" />
+                    <p:selectOneMenu value="#{comprobanteStockBean.comprobante.esComprobanteReversion}" 
+                                     required="true" requiredMessage="Seleccione si es comprobante de reversión"  >
+                        <p:ajax process="@this" />
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Si" itemValue="S" />
+                        <f:selectItem itemLabel="No" itemValue="N" />                                    
+                    </p:selectOneMenu>
+                    
+                    <h:outputText value="Cant. Copias" />                        
+                    <p:inputText value="#{comprobanteStockBean.comprobante.copias}" 
+                                 required="true" 
+                                 requiredMessage="La cantidad de copias es necesario" />
+
+                    <h:outputText value="Recuperacion de Fecha*" />
+                    <p:selectOneMenu value="#{comprobanteStockBean.comprobante.recuperacionFecha}" 
+                                     required="true" requiredMessage="Seleccione recuperación de fecha"  >
+                        <p:ajax process="@this" />
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Fecha Actual" itemValue="A" />
+                        <f:selectItem itemLabel="Ultima Fecha" itemValue="U" />                                    
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Observaciones" />
+                    <p:inputTextarea style="width: 100%" rows="3" value="#{comprobanteStockBean.comprobante.textos}" />
+
+                </p:panelGrid>
+
+
+                <p:tabView>
+
+                    <p:tab title="Formulario por Condición de IVA">
+
+                        <p:dataTable id="tablaFSI" var="f"  reflow="true"
+                                     value="#{comprobanteStockBean.comprobante.formulariosPorSituacionIVA}" 
+                                     emptyMessage="No se encontraron resultados"                                             
+                                     rows="10" paginator="true" >
+
+                            <f:facet name="footer" >                                            
+
+                                <p:commandButton icon="fa fa-plus"
+                                                 actionListener="#{comprobanteStockBean.nuevoFormularioSituacionIva()}"
+                                                 value="Agregar formulario"
+                                                 process="@this"                                                                 
+                                                 oncomplete="PF('dlgFormularioSituacionIva').show()"
+                                                 rendered="#{not comprobanteStockBean.esNuevo}"/>
+
+                            </f:facet>
+
+                            <p:column headerText="" style="text-align: center;" >
+                                <p:commandButton icon="fa fa-edit"
+                                                 title="Modificar item"
+                                                 actionListener="#{comprobanteStockBean.seleccionarFormulario(f)}"  
+                                                 process="@this"
+                                                 oncomplete="PF('dlgFormularioSituacionIva').show()"/>
+
+                            </p:column>
+
+                            <p:column headerText="Sucursal" sortBy="#{f.sucursal.codigo}" >                    
+                                <h:outputText value="#{f.sucursal.codigo}" />                                        
+                            </p:column>
+
+                            <p:column headerText="Condición de IVA" >                         
+                                <h:outputText value="#{f.condicionDeIva.codigo}" /> 
+                                -
+                                <h:outputText value="#{f.condicionDeIva.descripcion}" />                             
+                            </p:column>
+
+                            <p:column headerText="Formulario" >                         
+                                <h:outputText value="#{f.formulario.codigo}" /> 
+                                -
+                                <h:outputText value="#{f.formulario.descripcion}" />                             
+                            </p:column>
+
+                        </p:dataTable> 
+
+                        <p:panelGrid layout="grid" columns="1"  >
+                            <h:panelGroup layout="block" >
+                                <p:selectBooleanCheckbox value="#{comprobanteStockBean.mostrarFormularioSituacionIvaDebaja}" >
+                                    <p:ajax process="@this" update="tablaFSI" 
+                                            listener="#{comprobanteStockBean.sincronizarFormulario()}" />
+                                </p:selectBooleanCheckbox>
+                                Mostrar registros deshabilitados                                        
+                            </h:panelGroup>  
+                        </p:panelGrid>
+
+                    </p:tab>
+
+                </p:tabView>
+
+            </p:panel>
+
+        </ui:define>
+
+        <ui:define name="dialogos" >  
+
+            <ui:include src="/stock/busqueda/buscadorComprobante.xhtml" />
+
+            <bs:agregarFormularioSituacionIva accionFinalizar="#{comprobanteStockBean.sincronizarFormulario()}" />     
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+

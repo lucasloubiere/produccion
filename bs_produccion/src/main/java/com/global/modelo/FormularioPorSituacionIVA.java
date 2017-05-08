@@ -73,7 +73,7 @@ public class FormularioPorSituacionIVA implements Serializable {
     /**
      * Nombre del reporte
      */
-    @Column(name = "RPTNAM", length = 15)
+    @Column(name = "RPTNAM", length = 200)
     private String nombreReporte;
     
     @Embedded

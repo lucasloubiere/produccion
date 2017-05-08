@@ -8,7 +8,7 @@ package com.stock.web;
 import com.global.util.GenericBean;
 import com.global.util.JsfUtil;
 import com.stock.modelo.UnidadMedida;
-import com.stock.rn.UnidadDeMedidaRN;
+import com.stock.rn.UnidadMedidaRN;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,7 +30,7 @@ public class UnidadDeMedidaBean extends GenericBean {
     private UnidadMedida unidadDeMedida;
     private List<UnidadMedida> lista;
     @EJB
-    private UnidadDeMedidaRN unidadDeMedidaRN;
+    private UnidadMedidaRN unidadDeMedidaRN;
 
     /**
      * Creates a new instance of UnidadDeMedidaBean

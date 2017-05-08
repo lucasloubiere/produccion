@@ -36,8 +36,7 @@ public class ComprobanteStockBean extends GenericBean implements Serializable{
 
     @EJB private ComprobanteStockRN comprobanteRN;
     @EJB private FormularioPorSituacionIVARN formularioSituacionIvaRN;
-    
-    
+        
     private ComprobanteStock comprobante;
     private List<ComprobanteStock> lista;
     

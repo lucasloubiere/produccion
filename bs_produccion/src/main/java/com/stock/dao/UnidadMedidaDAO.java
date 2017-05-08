@@ -18,7 +18,7 @@ import javax.persistence.Query;
  * @author lloubiere
  */
 @Stateless
-public class UnidadDeMedidaDAO extends BaseDAO{
+public class UnidadMedidaDAO extends BaseDAO{
     
     public UnidadMedida getUnidadMedida(String codigo) {
         return getObjeto(UnidadMedida.class, codigo);
@@ -30,7 +30,7 @@ public List<UnidadMedida> getTipoProductoByBusqueda(String txtBusqueda, boolean 
         System.err.println("cantMax " + cantMax);                
         
         try {            
-            String sQuery = "SELECT e FROM UnidadDeMedida e "
+            String sQuery = "SELECT e FROM UnidadMedida e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
                     + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
                     + " ORDER BY e.codigo";
@@ -51,11 +51,11 @@ public List<UnidadMedida> getTipoProductoByBusqueda(String txtBusqueda, boolean 
         }  
     }
     
-     public UnidadMedida getUnidadDeMedidaByCodigo(String codigo) {
+     public UnidadMedida getUnidadMedidaByCodigo(String codigo) {
         return getObjeto(UnidadMedida.class, "codigo", codigo);
     }
 
-    public UnidadMedida getUnidadDeMedidaByDescripcion(String descripcion) {
+    public UnidadMedida getUnidadMedidaByDescripcion(String descripcion) {
         return getObjeto(UnidadMedida.class, "descripcion", descripcion);
     }
     // Add business logic below. (Right-click in editor and choose
@@ -64,7 +64,7 @@ public List<UnidadMedida> getTipoProductoByBusqueda(String txtBusqueda, boolean 
    public List<UnidadMedida> getListaByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
         try {
             
-            String sQuery = "SELECT e FROM UnidadDeMedida e "
+            String sQuery = "SELECT e FROM UnidadMedida e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
                     + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
                     + " ORDER BY e.codigo";
