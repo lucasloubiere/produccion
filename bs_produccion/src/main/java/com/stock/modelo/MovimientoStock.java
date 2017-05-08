@@ -61,7 +61,7 @@ public class MovimientoStock implements Serializable {
     ComprobanteStock comprobante;
 
     @JoinColumns({
-        @JoinColumn(name = "modulo", referencedColumnName = "modulo"),
+        @JoinColumn(name = "modfor", referencedColumnName = "modulo"),
         @JoinColumn(name = "codfor", referencedColumnName = "codigo")})
     @ManyToOne(optional = false)
     private Formulario formulario;

@@ -35,20 +35,20 @@ public class Formulario implements Serializable {
      * Modulo de formulario
      */
     @Id
-    @Column(name = "MODFOR", nullable = false, length = 2)
+    @Column(name = "modfor", nullable = false, length = 2)
     private String modfor;
     /**
      * codigo de formulario
      */
     @Id
     @Basic(optional = false)
-    @Column(name = "CODFOR", nullable = false, length = 6)
+    @Column(name = "codfor", nullable = false, length = 6)
     private String codigo;
     /**
      * Descripción
      */
     @Basic(optional = false)
-    @Column(name = "DESCRP", nullable = false, length = 60)
+    @Column(name = "descrp", nullable = false, length = 60)
     private String descripcion;
 
     
