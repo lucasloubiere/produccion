@@ -79,8 +79,7 @@ public class MovimientoStock implements Serializable {
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fechaMovimiento;
-    
-    @NotNull
+        
     @Lob
     @Size(min = 1, max = 65535)
     @Column(name = "observaciones")

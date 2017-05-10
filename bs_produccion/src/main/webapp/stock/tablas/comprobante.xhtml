@@ -131,6 +131,17 @@
                         <f:selectItem itemLabel="Fecha Actual" itemValue="A" />
                         <f:selectItem itemLabel="Ultima Fecha" itemValue="U" />                                    
                     </p:selectOneMenu>
+                    
+                    <h:outputText value="Tipo movimiento *" />
+                    <p:selectOneMenu value="#{comprobanteStockBean.comprobante.tipoMovimiento}" 
+                                     required="true" requiredMessage="Seleccione el tipo de movimiento"  >
+                        <p:ajax process="@this" />
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Ajuste"        itemValue="A" />
+                        <f:selectItem itemLabel="Ingreso" itemValue="I" />                                    
+                        <f:selectItem itemLabel="Egreso" itemValue="E" />                                    
+                        <f:selectItem itemLabel="Transferencia" itemValue="T" />                                    
+                    </p:selectOneMenu>
 
                     <h:outputText value="Observaciones" />
                     <p:inputTextarea style="width: 100%" rows="3" value="#{comprobanteStockBean.comprobante.textos}" />

@@ -17,39 +17,59 @@
 
     <h:body styleClass="login-body">
 
-        <h:form>
 
-            <div class="login-panel ui-fluid">
-                <div class="ui-g">
-                    <div class="ui-g-12 login-header">
-                        <div style="margin-left: auto; margin-right: auto; position: relative; width: 60%;"  >   
-                            <h:graphicImage value="/resources/images/victransparente.png" style="width: 100%; " />
+        <div class="ui-g">
+
+            <div class="ui-g-12" style="height: 30%">
+
+            </div>
+
+            <div class="ui-g-12" style="" >
+
+                <h:form>
+
+                    <div class="login-panel ui-fluid">
+                        <div class="ui-g">
+                            <div class="ui-g-12 login-header">
+                                <div style="margin-left: auto; margin-right: auto; position: relative; width: 60%;"  >   
+                                    <h:graphicImage value="/resources/images/victransparente.png" style="width: 100%; " />
+                                </div>
+                            </div>
+                            <div class="ui-g-12">
+                                <p:messages showDetail="true" />                    
+                            </div>
+                            <div class="ui-g-12">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText value="#{usuarioSessionBean.nUsuario}"  />
+                                    <label>Usuario</label>
+                                </h:panelGroup>
+                            </div>
+                            <div class="ui-g-12">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:password value="#{usuarioSessionBean.sPassword}"  />           
+                                    <label>Password</label>
+                                </h:panelGroup>
+                            </div>                
+                            <div class="ui-g-12 button-container">
+                                <p:commandButton value="Ingresar" action="#{usuarioSessionBean.login()}" icon="ui-icon-person"
+                                                 process="@form" 
+                                                 update="@form" 
+                                                 ajax="false" />                    
+                            </div>
                         </div>
                     </div>
-                    <div class="ui-g-12">
-                        <p:messages showDetail="true" />                    
-                    </div>
-                    <div class="ui-g-12">
-                        <h:panelGroup styleClass="md-inputfield">
-                            <p:inputText value="#{usuarioSessionBean.nUsuario}"  />
-                            <label>Usuario</label>
-                        </h:panelGroup>
-                    </div>
-                    <div class="ui-g-12">
-                        <h:panelGroup styleClass="md-inputfield">
-                            <p:password value="#{usuarioSessionBean.sPassword}"  />           
-                            <label>Password</label>
-                        </h:panelGroup>
-                    </div>                
-                    <div class="ui-g-12 button-container">
-                        <p:commandButton value="Ingresar" action="#{usuarioSessionBean.login()}" icon="ui-icon-person"
-                                         process="@form" 
-                                         update="@form" 
-                                         ajax="false" />                    
-                    </div>
-                </div>
+                </h:form>
             </div>
-        </h:form>
+
+            <div class="ui-g-12" style="height: 30%" >
+
+            </div>
+
+
+
+        </div>
+
+
 
 
         <h:outputStylesheet name="css/layout-green.css" library="barcelona-layout" />

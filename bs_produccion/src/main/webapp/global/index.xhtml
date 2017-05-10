@@ -78,14 +78,21 @@
                         </p:submenu>
 
                         <p:submenu label="Stock" icon="fa fa-user-circle-o" >
-                            
+
+
+
                             <p:submenu label="Movimientos" icon="fa fa-user-circle-o" >
-                                <p:menuitem value="Ajuste" url="/stock/movimiento/movimiento.jsf" target="_blank" />                            
-                                <p:menuitem value="Egreso" url="/stock/movimiento/movimiento.jsf" target="_blank" />                            
-                                <p:menuitem value="Ingreso" url="/stock/movimiento/movimiento.jsf" target="_blank" />                            
-                                <p:menuitem value="Transferencia" url="/stock/movimiento/movimiento.jsf" target="_blank" />  
+                                <p:menuitem value="Ajuste" url="/stock/movimiento/movimiento.jsf?TITULO=Ajuste&#38;MODST=ST&#38;CODST=AJU&#38;SUCURS=0001" target="_blank" >                                                                
+                                </p:menuitem>
+                                <p:menuitem value="Ingreso" url="/stock/movimiento/movimiento.jsf?TITULO=INGRESO&#38;MODST=ST&#38;CODST=ING&#38;SUCURS=0001" target="_blank" >                                                                
+                                </p:menuitem>
+                                <p:menuitem value="Egreso" url="/stock/movimiento/movimiento.jsf?TITULO=EGRESO&#38;MODST=ST&#38;CODST=EGR&#38;SUCURS=0001" target="_blank" >                                                                
+                                </p:menuitem>
+                                <p:menuitem value="Transferencia" url="/stock/movimiento/movimiento.jsf?TITULO=TRANSFERENCIA&#38;MODST=ST&#38;CODST=TRA&#38;SUCURS=0001" target="_blank" >                                                                
+                                </p:menuitem>   
+
                             </p:submenu>
-                            
+
                             <p:submenu label="Tablas" icon="fa fa-user-circle-o" >                            
                                 <p:menuitem value="Tipo de Productos" url="/stock/tablas/tipoProducto.jsf" target="_blank" />                            
                                 <p:menuitem value="Unidad de Medida" url="/stock/tablas/unidadDeMedida.jsf" target="_blank" />
@@ -97,7 +104,7 @@
                                 <p:menuitem value="Composicion Formula" url="/stock/tablas/composicionFormula.jsf" target="_blank" />
                                 <p:menuitem value="Formulario" url="/stock/tablas/formulario.jsf" target="_blank" />
                                 <p:menuitem value="Comprobante" url="/stock/tablas/comprobante.jsf" target="_blank" />
-                                
+
                             </p:submenu>                            
                         </p:submenu>                        
 
@@ -112,14 +119,14 @@
                                              value="Salir" icon="ui-icon-extlink" />
                         </f:facet>
                     </p:menubar>
-                        
+
                 </div>
-                
-                 <div class="ui-g-6 ui-md-6">
-                        <p:panel header="Calendar" style="height:100%" styleClass="ui-shadow-content ">
-                            <p:schedule value="#{scheduleView.eventModel}" leftHeaderTemplate="prev,next"/>
-                        </p:panel>
-                    </div> 
+
+                <div class="ui-g-6 ui-md-6">
+                    <p:panel header="Calendar" style="height:100%" styleClass="ui-shadow-content ">
+                        <p:schedule value="#{scheduleView.eventModel}" leftHeaderTemplate="prev,next"/>
+                    </p:panel>
+                </div> 
                 <div class="ui-g-12 ui-md-12 ui-g-nopad">
 
                     <ui:insert name="contenido" >
@@ -150,7 +157,7 @@
                                     <p:panel id="politics" header="Politics">
                                         <h:outputText value="Politics Content" />
                                     </p:panel>
-                                    
+
                                 </p:dashboard>
 
                                 <div style="clear:both" />
