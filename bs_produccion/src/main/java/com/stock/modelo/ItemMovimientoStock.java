@@ -25,7 +25,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,8 +40,7 @@ public abstract class ItemMovimientoStock implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)    
     @Column(name = "id")
     private Integer id;
 
@@ -51,7 +49,7 @@ public abstract class ItemMovimientoStock implements Serializable {
     private MovimientoStock movimiento;
     
     @JoinColumn(name = "artcod", referencedColumnName = "codigo")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Producto producto;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
@@ -67,39 +65,31 @@ public abstract class ItemMovimientoStock implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Deposito deposito;
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    //@Size(min = 1, max = 50)
     @Column(name = "natri1")
     private String atributo1;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    
+    //@Size(min = 1, max = 50)
     @Column(name = "natri2")
     private String atributo2;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    
+    //@Size(min = 1, max = 50)
     @Column(name = "natri3")
     private String atributo3;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    
+//    @Size(min = 1, max = 50)
     @Column(name = "natri4")
     private String atributo4;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    
+    //@Size(min = 1, max = 50)
     @Column(name = "natri5")
     private String atributo5;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    
+    //@Size(min = 1, max = 50)
     @Column(name = "natri6")
     private String atributo6;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    
+    //@Size(min = 1, max = 50)
     @Column(name = "natri7")
     private String atributo7;
 
