@@ -80,7 +80,8 @@ public class CondicionDeIvaBean extends GenericBean implements Serializable {
     }
     
     public void buscar(){
-        lista = condicionDeIvaRN.getListaByBusqueda(txtBusqueda, false);        
+                
+        lista = condicionDeIvaRN.getListaByBusqueda(txtBusqueda, mostrarDebaja);        
     }    
     
     public void onSelect(SelectEvent event) {        
@@ -107,6 +108,19 @@ public class CondicionDeIvaBean extends GenericBean implements Serializable {
         }
     }    
      
+    public void habilitaDeshabilita(String habDes){
+        
+        try {
+            condicionDeIva.getAuditoria().setDebaja(habDes);
+            condicionDeIvaRN.guardar(condicionDeIva, false);            
+            JsfUtil.addInfoMessage("Los datos se actualizaron correctamente");
+            
+        } catch (Exception ex) {
+            Logger.getLogger(ModuloBean.class.getName()).log(Level.SEVERE, null, ex);
+            JsfUtil.addErrorMessage("No es posible actualizar los datos " + ex);
+        }
+    }
+    
     public CondicionDeIva getCondicionDeIva() {
         return condicionDeIva;
     }

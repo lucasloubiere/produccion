@@ -44,7 +44,7 @@ public class CondicionDeIvaRN {
     
     public List<CondicionDeIva> getListaByBusqueda(String txtBusqueda,  boolean mostrarDebaja) {
         
-        return condicionDeIvaDAO.getListaByBusqueda(null, txtBusqueda, false, 15);
+        return condicionDeIvaDAO.getListaByBusqueda(null, txtBusqueda, mostrarDebaja, 15);
         
     }
     

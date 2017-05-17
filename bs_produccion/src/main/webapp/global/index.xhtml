@@ -64,6 +64,8 @@
                             <h:graphicImage value="/resources/images/victransparente.png" style="width: 200px;" />
                         </div>
                         <div class="ui-g-8" >
+                            
+                            #{usuarioSessionBean.usuario.nombre}
 
                         </div>
                     </div>
@@ -111,6 +113,8 @@
                         <p:submenu label="Global" icon="fa fa-user-circle-o">
                             <p:menuitem value="Modulo" url="/global/tablas/modulo.jsf" target="_blank" />
                             <p:menuitem value="Sucursal" url="/global/tablas/sucursal.jsf" target="_blank" />
+                            <p:menuitem value="Condicion de Iva" url="/global/tablas/condicionIva.jsf" target="_blank"/>
+                            
                         </p:submenu>
 
                         <f:facet name="options">                            
@@ -135,7 +139,9 @@
                             <h:form>
                                 <p:growl id="msgs" showDetail="true" />
 
-                                <p:dashboard id="board" model="#{usuarioSessionBean.usuario}">
+                                <!--
+                                <p:dashboard id="board" >
+                                    
                                     <p:ajax event="reorder" listener="#{dashboardView.handleReorder}" update="msgs" />
 
                                     <p:panel id="usuario" header="Usuario">
@@ -159,6 +165,8 @@
                                     </p:panel>
 
                                 </p:dashboard>
+                                -->
+                                
 
                                 <div style="clear:both" />
                             </h:form>

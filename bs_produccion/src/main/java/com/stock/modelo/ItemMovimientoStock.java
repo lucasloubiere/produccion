@@ -47,8 +47,9 @@ public abstract class ItemMovimientoStock implements Serializable {
     private Integer id;
 
     @JoinColumn(name = "idcab", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     private MovimientoStock movimiento;
+    
     @JoinColumn(name = "artcod", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
     private Producto producto;
@@ -109,20 +110,26 @@ public abstract class ItemMovimientoStock implements Serializable {
     private boolean todoOk;
 
     public ItemMovimientoStock() {
+        
+        this.cantidad = BigDecimal.ZERO;
         this.auditoria = new Auditoria();
     }
 
     public ItemMovimientoStock(Integer id) {
-        this.auditoria = new Auditoria();
+        
         this.id = id;
+        this.cantidad = BigDecimal.ZERO;
+        this.auditoria = new Auditoria();
     }
 
     public ItemMovimientoStock(Integer id, int idcab, String artcod, BigDecimal cantidad, String natri1, String natri2, String natri3) {
+        
         this.id = id;
         this.cantidad = cantidad;
         this.atributo1 = natri1;
         this.atributo2 = natri2;
         this.atributo3 = natri3;
+        this.cantidad = BigDecimal.ZERO;
         this.auditoria = new Auditoria();
     }
 

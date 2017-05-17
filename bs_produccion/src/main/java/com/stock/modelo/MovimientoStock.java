@@ -30,7 +30,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,16 +39,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "st_movimiento")
 @XmlRootElement
-
 public class MovimientoStock implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)    
+    @Column(name = "id", nullable = false)
     private Integer id;
-
     /**
      * Comprobante de stock
      */
@@ -61,8 +57,8 @@ public class MovimientoStock implements Serializable {
     ComprobanteStock comprobante;
 
     @JoinColumns({
-        @JoinColumn(name = "modfor", referencedColumnName = "modulo"),
-        @JoinColumn(name = "codfor", referencedColumnName = "codigo")})
+        @JoinColumn(name = "modfor", referencedColumnName = "modfor"),
+        @JoinColumn(name = "codfor", referencedColumnName = "codfor")})
     @ManyToOne(optional = false)
     private Formulario formulario;
 
@@ -81,7 +77,7 @@ public class MovimientoStock implements Serializable {
     private Date fechaMovimiento;
         
     @Lob
-    @Size(min = 1, max = 65535)
+//    @Size(min = 1, max = 65535)
     @Column(name = "observaciones")
     private String observaciones;
 
@@ -142,11 +138,13 @@ public class MovimientoStock implements Serializable {
 
     public MovimientoStock() {
         this.auditoria = new Auditoria();
+        this.esAnulacion = "N";
     }
 
     public MovimientoStock(Integer id) {
         this.id = id;
         this.auditoria = new Auditoria();
+        this.esAnulacion = "N";
     }
 
     public MovimientoStock(Integer id, int numero, Date fecha, String observaciones, String debaja) {
@@ -155,6 +153,7 @@ public class MovimientoStock implements Serializable {
         this.fechaMovimiento = fecha;
         this.observaciones = observaciones;
         this.auditoria = new Auditoria();
+        this.esAnulacion = "N";
     }
 
     public Integer getId() {

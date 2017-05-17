@@ -209,9 +209,9 @@ public class MovimientoStockRN {
             throw  new ExcepcionGeneralSistema("No es posible modificar un comprobante de stock");                        
         }
 
-        if(!permiteVacio && m.getItemsProducto().isEmpty()){
-            throw new ExcepcionGeneralSistema("El detalle está vacío, no es posible guardar el comprobante de stock");
-        }   
+//        if(!permiteVacio && m.getItemsProducto().isEmpty()){
+//            throw new ExcepcionGeneralSistema("El detalle está vacío, no es posible guardar el comprobante de stock");
+//        }   
         
         //Verificamos que el deposito ingreso siempre esté cargado
         if(m.getDeposito()==null){

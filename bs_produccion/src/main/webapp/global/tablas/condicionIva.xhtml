@@ -35,6 +35,18 @@
                         rendered="#{not condicionDeIvaBean.buscaMovimiento}"
                         oncomplete="btnNew.click()"
                         update="@form" />
+            
+            <p:menuitem value="Habilitar" icon="fa fa-ban"
+                        actionListener="#{condicionDeIvaBean.habilitaDeshabilita('N')}"
+                        rendered="#{not empty condicionDeIvaBean.condicionDeIva and not condicionDeIvaBean.esNuevo and condicionDeIvaBean.condicionDeIva.auditoria.debaja eq 'S'}"
+                        process="@this"
+                        update="@form" />
+            
+            <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                        actionListener="#{condicionDeIvaBean.habilitaDeshabilita('S')}"
+                        rendered="#{not empty condicionDeIvaBean.condicionDeIva and not condicionDeIvaBean.esNuevo and condicionDeIvaBean.condicionDeIva.auditoria.debaja eq 'N'}"
+                        process="@this"
+                        update="@form" />
 
             <p:menuitem value="Buscar" icon="fa fa-search" 
                         actionListener="#{condicionDeIvaBean.buscar()}"
