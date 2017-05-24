@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml" >
+        
+        <ui:define name="titulo" >
+            Parámetros
+        </ui:define>
+        
+        <ui:define name="menu">                            
+            <p:menubar id="menuBar">
+                    <p:menuitem value="Guardar" icon="fa fa-save"
+                                actionListener="#{parametroBean.guardar}"                                
+                                update="@form" />
+            </p:menubar>       
+        </ui:define>
+        
+        <ui:define name="contenido" >
+                           
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+            <p:spacer width="100%" height="1em" />    
+
+            <!-- DATOS -->
+            <p:panel header="Datos" >               
+                
+                <p:tabView id="tbView" >
+
+                   <p:tab title="Conf. General" >
+
+                       <p:panelGrid columns="2" layout="grid"                               
+                                        styleClass="ui-panelgrid-blank"
+                                        columnClasses="Container40, Container60 ui-datafield" >  
+
+                           <h:outputText value="Modo Prueba:"  />
+                           <p:selectOneRadio value="#{parametroBean.parametro.modoPrueba}" >
+                                <f:selectItem itemLabel="Si" itemValue="S" />
+                                <f:selectItem itemLabel="No" itemValue="N" />
+                           </p:selectOneRadio>
+
+                           <h:outputText value="Modo Dashboard:"  />
+                           <p:selectOneRadio value="#{parametroBean.parametro.modoDashboard}" >
+                                <f:selectItem itemLabel="Básico"    itemValue="B" />
+                                <f:selectItem itemLabel="Extendido" itemValue="E" />
+                           </p:selectOneRadio>
+                           
+                           <h:outputText value="Zoom:"  />
+                           <p:selectOneRadio value="#{parametroBean.parametro.zoom}" >
+                               <f:selectItem itemLabel="2.0"    itemValue="2.0" /> 
+                               <f:selectItem itemLabel="1.5"    itemValue="1.5" /> 
+                               <f:selectItem itemLabel="1.0"    itemValue="1.0" />
+                               <f:selectItem itemLabel="0.95"    itemValue="0.95" />
+                               <f:selectItem itemLabel="0.9"    itemValue="0.9" />
+                               <f:selectItem itemLabel="0.85"    itemValue="0.85" />
+                               <f:selectItem itemLabel="0.8"    itemValue="0.8" />
+                               <f:selectItem itemLabel="0.75"    itemValue="0.75" />                                
+                               <f:selectItem itemLabel="0.7"    itemValue="0.7" />                                
+                           </p:selectOneRadio>
+                           
+                           <h:outputText value="Path Imagen de fondo" />
+                           <p:inputTextarea rows="2" cols="80"
+                                            value="#{parametroBean.parametro.pathImagenInicio}"  />
+
+                           <h:outputText value="Path Imagenes Default:" />
+                           <p:inputTextarea id="pathImagenesDefault" rows="2" cols="80"
+                                            value="#{parametroBean.parametro.pathImagenesDefault}" title="PathImagenesHome" />
+
+                           <h:outputText value="Path Imagenes Principal:"  />
+                           <p:inputTextarea id="pathImagenesPrincipal" rows="2" cols="80"
+                                            value="#{parametroBean.parametro.pathImagenesPrincipal}" title="PathImagenesPrincipal" />
+
+                           <h:outputText value="Path Externo:"  />
+                           <p:inputTextarea rows="2" cols="80"
+                                            value="#{parametroBean.parametro.pathExterno}" title="Path Externo" />
+
+                           <h:outputText value="Path imagen producto:"  />
+                           <p:inputTextarea rows="2" cols="80" value="#{parametroBean.parametro.pathImagenesProductos}" />
+
+                           <h:outputText value="Path upload:"  />
+                           <p:inputTextarea id="pathUpload" rows="3" cols="80"
+                                            value="#{parametroBean.parametro.pathUpload}" title="pathUpload" />
+                           
+                           <h:outputText value="Código seguimiento GA:"  />
+                           <p:inputTextarea id="ga" rows="3" cols="80"
+                                            value="#{parametroBean.parametro.codigoGoogleAnalitycs}" title="google Analitycs" />
+                           
+                           <h:outputText value="Chat:"  />
+                           <p:inputTextarea rows="3" cols="80"
+                                            value="#{parametroBean.parametro.chat}" title="Chat" />
+
+                           <h:outputText value="Datasource para reportes:"  />
+                           <p:inputText  required="true" value="#{parametroBean.parametro.dataSource}" />
+
+                           <h:outputText value="Carpeta Archivos temporales:"  />
+                           <p:inputText  required="true" value="#{parametroBean.parametro.carpetaTemporales}" />
+
+                           <h:outputText value="Fondo:"  />
+                           <p:selectOneRadio value="#{parametroBean.parametro.fondo}" >
+                                <f:selectItem itemLabel="BlueBody"    itemValue="BlueBody" />
+                                <f:selectItem itemLabel="LeadenBody" itemValue="LeadenBody" />
+                                <f:selectItem itemLabel="RedBody" itemValue="RedBody" />
+                                <f:selectItem itemLabel="GreenBody" itemValue="GreenBody" />
+                           </p:selectOneRadio>
+
+                           <h:outputText value="Tema:"  />
+                           <p:inputText  value="#{parametroBean.parametro.tema}" />
+
+                       </p:panelGrid>
+
+                       <p:spacer height="20" />
+
+                       <p:fieldset legend="Mantenimiento">
+
+                           <p:panelGrid columns="2" layout="grid"                               
+                                        styleClass="ui-panelgrid-blank"
+                                        columnClasses="Container40, Container60 ui-datafield" >  
+
+                                <h:outputLabel value="Sistema en mantenimiento:" for="sistemaEnMantenimiento" />
+                                <p:selectOneRadio id="sistemaEnMantenimiento" value="#{parametroBean.parametro.sistemaEnMantenimiento}" >
+                                    <f:selectItem itemLabel="Si" itemValue="S" />
+                                    <f:selectItem itemLabel="No"      itemValue="N" />
+                                </p:selectOneRadio>
+
+                                <h:outputLabel value="Mensaje Mantenimiento:" for="mensajeMantenimiento" />
+                                <p:inputTextarea id="mensajeMantenimiento" rows="3" cols="80"
+                                            value="#{parametroBean.parametro.mensajeMantenimiento}" title="MensajeMantenimiento" />
+
+                           </p:panelGrid>                                
+                       </p:fieldset>                           
+                   </p:tab>
+
+                   <p:tab title="Conf. Notificaciones">
+
+                       <p:panelGrid columns="2" layout="grid"                               
+                                        styleClass="ui-panelgrid-blank"
+                                        columnClasses="Container40, Container60 ui-datafield" >  
+
+                           <h:outputText value="Envía Notificaciones:"  />
+                           <p:selectOneRadio value="#{parametroBean.parametro.enviaNotificaciones}" >
+                                <f:selectItem itemLabel="Si" itemValue="S" />
+                                <f:selectItem itemLabel="No" itemValue="N" />
+                           </p:selectOneRadio>
+
+                           <h:outputLabel value="Nombre de la cuenta:" for="smtpNombreCuenta" />
+                           <p:inputText id="smtpNombreCuenta" value="#{parametroBean.parametro.smtpNombreCuenta}" title="SmtpNombreCuenta" />
+
+                           <h:outputLabel value="Usuario de la cuenta:" for="smtpUsuario" />
+                           <p:inputText id="smtpUsuario" value="#{parametroBean.parametro.smtpUsuario}" title="SmtpUsuario" />
+
+                           <h:outputLabel value="Password de la cuenta:" for="smtpPassword" />
+                           <p:inputText id="smtpPassword" value="#{parametroBean.parametro.smtpPassword}" title="SmtpPassword" />
+
+                           <h:outputLabel value="Puerto:" for="smtpPuerto" />
+                           <p:inputText id="smtpPuerto" value="#{parametroBean.parametro.smtpPuerto}" title="SmtpPuerto" />
+
+                           <h:outputLabel value="Inicia TTLS" for="smtpStarttls" />
+                           <p:inputText id="smtpStarttls" value="#{parametroBean.parametro.smtpStarttls}" title="SmtpStarttls" />
+
+                           <h:outputLabel value="Autorización SMTP:" for="smtpAuth" />
+                           <p:inputText id="smtpAuth" value="#{parametroBean.parametro.smtpAuth}" title="SmtpAuth" />
+
+                           <h:outputLabel value="Host SMTP:" for="smtpHost" />
+                           <p:inputText id="smtpHost" value="#{parametroBean.parametro.smtpHost}" title="SmtpHost" />
+
+                           <h:outputLabel value="Tipo SMTP:" for="smtptipo" />                                                  
+                           <p:selectOneRadio  id="smtptipo" value="#{parametroBean.parametro.smtpTipo}" >
+                                    <f:selectItem itemLabel="SMTP"        itemValue="smtp" />
+                                    <f:selectItem itemLabel="SMTP Seguro" itemValue="smtps" />
+                           </p:selectOneRadio>                           
+
+                           <h:outputLabel value="Dirección de envío:" for="smtpDiren" />
+                           <p:inputText id="smtpDiren" value="#{parametroBean.parametro.smtpDireccionEnvio}"  />
+
+                           <h:outputLabel value="Nombre de envío" for="smtpNomen" />
+                           <p:inputText id="smtpNomen" value="#{parametroBean.parametro.smtpNombreEnvio}"  />
+
+                       </p:panelGrid>
+
+                       <p:commandButton value="Envío prueba HTML" icon="fa fa-envelope-o"
+                                        action="#{parametroBean.envioMailPruebaHTML}"
+                                        update="@form" process="@this"  />
+
+                       <div class="ui-messages ui-widget">
+                            <div class="ui-messages-error ui-corner-all">
+                                <span class="ui-messages-error-icon"></span>
+                                <ul>
+                                    <li>
+                                        <span class="ui-messages-error-summary">Al ingresar más de una dirección de correo separar con punto y coma (;)</span>
+                                    </li>
+                                </ul>
+                            </div>
+                       </div>
+
+                       <p:panelGrid columns="2" layout="grid"                               
+                                        styleClass="ui-panelgrid-blank"
+                                        columnClasses="Container40, Container60 ui-datafield" >
+
+                           <h:outputText value="E-mail recepción notificaciones de consulta:"  />
+                           <p:inputTextarea rows="2" cols="90" value="#{parametroBean.parametro.emailRecepcionConsulta}" 
+                                            validatorMessage="Ingrese un correo válido">
+                               <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                           </p:inputTextarea>
+
+                           <h:outputText value="E-mail recepción notificaciones modo prueba:"  />
+                           <p:inputTextarea rows="2" cols="90" value="#{parametroBean.parametro.recepcionNotificacionModoPrueba}" />
+
+                       </p:panelGrid>
+
+                       <h1>Plantilla envío notificaciones</h1>
+                       <p:editor id="editor" value="#{parametroBean.parametro.plantillaNotificaciones}" 
+                                 width="900" height="300"
+                                 style="border: 1px solid lightgrey;" />
+                   </p:tab>
+
+               </p:tabView>
+            </p:panel>
+
+        </ui:define>
+  
+    </ui:composition>
+    
+</html>
+
+
+

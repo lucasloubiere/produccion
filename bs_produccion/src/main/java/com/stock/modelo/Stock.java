@@ -8,15 +8,14 @@ package com.stock.modelo;
 import com.global.modelo.Auditoria;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,23 +28,46 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 public class Stock implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected StockPK stockPK;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "stock", nullable = false, precision = 20, scale = 2)
-    private BigDecimal stock;
-    @JoinColumn(name = "deposi", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Deposito deposito;
-    @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @Id
+    @Column(name = "ARTCOD", nullable = false, length = 30)
+    private String artcod;
+    @Id
+    @Column(name = "DEPOSI", nullable = false, length = 15)
+    private String deposi;    
+    @Id
+    @Column(name = "NATRI1", nullable = false, length = 30)
+    private String atributo1;
+    @Id
+    @Column(name = "NATRI2", nullable = false, length = 30)
+    private String atributo2;
+    @Id
+    @Column(name = "NATRI3", nullable = false, length = 30)
+    private String atributo3;
+    @Id
+    @Column(name = "NATRI4", nullable = false, length = 30)
+    private String atributo4;
+    @Id
+    @Column(name = "NATRI5", nullable = false, length = 30)
+    private String atributo5;
+    @Id
+    @Column(name = "NATRI6", nullable = false, length = 30)
+    private String atributo6;
+    @Id
+    @Column(name = "NATRI7", nullable = false, length = 30)
+    private String atributo7;    
+    
+    @JoinColumn(name = "ARTCOD", referencedColumnName = "CODIGO", nullable = false, insertable=false, updatable=false)    
+    @ManyToOne(optional=false, fetch = FetchType.LAZY)
     private Producto producto;
-    @JoinColumn(name = "unidadDeMedida", referencedColumnName = "codigo", nullable = false)
-    @ManyToOne(optional = false)
-    private UnidadMedida unidadDeMedida;
+    
+    @JoinColumn(name = "DEPOSI", referencedColumnName = "CODIGO", nullable = false,insertable=false, updatable=false)    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Deposito deposito;
+ 
+    @Column(name = "STOCK", precision = 15, scale = 2)
+    private BigDecimal stocks;
+    
+    
     @Embedded
     private Auditoria auditoria;
     
@@ -53,45 +75,76 @@ public class Stock implements Serializable {
        this.auditoria = new Auditoria();
     }
 
-    public Stock(StockPK stockPK) {
-       this.auditoria = new Auditoria();
-        this.stockPK = stockPK;
+    public String getArtcod() {
+        return artcod;
     }
 
-    public Stock(StockPK stockPK, BigDecimal stock) {
-        this.auditoria = new Auditoria();
-        this.stockPK = stockPK;
-        this.stock = stock;
+    public void setArtcod(String artcod) {
+        this.artcod = artcod;
     }
 
-    public Stock(String codigoProducto, String codigoDeposito) {
-        this.auditoria = new Auditoria();
-        this.stockPK = new StockPK(codigoProducto, codigoDeposito);
+    public String getDeposi() {
+        return deposi;
     }
 
-    public StockPK getStockPK() {
-        
-        return stockPK;
+    public void setDeposi(String deposi) {
+        this.deposi = deposi;
     }
 
-    public void setStockPK(StockPK stockPK) {
-        this.stockPK = stockPK;
+    public String getAtributo1() {
+        return atributo1;
     }
 
-    public BigDecimal getStock() {
-        return stock;
+    public void setAtributo1(String atributo1) {
+        this.atributo1 = atributo1;
     }
 
-    public void setStock(BigDecimal stock) {
-        this.stock = stock;
+    public String getAtributo2() {
+        return atributo2;
     }
 
-    public Deposito getDeposito() {
-        return deposito;
+    public void setAtributo2(String atributo2) {
+        this.atributo2 = atributo2;
     }
 
-    public void setDeposito(Deposito deposito) {
-        this.deposito = deposito;
+    public String getAtributo3() {
+        return atributo3;
+    }
+
+    public void setAtributo3(String atributo3) {
+        this.atributo3 = atributo3;
+    }
+
+    public String getAtributo4() {
+        return atributo4;
+    }
+
+    public void setAtributo4(String atributo4) {
+        this.atributo4 = atributo4;
+    }
+
+    public String getAtributo5() {
+        return atributo5;
+    }
+
+    public void setAtributo5(String atributo5) {
+        this.atributo5 = atributo5;
+    }
+
+    public String getAtributo6() {
+        return atributo6;
+    }
+
+    public void setAtributo6(String atributo6) {
+        this.atributo6 = atributo6;
+    }
+
+    public String getAtributo7() {
+        return atributo7;
+    }
+
+    public void setAtributo7(String atributo7) {
+        this.atributo7 = atributo7;
     }
 
     public Producto getProducto() {
@@ -102,12 +155,20 @@ public class Stock implements Serializable {
         this.producto = producto;
     }
 
-    public UnidadMedida getUnidadDeMedida() {
-        return unidadDeMedida;
+    public Deposito getDeposito() {
+        return deposito;
     }
 
-    public void setUnidadDeMedida(UnidadMedida unidadDeMedida) {
-        this.unidadDeMedida = unidadDeMedida;
+    public void setDeposito(Deposito deposito) {
+        this.deposito = deposito;
+    }
+
+    public BigDecimal getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(BigDecimal stocks) {
+        this.stocks = stocks;
     }
 
     public Auditoria getAuditoria() {
@@ -116,32 +177,6 @@ public class Stock implements Serializable {
 
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
-    }
-    
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (stockPK != null ? stockPK.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Stock)) {
-            return false;
-        }
-        Stock other = (Stock) object;
-        if ((this.stockPK == null && other.stockPK != null) || (this.stockPK != null && !this.stockPK.equals(other.stockPK))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.stock.modelo.Stock[ stockPK=" + stockPK + " ]";
     }
     
 }

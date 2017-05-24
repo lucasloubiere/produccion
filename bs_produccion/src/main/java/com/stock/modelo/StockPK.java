@@ -6,11 +6,7 @@
 package com.stock.modelo;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -19,60 +15,156 @@ import javax.validation.constraints.Size;
 @Embeddable
 public class StockPK implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "codigoProducto", nullable = false, length = 20)
-    private String codigoProducto;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
-    @Column(name = "codigoDeposito", nullable = false, length = 6)
-    private String codigoDeposito;
+    private String artcod;
+    private String deposi;
+    private String atributo1;
+    private String atributo2;
+    private String atributo3;
+    private String atributo4;
+    private String atributo5;
+    private String atributo6;
+    private String atributo7;    
+
 
     public StockPK() {
+
     }
 
-    public StockPK(String codigoProducto, String codigoDeposito) {
-        this.codigoProducto = codigoProducto;
-        this.codigoDeposito = codigoDeposito;
+    public StockPK(String artcod, String deposi,String atributo1, String atributo2,String atributo3,String atributo4,String atributo5,String atributo6,String atributo7) {
+        
+        this.artcod = artcod;
+        this.deposi = deposi;
+        this.atributo1 = atributo1;
+        this.atributo2 = atributo2;
+        this.atributo3 = atributo3;
+        this.atributo4 = atributo4;
+        this.atributo5 = atributo5;
+        this.atributo6 = atributo6;
+        this.atributo7 = atributo7;
+        
     }
 
-    public String getCodigoProducto() {
-        return codigoProducto;
+    public String getCodigo() {
+        return artcod;
     }
 
-    public void setCodigoProducto(String codigoProducto) {
-        this.codigoProducto = codigoProducto;
+    public void setArtcod(String artcod) {
+        this.artcod = artcod;
     }
 
-    public String getCodigoDeposito() {
-        return codigoDeposito;
+    public String getDeposi() {
+        return deposi;
     }
 
-    public void setCodigoDeposito(String codigoDeposito) {
-        this.codigoDeposito = codigoDeposito;
+    public void setDeposi(String deposi) {
+        this.deposi = deposi;
+    }
+
+    public String getAtributo1() {
+        return atributo1;
+    }
+
+    public void setAtributo1(String atributo1) {
+        this.atributo1 = atributo1;
+    }
+
+    public String getAtributo2() {
+        return atributo2;
+    }
+
+    public void setAtributo2(String atributo2) {
+        this.atributo2 = atributo2;
+    }
+
+    public String getAtributo3() {
+        return atributo3;
+    }
+
+    public void setAtributo3(String atributo3) {
+        this.atributo3 = atributo3;
+    }
+
+    public String getAtributo4() {
+        return atributo4;
+    }
+
+    public void setAtributo4(String atributo4) {
+        this.atributo4 = atributo4;
+    }
+
+    public String getAtributo5() {
+        return atributo5;
+    }
+
+    public void setAtributo5(String atributo5) {
+        this.atributo5 = atributo5;
+    }
+
+    public String getAtributo6() {
+        return atributo6;
+    }
+
+    public void setAtributo6(String atributo6) {
+        this.atributo6 = atributo6;
+    }
+
+    public String getAtributo7() {
+        return atributo7;
+    }
+
+    public void setAtributo7(String atributo7) {
+        this.atributo7 = atributo7;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (codigoProducto != null ? codigoProducto.hashCode() : 0);
-        hash += (codigoDeposito != null ? codigoDeposito.hashCode() : 0);
+        int hash = 3;
+        hash = 71 * hash + (this.artcod != null ? this.artcod.hashCode() : 0);
+        hash = 71 * hash + (this.deposi != null ? this.deposi.hashCode() : 0);
+        hash = 71 * hash + (this.atributo1 != null ? this.atributo1.hashCode() : 0);
+        hash = 71 * hash + (this.atributo2 != null ? this.atributo2.hashCode() : 0);
+        hash = 71 * hash + (this.atributo3 != null ? this.atributo3.hashCode() : 0);
+        hash = 71 * hash + (this.atributo4 != null ? this.atributo4.hashCode() : 0);
+        hash = 71 * hash + (this.atributo5 != null ? this.atributo5.hashCode() : 0);
+        hash = 71 * hash + (this.atributo6 != null ? this.atributo6.hashCode() : 0);
+        hash = 71 * hash + (this.atributo7 != null ? this.atributo7.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof StockPK)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        StockPK other = (StockPK) object;
-        if ((this.codigoProducto == null && other.codigoProducto != null) || (this.codigoProducto != null && !this.codigoProducto.equals(other.codigoProducto))) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        if ((this.codigoDeposito == null && other.codigoDeposito != null) || (this.codigoDeposito != null && !this.codigoDeposito.equals(other.codigoDeposito))) {
+        final StockPK other = (StockPK) obj;
+        if ((this.artcod == null) ? (other.artcod != null) : !this.artcod.equals(other.artcod)) {
+            return false;
+        }
+        if ((this.deposi == null) ? (other.deposi != null) : !this.deposi.equals(other.deposi)) {
+            return false;
+        }
+        if ((this.atributo1 == null) ? (other.atributo1 != null) : !this.atributo1.equals(other.atributo1)) {
+            return false;
+        }
+        if ((this.atributo2 == null) ? (other.atributo2 != null) : !this.atributo2.equals(other.atributo2)) {
+            return false;
+        }
+        if ((this.atributo3 == null) ? (other.atributo3 != null) : !this.atributo3.equals(other.atributo3)) {
+            return false;
+        }
+        if ((this.atributo4 == null) ? (other.atributo4 != null) : !this.atributo4.equals(other.atributo4)) {
+            return false;
+        }
+        if ((this.atributo5 == null) ? (other.atributo5 != null) : !this.atributo5.equals(other.atributo5)) {
+            return false;
+        }
+        if ((this.atributo6 == null) ? (other.atributo6 != null) : !this.atributo6.equals(other.atributo6)) {
+            return false;
+        }
+        if ((this.atributo7 == null) ? (other.atributo7 != null) : !this.atributo7.equals(other.atributo7)) {
             return false;
         }
         return true;
@@ -80,7 +172,8 @@ public class StockPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.stock.modelo.StockPK[ codigoProducto=" + codigoProducto + ", codigoDeposito=" + codigoDeposito + " ]";
+        return "StockPK{" + "artcod=" + artcod + ", deposi=" + deposi + ", atributo1=" + atributo1 + ", atributo2=" + atributo2 + ", atributo3=" + atributo3 + ", atributo4=" + atributo4 + ", atributo5=" + atributo5 + ", atributo6=" + atributo6 + ", atributo7=" + atributo7 + '}';
     }
+
     
 }

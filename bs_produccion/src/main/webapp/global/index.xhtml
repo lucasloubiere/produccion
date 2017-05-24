@@ -64,8 +64,6 @@
                             <h:graphicImage value="/resources/images/victransparente.png" style="width: 200px;" />
                         </div>
                         <div class="ui-g-8" >
-                            
-                            #{usuarioSessionBean.usuario.nombre}
 
                         </div>
                     </div>
@@ -115,6 +113,12 @@
                             <p:menuitem value="Sucursal" url="/global/tablas/sucursal.jsf" target="_blank" />
                             <p:menuitem value="Condicion de Iva" url="/global/tablas/condicionIva.jsf" target="_blank"/>
                             
+                            
+                        </p:submenu>
+                        
+                        <p:submenu label="Administracion" icon="fa fa-user-circle-o">
+                            <p:menuitem value="Empresa" url="/administracion/tablas/empresa.jsf" target="_blank"/>
+                            <p:menuitem value="Parametros" url="/administracion/tablas/parametros.jsf" target="_blank"/>
                         </p:submenu>
 
                         <f:facet name="options">                            

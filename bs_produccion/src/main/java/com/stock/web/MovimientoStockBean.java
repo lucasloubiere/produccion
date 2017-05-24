@@ -8,6 +8,7 @@ package com.stock.web;
 import com.global.excepciones.ExcepcionGeneralSistema;
 import com.global.util.GenericBean;
 import com.global.util.JsfUtil;
+import com.global.util.ReportFactory;
 import com.seguridad.web.UsuarioSessionBean;
 import com.stock.modelo.ItemMovimientoStock;
 import com.stock.modelo.ItemProductoStock;
@@ -26,6 +27,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -57,6 +59,9 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     
     @ManagedProperty(value = "#{formularioStockBean}")
     protected FormularioStockBean formularioStockBean;
+                
+    @ManagedProperty(value = "#{reportFactory}")
+    protected ReportFactory reportFactory;
 
     protected String SUCURS = "";    
     protected String MODST = "";    
@@ -215,7 +220,7 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     
     public void resetParametros(){
 
-        formulario = null;
+//        formulario = null;
         numeroFormularioDesde = null;
         numeroFormularioHasta = null;
         fechaMovimientoDesde = null;
@@ -350,7 +355,7 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
             parameters.put("ID", m.getId());
             parameters.put("CANT_COPIAS", m.getComprobante().getCopias());
            
-//            reportFactory.exportReportToPdfFile(pathReport, nombreArchivo, parameters);
+            reportFactory.exportReportToPdfFile(pathReport, nombreArchivo, parameters);
             muestraReporte = true;
 
         } catch (NullPointerException npe) {
@@ -359,9 +364,9 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
         } catch (ExcepcionGeneralSistema e){            
             JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
             muestraReporte = false;
-//        } catch (JRException e) {
-//            JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
-//            muestraReporte = false;
+        } catch (JRException e) {
+            JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
+            muestraReporte = false;
         }
     }
     
@@ -481,5 +486,13 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     public void setItem(ItemProductoStock item) {
         this.item = item;
     }    
+
+    public ReportFactory getReportFactory() {
+        return reportFactory;
+    }
+
+    public void setReportFactory(ReportFactory reportFactory) {
+        this.reportFactory = reportFactory;
+    }
     
 }

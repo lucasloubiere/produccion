@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-    <persistence-unit name="PU" transaction-type="JTA">
-        <jta-data-source>jdbc_produccion</jta-data-source>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
-        <properties>
-            <property name="eclipselink.logging.level" value="SEVERE"/>
-            <property name="eclipselink.logging.logger" value="JavaLogger"/>
-            <property name="eclipselink.cache.size.default" value="5000"/>
-            <!--
+  <persistence-unit name="PU" transaction-type="JTA">
+    <jta-data-source>jdbc_produccion</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="eclipselink.logging.level" value="SEVERE"/>
+      <property name="eclipselink.logging.logger" value="JavaLogger"/>
+      <property name="eclipselink.cache.size.default" value="5000"/>
+      <!--
             <property name="eclipselink.logging.file" value="output.log"/>    
             <property name="eclipselink.logging.parameters" value="true"/>
             <property name="eclipselink.logging.timestamp" value="false"/>
             <property name="eclipselink.logging.session" value="false"/>
             -->
-        </properties>
-    </persistence-unit>
+    </properties>
+  </persistence-unit>
 </persistence>

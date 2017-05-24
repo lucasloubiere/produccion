@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/template.xhtml" >
+        
+    <ui:define name="titulo" >
+        Datos Empresa
+    </ui:define>
+
+    <ui:define name="menu">                            
+        <p:menubar id="menuBar">
+            <p:menuitem value="Guardar" icon="fa fa-save"
+                        action="#{empresaBean.guardar}"                                
+                        update="@form" />
+        </p:menubar>
+    </ui:define>
+
+    <ui:define name="contenido" >
+
+        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+        <p:spacer width="100%" height="1em" />    
+
+        <!-- DATOS -->
+        <p:panel header="Datos" >               
+            <p:panelGrid columns="2" layout="grid"                               
+                                    styleClass="ui-panelgrid-blank"
+                                    columnClasses="Container40, Container60 ui-datafield" >
+
+                <h:outputText value="Código" />
+                <h:outputText value="#{empresaBean.empresa.codigo}"  />
+
+                <h:outputText value="Razón Social" />
+                <p:inputText value="#{empresaBean.empresa.razonSocial}"  />
+
+                <h:outputText value="Nombre Fantasía" />
+                <p:inputText value="#{empresaBean.empresa.nombreFantasia}"  />
+
+                <h:outputText value="Dirección" />
+                <p:inputText value="#{empresaBean.empresa.direccion}"  />
+
+                <h:outputText value="Ciudad" />
+                <p:inputText value="#{empresaBean.empresa.ciudad}"  />
+
+                <h:outputText value="Provincia" />
+                <p:inputText value="#{empresaBean.empresa.provincia}"  />
+
+                <h:outputText value="País" />
+                <p:inputText value="#{empresaBean.empresa.pais}"  />
+
+                <h:outputText value="Condición de IVA"  /> 
+                <p:inputText value="#{empresaBean.empresa.condicionIVA}"  />
+
+                <h:outputText value="C.U.I.T.:"  /> 
+                <p:inputText value="#{empresaBean.empresa.cuit}"  />
+
+                <h:outputText value="Número IB"  /> 
+                <p:inputText value="#{empresaBean.empresa.nroIB}"  />
+                
+                <h:outputText value="Agente de Retención"  /> 
+                <p:inputText value="#{empresaBean.empresa.nroAG}"  />
+
+                <h:outputText value="Impuesto Munic."  /> 
+                <p:inputText value="#{empresaBean.empresa.impuestoMunicipal}"  />
+
+                <h:outputText value="Inicio Actividades"  /> 
+                <p:inputText value="#{empresaBean.empresa.inicioActividades}"  />
+
+                <h:outputText value="E-mail"  /> 
+                <p:inputText value="#{empresaBean.empresa.email}"  
+                             validatorMessage="Ingrese un correo válido">
+                    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                </p:inputText>
+
+                <h:outputText value="Teléfono"  /> 
+                <p:inputText value="#{empresaBean.empresa.telefono}"  />
+
+                <h:outputText value="Path logo"  /> 
+                <p:inputTextarea rows="3" cols="100"
+                        value="#{empresaBean.empresa.logo}" title="Path Logo" />
+
+            </p:panelGrid>
+        </p:panel>
+
+    </ui:define>
+  
+</ui:composition>
+    
+</html>
+
+    
+    
