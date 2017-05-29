@@ -53,9 +53,6 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     
     @ManagedProperty(value = "#{depositoBean}")
     protected DepositoBean depositoBean;
-        
-//    @ManagedProperty(value = "#{reportFactory}")
-//    protected ReportFactory reportFactory;
     
     @ManagedProperty(value = "#{formularioStockBean}")
     protected FormularioStockBean formularioStockBean;

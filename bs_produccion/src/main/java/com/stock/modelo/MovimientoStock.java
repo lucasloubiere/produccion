@@ -62,23 +62,23 @@ public class MovimientoStock implements Serializable {
     @ManyToOne(optional = false)
     private Formulario formulario;
 
-    @JoinColumn(name = "codsuc", referencedColumnName = "codigo")
+    @JoinColumn(name = "sucurs", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
     private Sucursal sucursal;
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "numero")
+    @Column(name = "nrofor")
     private int numeroFormulario;
         
     @NotNull
-    @Column(name = "fecha")
+    @Column(name = "fchmov")
     @Temporal(TemporalType.DATE)
     private Date fechaMovimiento;
         
     @Lob
 //    @Size(min = 1, max = 65535)
-    @Column(name = "observaciones")
+    @Column(name = "observ")
     private String observaciones;
 
     

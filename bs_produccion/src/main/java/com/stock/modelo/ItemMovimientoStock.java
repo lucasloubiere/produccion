@@ -54,7 +54,7 @@ public abstract class ItemMovimientoStock implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cantidad")
+    @Column(name = "cantid")
     private BigDecimal cantidad;
 
     @JoinColumn(name = "unimed", referencedColumnName = "codigo", nullable = false)
