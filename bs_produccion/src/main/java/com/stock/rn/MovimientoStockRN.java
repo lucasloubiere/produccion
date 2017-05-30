@@ -17,6 +17,7 @@ import com.stock.modelo.ItemMovimientoStock;
 import com.stock.modelo.ItemProductoStock;
 import com.stock.modelo.ItemTransferenciaStock;
 import com.stock.modelo.MovimientoStock;
+import com.stock.modelo.Stock;
 import com.stock.modelo.TipoItemMovimiento;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class MovimientoStockRN {
     //@EJB private MonedaRN monedaRN;
     @EJB private MovimientoStockDAO inventarioDAO;
     @EJB private ComprobanteStockDAO comprobanteDAO;
-    //@EJB private StockRN stockRN;   
+    @EJB private StockRN stockRN;   
     @EJB private FormularioRN formularioRN;    
     @EJB private SucursalRN sucursalRN;
     
@@ -184,10 +185,10 @@ public class MovimientoStockRN {
         nItem.setAtributo1(m.getAtributo1()!=null?m.getAtributo1():"");
         nItem.setAtributo2(m.getAtributo2()!=null?m.getAtributo2():"");
         nItem.setAtributo3(m.getAtributo3()!=null?m.getAtributo3():"");
-//        nItem.setAtributo4(m.getAtributo4()!=null?m.getAtributo4():"");
-//        nItem.setAtributo5(m.getAtributo5()!=null?m.getAtributo5():"");
-//        nItem.setAtributo6(m.getAtributo6()!=null?m.getAtributo6():"");
-//        nItem.setAtributo7(m.getAtributo7()!=null?m.getAtributo7():"");
+        nItem.setAtributo4(m.getAtributo4()!=null?m.getAtributo4():"");
+        nItem.setAtributo5(m.getAtributo5()!=null?m.getAtributo5():"");
+        nItem.setAtributo6(m.getAtributo6()!=null?m.getAtributo6():"");
+        nItem.setAtributo7(m.getAtributo7()!=null?m.getAtributo7():"");
               
         nItem.setMovimiento(m);
 
@@ -209,9 +210,9 @@ public class MovimientoStockRN {
             throw  new ExcepcionGeneralSistema("No es posible modificar un comprobante de stock");                        
         }
 
-//        if(!permiteVacio && m.getItemsProducto().isEmpty()){
-//            throw new ExcepcionGeneralSistema("El detalle está vacío, no es posible guardar el comprobante de stock");
-//        }   
+        if(!permiteVacio && m.getItemsProducto().isEmpty()){
+            throw new ExcepcionGeneralSistema("El detalle está vacío, no es posible guardar el comprobante de stock");
+        }   
         
         //Verificamos que el deposito ingreso siempre esté cargado
         if(m.getDeposito()==null){
@@ -502,16 +503,16 @@ public class MovimientoStockRN {
 
         for(ItemProductoStock i: m.getItemsProducto()){
            
-//            Stock nStock = stockRN.nuevoStock(i);
-//            stockRN.guardar(nStock);
+            Stock nStock = stockRN.nuevoStock(i);
+            stockRN.guardar(nStock);
         }
 
         if(m.getItemTransferencia()!=null){
 
             for(ItemTransferenciaStock i: m.getItemTransferencia()){
 
-//                Stock nStock = stockRN.nuevoStock(i);
-//                stockRN.guardar(nStock);
+                Stock nStock = stockRN.nuevoStock(i);
+                stockRN.guardar(nStock);
             }
         }
     }
@@ -545,15 +546,15 @@ public class MovimientoStockRN {
                 
             //Si es un egreso actualizamos el stock en negativo
             if(m.getTipoMovimiento().equals("E")){
-//                i.setStocks(i.getCantidad().negate());                
+                i.setStocks(i.getCantidad().negate());                
             }else{
-//                i.setStocks(i.getCantidad());                   
+                i.setStocks(i.getCantidad());                   
             } 
         }
         
         if(m.getItemTransferencia()!=null){
             for(ItemMovimientoStock i: m.getItemTransferencia()){
-//                i.setStocks(i.getCantidad().negate());
+                i.setStocks(i.getCantidad().negate());
             }
         }
     }
@@ -633,7 +634,6 @@ public class MovimientoStockRN {
                 fItemBorrado = true;
             }
         }
-
 
         return fItemBorrado;
     }   

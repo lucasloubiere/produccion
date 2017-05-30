@@ -56,6 +56,11 @@ public abstract class ItemMovimientoStock implements Serializable {
     @NotNull
     @Column(name = "cantid")
     private BigDecimal cantidad;
+        
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "stock")
+    private BigDecimal stocks;
 
     @JoinColumn(name = "unimed", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -243,6 +248,14 @@ public abstract class ItemMovimientoStock implements Serializable {
         this.todoOk = todoOk;
     }
 
+    public BigDecimal getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(BigDecimal stocks) {
+        this.stocks = stocks;
+    }
+     
     @Override
     public int hashCode() {
         int hash = 0;
