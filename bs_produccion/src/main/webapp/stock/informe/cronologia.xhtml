@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+
+    <ui:define name="titulo" >
+        Cronología de productos
+    </ui:define>
+
+    <ui:define name="contenido" >
+
+        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />                
+        
+        <p:panel header="Cronología de Stock" >
+
+            <p:remoteCommand name="procesarProducto" process="@this" update="@form" actionListener="#{cronologiaBean.limpiarMovimientos}" />
+
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="ui-g-5,ui-g-7" >
+                
+                <h:panelGroup layout="block">
+                    
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
+
+                        <p:inputText id="txtBusqueda" value="#{productoBean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                            <p:ajax event="keyup" process="@this,tipoProducto" update="tablaProductos" listener="#{productoBean.buscar}"/>
+                        </p:inputText>
+
+                        <p:selectOneMenu id="tipoProducto" value="#{productoBean.tipoProducto}"
+                                         converter="#{conversoresStock.tipoProducto}"  >
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItems value="#{productoBean.tipos}"
+                                           var="i" itemLabel="#{i.descripcion}" itemValue="#{i}"/>
+                            <p:ajax process="@this,txtBusqueda" update="tablaProductos" listener="#{productoBean.buscar}"/>
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>   
+
+                    <div class="EmptyBox10"/>
+
+                    <p:dataTable id="tablaProductos" reflow="true"
+                                 value="#{productoBean.lista}" var="prd"
+                                 emptyMessage="No se encontraron productos"
+                                 rows="15" paginator="true" 
+                                 selectionMode="single" 
+                                 selection="#{productoBean.producto}" rowKey="#{prd}">
+
+                            <f:facet name="header" >
+                                Productos
+                            </f:facet>
+
+                            <p:ajax event="rowSelect" listener="#{productoBean.onSelect}" update="@form" 
+                                    oncomplete="procesarProducto()" />
+
+                            <p:column headerText="Código"
+                                      sortBy="#{prd.codigo}"  width="15%" style="text-align: center;" >
+                                <h:outputText value="#{prd.codigo}" />
+                            </p:column>
+
+                            <p:column headerText="Descripción" width="75%" style="text-align: left;"
+                                      sortBy="#{prd.descripcion}" >
+                                <h:outputText value="#{prd.descripcion}" />
+                            </p:column>
+
+                            <p:column headerText="U.M."
+                                      sortBy="#{prd.unidadDeMedida}"  width="10%" style="text-align: center;" >
+                                <h:outputText value="#{prd.unidadDeMedida.codigo}" />
+                            </p:column>
+
+                    </p:dataTable>
+                    
+                </h:panelGroup>
+
+                <h:panelGroup layout="block">
+
+                    <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="ui-g-4, ui-g-8" >
+
+                            <h:outputText value="Producto: " />
+                            <h:outputText value="#{productoBean.producto.codigo} - #{productoBean.producto.descripcion}" />                                            
+
+                            <h:outputText value="Deposito:" />
+                            <p:selectOneMenu value="#{cronologiaBean.deposito}" required="true"
+                                             converter="#{conversoresStock.deposito}"
+                                             requiredMessage="El depósito es obligatorio"
+                                             filter="true" filterMatchMode="startsWith" >
+                                <p:ajax process="@this" />
+                                <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                                <f:selectItems value="#{depositoBean.lista}"
+                                               var="i" itemLabel="#{i.descripcion}" itemValue="#{i}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputText value="Fecha Desde:" />
+                            <p:calendar value="#{cronologiaBean.fechaDesde}" pattern="dd/MM/yyyy"  
+                                         required="true" requiredMessage="La fecha desde es obligatoria"
+                                        maxdate="#{cronologiaBean.fechaMaxima}" />
+
+                            <h:outputText value="Fecha Hasta:" />
+                            <p:calendar value="#{cronologiaBean.fechaHasta}" pattern="dd/MM/yyyy"  
+                                         required="true" requiredMessage="La fecha hasta es obligatoria"
+                                        maxdate="#{cronologiaBean.fechaMaxima}" />
+
+                    </p:panelGrid>                                
+
+                    <div class="EmptyBox10"/>
+                    
+                    <p:commandButton value="Consultar" icon="fa fa-check"
+                                             actionListener="#{cronologiaBean.verCronologia}"
+                                             update="@form" />
+                    
+                    <div class="EmptyBox10"/>                    
+
+                    <p:dataTable id="movimientos" reflow="true"
+                                     value="#{cronologiaBean.movimientos}" var="i"
+                                     emptyMessage="Haga clic en consultar para ver los movimientos"
+                                     rows="15" paginator="true" >
+
+                            <f:facet name="header">                                    
+                                <h:outputText value="Movimientos" />  
+                            </f:facet>
+
+                            <f:facet name="footer">
+
+                                <div style="width: 100%; text-align: right;">
+
+                                    <h:commandLink  >
+                                        <p:graphicImage value="/resources/image/excel_64.png" width="32" 
+                                                        title="Descargar datos a excel"/>                                
+                                        <p:dataExporter type="xls" target="movimientos" fileName="movimientos-stock"                                                     
+                                                        preProcessor="#{customizeDocument.postProcessXLS}"  />
+                                    </h:commandLink>
+
+                                    <h:commandLink >
+                                        <p:graphicImage value="/resources/image/pdf_64.png"
+                                                        title="Descargar datos a pdf" width="32"/>                                
+                                        <p:dataExporter type="pdf" target="movimientos" fileName="movimientos-stock" 
+                                                        preProcessor="#{customizeDocument.preProcessPDF}" 
+                                                        />
+                                    </h:commandLink>
+
+                                </div>                                       
+
+                            </f:facet>
+
+                            <p:column headerText="Movimiento" >
+                                <h:outputText value="#{i.movimiento.formulario.codigo}" />
+                            </p:column>
+
+                            <p:column headerText="Número" style="text-align: right;" >
+                                <h:outputText value="#{i.movimiento.numeroFormulario}" />
+                            </p:column>
+
+                            <p:column headerText="Fecha" style="text-align: center;" >
+                                <h:outputText value="#{i.movimiento.fechaMovimiento}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                        
+                        <!--
+                        
+                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" style="text-align: right;" width="120" 
+                                      rendered="#{productoBean.producto.administraAtributo1 eq 'S'}">
+                                <h:outputText value="#{i.atributo1}" />
+                            </p:column>
+                        
+                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo2}" style="text-align: right;" width="120" 
+                                      rendered="#{productoBean.producto.administraAtributo2 eq 'S'}">
+                                <h:outputText value="#{i.atributo2}" />
+                            </p:column>
+                        
+                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo3}" style="text-align: right;" width="120" 
+                                      rendered="#{productoBean.producto.administraAtributo5 eq 'S'}">
+                                <h:outputText value="#{i.atributo3}" />
+                            </p:column>
+                        
+                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo4}" style="text-align: right;" width="120" 
+                                      rendered="#{productoBean.producto.administraAtributo7 eq 'S'}">
+                                <h:outputText value="#{i.atributo4}" />
+                            </p:column>
+                        
+                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo5}" style="text-align: right;" width="120" 
+                                      rendered="#{productoBean.producto.administraAtributo6 eq 'S'}">
+                                <h:outputText value="#{i.atributo5}" />
+                            </p:column>
+                        
+                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo6}" style="text-align: right;" width="120" 
+                                      rendered="#{productoBean.producto.administraAtributo3 eq 'S'}">
+                                <h:outputText value="#{i.atributo6}" />
+                            </p:column>
+                        
+                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo7}" style="text-align: right;" width="120" 
+                                      rendered="#{productoBean.producto.administraAtributo4 eq 'S'}">
+                                <h:outputText value="#{i.atributo7}" />
+                            </p:column>
+                        -->
+
+                            <p:column headerText="Ingreso" style="text-align: right;"  >
+                                <h:outputText value="#{i.stocks}" rendered="#{i.stocks > 0 }" >
+                                    <f:convertNumber pattern="####0" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Egreso"  style="text-align: right;" >
+                                <h:outputText value="#{i.stocks*(-1)}" rendered="#{0 > i.stocks }" >
+                                    <f:convertNumber pattern="####0" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Saldo" style="text-align: right;"  >
+
+                                <h:outputText value="#{i.saldoInicial}" >
+                                    <f:convertNumber pattern="####0" />
+                                </h:outputText>
+
+                            </p:column>
+
+                        </p:dataTable>
+
+                </h:panelGroup>
+
+            </p:panelGrid>
+
+        </p:panel>
+
+    </ui:define>
+    
+</ui:composition>
+</html>

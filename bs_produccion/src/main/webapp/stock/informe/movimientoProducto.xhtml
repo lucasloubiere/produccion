@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:bs="http://java.sun.com/jsf/composite/components/beansoft">
+
+<ui:composition template="/template.xhtml" >
+    
+    <f:metadata>        
+        <f:viewParam name="TITULO" value="#{reporteService.titulo}"/>
+        <f:viewParam name="NOMRPT" value="#{reporteService.nombreReporte}"/>
+        <f:viewParam name="NOMARC" value="#{reporteService.nombreArchivo}"/>
+    </f:metadata>
+
+    <ui:define name="titulo" >
+        #{reporteService.titulo}
+    </ui:define>
+
+    <ui:define name="contenido" >
+
+        <p:panel header="#{reporteService.titulo}"  >
+
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+            <p:spacer width="100%" height="1em" />    
+            
+            <p:panelGrid columns="2" layout="grid"                      
+                     styleClass="ui-panelgrid-blank"
+                     columnClasses="Container40, Container60" >
+
+                <h:outputText value="Tipo de producto"  />                                                  
+                <p:selectOneMenu value="#{reporteService.tipoProducto}" filter="true"                                 
+                                 converter="#{conversoresStock.tipoProducto}"  >                    
+                    <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                    <f:selectItems value="#{tipoProductoBean.lista}" var="i" itemLabel="#{i.descripcion}" itemValue="#{i}"/>                                            
+                    <p:ajax process="@this" listener="#{productoBean.setearTipo(i.codigo)}"  />
+                </p:selectOneMenu>
+                
+                <h:outputText value="Producto desde" />
+                <p:autoComplete value="#{reporteService.productoDesde}" 
+                                completeMethod="#{productoBean.complete}"
+                                var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" 
+                                converter="#{conversoresStock.producto}" forceSelection="true" >
+                    
+                    <p:column>
+                        <h:outputText value="#{p.codigo}" />
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{p.descripcion}" />
+                    </p:column>
+                    
+                </p:autoComplete>
+                
+                <h:outputText value="Producto hasta" />
+                <p:autoComplete value="#{reporteService.productoHasta}" 
+                                completeMethod="#{productoBean.complete}"
+                                var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" 
+                                converter="#{conversoresStock.producto}" forceSelection="true" >
+                    <p:column>
+                        <h:outputText value="#{p.codigo}" />
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{p.descripcion}" />
+                    </p:column>
+                    
+                </p:autoComplete>
+                
+                <h:outputText value="Fecha desde" />
+                <p:calendar value="#{reporteService.fechaDesde}" pattern="dd/MM/yyyy" 
+                            required="true" requiredMessage="La fecha desde es obligatoria" />
+
+                <h:outputText value="Fecha hasta" />
+                <p:calendar value="#{reporteService.fechaHasta}" pattern="dd/MM/yyyy" 
+                            required="true" requiredMessage="La fecha hasta es obligatoria" />
+                
+            </p:panelGrid>
+
+            <p:panelGrid columns="2" layout="grid" 
+                             styleClass="ui-panelgrid-blank" >
+
+                <p:commandButton value="Ver reporte" icon="fa fa-print"
+                             actionListener="#{reporteService.reporteToPdf}"
+                             update="@form"  />
+
+                <p:commandButton value="A Excel" icon="fa fa-file-excel-o"
+                                 actionListener="#{reporteService.reporteToXls}"
+                                 update="@form"
+                                 ajax="false" />
+
+            </p:panelGrid>
+
+        </p:panel>
+
+        <p:spacer width="100%" height="1em" /> 
+
+        <!-- REPORTE -->
+        <bs:dialogoReporte muestraReporte="#{reporteService.muestraReporte}" 
+                           nombreArchivo="#{reporteService.nombreArchivo}" />
+      
+    </ui:define>
+    
+    <ui:define name="dialogos" >
+        
+    </ui:define>
+    
+</ui:composition>
+
+</html>
+

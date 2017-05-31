@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+
+    <ui:define name="titulo" >
+        Consulta General de Productos
+    </ui:define>
+
+    <ui:define name="contenido" >
+        
+        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />                
+
+        <p:panel header="Consulta General de Productos" >
+            
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="ui-g-5,ui-g-7" >
+                
+                <h:panelGroup layout="block">                    
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
+
+                        <p:inputText id="txtBusqueda" value="#{productoBean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                            <p:ajax event="keyup" process="@this,tipoProducto" update="tablaProductos" listener="#{productoBean.buscar}"/>
+                        </p:inputText>
+
+                        <p:selectOneMenu id="tipoProducto" value="#{productoBean.tipoProducto}"
+                                     converter="#{conversoresStock.tipoProducto}"  >
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItems value="#{productoBean.tipos}"
+                                           var="i" itemLabel="#{i.descripcion}" itemValue="#{i}"/>
+                            <p:ajax process="@this,txtBusqueda" update="tablaProductos" listener="#{productoBean.buscar}"/>
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+
+                    <div class="EmptyBox10"></div>
+
+                    <p:dataTable id="tablaProductos" reflow="true"
+                             value="#{productoBean.lista}" var="prd"
+                             emptyMessage="No se encontraron productos"
+                             rows="15" paginator="true" 
+                             selectionMode="single" 
+                             selection="#{productoBean.producto}" rowKey="#{prd}">
+
+                        <f:facet name="header" >
+                            Productos
+                        </f:facet>
+
+                        <p:ajax event="rowSelect" listener="#{consultaStock.onSelectProducto}" update="@form"   />
+
+                        <p:column headerText="Código"
+                                  sortBy="#{prd.codigo}"  width="15%" style="text-align: center;" >
+                            <h:outputText value="#{prd.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Descripción" width="75%" style="text-align: left;"
+                                  sortBy="#{prd.descripcion}" >
+                            <h:outputText value="#{prd.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="U.M."
+                                  sortBy="#{prd.unidadDeMedida}"  width="10%" style="text-align: center;" >
+                            <h:outputText value="#{prd.unidadDeMedida.codigo}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:panelGroup>
+
+                
+                <h:panelGroup layout="block">
+                    
+                    <div class="EmptyBox5"></div>                    
+                    <div class="EmptyBox10"></div>
+                    <div class="CardTopic Opac90 OvHidden">
+                        <i class="fa fa-bullseye Fleft Fs30"></i>
+                        <h:outputText value="#{productoBean.producto.codigo} - #{productoBean.producto.descripcion}" style="padding-left: 10px;" />
+                    </div>
+                    <div class="Separator"></div>
+                    <div class="EmptyBox10"></div>                    
+                    
+                    <p:dataTable id="movimientos" var="i" reflow="true"
+                                 resizableColumns="true" resizeMode="expand" liveResize="true"
+                                 value="#{consultaStock.stock}" 
+                                 emptyMessage="Seleccione un producto para ver el stock"
+                                 rows="15" paginator="true"  >
+
+                        <f:facet name="header">                                    
+                            <h:outputText value="Stocks" />  
+                        </f:facet>
+                      
+                        <p:column headerText="Depósito"  >
+                            <h:outputText value="#{i.deposito.descripcion}" />
+                        </p:column>                        
+                       
+                        <p:column headerText="Stock" width="20%" style="text-align: right;"  >
+                            <h:outputText value="#{i.stocks}"  >
+                                <f:convertNumber pattern="####0" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Pendiente" width="20%" style="text-align: right;"  >
+                            <h:outputText value="#{i.stocks}"  >
+                                <f:convertNumber pattern="####0" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Pdte Venta" width="20%" style="text-align: right;"  >
+                            <h:outputText value="#{i.stocks}"  >
+                                <f:convertNumber pattern="####0" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Pdte Compra" width="20%" style="text-align: right;"  >
+                            <h:outputText value="#{i.stocks}"  >
+                                <f:convertNumber pattern="####0" />
+                            </h:outputText>
+                        </p:column>
+
+                    </p:dataTable>    
+                    
+                    <p:dataTable id="precios" var="i" reflow="true"
+                                 resizableColumns="true" resizeMode="expand" liveResize="true"
+                                 value="#{consultaStock.stock}" 
+                                 emptyMessage="Seleccione un producto para ver el stock"
+                                 rows="15" paginator="true"  >
+
+                        <f:facet name="header">                                    
+                            <h:outputText value="Precios" />  
+                        </f:facet>
+
+                        <p:column headerText="Lista"  >
+                            <h:outputText value="#{i.deposito.descripcion}" />
+                        </p:column>
+                        
+                        <p:column headerText="I.V.A." width="20%" style="text-align: right;"  >
+                            <h:outputText value="#{i.stocks}"  >
+                                <f:convertNumber pattern="####0" />
+                            </h:outputText>
+                        </p:column>
+                       
+                        <p:column headerText="Precio s/IVA" width="20%" style="text-align: right;"  >
+                            <h:outputText value="#{i.stocks}"  >
+                                <f:convertNumber pattern="####0" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Precio c/IVA" width="20%" style="text-align: right;"  >
+                            <h:outputText value="#{i.stocks}"  >
+                                <f:convertNumber pattern="####0" />
+                            </h:outputText>
+                        </p:column>
+
+                    </p:dataTable> 
+                    
+                    <p:dataTable id="pendientes" var="i" reflow="true"
+                                 resizableColumns="true" resizeMode="expand" liveResize="true"
+                                 value="#{consultaStock.stock}" 
+                                 emptyMessage="Seleccione un producto para ver el stock"
+                                 rows="15" paginator="true"  >
+
+                        <f:facet name="header">                                    
+                            <h:outputText value="Pendientes" />  
+                        </f:facet>
+
+                        <p:column headerText="Descripción"  >
+                            <h:outputText value="#{i.deposito.descripcion}" />
+                        </p:column>
+                                   
+                     
+                    </p:dataTable> 
+                    
+                </h:panelGroup>
+
+            </p:panelGrid>
+
+        </p:panel>
+
+    </ui:define>
+    
+</ui:composition>
+</html>

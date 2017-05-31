@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+
+    <ui:define name="titulo" >
+        Stock por producto
+    </ui:define>
+
+    <ui:define name="contenido" >
+        
+        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />                
+
+        <p:panel header="Stock por producto" >
+            
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="ui-g-5,ui-g-7" >
+                
+                <h:panelGroup layout="block">                    
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
+
+                        <p:inputText id="txtBusqueda" value="#{productoBean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                            <p:ajax event="keyup" process="@this,tipoProducto" update="tablaProductos" listener="#{productoBean.buscar}"/>
+                        </p:inputText>
+
+                        <p:selectOneMenu id="tipoProducto" value="#{productoBean.tipoProducto}"
+                                     converter="#{conversoresStock.tipoProducto}"  >
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItems value="#{productoBean.tipos}"
+                                           var="i" itemLabel="#{i.descripcion}" itemValue="#{i}"/>
+                            <p:ajax process="@this,txtBusqueda" update="tablaProductos" listener="#{productoBean.buscar}"/>
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+
+                    <div class="EmptyBox10"></div>
+
+                    <p:dataTable id="tablaProductos" reflow="true"
+                             value="#{productoBean.lista}" var="prd"
+                             emptyMessage="No se encontraron productos"
+                             rows="15" paginator="true" 
+                             selectionMode="single" 
+                             selection="#{productoBean.producto}" rowKey="#{prd}">
+
+                        <f:facet name="header" >
+                            Productos
+                        </f:facet>
+
+                        <p:ajax event="rowSelect" listener="#{consultaStock.onSelectProducto}" update="@form"   />
+
+                        <p:column headerText="Código"
+                                  sortBy="#{prd.codigo}"  width="15%" style="text-align: center;" >
+                            <h:outputText value="#{prd.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Descripción" width="75%" style="text-align: left;"
+                                  sortBy="#{prd.descripcion}" >
+                            <h:outputText value="#{prd.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="U.M."
+                                  sortBy="#{prd.unidadDeMedida}"  width="10%" style="text-align: center;" >
+                            <h:outputText value="#{prd.unidadDeMedida.codigo}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:panelGroup>
+
+                
+                <h:panelGroup layout="block">
+                    
+                    <div class="EmptyBox5"></div>                    
+                    <div class="EmptyBox10"></div>
+                    <div class="CardTopic Opac90 OvHidden">
+                        <i class="fa fa-bullseye Fleft Fs30"></i>
+                        <h:outputText value="#{productoBean.producto.codigo} - #{productoBean.producto.descripcion}" style="padding-left: 10px;" />
+                    </div>
+                    <div class="Separator"></div>
+                    <div class="EmptyBox10"></div>                    
+                    
+                    <p:dataTable id="movimientos" var="i" reflow="true"
+                                 resizableColumns="true" resizeMode="expand" liveResize="true"
+                                 value="#{consultaStock.stock}" 
+                                 emptyMessage="Seleccione un producto para ver el stock"
+                                 rows="15" paginator="true"  >
+
+                        <f:facet name="header">                                    
+                            <h:outputText value="Depositos" />  
+                        </f:facet>
+
+                        <f:facet name="footer">
+
+                            <div style="width: 100%; text-align: right;">
+
+                                <h:commandLink  >
+                                    <p:graphicImage value="/resources/image/excel_64.png" width="32" 
+                                                    title="Descargar datos a excel"/>                                
+                                    <p:dataExporter type="xls" target="movimientos" fileName="movimientos-stock"                                                     
+                                                    preProcessor="#{customizeDocument.postProcessXLS}"  />
+                                </h:commandLink>
+
+                                <h:commandLink >
+                                    <p:graphicImage value="/resources/image/pdf_64.png"
+                                                    title="Descargar datos a pdf" width="32"/>                                
+                                    <p:dataExporter type="pdf" target="movimientos" fileName="movimientos-stock" 
+                                                    preProcessor="#{customizeDocument.preProcessPDF}" 
+                                                    />
+                                </h:commandLink>
+                            </div>                                       
+
+                        </f:facet>
+
+                        <p:column headerText="Descripción"  >
+                            <h:outputText value="#{i.deposito.descripcion}" />
+                        </p:column>
+                        
+                        <!--
+                        <p:column style="width:16px">
+                            <p:rowToggler />
+                        </p:column>
+                        
+                        
+                        <p:rowExpansion>
+                            <p:dataTable id="atributos"  reflow="true" 
+                                         value="#{i.atributos}" var="a"
+                                         emptyMessage="Seleccione un depósito para ver el stock"
+                                         rows="15" paginator="true" paginatorAlwaysVisible="false">
+                            
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" style="text-align: right;" width="120" 
+                                          rendered="#{not empty aplicacionBean.parametroStock.descripcionAtributo1}">
+                                    <h:outputText value="#{a.atributo1}" />
+                                </p:column>
+
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo2}" style="text-align: right;" width="120" 
+                                          rendered="#{not empty aplicacionBean.parametroStock.descripcionAtributo2}">
+                                    <h:outputText value="#{a.atributo2}" />
+                                </p:column>
+
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo3}" style="text-align: right;" width="120" 
+                                          rendered="#{not empty aplicacionBean.parametroStock.descripcionAtributo3}" >
+                                    <h:outputText value="#{a.atributo3}" />
+                                </p:column>
+
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo4}" style="text-align: right;" width="120" 
+                                          rendered="#{not empty aplicacionBean.parametroStock.descripcionAtributo4}" >
+                                    <h:outputText value="#{a.atributo4}" />
+                                </p:column>
+
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo5}" style="text-align: right;" width="120" 
+                                          rendered="#{not empty aplicacionBean.parametroStock.descripcionAtributo5}" >
+                                    <h:outputText value="#{a.atributo5}" />
+                                </p:column>
+
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo6}" style="text-align: right;" width="120" 
+                                          rendered="#{not empty aplicacionBean.parametroStock.descripcionAtributo6}" >
+                                    <h:outputText value="#{a.atributo6}" />
+                                </p:column>
+
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo7}" style="text-align: right;" width="120" 
+                                          rendered="#{not empty aplicacionBean.parametroStock.descripcionAtributo7}" >
+                                    <h:outputText value="#{a.atributo7}" />
+                                </p:column>
+                                
+                                 <p:column headerText="Stock" width="150" style="text-align: right;"  >
+                                    <h:outputText value="#{a.stocks}"  >
+                                        <f:convertNumber pattern="####0" />
+                                    </h:outputText>
+                                </p:column>
+                                
+                            </p:dataTable>                            
+                        </p:rowExpansion>
+                        
+                        
+                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" style="text-align: right;" width="120" 
+                                  rendered="#{i.producto.administraAtributo1 eq 'S'}">
+                            <h:outputText value="#{i.atributo1}" />
+                        </p:column>
+
+                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo2}" style="text-align: right;" width="120" 
+                                  rendered="#{i.producto.administraAtributo2 eq 'S'}">
+                            <h:outputText value="#{i.atributo2}" />
+                        </p:column>
+                        
+                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo3}" style="text-align: right;" width="120" 
+                                  rendered="#{i.producto.administraAtributo3 eq 'S'}">
+                            <h:outputText value="#{i.atributo3}" />
+                        </p:column>
+
+                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo4}" style="text-align: right;" width="120" 
+                                  rendered="#{i.producto.administraAtributo4 eq 'S'}">
+                            <h:outputText value="#{i.atributo4}" />
+                        </p:column>
+
+                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo5}" style="text-align: right;" width="120" 
+                                  rendered="#{i.producto.administraAtributo5 eq 'S'}">
+                            <h:outputText value="#{i.atributo5}" />
+                        </p:column>
+
+                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo6}" style="text-align: right;" width="120" 
+                                  rendered="#{i.producto.administraAtributo6 eq 'S'}">
+                            <h:outputText value="#{i.atributo6}" />
+                        </p:column>
+
+                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo7}" style="text-align: right;" width="120" 
+                                  rendered="#{i.producto.administraAtributo7 eq 'S'}">
+                            <h:outputText value="#{i.atributo7}" />
+                        </p:column>
+                        -->
+
+                        <p:column headerText="Stock" width="20%" style="text-align: right;"  >
+                            <h:outputText value="#{i.stocks}"  >
+                                <f:convertNumber pattern="####0" />
+                            </h:outputText>
+                        </p:column>
+
+                    </p:dataTable>                    
+                    
+                </h:panelGroup>
+
+            </p:panelGrid>
+
+        </p:panel>
+
+    </ui:define>
+    
+</ui:composition>
+</html>

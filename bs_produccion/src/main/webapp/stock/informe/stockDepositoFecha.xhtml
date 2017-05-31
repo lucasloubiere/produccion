@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:bs="http://java.sun.com/jsf/composite/components/beansoft">
+
+<ui:composition template="/template.xhtml" >
+    
+    <f:metadata>                
+        <f:viewParam name="TITULO" value="#{stockDepositoFechaBean.titulo}"/> 
+    </f:metadata>
+
+    <ui:define name="titulo" >
+        #{stockDepositoFechaBean.titulo}
+    </ui:define>
+
+    <ui:define name="contenido" >
+
+        <p:panel header="#{stockDepositoFechaBean.titulo}"  >
+
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+            <p:spacer width="100%" height="1em" />    
+
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="Container40, Container60 ui-datafield" >
+
+                <h:outputText value="Deposito:" />
+                <p:selectOneMenu value="#{stockDepositoFechaBean.deposito}" 
+                                 converter="#{conversoresStock.deposito}"                                                                                                                                                  
+                                 effect="fade" filter="true" >  
+                    <p:ajax process="@this" />
+                    <f:selectItem itemValue="" itemLabel="Todos" />
+                    <f:selectItems value="#{depositoBean.lista}" var="c" itemLabel="#{c.descripcion}" itemValue="#{c}" />                                    
+                </p:selectOneMenu>
+
+                <h:outputText value="Fecha hasta" />
+                <p:calendar value="#{stockDepositoFechaBean.fechaHasta}" pattern="dd/MM/yyyy" 
+                            required="true" requiredMessage="La fecha hasta es obligatoria" />
+
+            </p:panelGrid>
+
+            <p:spacer width="100%" height="1em" />
+
+            <!-- ACCIONES -->
+            <p:panelGrid columns="3" layout="grid" 
+                             styleClass="ui-panelgrid-blank" >
+
+                <p:commandButton value="Ver reporte" icon="fa fa-print"
+                             actionListener="#{stockDepositoFechaBean.reporteToPdf}"
+                             update="@form" />
+
+                <p:commandButton value="A Excel" icon="fa fa-file-excel-o"
+                                 actionListener="#{stockDepositoFechaBean.reporteToXls}"
+                                 update="@form"
+                                 ajax="false" />
+
+                <p:commandButton value="Limpiar Filtros" icon="fa fa-trash" process="@this"
+                                 actionListener="#{stockDepositoFechaBean.resetParametros}"
+                                 update="@form" />
+
+            </p:panelGrid>
+
+        </p:panel>  
+
+        <p:spacer width="100%" height="1em" />
+
+        <!-- REPORTE -->
+        <bs:dialogoReporte muestraReporte="#{stockDepositoFechaBean.muestraReporte}" 
+                           nombreArchivo="#{stockDepositoFechaBean.nombreArchivo}" />
+      
+    </ui:define>
+    
+    <ui:define name="dialogos" >
+        
+    </ui:define>
+    
+</ui:composition>
+
+</html>
+
