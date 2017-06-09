@@ -28,6 +28,7 @@ import javax.persistence.Transient;
 @Table(name = "st_stock")
 @IdClass(StockPK.class)
 public class Stock implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -35,7 +36,7 @@ public class Stock implements Serializable {
     private String artcod;
     @Id
     @Column(name = "DEPOSI", nullable = false, length = 15)
-    private String deposi;    
+    private String deposi;
     @Id
     @Column(name = "NATRI1", nullable = false, length = 30)
     private String atributo1;
@@ -57,69 +58,71 @@ public class Stock implements Serializable {
     @Id
     @Column(name = "NATRI7", nullable = false, length = 30)
     private String atributo7;
-    
-    
-    @JoinColumn(name = "ARTCOD", referencedColumnName = "CODIGO", nullable = false, insertable=false, updatable=false)    
-    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+
+    @JoinColumn(name = "ARTCOD", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Producto producto;
-    
-    @JoinColumn(name = "DEPOSI", referencedColumnName = "CODIGO", nullable = false,insertable=false, updatable=false)    
+
+    @JoinColumn(name = "DEPOSI", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Deposito deposito;
- 
+
     @Column(name = "STOCKS", precision = 15, scale = 2)
     private BigDecimal stocks;
-    
+
     @Transient
     List<Stock> atributos;
+
+    @Transient
+    private BigDecimal stockDisponible;
 
     @Embedded
     private Auditoria auditoria;
 
-
     public Stock() {
-        
+
         this.atributo1 = "";
         this.atributo2 = "";
         this.atributo3 = "";
         this.atributo4 = "";
-        this.atributo5 = "";              
+        this.atributo5 = "";
         this.atributo6 = "";
         this.atributo7 = "";
-                
+
         this.auditoria = new Auditoria();
     }
 
-    public Stock(ItemMovimientoStock i){
-        
+    public Stock(ItemMovimientoStock i) {
+
         this.artcod = i.getProducto().getCodigo();
         this.deposi = i.getDeposito().getCodigo();
-        this.atributo1 = "";
-        this.atributo2 = "";
-        this.atributo3 = "";
-        this.atributo4 = "";
-        this.atributo5 = "";              
-        this.atributo6 = "";
-        this.atributo7 = "";
+        this.atributo1 = (i.getAtributo1() != null ? i.getAtributo1() : "");
+        this.atributo2 = (i.getAtributo2() != null ? i.getAtributo2() : "");
+        this.atributo3 = (i.getAtributo3() != null ? i.getAtributo3() : "");
+        this.atributo4 = (i.getAtributo4() != null ? i.getAtributo4() : "");
+        this.atributo5 = (i.getAtributo5() != null ? i.getAtributo5() : "");
+        this.atributo6 = (i.getAtributo6() != null ? i.getAtributo6() : "");
+        this.atributo7 = (i.getAtributo7() != null ? i.getAtributo7() : "");
         this.stocks = i.getStocks();
         this.auditoria = new Auditoria();
         this.producto = i.getProducto();
-        this.deposito = i.getDeposito();        
+        this.deposito = i.getDeposito();
+
         this.auditoria = new Auditoria();
 
     }
 
-    public Stock(String artcod, String nserie, String envase, String ndespa, String notros, String nfecha, String natrib, String nubica, String nestan, String deposi, String sector) {
-        
+    public Stock(String artcod, String deposi, String atr1, String atr2, String atr3, String atr4, String atr5, String atr6, String atr7) {
+
         this.artcod = artcod;
-        this.deposi = deposi;  
-        this.atributo1 = "";
-        this.atributo2 = "";
-        this.atributo3 = "";
-        this.atributo4 = "";
-        this.atributo5 = "";              
-        this.atributo6 = "";
-        this.atributo7 = "";
+        this.deposi = deposi;
+        this.atributo1 = (atr1 != null ? atr1 : "");
+        this.atributo2 = (atr2 != null ? atr2 : "");
+        this.atributo3 = (atr3 != null ? atr3 : "");
+        this.atributo4 = (atr4 != null ? atr4 : "");
+        this.atributo5 = (atr5 != null ? atr5 : "");
+        this.atributo6 = (atr6 != null ? atr6 : "");
+        this.atributo7 = (atr7 != null ? atr7 : "");
         this.auditoria = new Auditoria();
     }
 
@@ -218,9 +221,9 @@ public class Stock implements Serializable {
     public void setAtributo7(String atributo7) {
         this.atributo7 = atributo7;
     }
-    
+
     public BigDecimal getStocks() {
-        return (stocks==null?BigDecimal.ZERO:stocks);
+        return (stocks == null ? BigDecimal.ZERO : stocks);
     }
 
     public void setStocks(BigDecimal stocks) {
@@ -233,6 +236,14 @@ public class Stock implements Serializable {
 
     public void setAtributos(List<Stock> atributos) {
         this.atributos = atributos;
+    }
+
+    public BigDecimal getStockDisponible() {
+        return stockDisponible;
+    }
+
+    public void setStockDisponible(BigDecimal stockDisponible) {
+        this.stockDisponible = stockDisponible;
     }
     
     @Override
@@ -293,5 +304,5 @@ public class Stock implements Serializable {
     public String toString() {
         return "Stock{" + "artcod=" + artcod + ", deposi=" + deposi + ", atributo1=" + atributo1 + ", atributo2=" + atributo2 + ", atributo3=" + atributo3 + ", atributo4=" + atributo4 + ", atributo5=" + atributo5 + ", atributo6=" + atributo6 + ", atributo7=" + atributo7 + '}';
     }
-    
+
 }

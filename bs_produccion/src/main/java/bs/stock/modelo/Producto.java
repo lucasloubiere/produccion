@@ -97,16 +97,33 @@ public class Producto implements Serializable {
     @Column(name = "adatr7", length = 1)
     private String administraAtributo7;
     
+    @Column(name = "codref", length = 20)
+    private String codigoReferencia;
+    
     @Embedded
     private Auditoria auditoria;
 
     public Producto() {
         this.auditoria = new Auditoria();
+        administraAtributo1= "N";
+        administraAtributo2= "N";
+        administraAtributo3= "N";
+        administraAtributo4= "N";
+        administraAtributo5= "N";
+        administraAtributo6= "N";
+        administraAtributo7= "N"; 
     }
 
     public Producto(String codigo) {
         this.auditoria = new Auditoria();
         this.codigo = codigo;
+        administraAtributo1= "N";
+        administraAtributo2= "N";
+        administraAtributo3= "N";
+        administraAtributo4= "N";
+        administraAtributo5= "N";
+        administraAtributo6= "N";
+        administraAtributo7= "N"; 
     }
 
     public Producto(String codigo, String descripcion, String gestionaStock) {
@@ -114,6 +131,7 @@ public class Producto implements Serializable {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.gestionaStock = gestionaStock;
+       
     }
 
     public String getCodigo() {
@@ -254,6 +272,19 @@ public class Producto implements Serializable {
         this.administraAtributo7 = administraAtributo7;
     }
     
+     /**
+     * @return the codigoReferencia
+     */
+    public String getCodigoReferencia() {
+        return codigoReferencia;
+    }
+
+    /**
+     * @param codigoReferencia the codigoReferencia to set
+     */
+    public void setCodigoReferencia(String codigoReferencia) {
+        this.codigoReferencia = codigoReferencia;
+    }
     
 
     
@@ -282,5 +313,7 @@ public class Producto implements Serializable {
     public String toString() {
         return "com.stock.modelo.Producto[ codigo=" + codigo + " ]";
     }
+
+   
     
 }

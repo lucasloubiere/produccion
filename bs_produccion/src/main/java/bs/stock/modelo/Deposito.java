@@ -7,21 +7,17 @@ package bs.stock.modelo;
 
 import bs.global.modelo.Auditoria;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -56,7 +52,10 @@ public class Deposito implements Serializable {
     private String signo;
     @Embedded
     private Auditoria auditoria;
-
+    
+    
+    @Column(name = "codref", length = 6)
+    private String codigoReferencia;
 
     public Deposito() {
         this.auditoria = new Auditoria();
@@ -105,6 +104,16 @@ public class Deposito implements Serializable {
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
     }
+
+    public String getCodigoReferencia() {
+        return codigoReferencia;
+    }
+
+    public void setCodigoReferencia(String codigoReferencia) {
+        this.codigoReferencia = codigoReferencia;
+    }
+    
+    
 
     
     @Override

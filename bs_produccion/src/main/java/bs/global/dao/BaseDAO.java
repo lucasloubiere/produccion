@@ -44,6 +44,7 @@ public class BaseDAO implements Serializable {
     public void crear(Object objeto) {
         em.persist(objeto);
         em.flush();
+        
     }
 
 //    public void editar(Object objeto) {        

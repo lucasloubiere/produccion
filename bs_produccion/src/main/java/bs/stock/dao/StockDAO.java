@@ -26,7 +26,7 @@ public class StockDAO extends BaseDAO {
     @EJB
     DepositoDAO depositoDAO;
 
-    public BigDecimal getDisponibleProducto(Stock s){
+    public BigDecimal getStockDisponibleByProducto(Stock s){
 
         try {          
 

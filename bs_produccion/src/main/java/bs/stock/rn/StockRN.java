@@ -38,60 +38,29 @@ public class StockRN implements Serializable {
             stockDAO.editar(stockAux);
         }
     }
-    public Stock nuevoStock(ItemMovimientoStock i){
-
-        Stock s = new Stock(i);
-        
-        if(i.getProducto().getAdministraAtributo1().equals("S")){
-            s.setAtributo1(i.getAtributo1()!=null? i.getAtributo1():"");            
-        }
-        if(i.getProducto().getAdministraAtributo2().equals("S")){
-            s.setAtributo2(i.getAtributo2()!=null? i.getAtributo2():"");
-        }
-        
-        if(i.getProducto().getAdministraAtributo3().equals("S")){
-            s.setAtributo3(i.getAtributo3()!=null? i.getAtributo3():"");
-        }
-                
-        if(i.getProducto().getAdministraAtributo4().equals("S")){
-            s.setAtributo4(i.getAtributo4()!=null? i.getAtributo4():"");
-        }
-        
-        if(i.getProducto().getAdministraAtributo5().equals("S")){
-            s.setAtributo5(i.getAtributo5()!=null? i.getAtributo5():"");
-        }        
-        
-        if(i.getProducto().getAdministraAtributo6().equals("S")){
-            s.setAtributo6(i.getAtributo6()!=null? i.getAtributo6():"");
-        }        
-        
-        if(i.getProducto().getAdministraAtributo7().equals("S")){
-            s.setAtributo7(i.getAtributo7()!=null? i.getAtributo7():"");
-        }
-        
-        return s;
-    }
-
+    
     public Stock getStock(Stock stock){
 
         StockPK idPK = new StockPK(stock.getCodigo(), stock.getDeposi(),stock.getAtributo1(), stock.getAtributo2(), stock.getAtributo3(), stock.getAtributo4(), stock.getAtributo5(), stock.getAtributo6(), stock.getAtributo7());
         return stockDAO.getObjeto(Stock.class, idPK);
     }
 
-    public boolean isProductoDisponible(Stock s){
+public boolean isProductoDisponible(Stock s){
 
-        BigDecimal disp = stockDAO.getDisponibleProducto(s);
+        BigDecimal disp = stockDAO.getStockDisponibleByProducto(s);
         BigDecimal cant = s.getStocks().add(BigDecimal.ZERO);
+        
+        s.setStockDisponible(disp);
 
         if(disp==null){
 //            System.out.println("Producto sin stock en "+ s.getDeposi());
             return false;
         }
 
-        //System.err.println("Producto:" + s + "Cantidad: " + cant  + " Disp:" + disp );
+        System.err.println("Producto:" + s + "Cantidad: " + cant  + " Disp:" + disp );
 
         if(cant.compareTo(BigDecimal.ZERO)>0){
-            //System.err.println("El stock positivo: " + cant);
+            System.err.println("El stock positivo: " + cant);
             cant = cant.negate();
         }
 

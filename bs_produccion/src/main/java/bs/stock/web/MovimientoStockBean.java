@@ -6,15 +6,16 @@
 package bs.stock.web;
 
 import bs.global.excepciones.ExcepcionGeneralSistema;
-import bs.global.web.GenericBean;
 import bs.global.util.JsfUtil;
 import bs.global.util.ReportFactory;
+import bs.global.web.GenericBean;
 import bs.seguridad.web.UsuarioSessionBean;
 import bs.stock.modelo.ItemMovimientoStock;
 import bs.stock.modelo.ItemProductoStock;
 import bs.stock.modelo.MovimientoStock;
 import bs.stock.modelo.Producto;
 import bs.stock.rn.MovimientoStockRN;
+import bs.stock.rn.StockRN;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,7 +38,8 @@ import net.sf.jasperreports.engine.JRException;
 @ViewScoped
 public class MovimientoStockBean extends GenericBean implements Serializable{
 
-    @EJB protected MovimientoStockRN movimientoStockRN;        
+    @EJB protected MovimientoStockRN movimientoStockRN;    
+    @EJB private StockRN stockRN;     
     
     @ManagedProperty(value = "#{usuarioSessionBean}")
     protected UsuarioSessionBean usuarioSessionBean;
@@ -175,11 +177,14 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
       
         if(productoBean.getProducto()!=null && m!=null){
             
+            
+            
             Producto p = productoBean.getProducto();            
             ItemProductoStock ip = m.getItemsProducto().get(m.getItemsProducto().size()-1);
             
             ip.setProducto(p);            
             ip.setUnidadMedida(p.getUnidadDeMedida());                                    
+            ip.setDeposito(m.getDeposito());            
             ip.setAtributo1("");
             ip.setAtributo2("");
             ip.setAtributo3("");
