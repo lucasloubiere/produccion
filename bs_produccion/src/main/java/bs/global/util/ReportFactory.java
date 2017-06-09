@@ -24,13 +24,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.DataSource;
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.mail.util.ByteArrayDataSource;
 import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
@@ -54,8 +54,6 @@ public class ReportFactory implements Serializable {
     protected AplicacionBean aplicacionBean;
     
     private Context ctx;
-    
-    @Resource(name="jdbc/reporte")    
     private javax.sql.DataSource ds;
     
     private Connection conexion;
@@ -77,8 +75,8 @@ public class ReportFactory implements Serializable {
         try {
             Parametro p = aplicacionBean.getParametro();
                         
-            //ctx = new InitialContext();
-            //ds = (javax.sql.DataSource) ctx.lookup((p.getDataSource()==null?"bs-erp":p.getDataSource()));
+            ctx = new InitialContext();
+            ds = (javax.sql.DataSource) ctx.lookup((p.getDataSource()==null?"bs-erp":p.getDataSource()));
             
             conexion = ds.getConnection();
             conexion.setAutoCommit(true);   
