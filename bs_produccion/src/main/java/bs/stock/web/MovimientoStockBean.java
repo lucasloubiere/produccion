@@ -351,7 +351,7 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
             Map parameters = new HashMap();
             
             String pathReport = FacesContext.getCurrentInstance().getExternalContext().getRealPath(m.getFormulario().getNombreReporte()+".jasper");
-            nombreArchivo = m.getComprobante().getCodigo()+"-"+m.getNumeroFormulario();
+            nombreArchivo = m.getFormulario().getCodigo()+"-"+m.getNumeroFormulario();
 
             
             parameters.put("ID", m.getId());

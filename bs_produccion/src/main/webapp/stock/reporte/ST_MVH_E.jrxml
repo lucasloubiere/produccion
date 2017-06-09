@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ST_MVH" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="21db4006-82c7-4753-bdd2-6f5767781961">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="623"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -17,10 +17,7 @@
      st_movimiento_item.`ID` AS st_movimiento_item_ID,
      st_movimiento_item.`TIPITM` AS st_movimiento_item_TIPITM,
      st_movimiento_item.`CANTID` AS st_movimiento_item_CANTID,
-     st_movimiento_item.`CNTSEC` AS st_movimiento_item_CNTSEC,
-     st_movimiento_item.`COTIZA` AS st_movimiento_item_COTIZA,
      st_movimiento_item.`DEPOSI` AS st_movimiento_item_DEPOSI,
-     st_movimiento_item.`FCHMOV` AS st_movimiento_item_FCHMOV,
      st_movimiento_item.`NATRI1` AS st_movimiento_item_NATRI1,
      st_movimiento_item.`NATRI2` AS st_movimiento_item_NATRI2,
      st_movimiento_item.`NATRI3` AS st_movimiento_item_NATRI3,
@@ -28,38 +25,26 @@
      st_movimiento_item.`NATRI5` AS st_movimiento_item_NATRI5,
      st_movimiento_item.`NATRI6` AS st_movimiento_item_NATRI6,
      st_movimiento_item.`NATRI7` AS st_movimiento_item_NATRI7,
-     st_movimiento_item.`OBSERV` AS st_movimiento_item_OBSERV,
-     st_movimiento_item.`PRECIO` AS st_movimiento_item_PRECIO,
-     st_movimiento_item.`PRESEC` AS st_movimiento_item_PRESEC,
-     st_movimiento_item.`STOCKS` AS st_movimiento_item_STOCKS,
-     st_movimiento_item.`SUCURS` AS st_movimiento_item_SUCURS,
-     st_movimiento_item.`CODEMP` AS st_movimiento_item_CODEMP,
      st_movimiento_item.`DEBAJA` AS st_movimiento_item_DEBAJA,
-     st_movimiento_item.`TSTAMP` AS st_movimiento_item_TSTAMP,
      st_movimiento_item.`FECALT` AS st_movimiento_item_FECALT,
      st_movimiento_item.`FECMOD` AS st_movimiento_item_FECMOD,
      st_movimiento_item.`ULTOPR` AS st_movimiento_item_ULTOPR,
      st_movimiento_item.`USERID` AS st_movimiento_item_USERID,
-     st_movimiento_item.`COFLIS` AS st_movimiento_item_COFLIS,
-     st_movimiento_item.`ID_MCAB` AS st_movimiento_item_ID_MCAB,
+     st_movimiento_item.`IDCAB` AS st_movimiento_item_ID_MCAB,
      st_movimiento_item.`ARTCOD` AS st_movimiento_item_ARTCOD,
      st_movimiento_item.`UNIMED` AS st_movimiento_item_UNIMED,
      st_producto.`CODIGO` AS st_producto_CODIGO,
-     st_producto.`TIPPRO` AS st_producto_TIPPRO,
-     st_producto.`DESCRP` AS st_producto_DESCRP
+     st_producto.`descripcion` AS st_producto_DESCRP
 FROM
      `st_producto` st_producto INNER JOIN `st_movimiento_item` st_movimiento_item ON st_producto.`CODIGO` = st_movimiento_item.`ARTCOD`
 
-WHERE st_movimiento_item.ID_MCAB = $P{ID}
+WHERE st_movimiento_item.IDCAB = $P{ID}
 ORDER BY st_movimiento_item.`ID`]]>
 		</queryString>
 		<field name="st_movimiento_item_ID" class="java.lang.Integer"/>
 		<field name="st_movimiento_item_TIPITM" class="java.lang.String"/>
 		<field name="st_movimiento_item_CANTID" class="java.math.BigDecimal"/>
-		<field name="st_movimiento_item_CNTSEC" class="java.math.BigDecimal"/>
-		<field name="st_movimiento_item_COTIZA" class="java.math.BigDecimal"/>
 		<field name="st_movimiento_item_DEPOSI" class="java.lang.String"/>
-		<field name="st_movimiento_item_FCHMOV" class="java.sql.Date"/>
 		<field name="st_movimiento_item_NATRI1" class="java.lang.String"/>
 		<field name="st_movimiento_item_NATRI2" class="java.lang.String"/>
 		<field name="st_movimiento_item_NATRI3" class="java.lang.String"/>
@@ -67,24 +52,15 @@ ORDER BY st_movimiento_item.`ID`]]>
 		<field name="st_movimiento_item_NATRI5" class="java.lang.String"/>
 		<field name="st_movimiento_item_NATRI6" class="java.lang.String"/>
 		<field name="st_movimiento_item_NATRI7" class="java.lang.String"/>
-		<field name="st_movimiento_item_OBSERV" class="java.lang.String"/>
-		<field name="st_movimiento_item_PRECIO" class="java.math.BigDecimal"/>
-		<field name="st_movimiento_item_PRESEC" class="java.math.BigDecimal"/>
-		<field name="st_movimiento_item_STOCKS" class="java.math.BigDecimal"/>
-		<field name="st_movimiento_item_SUCURS" class="java.lang.String"/>
-		<field name="st_movimiento_item_CODEMP" class="java.lang.String"/>
 		<field name="st_movimiento_item_DEBAJA" class="java.lang.String"/>
-		<field name="st_movimiento_item_TSTAMP" class="java.sql.Timestamp"/>
 		<field name="st_movimiento_item_FECALT" class="java.sql.Date"/>
 		<field name="st_movimiento_item_FECMOD" class="java.sql.Date"/>
 		<field name="st_movimiento_item_ULTOPR" class="java.lang.String"/>
 		<field name="st_movimiento_item_USERID" class="java.lang.String"/>
-		<field name="st_movimiento_item_COFLIS" class="java.lang.String"/>
 		<field name="st_movimiento_item_ID_MCAB" class="java.lang.Integer"/>
 		<field name="st_movimiento_item_ARTCOD" class="java.lang.String"/>
 		<field name="st_movimiento_item_UNIMED" class="java.lang.String"/>
 		<field name="st_producto_CODIGO" class="java.lang.String"/>
-		<field name="st_producto_TIPPRO" class="java.lang.String"/>
 		<field name="st_producto_DESCRP" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="LOGO" class="java.io.InputStream">
@@ -121,16 +97,10 @@ ORDER BY st_movimiento_item.`ID`]]>
      st_movimiento.`TIPMOV` AS st_movimiento_TIPMOV,
      st_movimiento.DEPOSI AS st_movimiento_DEPOSI,
      st_movimiento.DEPTRA AS st_movimiento_DEPTRA,
-     st_movimiento.`COFSEC` AS st_movimiento_COFSEC,
-     st_movimiento.`COTIZA` AS st_movimiento_COTIZA,
-     st_movimiento.`IMPRES` AS st_movimiento_IMPRES,
-     st_movimiento.`ISANUL` AS st_movimiento_ISANUL,
-     st_movimiento.`MASCAR` AS st_movimiento_MASCAR,
+	  st_movimiento.`ISANUL` AS st_movimiento_ISANUL,     
      st_movimiento.`OBSERV` AS st_movimiento_OBSERV,
-     st_movimiento.`NROCTA` AS st_movimiento_NROCTA,
      st_movimiento.`ID_MREV` AS st_movimiento_ID_MREV,
      st_movimiento.`DEBAJA` AS st_movimiento_DEBAJA,
-     st_movimiento.`TSTAMP` AS st_movimiento_TSTAMP,
      st_movimiento.`FECALT` AS st_movimiento_FECALT,
      st_movimiento.`FECMOD` AS st_movimiento_FECMOD,
      st_movimiento.`ULTOPR` AS st_movimiento_ULTOPR,
@@ -138,8 +108,7 @@ ORDER BY st_movimiento_item.`ID`]]>
      gr_formulario.`LETRID` AS gr_formulario_LETRID,
      gr_formulario.`DESCRP` AS gr_formulario_DESCRP,
      gr_formulario.`SUCURS` AS gr_formulario_SUCURS,
-     st_movimiento.`CODEMP` AS st_movimiento_CODEMP,
-     st_deposito.`DESCRP` AS st_deposito_DESCRP
+     st_deposito.`descripcion` AS st_deposito_DESCRP
 FROM
      `st_movimiento` st_movimiento INNER JOIN `gr_formulario` gr_formulario ON st_movimiento.`MODFOR` = gr_formulario.`MODFOR`
      AND gr_formulario.`CODFOR` = st_movimiento.`CODFOR`
@@ -175,16 +144,10 @@ WHERE
 	<field name="st_movimiento_TIPMOV" class="java.lang.String"/>
 	<field name="st_movimiento_DEPOSI" class="java.lang.String"/>
 	<field name="st_movimiento_DEPTRA" class="java.lang.String"/>
-	<field name="st_movimiento_COFSEC" class="java.lang.String"/>
-	<field name="st_movimiento_COTIZA" class="java.math.BigDecimal"/>
-	<field name="st_movimiento_IMPRES" class="java.lang.Integer"/>
 	<field name="st_movimiento_ISANUL" class="java.lang.String"/>
-	<field name="st_movimiento_MASCAR" class="java.lang.String"/>
 	<field name="st_movimiento_OBSERV" class="java.lang.String"/>
-	<field name="st_movimiento_NROCTA" class="java.lang.String"/>
 	<field name="st_movimiento_ID_MREV" class="java.lang.Integer"/>
 	<field name="st_movimiento_DEBAJA" class="java.lang.String"/>
-	<field name="st_movimiento_TSTAMP" class="java.sql.Timestamp"/>
 	<field name="st_movimiento_FECALT" class="java.sql.Date"/>
 	<field name="st_movimiento_FECMOD" class="java.sql.Date"/>
 	<field name="st_movimiento_ULTOPR" class="java.lang.String"/>
@@ -192,7 +155,6 @@ WHERE
 	<field name="gr_formulario_LETRID" class="java.lang.String"/>
 	<field name="gr_formulario_DESCRP" class="java.lang.String"/>
 	<field name="gr_formulario_SUCURS" class="java.lang.String"/>
-	<field name="st_movimiento_CODEMP" class="java.lang.String"/>
 	<field name="st_deposito_DESCRP" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -202,7 +164,7 @@ WHERE
 	</title>
 	<pageHeader>
 		<band height="115" splitType="Stretch">
-			<image onErrorType="Blank">
+			<image isUsingCache="true" onErrorType="Blank">
 				<reportElement x="5" y="5" width="250" height="65" uuid="e56cf4d8-b45b-4a27-9b15-a62b248caf52"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>

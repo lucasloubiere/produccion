@@ -63,11 +63,12 @@ public class MovimientoStockDAO extends BaseDAO {
             return q.getResultList();
 
         } catch (NoResultException e) {
-            
+
             return new ArrayList<MovimientoStock>();
+        
         } catch (Exception e) {
-            
-            System.err.println("Error al obtener movimientos de inventario");
+
+            System.err.println("Error al obtener movimientos de inventario " + e);
             return new ArrayList<MovimientoStock>();
         }
     }
