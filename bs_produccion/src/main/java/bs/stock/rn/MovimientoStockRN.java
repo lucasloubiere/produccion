@@ -271,6 +271,10 @@ public class MovimientoStockRN {
                 || m.getTipoMovimiento().equals("E")
                 || m.getTipoMovimiento().equals("T")) {
 
+            if (m.getDepositoTransferencia()== null) {
+                throw new ExcepcionGeneralSistema("Seleccione el depósito de egreso para la transferencia");
+            }
+
             if (nItem.getCantidad() == null || nItem.getCantidad().compareTo(BigDecimal.ZERO) <= 0) {
                 throw new ExcepcionGeneralSistema("Ingrese un valor de cantidad mayor a 0 para " + nItem.getProducto().getDescripcion());
             }
@@ -374,7 +378,7 @@ public class MovimientoStockRN {
 
             if (m.getTipoMovimiento().equals("E")) {
 
-                nItem.setStocks(nItem.getCantidad().negate());                
+                nItem.setStocks(nItem.getCantidad().negate());
                 Stock s = new Stock(nItem);
                 //Es un egreso de stock por lo tanto convertimos la cantidad a negativo
                 s.setStocks(s.getStocks().negate());
@@ -397,10 +401,10 @@ public class MovimientoStockRN {
 
             if (m.getTipoMovimiento().equals("T")) {
 
-                nItem.setStocks(nItem.getCantidad().negate());                
-                Stock s = new Stock(nItem);                
+                nItem.setStocks(nItem.getCantidad().negate());
+                Stock s = new Stock(nItem);
                 //Modificamos el deposito de transferencia que es el que egresa.
-                nItem.setDeposito(m.getDepositoTransferencia());
+                s.setDeposito(m.getDepositoTransferencia());
                 //Es un egreso de stock por lo tanto convertimos la cantidad a negativo
                 s.setStocks(s.getStocks().negate());
 

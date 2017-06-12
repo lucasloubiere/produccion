@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ST_MVH_I" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="21db4006-82c7-4753-bdd2-6f5767781961">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="431"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -451,7 +451,7 @@ WHERE
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="16" rowSpan="1">
-							<textField pattern="###0.00" isBlankWhenNull="true">
+							<textField pattern="#,##0.00" isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="85" height="16" uuid="b290a680-0027-4513-87ec-19cc458e4fc4"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>

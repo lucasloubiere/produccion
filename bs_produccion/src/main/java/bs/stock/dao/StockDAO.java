@@ -29,7 +29,7 @@ public class StockDAO extends BaseDAO {
     public BigDecimal getStockDisponibleByProducto(Stock s){
 
         try {          
-
+            
             Query q = (Query) em.createQuery("SELECT SUM(s.stocks) "
                     + "FROM Stock s "
                     + "WHERE s.artcod = :artcod "
@@ -44,7 +44,7 @@ public class StockDAO extends BaseDAO {
                     + " " );
 
             q.setParameter("artcod",s.getCodigo());
-            q.setParameter("deposi",s.getDeposito());            
+            q.setParameter("deposi",s.getDeposi());            
             q.setParameter("atributo1",s.getAtributo1());
             q.setParameter("atributo2",s.getAtributo2());
             q.setParameter("atributo3",s.getAtributo3());
@@ -56,7 +56,7 @@ public class StockDAO extends BaseDAO {
             return (BigDecimal) q.getSingleResult();
             
         } catch (Exception e) {
-            System.out.println("No se puede obtener disponible en stock" + e.getCause());
+            System.out.println("No se puede obtener disponible en stock " + e.getCause());
             return BigDecimal.ZERO;
         }
     }

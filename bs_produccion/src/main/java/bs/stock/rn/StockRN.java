@@ -53,7 +53,8 @@ public boolean isProductoDisponible(Stock s){
         s.setStockDisponible(disp);
 
         if(disp==null){
-//            System.out.println("Producto sin stock en "+ s.getDeposi());
+            disp = BigDecimal.ZERO;
+            System.out.println("Producto sin stock en "+ s.getDeposi());
             return false;
         }
 

@@ -226,6 +226,7 @@
                     <p:inputText value="#{movimientoStockBean.m.depositoTransferencia.descripcion}" readonly="true"
                                  rendered="#{movimientoStockBean.m.tipoMovimiento eq 'T' and not movimientoStockBean.detalleVacio}" /> 
 
+                    
                     <h:outputText value="Deposito ingreso" rendered="#{movimientoStockBean.m.tipoMovimiento eq 'T'}" />
                     <p:selectOneMenu value="#{movimientoStockBean.m.deposito}" 
                                      rendered="#{movimientoStockBean.m.tipoMovimiento eq 'T' and movimientoStockBean.detalleVacio}"
