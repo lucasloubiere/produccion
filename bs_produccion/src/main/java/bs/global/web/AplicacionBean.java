@@ -10,6 +10,8 @@ import bs.administracion.modelo.Parametro;
 import bs.administracion.rn.EmpresaRN;
 import bs.administracion.rn.ParametrosRN;
 import bs.global.util.JsfUtil;
+import bs.stock.modelo.ParametroStock;
+import bs.stock.rn.ParametroStockRN;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,11 +36,13 @@ import org.primefaces.event.FileUploadEvent;
 public class AplicacionBean extends GenericBean implements Serializable{
     
     @EJB private ParametrosRN parametroRN;
+    @EJB private ParametroStockRN parametroStockRN;
     @EJB private EmpresaRN empresaRN;
     
 
     private Empresa empresa;
     private Parametro parametro;
+    private ParametroStock parametroStock;
     
    /** Creates a new instance of Empresa */
    public AplicacionBean() {
@@ -48,7 +52,8 @@ public class AplicacionBean extends GenericBean implements Serializable{
    public void init (){     
         try {
             empresa = empresaRN.getEmpresa("01");
-            parametro = parametroRN.getParametro(empresa.getCodigo());            
+            parametro = parametroRN.getParametro(empresa.getCodigo());   
+            parametroStock = parametroStockRN.getParametro();
             
             verificarCarpetasSistemas();
             
@@ -182,4 +187,12 @@ public class AplicacionBean extends GenericBean implements Serializable{
     public void setParametro(Parametro parametro) {
         this.parametro = parametro;
     }    
+    
+    public ParametroStock getParametroStock() {
+        return parametroStock;
+    }
+
+    public void setParametroStock(ParametroStock parametroStock) {
+        this.parametroStock = parametroStock;
+    }
 }

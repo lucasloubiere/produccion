@@ -50,7 +50,7 @@ public class Producto implements Serializable {
     @Column(name = "codigoDeBarra", length = 30)
     private String codigoDeBarra;
 
-    @JoinColumn(name = "unidadDeMedida", referencedColumnName = "codigo", nullable = false)
+    @JoinColumn(name = "unimed", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(optional = false)
     private UnidadMedida unidadDeMedida;
   
@@ -130,8 +130,7 @@ public class Producto implements Serializable {
         this.auditoria = new Auditoria();
         this.codigo = codigo;
         this.descripcion = descripcion;
-        this.gestionaStock = gestionaStock;
-       
+        this.gestionaStock = gestionaStock;       
     }
 
     public String getCodigo() {
@@ -181,8 +180,6 @@ public class Producto implements Serializable {
     public void setTipoProducto(TipoProducto tipoProducto) {
         this.tipoProducto = tipoProducto;
     }
-    
-    
 
     public Rubro1 getRubro1() {
         return rubro1;

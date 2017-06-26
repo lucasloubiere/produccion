@@ -50,29 +50,18 @@ public boolean isProductoDisponible(Stock s){
         BigDecimal disp = stockDAO.getStockDisponibleByProducto(s);
         BigDecimal cant = s.getStocks().add(BigDecimal.ZERO);
         
-        s.setStockDisponible(disp);
-
-        if(disp==null){
-            disp = BigDecimal.ZERO;
-            System.out.println("Producto sin stock en "+ s.getDeposi());
+        if(disp==null){                        
+            s.setStockDisponible(BigDecimal.ZERO);
             return false;
+        }else{
+            s.setStockDisponible(disp);
         }
 
-        System.err.println("Producto:" + s + "Cantidad: " + cant  + " Disp:" + disp );
-
-        if(cant.compareTo(BigDecimal.ZERO)>0){
-            System.err.println("El stock positivo: " + cant);
+        if(cant.compareTo(BigDecimal.ZERO)>0){            
             cant = cant.negate();
         }
 
-//        System.err.println("Stock resultante: " +disp.add(cant));
-
-        //Si el stock resultante es menor a cero no pasa
-        if(disp.add(cant).compareTo(BigDecimal.ZERO)==-1){
-            return false;
-        }
-
-        return true;
+        return disp.add(cant).compareTo(BigDecimal.ZERO) >= 0;
     }
 
     public Stock getStock(StockPK idPK){

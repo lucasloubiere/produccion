@@ -82,7 +82,6 @@ public class ReportFactory implements Serializable {
             conexion.setAutoCommit(true);   
             pathTemporales = System.getProperty("catalina.base")+ "\\docroot\\"+p.getCarpetaTemporales()+"\\";
             
-            System.err.println("con" + conexion.getCatalog());
             
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "No es posible iniciar ReportFactory", ex);        
@@ -125,6 +124,7 @@ public class ReportFactory implements Serializable {
     public void exportReportToXlsFile(String pathReport,String nombreSalida,Map parameters)  throws NamingException, SQLException, JRException, IOException, Exception {
 
         generarExcel(pathReport, nombreSalida, parameters);        
+        
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         
         FileInputStream entrada = new FileInputStream(pathTemporales+ nombreSalida +".xls");

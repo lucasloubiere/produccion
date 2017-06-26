@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 @Stateless
@@ -29,11 +30,11 @@ public class StockDAO extends BaseDAO {
     public BigDecimal getStockDisponibleByProducto(Stock s){
 
         try {          
-            
+
             Query q = (Query) em.createQuery("SELECT SUM(s.stocks) "
                     + "FROM Stock s "
                     + "WHERE s.artcod = :artcod "
-                    + "AND s.deposito = :deposi "
+                    + "AND s.deposi = :deposi "
                     + "AND s.atributo1 = :atributo1 "
                     + "AND s.atributo2 = :atributo2 "
                     + "AND s.atributo3 = :atributo3 "
@@ -55,9 +56,13 @@ public class StockDAO extends BaseDAO {
 
             return (BigDecimal) q.getSingleResult();
             
-        } catch (Exception e) {
-            System.out.println("No se puede obtener disponible en stock " + e.getCause());
+        } catch (NoResultException e) {
+            
             return BigDecimal.ZERO;
+            
+        } catch (Exception e) {
+            System.out.println("No se puede obtener disponible en stock" + e);
+            return null;
         }
     }
     

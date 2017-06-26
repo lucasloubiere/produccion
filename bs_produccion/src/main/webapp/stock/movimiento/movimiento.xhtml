@@ -255,6 +255,12 @@
                                  readonly="true" /> 
                     -->
                     
+                    <h:outputText value="Comprobante balanza " />                
+                    <p:inputText value="#{movimientoStockBean.m.comprobanteBalanza}"/>
+                    
+                    <h:outputText value="Carta de Porte / Remito" />                
+                    <p:inputText value="#{movimientoStockBean.m.cartaPorte}"/>
+                    
                     <h:outputText value="Observaciones" />
                     <p:inputTextarea style="width: 100%" rows="3" value="#{movimientoStockBean.m.observaciones}" />
 
@@ -300,7 +306,6 @@
                         </p:column>
                         -->
                         
-                        <!--
                         <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" width="120" 
                                   rendered="#{aplicacionBean.parametroStock.administraAtributo1 eq 'S'}" >  
 
@@ -313,6 +318,7 @@
                             <p:inputText  value="#{i.atributo2}" readonly="#{empty i.producto or i.producto.administraAtributo2 eq 'N'}" />                            
                         </p:column>
 
+                        <!--
                         <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo3}" width="120" 
                                   rendered="#{aplicacionBean.parametroStock.administraAtributo3 eq 'S'}">  
 

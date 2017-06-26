@@ -108,14 +108,12 @@
 	<queryString>
 		<![CDATA[SELECT
 		st_movimiento_item.DEPOSI,
-		st_deposito.DESCRP as st_deposito_DESCRP,
+		st_deposito.DESCRIPCION as st_deposito_DESCRP,
 		st_movimiento_item.ARTCOD,
-		st_producto.DESCRP AS st_producto_DESCRP ,
+		st_producto.DESCRIPCION AS st_producto_DESCRP ,
 		st_producto.UNIMED,
 		Sum(st_movimiento_item.CANTID) AS CANTIDAD,
-		ad_empresa.CODIGO As EMP_CODIGO,
-	  ad_empresa.RAZON_SOCIAL As EMP_RAZONS,
-	  ad_empresa.NOMBRE_FANTASIA As EMP_NOMBRE
+		ad_empresa.*
 FROM 	st_movimiento_item,
 		st_producto,
 		st_deposito,
@@ -129,7 +127,7 @@ And (st_movimiento_item.FCHMOV <= $P{FCHHAS} )
 GROUP BY
 		st_movimiento_item.DEPOSI,
 		st_movimiento_item.ARTCOD,
-		st_producto.DESCRP,
+		st_producto.DESCRIPCION,
 		st_producto.UNIMED]]>
 	</queryString>
 	<field name="DEPOSI" class="java.lang.String">
@@ -143,10 +141,60 @@ GROUP BY
 	<field name="UNIMED" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="CANTIDAD" class="java.math.BigDecimal"/>
-	<field name="EMP_CODIGO" class="java.lang.String"/>
-	<field name="EMP_RAZONS" class="java.lang.String"/>
-	<field name="EMP_NOMBRE" class="java.lang.String"/>
+	<field name="CANTIDAD" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CODIGO" class="java.lang.String">
+		<fieldDescription><![CDATA[Código]]></fieldDescription>
+	</field>
+	<field name="RAZON_SOCIAL" class="java.lang.String">
+		<fieldDescription><![CDATA[Razón Social]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_FANTASIA" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre Fantasía]]></fieldDescription>
+	</field>
+	<field name="EMAIL" class="java.lang.String">
+		<fieldDescription><![CDATA[Email]]></fieldDescription>
+	</field>
+	<field name="TELEFONO" class="java.lang.String">
+		<fieldDescription><![CDATA[Telénofo]]></fieldDescription>
+	</field>
+	<field name="FAX" class="java.lang.String">
+		<fieldDescription><![CDATA[Fax]]></fieldDescription>
+	</field>
+	<field name="CONDICION_IVA" class="java.lang.String">
+		<fieldDescription><![CDATA[Condición de IVA]]></fieldDescription>
+	</field>
+	<field name="CUIT" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuit]]></fieldDescription>
+	</field>
+	<field name="INICIO_ACTIVIDADES" class="java.lang.String">
+		<fieldDescription><![CDATA[Inicio de Actividades]]></fieldDescription>
+	</field>
+	<field name="NRO_IB" class="java.lang.String">
+		<fieldDescription><![CDATA[Nro Ingresos Brutos]]></fieldDescription>
+	</field>
+	<field name="NRO_AG" class="java.lang.String">
+		<fieldDescription><![CDATA[Nro Agente Retención]]></fieldDescription>
+	</field>
+	<field name="IMP_MUNIC" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuesto Municipal]]></fieldDescription>
+	</field>
+	<field name="DIRECCION" class="java.lang.String">
+		<fieldDescription><![CDATA[Dirección]]></fieldDescription>
+	</field>
+	<field name="CIUDAD" class="java.lang.String">
+		<fieldDescription><![CDATA[Ciudad]]></fieldDescription>
+	</field>
+	<field name="PROVINCIA" class="java.lang.String">
+		<fieldDescription><![CDATA[Provincia]]></fieldDescription>
+	</field>
+	<field name="PAIS" class="java.lang.String">
+		<fieldDescription><![CDATA[País]]></fieldDescription>
+	</field>
+	<field name="LOGO" class="java.lang.String">
+		<fieldDescription><![CDATA[Path Logo]]></fieldDescription>
+	</field>
 	<variable name="SUM_CANTID" class="java.math.BigDecimal" resetType="Group" resetGroup="GRUPO_1" calculation="Sum">
 		<variableExpression><![CDATA[$F{CANTIDAD}]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
@@ -215,7 +263,7 @@ GROUP BY
 					<font size="10" isBold="true"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{EMP_NOMBRE}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{NOMBRE_FANTASIA}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="429" y="19" width="114" height="11" uuid="0427b782-8e84-49fb-8bce-824533e57710"/>

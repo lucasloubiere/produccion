@@ -105,61 +105,16 @@
                             <h:outputText value="#{i.producto.descripcion}"  />
                         </p:column>
                        
-                        <!--                        
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" width="150" 
-                                  rendered="#{movimientoFacturacionBean.circuito.administraAtributo1 eq 'S'}" >  
-
-                            <p:inputText value="#{i.atributo1}" readonly="#{empty i.producto or i.producto.administraAtributo1 eq 'N'}" />
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo2}" width="150" 
-                                  rendered="#{movimientoFacturacionBean.circuito.administraAtributo1 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo2}" readonly="#{empty i.producto or i.producto.administraAtributo2 eq 'N'}" />                            
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo3}" width="150" 
-                                  rendered="#{movimientoFacturacionBean.circuito.administraAtributo3 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo3}" readonly="#{empty i.producto or i.producto.administraAtributo3 eq 'N'}" />                            
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo4}" width="150" 
-                                  rendered="#{movimientoFacturacionBean.circuito.administraAtributo4 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo4}" readonly="#{empty i.producto or i.producto.administraAtributo4 eq 'N'}" />                            
-                        </p:column>
-
-                         <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo5}" width="150" 
-                                  rendered="#{movimientoFacturacionBean.circuito.administraAtributo5 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo5}" readonly="#{empty i.producto or i.producto.administraAtributo5 eq 'N'}" />                            
-                        </p:column>
-
-                         <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo6}" width="150" 
-                                  rendered="#{movimientoFacturacionBean.circuito.administraAtributo6 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo6}" readonly="#{empty i.producto or i.producto.administraAtributo6 eq 'N'}" />                            
-                        </p:column>
-
-                         <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo7}" width="150" 
-                                  rendered="#{movimientoFacturacionBean.circuito.administraAtributo7 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo7}" readonly="#{empty i.producto or i.producto.administraAtributo7 eq 'N'}" />                            
-                        </p:column>
-                        
                         <p:column style="width:16px">
                             <p:rowToggler />
                         </p:column>
-                        -->
-                        
+                                                
                         <p:column headerText="Stock" width="15%" style="text-align: right;"  >
                             <h:outputText value="#{i.stocks}"  >
                                 <f:convertNumber pattern="####0" />
                             </h:outputText>
                         </p:column>
-                        
-                        <!--
+                                                
                         <p:rowExpansion>
                             <p:dataTable id="atributos"  reflow="true" 
                                          value="#{i.atributos}" var="a"
@@ -209,7 +164,7 @@
                                 
                             </p:dataTable>                            
                         </p:rowExpansion>
-                        -->
+                        
                         
                     </p:dataTable>
                     

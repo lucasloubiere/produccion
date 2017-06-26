@@ -94,6 +94,7 @@ public abstract class InformeBase extends GenericBean implements Serializable {
             
         } catch (Exception e) {
 
+            e.printStackTrace();
             JsfUtil.addErrorMessage("No se puede ejecutar reporte pdf " + e);
             todoOk = false;
             muestraReporte = false;

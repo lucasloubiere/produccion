@@ -120,11 +120,11 @@
 	</parameter>
 	<queryString>
 		<![CDATA[Select
-  st_deposito.DESCRP As st_deposito_DESCRP,
+  st_deposito.DESCRIPCION As st_deposito_DESCRP,
   st_producto.CODIGO As st_producto_CODIGO,
-  st_producto.DESCRP As st_producto_DESCRP,
-  st_tipo_producto.TIPPRO As st_tipo_producto_TIPPRO,
-  st_tipo_producto.DESCRP As st_tipo_producto_DESCRP,
+  st_producto.DESCRIPCION As st_producto_DESCRP,
+  st_tipoproducto.CODIGO As st_tipo_producto_TIPPRO,
+  st_tipoproducto.DESCRIPCION As st_tipo_producto_DESCRP,
   st_movimiento.MODFOR as st_movimiento_MODFOR,
   st_movimiento.CODFOR as st_movimiento_CODFOR,
   st_movimiento.NROFOR as st_movimiento_NROFOR,
@@ -143,30 +143,24 @@
   st_movimiento_item.ARTCOD as st_movimiento_item_ARTCOD,
   st_movimiento_item.DEPOSI as st_movimiento_item_DEPOSI,
   st_deposito.CODIGO as st_deposito_CODIGO,
-ad_empresa.RAZON_SOCIAL As ad_empresa_RAZON_SOCIAL,
-  ad_empresa.NOMBRE_FANTASIA As ad_empresa_NOMBRE_FANTASIA,
-  ad_empresa.CUIT As ad_empresa_CUIT,
-  ad_empresa.DIRECCION As ad_empresa_DIRECCION,
-  ad_empresa.EMAIL As ad_empresa_EMAIL,
-  ad_empresa.TELEFONO As ad_empresa_TELEFONO,
   st_parametro.DESAT1 AS st_parametro_DESAT1,
   st_parametro.DESAT2 AS st_parametro_DESAT2,
   st_parametro.DESAT3 AS st_parametro_DESAT3,
   st_parametro.DESAT4 AS st_parametro_DESAT4,
   st_parametro.DESAT5 AS st_parametro_DESAT5,
   st_parametro.DESAT6 AS st_parametro_DESAT6,
-  st_parametro.DESAT7 AS st_parametro_DESAT7
-
+  st_parametro.DESAT7 AS st_parametro_DESAT7,
+  ad_empresa.*
 From
   st_movimiento Inner Join
-  st_movimiento_item On st_movimiento.ID = st_movimiento_item.ID_MCAB Inner Join
+  st_movimiento_item On st_movimiento.ID = st_movimiento_item.IDCAB Inner Join
   st_producto On st_movimiento_item.ARTCOD = st_producto.CODIGO Inner Join
-  st_tipo_producto On st_producto.TIPPRO = st_tipo_producto.TIPPRO Inner Join
+  st_tipoproducto On st_producto.TIPOPRODUCTO= st_tipoproducto.CODIGO Inner Join
   st_deposito On st_deposito.CODIGO = st_movimiento_item.DEPOSI, ad_empresa, st_parametro
 Where st_producto.CODIGO BETWEEN $P{ARTDES} AND $P{ARTHAS}
 AND st_movimiento.FCHMOV BETWEEN  $P{FCHDES} AND $P{FCHHAS}
 ORDER BY 
-  st_tipo_producto.TIPPRO,
+  st_tipoproducto.CODIGO,
   st_producto.CODIGO,
   st_deposito.CODIGO,
   st_movimiento.FCHMOV,
@@ -198,12 +192,6 @@ ORDER BY
 	<field name="st_movimiento_item_ARTCOD" class="java.lang.String"/>
 	<field name="st_movimiento_item_DEPOSI" class="java.lang.String"/>
 	<field name="st_deposito_CODIGO" class="java.lang.String"/>
-	<field name="ad_empresa_RAZON_SOCIAL" class="java.lang.String"/>
-	<field name="ad_empresa_NOMBRE_FANTASIA" class="java.lang.String"/>
-	<field name="ad_empresa_CUIT" class="java.lang.String"/>
-	<field name="ad_empresa_DIRECCION" class="java.lang.String"/>
-	<field name="ad_empresa_EMAIL" class="java.lang.String"/>
-	<field name="ad_empresa_TELEFONO" class="java.lang.String"/>
 	<field name="st_parametro_DESAT1" class="java.lang.String"/>
 	<field name="st_parametro_DESAT2" class="java.lang.String"/>
 	<field name="st_parametro_DESAT3" class="java.lang.String"/>
@@ -211,6 +199,57 @@ ORDER BY
 	<field name="st_parametro_DESAT5" class="java.lang.String"/>
 	<field name="st_parametro_DESAT6" class="java.lang.String"/>
 	<field name="st_parametro_DESAT7" class="java.lang.String"/>
+	<field name="CODIGO" class="java.lang.String">
+		<fieldDescription><![CDATA[Código]]></fieldDescription>
+	</field>
+	<field name="RAZON_SOCIAL" class="java.lang.String">
+		<fieldDescription><![CDATA[Razón Social]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_FANTASIA" class="java.lang.String">
+		<fieldDescription><![CDATA[Nombre Fantasía]]></fieldDescription>
+	</field>
+	<field name="EMAIL" class="java.lang.String">
+		<fieldDescription><![CDATA[Email]]></fieldDescription>
+	</field>
+	<field name="TELEFONO" class="java.lang.String">
+		<fieldDescription><![CDATA[Telénofo]]></fieldDescription>
+	</field>
+	<field name="FAX" class="java.lang.String">
+		<fieldDescription><![CDATA[Fax]]></fieldDescription>
+	</field>
+	<field name="CONDICION_IVA" class="java.lang.String">
+		<fieldDescription><![CDATA[Condición de IVA]]></fieldDescription>
+	</field>
+	<field name="CUIT" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuit]]></fieldDescription>
+	</field>
+	<field name="INICIO_ACTIVIDADES" class="java.lang.String">
+		<fieldDescription><![CDATA[Inicio de Actividades]]></fieldDescription>
+	</field>
+	<field name="NRO_IB" class="java.lang.String">
+		<fieldDescription><![CDATA[Nro Ingresos Brutos]]></fieldDescription>
+	</field>
+	<field name="NRO_AG" class="java.lang.String">
+		<fieldDescription><![CDATA[Nro Agente Retención]]></fieldDescription>
+	</field>
+	<field name="IMP_MUNIC" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuesto Municipal]]></fieldDescription>
+	</field>
+	<field name="DIRECCION" class="java.lang.String">
+		<fieldDescription><![CDATA[Dirección]]></fieldDescription>
+	</field>
+	<field name="CIUDAD" class="java.lang.String">
+		<fieldDescription><![CDATA[Ciudad]]></fieldDescription>
+	</field>
+	<field name="PROVINCIA" class="java.lang.String">
+		<fieldDescription><![CDATA[Provincia]]></fieldDescription>
+	</field>
+	<field name="PAIS" class="java.lang.String">
+		<fieldDescription><![CDATA[País]]></fieldDescription>
+	</field>
+	<field name="LOGO" class="java.lang.String">
+		<fieldDescription><![CDATA[Path Logo]]></fieldDescription>
+	</field>
 	<variable name="SUM_CANTID" class="java.math.BigDecimal" resetType="Group" resetGroup="ARTCOD" calculation="Sum">
 		<variableExpression><![CDATA[$F{st_movimiento_item_CANTID}]]></variableExpression>
 		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>

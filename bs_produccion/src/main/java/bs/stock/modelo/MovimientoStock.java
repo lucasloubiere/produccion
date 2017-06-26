@@ -87,8 +87,15 @@ public class MovimientoStock implements Serializable {
      */
     @Column(name = "tipmov", length = 1, nullable = false)
     private String tipoMovimiento;
-
-    /**
+    
+    
+     @Column(name = "comprob", length = 50)
+    private String comprobanteBalanza;
+          
+     @Column(name = "carta_porte", length = 50)
+    private String cartaPorte;
+     
+     /**
      * Deposito ingreso
      */
     @JoinColumn(name = "deposi", referencedColumnName = "CODIGO")
@@ -339,6 +346,24 @@ public class MovimientoStock implements Serializable {
     public void setAtributo7(String atributo7) {
         this.atributo7 = atributo7;
     }
+
+    public String getComprobanteBalanza() {
+        return comprobanteBalanza;
+    }
+
+    public void setComprobanteBalanza(String comprobanteBalanza) {
+        this.comprobanteBalanza = comprobanteBalanza;
+    }
+
+    public String getCartaPorte() {
+        return cartaPorte;
+    }
+
+    public void setCartaPorte(String cartaPorte) {
+        this.cartaPorte = cartaPorte;
+    }
+    
+    
     
     @Override
     public int hashCode() {

@@ -5,8 +5,8 @@
  */
 package bs.stock.web;
 
-import bs.global.web.GenericBean;
 import bs.global.util.JsfUtil;
+import bs.global.web.GenericBean;
 import bs.stock.modelo.Producto;
 import bs.stock.modelo.TipoProducto;
 import bs.stock.rn.ProductoRN;
@@ -39,7 +39,6 @@ public class ProductoBean extends GenericBean implements Serializable{
     
     private List<TipoProducto> tipos;
     private TipoProducto tipoProducto;
-
     
     private boolean mostrarEquivalenciaDebaja;
   
@@ -48,7 +47,6 @@ public class ProductoBean extends GenericBean implements Serializable{
     
     @ManagedProperty(value = "#{rubro2Bean}")
     private Rubro2Bean rubro2Bean; 
-   
 
     
     /** Creates a new instance of ProductoBean */

@@ -120,7 +120,6 @@
                             <h:outputText value="#{i.deposito.descripcion}" />
                         </p:column>
                         
-                        <!--
                         <p:column style="width:16px">
                             <p:rowToggler />
                         </p:column>
@@ -176,43 +175,6 @@
                             </p:dataTable>                            
                         </p:rowExpansion>
                         
-                        
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" style="text-align: right;" width="120" 
-                                  rendered="#{i.producto.administraAtributo1 eq 'S'}">
-                            <h:outputText value="#{i.atributo1}" />
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo2}" style="text-align: right;" width="120" 
-                                  rendered="#{i.producto.administraAtributo2 eq 'S'}">
-                            <h:outputText value="#{i.atributo2}" />
-                        </p:column>
-                        
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo3}" style="text-align: right;" width="120" 
-                                  rendered="#{i.producto.administraAtributo3 eq 'S'}">
-                            <h:outputText value="#{i.atributo3}" />
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo4}" style="text-align: right;" width="120" 
-                                  rendered="#{i.producto.administraAtributo4 eq 'S'}">
-                            <h:outputText value="#{i.atributo4}" />
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo5}" style="text-align: right;" width="120" 
-                                  rendered="#{i.producto.administraAtributo5 eq 'S'}">
-                            <h:outputText value="#{i.atributo5}" />
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo6}" style="text-align: right;" width="120" 
-                                  rendered="#{i.producto.administraAtributo6 eq 'S'}">
-                            <h:outputText value="#{i.atributo6}" />
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo7}" style="text-align: right;" width="120" 
-                                  rendered="#{i.producto.administraAtributo7 eq 'S'}">
-                            <h:outputText value="#{i.atributo7}" />
-                        </p:column>
-                        -->
-
                         <p:column headerText="Stock" width="20%" style="text-align: right;"  >
                             <h:outputText value="#{i.stocks}"  >
                                 <f:convertNumber pattern="####0" />
