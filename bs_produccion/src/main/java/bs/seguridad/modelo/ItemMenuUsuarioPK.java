@@ -6,7 +6,6 @@
 package bs.seguridad.modelo;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  *
@@ -16,10 +15,18 @@ import java.util.Objects;
 public class ItemMenuUsuarioPK implements Serializable {
     
     private String idUsuario;    
-    private int idMenu;
+    private String codMenu;
 
     public ItemMenuUsuarioPK() {
+        
     }
+
+    public ItemMenuUsuarioPK(String idUsuario, String codMenu) {
+        this.idUsuario = idUsuario;
+        this.codMenu = codMenu;
+    }
+    
+    
 
     public String getIdUsuario() {
         return idUsuario;
@@ -29,19 +36,19 @@ public class ItemMenuUsuarioPK implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public int getIdMenu() {
-        return idMenu;
+    public String getCodMenu() {
+        return codMenu;
     }
 
-    public void setIdMenu(int idMenu) {
-        this.idMenu = idMenu;
+    public void setCodMenu(String codMenu) {
+        this.codMenu = codMenu;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.idUsuario);
-        hash = 37 * hash + this.idMenu;
+        int hash = 3;
+        hash = 59 * hash + (this.idUsuario != null ? this.idUsuario.hashCode() : 0);
+        hash = 59 * hash + (this.codMenu != null ? this.codMenu.hashCode() : 0);
         return hash;
     }
 
@@ -57,10 +64,10 @@ public class ItemMenuUsuarioPK implements Serializable {
             return false;
         }
         final ItemMenuUsuarioPK other = (ItemMenuUsuarioPK) obj;
-        if (this.idMenu != other.idMenu) {
+        if (this.codMenu != other.codMenu) {
             return false;
         }
-        if (!Objects.equals(this.idUsuario, other.idUsuario)) {
+        if ((this.idUsuario == null) ? (other.idUsuario != null) : !this.idUsuario.equals(other.idUsuario)) {
             return false;
         }
         return true;
@@ -68,11 +75,10 @@ public class ItemMenuUsuarioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ItemMenuUsuarioPK{" + "idUsuario=" + idUsuario + ", idMenu=" + idMenu + '}';
+        return "ItemMenuUsuarioPK{" + "idUsuario=" + idUsuario + ", codMenu=" + codMenu + '}';
     }
     
     
-
 
 
 }

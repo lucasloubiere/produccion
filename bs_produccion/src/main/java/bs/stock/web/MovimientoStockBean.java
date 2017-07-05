@@ -14,8 +14,10 @@ import bs.stock.modelo.ItemMovimientoStock;
 import bs.stock.modelo.ItemProductoStock;
 import bs.stock.modelo.MovimientoStock;
 import bs.stock.modelo.Producto;
+import bs.stock.modelo.Stock;
 import bs.stock.rn.MovimientoStockRN;
 import bs.stock.rn.StockRN;
+import bs.stock.web.informe.ConsultaStock;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,8 +49,8 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     @ManagedProperty(value = "#{productoBean}")
     protected ProductoBean productoBean;
         
-//    @ManagedProperty(value = "#{consultaStock}")
-//    protected ConsultaStock consultaStock;
+    @ManagedProperty(value = "#{consultaStock}")
+    protected ConsultaStock consultaStock;
     
 //    @ManagedProperty(value = "#{mascaraStockBean}")
 //    protected MascaraStockBean mascaraStockBean;
@@ -196,21 +198,21 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
         }
     } 
     
-//    public void procesarStock(){
-//      
-//        if(consultaStock.getItemStock()!=null && m!=null && item!=null){
-//                   
-//            Stock s = consultaStock.getItemStock();
-//                        
-//            item.setAtributo1(s.getAtributo1());
-//            item.setAtributo2(s.getAtributo2());
-//            item.setAtributo3(s.getAtributo3());
-//            item.setAtributo4(s.getAtributo4());
-//            item.setAtributo5(s.getAtributo5());
-//            item.setAtributo6(s.getAtributo6());
-//            item.setAtributo7(s.getAtributo7());             
-//        }
-//    } 
+    public void procesarStock(){
+      
+        if(consultaStock.getItemStock()!=null && m!=null && item!=null){
+                   
+            Stock s = consultaStock.getItemStock();
+                        
+            item.setAtributo1(s.getAtributo1());
+            item.setAtributo2(s.getAtributo2());
+            item.setAtributo3(s.getAtributo3());
+            item.setAtributo4(s.getAtributo4());
+            item.setAtributo5(s.getAtributo5());
+            item.setAtributo6(s.getAtributo6());
+            item.setAtributo7(s.getAtributo7());             
+        }
+    } 
       
     public void nuevaBusqueda(){
                 
@@ -453,6 +455,16 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     public void setFormularioStockBean(FormularioStockBean formularioStockBean) {
         this.formularioStockBean = formularioStockBean;
     }
+
+    public ConsultaStock getConsultaStock() {
+        return consultaStock;
+    }
+
+    public void setConsultaStock(ConsultaStock consultaStock) {
+        this.consultaStock = consultaStock;
+    }
+    
+    
     
     public boolean isDetalleVacio() {
                   

@@ -6,7 +6,6 @@
 package bs.seguridad.modelo;
 
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,8 +29,8 @@ public class ItemMenuUsuario implements Serializable {
     @Column(name = "ID_USUARIO", nullable = false)
     private String idUsuario;
     @Id
-    @Column(name = "ID_MENU", nullable = false)
-    private int idMenu;
+    @Column(name = "COD_MENU", nullable = false)
+    private String codMenu;
 
     @JoinColumn(name="ID_USUARIO",referencedColumnName="ID", nullable=false, insertable=false, updatable=false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,19 +44,17 @@ public class ItemMenuUsuario implements Serializable {
 
     }
 
-    public ItemMenuUsuario(String idUsuario, int idMenu) {
+    public ItemMenuUsuario(String idUsuario, String codMenu) {
         this.idUsuario = idUsuario;
-        this.idMenu = idMenu;
+        this.codMenu = codMenu;
     }
 
-    
-
-    public int getIdMenu() {
-        return idMenu;
+    public String getCodMenu() {
+        return codMenu;
     }
 
-    public void setIdMenu(int idMenu) {
-        this.idMenu = idMenu;
+    public void setCodMenu(String codMenu) {
+        this.codMenu = codMenu;
     }
 
     public String getIdUsuario() {
@@ -83,10 +80,20 @@ public class ItemMenuUsuario implements Serializable {
     public void setMenu(Menu menu) {
         this.menu = menu;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 23 * hash + (this.idUsuario != null ? this.idUsuario.hashCode() : 0);
+        hash = 23 * hash + (this.codMenu != null ? this.codMenu.hashCode() : 0);
+        return hash;
+    }
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj == null) {
             return false;
         }
@@ -94,29 +101,19 @@ public class ItemMenuUsuario implements Serializable {
             return false;
         }
         final ItemMenuUsuario other = (ItemMenuUsuario) obj;
-        if (this.idUsuario != other.idUsuario) {
+        if (this.codMenu != other.codMenu) {
             return false;
         }
-        if (this.idMenu != other.idMenu) {
+        if ((this.idUsuario == null) ? (other.idUsuario != null) : !this.idUsuario.equals(other.idUsuario)) {
             return false;
         }
         return true;
     }
 
     @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.idUsuario);
-        hash = 89 * hash + this.idMenu;
-        return hash;
-    }
- 
-
-    
-
-    @Override
     public String toString() {
-        return "isd.seguridad.modelo.SG_UsuarioMenuPK[idUsuario=" + idUsuario + ", idMenu=" + idMenu + "]";
+        return "ItemMenuUsuario{" + "idUsuario=" + idUsuario + ", codMenu=" + codMenu + '}';
     }
+    
 
 }

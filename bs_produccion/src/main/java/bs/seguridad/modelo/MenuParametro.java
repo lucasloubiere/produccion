@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author ide
  */
 @Entity
-@Table(name = "sg_menuparametro")
+@Table(name = "sg_menu_parametro")
 @XmlRootElement
 public class MenuParametro implements Serializable {
 

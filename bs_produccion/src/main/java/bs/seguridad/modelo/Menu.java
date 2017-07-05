@@ -5,17 +5,22 @@
  */
 package bs.seguridad.modelo;
 
+import bs.global.modelo.Modulo;
 import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,114 +34,100 @@ public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "id")
-    private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "orden")
-    private int orden;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "tipo")
-    private int tipo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "nombre")
+    @Column(name = "CODIGO", nullable = false)
+    private String codigo;
+    @Column(name = "NOMBRE", length = 45)
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "icono")
+    @Column(name = "ORDEN")
+    private Integer orden;
+    @Column(name = "TIPO")
+    private Integer tipo;
+    @Column(name = "ICONO", length = 80)
     private String icono;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "accion")
+    @Column(name = "ACCION", length = 80)
     private String accion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "url")
+    @Column(name = "URL", length = 80)
     private String url;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "update")
+    @Column(name = "ACTUALIZA", length = 80)
     private String update;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "activo")
+    @Column(name = "ACTIVO")
     private String activo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "onComplete")
-    private String onComplete;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "nivel")
-    private int nivel;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "modulo")
-    private int modulo;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "menuPrincipal")
-    private int menuPrincipal;
+    @Column(name = "ONCOMPLETE", length = 45)
+    private String oncomplete;
+    @Column(name = "NIVEL")
+    private Integer nivel;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu")
-    private Collection<MenuParametro> parametros;
+    @Column(name = "ORIGEN")
+    private String origen;
+
+    @Lob
+    @Column(name = "AYUDA", length = 2147483647)
+    private String ayuda;
+
+    @JoinColumn(name = "MODULO", referencedColumnName = "CODIGO")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Modulo modulo;
+
+//    @JoinColumn(name = "COD_VISTA", referencedColumnName = "CODIGO")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private Vista vista;
+
+//    @JoinColumn(name = "codrep", referencedColumnName = "codigo")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private Reporte reporte;
+
+    @JoinColumn(name = "COD_MENU", referencedColumnName = "CODIGO")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Menu menuPrincipal;
+
+    @OneToMany(mappedBy = "menuPrincipal")
+//    @OrderColumn(name = "ORDEN")
+    @OrderBy("orden ASC")
+    private List<Menu> menuItem;
+
+    @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<MenuParametro> parametros;
+
+    @Transient
+    private boolean seleccionado;
 
     public Menu() {
+
+        menuItem = new ArrayList<Menu>();
+        this.origen = "USR";
     }
 
-    public Menu(Integer id) {
-        this.id = id;
+    public Menu(String codigo) {
+        this.codigo = codigo;
+        menuItem = new ArrayList<Menu>();
+        this.origen = "USR";
     }
 
-    public Menu(Integer id, int orden, int tipo, String nombre, String icono, String accion, String url, String update, String activo, String onComplete, int nivel, int modulo, int menuPrincipal) {
-        this.id = id;
-        this.orden = orden;
-        this.tipo = tipo;
-        this.nombre = nombre;
-        this.icono = icono;
-        this.accion = accion;
-        this.url = url;
-        this.update = update;
-        this.activo = activo;
-        this.onComplete = onComplete;
-        this.nivel = nivel;
-        this.modulo = modulo;
-        this.menuPrincipal = menuPrincipal;
+    public Menu(Menu m) {
+
+        codigo = m.getCodigo();
+        nombre = m.getNombre();
+        icono = m.getIcono();
+        accion = m.getAccion();
+        url = m.getUrl();
+        update = m.getUpdate();
+        activo = m.getActivo();
+        oncomplete = m.getOncomplete();
+        nivel = m.getNivel();
+        orden = m.getOrden();
+        tipo = m.getTipo();
+        menuItem = new ArrayList<Menu>();
+        parametros = m.getParametros();
+        origen = m.getOrigen();
+        this.origen = "USR";
     }
 
-    public Integer getId() {
-        return id;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public int getOrden() {
-        return orden;
-    }
-
-    public void setOrden(int orden) {
-        this.orden = orden;
-    }
-
-    public int getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -148,6 +139,10 @@ public class Menu implements Serializable {
     }
 
     public String getIcono() {
+
+        if (icono == null) {
+            icono = "";
+        }
         return icono;
     }
 
@@ -187,51 +182,132 @@ public class Menu implements Serializable {
         this.activo = activo;
     }
 
-    public String getOnComplete() {
-        return onComplete;
+    public String getOncomplete() {
+        return oncomplete;
     }
 
-    public void setOnComplete(String onComplete) {
-        this.onComplete = onComplete;
+    public void setOncomplete(String oncomplete) {
+        this.oncomplete = oncomplete;
     }
 
-    public int getNivel() {
-        return nivel;
+    public List<Menu> getMenuItem() {
+        return menuItem;
     }
 
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
+    public void setMenuItem(List<Menu> menuItem) {
+        this.menuItem = menuItem;
     }
 
-    public int getModulo() {
-        return modulo;
-    }
-
-    public void setModulo(int modulo) {
-        this.modulo = modulo;
-    }
-
-    public int getMenuPrincipal() {
+    public Menu getMenuPrincipal() {
         return menuPrincipal;
     }
 
-    public void setMenuPrincipal(int menuPrincipal) {
+    public void setMenuPrincipal(Menu menuPrincipal) {
         this.menuPrincipal = menuPrincipal;
     }
 
-    public Collection<MenuParametro> getParametros() {
+    public Integer getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
+    }
+
+    public List<MenuParametro> getParametros() {
         return parametros;
     }
 
-    public void setParametros(Collection<MenuParametro> parametros) {
+    public void setParametros(List<MenuParametro> parametros) {
         this.parametros = parametros;
     }
-    
+
+    public String getUrlCompleta() {
+
+        String urlC = url;
+        String param = "?TITULO=" + nombre 
+                + "&ID=" + codigo
+                +(reporte!=null?"&CODREP="+reporte.getCodigo()+"&NOMARC="+reporte.getNombre().replace(" ","_"):"");
+
+        if (parametros != null) {
+
+            for (MenuParametro mp : parametros) {
+
+                param += "&" + mp.getNombre() + "=" + mp.getValor();
+            }
+        }
+
+        return urlC + ".jsf" + param;
+    }
+
+    public boolean isSeleccionado() {
+        return seleccionado;
+    }
+
+    public void setSeleccionado(boolean seleccionado) {
+        this.seleccionado = seleccionado;
+    }
+
+    public Integer getOrden() {
+        return orden;
+    }
+
+    public void setOrden(Integer orden) {
+        this.orden = orden;
+    }
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
+
+    public Modulo getModulo() {
+        return modulo;
+    }
+
+    public void setModulo(Modulo modulo) {
+        this.modulo = modulo;
+    }
+
+    public String getAyuda() {
+        return ayuda;
+    }
+
+    public void setAyuda(String ayuda) {
+        this.ayuda = ayuda;
+    }
+
+    public Vista getVista() {
+        return vista;
+    }
+
+    public void setVista(Vista vista) {
+        this.vista = vista;
+    }
+
+    public String getOrigen() {
+        return origen;
+    }
+
+    public void setOrigen(String origen) {
+        this.origen = origen;
+    }
+
+    public Reporte getReporte() {
+        return reporte;
+    }
+
+    public void setReporte(Reporte reporte) {
+        this.reporte = reporte;
+    }
     
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (codigo != null ? codigo.hashCode() : 0);
         return hash;
     }
 
@@ -242,7 +318,7 @@ public class Menu implements Serializable {
             return false;
         }
         Menu other = (Menu) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
             return false;
         }
         return true;
@@ -250,7 +326,6 @@ public class Menu implements Serializable {
 
     @Override
     public String toString() {
-        return "com.seguridad.modelo.Menu[ id=" + id + " ]";
+        return nombre;
     }
-    
 }
