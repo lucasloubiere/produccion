@@ -35,8 +35,18 @@ public class ParametrosRN {
             }
         }
     }
+    
+    public Parametro getParametro(){
+                
+        Parametro p = parametroDAO.getParametros();
 
-    public Parametro getParametro(String codigo) throws Exception {
+        if (p==null){
+            p= new Parametro("01");            
+        }        
+        return p;
+    } 
+
+    public Parametro getParametro(String codigo){
                 
         Parametro p = parametroDAO.getParametros();
 

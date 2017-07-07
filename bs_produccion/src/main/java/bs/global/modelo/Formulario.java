@@ -1,10 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package bs.global.modelo;
 
+import bs.administracion.modelo.Reporte;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -35,24 +36,24 @@ public class Formulario implements Serializable {
      * Modulo de formulario
      */
     @Id
-    @Column(name = "modfor", nullable = false, length = 2)
+    @Column(name = "MODFOR", nullable = false, length = 2)
     private String modfor;
     /**
      * codigo de formulario
      */
     @Id
     @Basic(optional = false)
-    @Column(name = "codfor", nullable = false, length = 6)
+    @Column(name = "CODFOR", nullable = false, length = 6)
     private String codigo;
     /**
      * Descripción
      */
     @Basic(optional = false)
-    @Column(name = "descrp", nullable = false, length = 60)
+    @Column(name = "DESCRP", nullable = false, length = 60)
     private String descripcion;
 
     
-    @Column(name = "tipnum", nullable = false, length = 1)
+    @Column(name = "TIPNUM", nullable = false, length = 1)
     private String tipoNumeracion;
     /**
      * Ultimo número grabado
@@ -70,7 +71,7 @@ public class Formulario implements Serializable {
     /*
      * Sucursal o punto de venta
      */
-    @JoinColumn(name = "SUCURS", referencedColumnName = "CODIGO", nullable = false)
+    @JoinColumn(name = "SUCURS", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Sucursal sucursal;
 
@@ -85,12 +86,22 @@ public class Formulario implements Serializable {
      */
     @Column(name = "MAXITM")
     private Short cantidadMaximaItems;
-    
+    /**
+     * Nivel de impresión
+     */
+    @Column(name = "IMPRES")
+    private Short nivelImpresion;
     /**
      * Nombre del reporte
      */
-    @Column(name = "RPTNAM", length = 200)
-    private String nombreReporte;
+//    @Column(name = "RPTNAM", length = 200)
+//    private String nombreReporte;
+    
+    
+    @JoinColumn(name = "CODREP", referencedColumnName = "codigo")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Reporte reporte;
+    
     /**
      * Metodo de recuperación de fecha
      * A = Fecha Actual
@@ -100,14 +111,39 @@ public class Formulario implements Serializable {
     @Column(name = "RECFEC", nullable = false, length = 1)
     private String recuperacionFecha;
 
-    
+    /**
+     * Número de cai
+     */
+    @Column(name = "NROCAI", length = 20)
+    private String numeroCAI;
+
+    /**
+     * Fecha de cai
+     */
+    @Column(name = "FCHCAI")
+    @Temporal(TemporalType.DATE)
+    private Date fechaCAI;
+    /**
+     * Corresponde factua credito
+     */
+    @Column(name = "TRAFCR")
+    private Character correspondeFacturaCredito;
+    /**
+     * Cantidad de hojas ocupadas por el formulario en impresion
+     */
+    @Column(name = "HSTFOR")
+    private Integer hojaFormulario;
     /**
      * Observaciones
      */
     @Lob
     @Column(name = "TEXTOS", length = 2147483647)
     private String Textos;
-    
+    /**
+     * Numeracion personalizada
+     */
+    @Column(name = "PERSON")
+    private Character numeracionPersonalizada;
     /**
      * Permite modificar numeracion
      */
@@ -118,7 +154,21 @@ public class Formulario implements Serializable {
      */
     @Column(name = "MODFEC")
     private String modificaFecha;
-    
+    /**
+     *     Controla secuencialidad de numeración
+     */
+    @Column(name = "SECNUM")
+    private Character controlaSecuenciaNumeracion;
+    /**
+     * Controla secuencialidad de fecha
+     */
+    @Column(name = "SECFEC")
+    private Character controlaSecuenciaFecha;
+    /**
+     * permite registrar en períodos cerrados
+     */
+    @Column(name = "REPECE")
+    private Character registraPeriodosCerrados;
     /**
      * Código DGI
      */
@@ -128,6 +178,7 @@ public class Formulario implements Serializable {
 
     @Embedded
     private Auditoria auditoria;
+
 
 
     public Formulario() {
@@ -186,12 +237,28 @@ public class Formulario implements Serializable {
         this.codigoDGI = codigoDGI;
     }
 
-    public String getModfor() {
-        return modfor;
+    public Character getControlaSecuenciaFecha() {
+        return controlaSecuenciaFecha;
     }
 
-    public void setModfor(String modfor) {
-        this.modfor = modfor;
+    public void setControlaSecuenciaFecha(Character controlaSecuenciaFecha) {
+        this.controlaSecuenciaFecha = controlaSecuenciaFecha;
+    }
+
+    public Character getControlaSecuenciaNumeracion() {
+        return controlaSecuenciaNumeracion;
+    }
+
+    public void setControlaSecuenciaNumeracion(Character controlaSecuenciaNumeracion) {
+        this.controlaSecuenciaNumeracion = controlaSecuenciaNumeracion;
+    }
+
+    public Character getCorrespondeFacturaCredito() {
+        return correspondeFacturaCredito;
+    }
+
+    public void setCorrespondeFacturaCredito(Character correspondeFacturaCredito) {
+        this.correspondeFacturaCredito = correspondeFacturaCredito;
     }
 
     public String getDescripcion() {
@@ -202,28 +269,20 @@ public class Formulario implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getTipoNumeracion() {
-        return tipoNumeracion;
+    public Date getFechaCAI() {
+        return fechaCAI;
     }
 
-    public void setTipoNumeracion(String tipoNumeracion) {
-        this.tipoNumeracion = tipoNumeracion;
+    public void setFechaCAI(Date fechaCAI) {
+        this.fechaCAI = fechaCAI;
     }
 
-    public Integer getUltimoNumero() {
-        return ultimoNumero;
+    public Integer getHojaFormulario() {
+        return hojaFormulario;
     }
 
-    public void setUltimoNumero(Integer ultimoNumero) {
-        this.ultimoNumero = ultimoNumero;
-    }
-
-    public Date getUltimaFecha() {
-        return ultimaFecha;
-    }
-
-    public void setUltimaFecha(Date ultimaFecha) {
-        this.ultimaFecha = ultimaFecha;
+    public void setHojaFormulario(Integer hojaFormulario) {
+        this.hojaFormulario = hojaFormulario;
     }
 
     public String getLetra() {
@@ -234,28 +293,12 @@ public class Formulario implements Serializable {
         this.letra = letra;
     }
 
-    public String getNombreReporte() {
-        return nombreReporte;
+    public String getModfor() {
+        return modfor;
     }
 
-    public void setNombreReporte(String nombreReporte) {
-        this.nombreReporte = nombreReporte;
-    }
-
-    public String getRecuperacionFecha() {
-        return recuperacionFecha;
-    }
-
-    public void setRecuperacionFecha(String recuperacionFecha) {
-        this.recuperacionFecha = recuperacionFecha;
-    }
-
-    public String getModificaNumeracion() {
-        return modificaNumeracion;
-    }
-
-    public void setModificaNumeracion(String modificaNumeracion) {
-        this.modificaNumeracion = modificaNumeracion;
+    public void setModfor(String modfor) {
+        this.modfor = modfor;
     }
 
     public String getModificaFecha() {
@@ -266,6 +309,78 @@ public class Formulario implements Serializable {
         this.modificaFecha = modificaFecha;
     }
 
+    public String getModificaNumeracion() {
+        return modificaNumeracion;
+    }
+
+    public void setModificaNumeracion(String modificaNumeracion) {
+        this.modificaNumeracion = modificaNumeracion;
+    }
+
+    public Short getNivelImpresion() {
+        return nivelImpresion;
+    }
+
+    public void setNivelImpresion(Short nivelImpresion) {
+        this.nivelImpresion = nivelImpresion;
+    }
+
+    public Character getNumeracionPersonalizada() {
+        return numeracionPersonalizada;
+    }
+
+    public void setNumeracionPersonalizada(Character numeracionPersonalizada) {
+        this.numeracionPersonalizada = numeracionPersonalizada;
+    }
+
+    public String getNumeroCAI() {
+        return numeroCAI;
+    }
+
+    public void setNumeroCAI(String numeroCAI) {
+        this.numeroCAI = numeroCAI;
+    }
+
+    public String getRecuperacionFecha() {
+        return recuperacionFecha;
+    }
+
+    public void setRecuperacionFecha(String recuperacionFecha) {
+        this.recuperacionFecha = recuperacionFecha;
+    }
+
+    public Character getRegistraPeriodosCerrados() {
+        return registraPeriodosCerrados;
+    }
+
+    public void setRegistraPeriodosCerrados(Character registraPeriodosCerrados) {
+        this.registraPeriodosCerrados = registraPeriodosCerrados;
+    }
+
+    public String getTipoNumeracion() {
+        return tipoNumeracion;
+    }
+
+    public void setTipoNumeracion(String tipoNumeracion) {
+        this.tipoNumeracion = tipoNumeracion;
+    }
+
+    public Date getUltimaFecha() {
+        return ultimaFecha;
+    }
+
+    public void setUltimaFecha(Date ultimaFecha) {
+        this.ultimaFecha = ultimaFecha;
+    }
+
+    public Integer getUltimoNumero() {
+        return ultimoNumero;
+    }
+
+    public void setUltimoNumero(Integer ultimoNumero) {
+        this.ultimoNumero = ultimoNumero;
+    }
+
     public Auditoria getAuditoria() {
         return auditoria;
     }
@@ -273,9 +388,14 @@ public class Formulario implements Serializable {
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
     }
-    
-    
 
+    public Reporte getReporte() {
+        return reporte;
+    }
+
+    public void setReporte(Reporte reporte) {
+        this.reporte = reporte;
+    }
     
     @Override
     public boolean equals(Object obj) {

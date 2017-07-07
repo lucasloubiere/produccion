@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+
+    <ui:define name="titulo" >
+        Permisos a usuarios
+    </ui:define>
+    
+    <ui:define name="contenido">
+        
+        <p:panel header="Asignaci�n de permisos" id="pUsuario" style="height: auto;"  >
+    
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+            <p:contextMenu for="treeSingle">
+                <p:menuitem value="Habilitar" update="treeSingle,messageg" actionListener="#{permisosBean.habilitarMenu}" icon="ui-icon-check" />
+                <p:menuitem value="Bloquear"  update="treeSingle,messageg" actionListener="#{permisosBean.bloquearMenu}" icon="fa fa-close"/>
+            </p:contextMenu>
+                
+            <div class="Container100 Responsive50">
+                <div class="Container40">
+                    <p:dataTable value="#{permisosBean.lista}"  reflow="true"  var="u"  >
+
+                        <p:column headerText="Nombre Usuario" style="text-align: center;"
+                                  filterBy="#{u.usuario}">
+                            <h:outputText value="#{u.usuario}" style="text-align: left;" />
+                        </p:column>
+
+                        <p:column headerText="Estado" style="text-align: center;"  >
+                            <h:outputText value="#{u.estado.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Tipo de Usuario" style="text-align: center;" >
+                            <h:outputText value="#{u.tipo.descripcion}" />
+                        </p:column>
+
+                        <p:column  headerText="Seleccionar" style="text-align: center;"  >
+                            <p:commandButton icon="ui-icon-check" actionListener="#{permisosBean.seleccionar(u)}"
+                                             process="@this"
+                                             update="@form" />
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+                   
+                <div class="Container60">
+                    <p:tree id="treeSingle" value="#{permisosBean.menu}" 
+                            var="node" rendered="#{not empty permisosBean.usuario}"
+                            dynamic="true"
+                            selectionMode="single"
+                            selection="#{permisosBean.nodoSeleccionado}"
+                            style="width: 400px;" >
+
+                        <p:treeNode type="habilitado" icon="ui-icon-check" >
+                            <h:outputText value="#{node} - #{node.origen}" />
+                        </p:treeNode>
+
+                        <p:treeNode type="bloqueado" icon="ui-icon-close" styleClass="Red" >
+                            <h:outputText value="#{node} - #{node.origen}" />
+                        </p:treeNode>
+
+                    </p:tree>                    
+                </div>                
+            </div>
+
+        </p:panel>
+    
+    </ui:define>
+
+</ui:composition>
+</html>
+
+

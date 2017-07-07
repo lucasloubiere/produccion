@@ -5,15 +5,15 @@
 
 package bs.global.web;
 
+import bs.administracion.modelo.Modulo;
+import bs.administracion.rn.ModuloRN;
 import bs.global.modelo.Comprobante;
 import bs.global.modelo.CondicionDeIva;
 import bs.global.modelo.Formulario;
-import bs.global.modelo.Modulo;
 import bs.global.modelo.Sucursal;
 import bs.global.rn.ComprobanteRN;
 import bs.global.rn.CondicionDeIvaRN;
 import bs.global.rn.FormularioRN;
-import bs.global.rn.ModuloRN;
 import bs.global.rn.SucursalRN;
 import java.io.Serializable;
 import javax.ejb.EJB;

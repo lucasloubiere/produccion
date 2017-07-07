@@ -62,19 +62,19 @@ public class Producto implements Serializable {
         @JoinColumn(name = "rubro1", referencedColumnName = "codigo", nullable = false),
         @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false, insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Rubro1 rubro1;
+    private Rubro01 rubro1;
     
     @JoinColumns({
         @JoinColumn(name = "rubro2", referencedColumnName = "codigo"),
         @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false,insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Rubro2 rubro2;
+    private Rubro02 rubro2;
     
     @JoinColumns({
         @JoinColumn(name = "rubro3", referencedColumnName = "codigo"),
         @JoinColumn(name = "tipoProducto", referencedColumnName = "tipoProducto", nullable = false,insertable = false, updatable = false)})
     @ManyToOne(optional = false)
-    private Rubro3 rubro3;
+    private Rubro03 rubro3;
     
     @Column(name = "adatr1", length = 1)
     private String administraAtributo1;
@@ -181,27 +181,27 @@ public class Producto implements Serializable {
         this.tipoProducto = tipoProducto;
     }
 
-    public Rubro1 getRubro1() {
+    public Rubro01 getRubro1() {
         return rubro1;
     }
 
-    public void setRubro1(Rubro1 rubro1) {
+    public void setRubro1(Rubro01 rubro1) {
         this.rubro1 = rubro1;
     }
 
-    public Rubro2 getRubro2() {
+    public Rubro02 getRubro2() {
         return rubro2;
     }
 
-    public void setRubro2(Rubro2 rubro2) {
+    public void setRubro2(Rubro02 rubro2) {
         this.rubro2 = rubro2;
     }
 
-    public Rubro3 getRubro3() {
+    public Rubro03 getRubro3() {
         return rubro3;
     }
 
-    public void setRubro3(Rubro3 rubro3) {
+    public void setRubro3(Rubro03 rubro3) {
         this.rubro3 = rubro3;
     }
 

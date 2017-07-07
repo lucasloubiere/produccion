@@ -131,21 +131,21 @@ public class ParametroStock implements Serializable {
         @JoinColumn(name = "TIPPRO", referencedColumnName = "TIPPRO", nullable = false, insertable=false, updatable=false)    
     })
     @ManyToOne(fetch = FetchType.LAZY)    
-    private Rubro1 rubr01;    
+    private Rubro01 rubr01;    
     
     @JoinColumns({
         @JoinColumn(name = "RUBR02", referencedColumnName = "CODIGO", nullable = false, insertable=true,  updatable=true),
         @JoinColumn(name = "TIPPRO", referencedColumnName = "TIPPRO", nullable = false, insertable=false, updatable=false)    
     })
     @ManyToOne(fetch = FetchType.LAZY)    
-    private Rubro2 rubr02;    
+    private Rubro02 rubr02;    
     
     @JoinColumns({
         @JoinColumn(name = "RUBR03", referencedColumnName = "CODIGO", nullable = false, insertable=true, updatable=true),
         @JoinColumn(name = "TIPPRO", referencedColumnName = "TIPPRO", nullable = false, insertable=false, updatable=false)    
     })
     @ManyToOne(fetch = FetchType.LAZY)    
-    private Rubro3 rubr03;    
+    private Rubro03 rubr03;    
         
     
     @Embedded
@@ -506,27 +506,27 @@ public class ParametroStock implements Serializable {
         this.productoNuevo = productoNuevo;
     }
 
-    public Rubro1 getRubr01() {
+    public Rubro01 getRubr01() {
         return rubr01;
     }
 
-    public void setRubr01(Rubro1 rubr01) {
+    public void setRubr01(Rubro01 rubr01) {
         this.rubr01 = rubr01;
     }
 
-    public Rubro2 getRubr02() {
+    public Rubro02 getRubr02() {
         return rubr02;
     }
 
-    public void setRubr02(Rubro2 rubr02) {
+    public void setRubr02(Rubro02 rubr02) {
         this.rubr02 = rubr02;
     }
 
-    public Rubro3 getRubr03() {
+    public Rubro03 getRubr03() {
         return rubr03;
     }
 
-    public void setRubr03(Rubro3 rubr03) {
+    public void setRubr03(Rubro03 rubr03) {
         this.rubr03 = rubr03;
     }
 

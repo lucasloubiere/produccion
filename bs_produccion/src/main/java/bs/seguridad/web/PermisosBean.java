@@ -23,7 +23,7 @@ import org.primefaces.model.TreeNode;
 
 /**
  *
- * @author Pablo
+ * @author Lovago
  */
 @ManagedBean
 @ViewScoped
@@ -54,7 +54,6 @@ public class PermisosBean extends GenericBean implements Serializable {
     public void init() {
         lista = usuarioRN.getLista();
         menu = new DefaultTreeNode();
-
     }
 
     public void guardar() {

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "st_rubro2")
 @XmlRootElement
 @IdClass(Rubro2PK.class)
-public class Rubro2 implements Serializable {
+public class Rubro02 implements Serializable {
 
     
     @Id
@@ -53,15 +53,15 @@ public class Rubro2 implements Serializable {
     private Auditoria auditoria;
 
 
-    public Rubro2() {
+    public Rubro02() {
         this.auditoria = new Auditoria();
     }
 
-    public Rubro2(Rubro2PK rubro2PK) {
+    public Rubro02(Rubro2PK rubro2PK) {
         this.auditoria = new Auditoria();        
     }
     
-    public Rubro2(String codigo, String tipoProducto) {
+    public Rubro02(String codigo, String tipoProducto) {
         this.auditoria = new Auditoria();
         this.codigo = codigo;
         this.tipoProducto = tipoProducto;
@@ -119,7 +119,7 @@ public class Rubro2 implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Rubro2 other = (Rubro2) obj;
+        final Rubro02 other = (Rubro02) obj;
         if ((this.codigo == null) ? (other.codigo != null) : !this.codigo.equals(other.codigo)) {
             return false;
         }

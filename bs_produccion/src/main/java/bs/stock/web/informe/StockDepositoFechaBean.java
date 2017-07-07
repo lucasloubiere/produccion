@@ -16,7 +16,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -74,7 +73,8 @@ public class StockDepositoFechaBean extends InformeBase implements Serializable{
         
         
         nombreArchivo = "ST_STOCK_DEPOSITO_FECHA";
-        pathReporte = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/stock/informe/ST_STOCK_DEPOSITO_FECHA.jasper");
+        reporte = reporteRN.getReporte(codigoReporte);
+        //pathReporte = "stock/informe/ST_STOCK_DEPOSITO_FECHA.jasper";
                
     }
            

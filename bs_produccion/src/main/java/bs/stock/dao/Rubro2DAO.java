@@ -6,7 +6,7 @@
 package bs.stock.dao;
 
 import bs.global.dao.BaseDAO;
-import bs.stock.modelo.Rubro2;
+import bs.stock.modelo.Rubro02;
 import bs.stock.modelo.TipoProducto;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import javax.persistence.Query;
 @Stateless
 public class Rubro2DAO extends BaseDAO {
 
-    public Rubro2 getRubro2(String codigo) {
-        return getObjeto(Rubro2.class, codigo);
+    public Rubro02 getRubro2(String codigo) {
+        return getObjeto(Rubro02.class, codigo);
     }
     
     public TipoProducto getTipoProducto(String codigo) {
@@ -31,7 +31,7 @@ public class Rubro2DAO extends BaseDAO {
     }
   
     
-    public List<Rubro2> getListaByBusqueda(String codTipo, String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+    public List<Rubro02> getListaByBusqueda(String codTipo, String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
                
         
         try {            
@@ -53,16 +53,16 @@ public class Rubro2DAO extends BaseDAO {
             
         } catch (Exception e) {
             log.log(Level.SEVERE, "getListaByBusqueda", e);
-            return new ArrayList<Rubro2>();
+            return new ArrayList<Rubro02>();
         }  
     }
     
-     public Rubro2 getRubro2ByCodigo(String codigo) {
-        return getObjeto(Rubro2.class, "codigo", codigo);
+     public Rubro02 getRubro2ByCodigo(String codigo) {
+        return getObjeto(Rubro02.class, "codigo", codigo);
     }
 
-    public Rubro2 getRubro2ByDescripcion(String descripcion) {
-        return getObjeto(Rubro2.class, "descripcion", descripcion);
+    public Rubro02 getRubro2ByDescripcion(String descripcion) {
+        return getObjeto(Rubro02.class, "descripcion", descripcion);
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

@@ -14,25 +14,22 @@ import java.io.Serializable;
 
 public class ItemMenuUsuarioPK implements Serializable {
     
-    private String idUsuario;    
+    private int idUsuario;    
     private String codMenu;
 
     public ItemMenuUsuarioPK() {
-        
     }
 
-    public ItemMenuUsuarioPK(String idUsuario, String codMenu) {
+    public ItemMenuUsuarioPK(int idUsuario, String codMenu) {
         this.idUsuario = idUsuario;
         this.codMenu = codMenu;
     }
-    
-    
 
-    public String getIdUsuario() {
+    public int getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -46,9 +43,9 @@ public class ItemMenuUsuarioPK implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + (this.idUsuario != null ? this.idUsuario.hashCode() : 0);
-        hash = 59 * hash + (this.codMenu != null ? this.codMenu.hashCode() : 0);
+        int hash = 5;
+        hash = 61 * hash + this.idUsuario;
+        hash = 61 * hash + (this.codMenu != null ? this.codMenu.hashCode() : 0);
         return hash;
     }
 
@@ -64,10 +61,10 @@ public class ItemMenuUsuarioPK implements Serializable {
             return false;
         }
         final ItemMenuUsuarioPK other = (ItemMenuUsuarioPK) obj;
-        if (this.codMenu != other.codMenu) {
+        if (this.idUsuario != other.idUsuario) {
             return false;
         }
-        if ((this.idUsuario == null) ? (other.idUsuario != null) : !this.idUsuario.equals(other.idUsuario)) {
+        if ((this.codMenu == null) ? (other.codMenu != null) : !this.codMenu.equals(other.codMenu)) {
             return false;
         }
         return true;
@@ -75,10 +72,7 @@ public class ItemMenuUsuarioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ItemMenuUsuarioPK{" + "idUsuario=" + idUsuario + ", codMenu=" + codMenu + '}';
+        return "isd.seguridad.modelo.SG_UsuarioMenuPK[idUsuario=" + idUsuario + ", codMenu=" + codMenu + "]";
     }
-    
-    
-
 
 }

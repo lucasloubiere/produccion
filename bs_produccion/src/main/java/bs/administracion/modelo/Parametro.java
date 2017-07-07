@@ -4,6 +4,7 @@
  */
 package bs.administracion.modelo;
 
+import java.io.File;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +15,8 @@ import javax.persistence.Transient;
 
 /**
  *
- * @author ctrosch
+ * @author lloubiere
+ *
  */
 @Entity
 @Table(name = "ad_parametro")
@@ -22,7 +24,7 @@ public class Parametro implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "ID", length = 2)
+    @Column(name = "id", length = 2)
     private String id;
 
     /**
@@ -70,6 +72,9 @@ public class Parametro implements Serializable {
     @Column(name = "SISMEN", length = 255)
     private String mensajeMantenimiento;
 
+    @Column(name = "ORIDEF", length = 1)
+    private String origenPorDefecto;
+
     @Column(name = "PATHII", length = 200)
     private String pathImagenInicio;
 
@@ -86,7 +91,8 @@ public class Parametro implements Serializable {
     private String pathExterno;
 
     @Column(name = "CARTMP", length = 200)
-    private String carpetaTemporales;
+    private String nombreCarpetaArchivos;
+    //private String carpetaTemporales;
 
     @Column(name = "MODPRU", length = 1)
     private String modoPrueba;
@@ -115,9 +121,16 @@ public class Parametro implements Serializable {
 
     @Column(name = "ZOOM", length = 5)
     private String zoom;
+    
+    @Column(name = "MONPRI", length = 5)
+    private String codigoMonedaPrimaria;
+    
+    @Column(name = "MONSEC", length = 5)
+    private String codigoMonedaSecundaria;
 
     @Transient
     private String pathTemporales;
+
 
     public Parametro() {
     }
@@ -339,8 +352,46 @@ public class Parametro implements Serializable {
         this.dataSource = dataSource;
     }
 
-    public String getPathTemporales() {
+    public String getPathCarpetaArchivos() {
+
+        pathTemporales = System.getProperty("catalina.base") +File.separator+"docroot"+File.separator + nombreCarpetaArchivos + File.separator;
         return pathTemporales;
+    }
+
+    public String getPathCarpetaReportes() {
+
+        return System.getProperty("catalina.base") +File.separator+"docroot"+File.separator + nombreCarpetaArchivos +File.separator+"reportes"+File.separator;       
+    }
+
+    public String getPathCarpetaProductos() {
+
+        return System.getProperty("catalina.base") +File.separator+"docroot"+File.separator + nombreCarpetaArchivos +File.separator+"productos"+File.separator;       
+    }
+
+    public String getPathCarpetaProcesos() {
+
+        return System.getProperty("catalina.base") +File.separator+"docroot"+File.separator + nombreCarpetaArchivos +File.separator+"procesos"+File.separator;
+
+    }
+
+    public String getPathCarpetaTemporales() {
+
+        return System.getProperty("catalina.base") +File.separator+"docroot"+File.separator + nombreCarpetaArchivos +File.separator+"temporales"+File.separator;
+
+    }
+
+    public String getPathCarpetaUsuarios() {
+
+        return System.getProperty("catalina.base") +File.separator+"docroot"+File.separator+ nombreCarpetaArchivos +File.separator+"usuarios"+File.separator;
+
+    }
+
+    public String getNombreCarpetaArchivos() {
+        return nombreCarpetaArchivos;
+    }
+
+    public void setNombreCarpetaArchivos(String nombreCarpetaArchivos) {
+        this.nombreCarpetaArchivos = nombreCarpetaArchivos;
     }
 
     public void setPathTemporales(String pathTemporales) {
@@ -361,14 +412,6 @@ public class Parametro implements Serializable {
 
     public void setPathExterno(String pathExterno) {
         this.pathExterno = pathExterno;
-    }
-
-    public String getCarpetaTemporales() {
-        return carpetaTemporales;
-    }
-
-    public void setCarpetaTemporales(String carpetaTemporales) {
-        this.carpetaTemporales = carpetaTemporales;
     }
 
     public String getZoom() {
@@ -396,6 +439,30 @@ public class Parametro implements Serializable {
         this.pathImagenInicio = pathImagenInicio;
     }
 
+    public String getOrigenPorDefecto() {
+        return origenPorDefecto;
+    }
+
+    public void setOrigenPorDefecto(String origenPorDefecto) {
+        this.origenPorDefecto = origenPorDefecto;
+    }
+
+    public String getCodigoMonedaPrimaria() {
+        return codigoMonedaPrimaria;
+    }
+
+    public void setCodigoMonedaPrimaria(String codigoMonedaPrimaria) {
+        this.codigoMonedaPrimaria = codigoMonedaPrimaria;
+    }
+
+    public String getCodigoMonedaSecundaria() {
+        return codigoMonedaSecundaria;
+    }
+
+    public void setCodigoMonedaSecundaria(String codigoMonedaSecundaria) {
+        this.codigoMonedaSecundaria = codigoMonedaSecundaria;
+    }
+    
     public String getCssPathImagenInicio() {
         if (pathImagenInicio != null && !pathImagenInicio.isEmpty()) {
             return "background: url('" + pathImagenInicio + "');\n";

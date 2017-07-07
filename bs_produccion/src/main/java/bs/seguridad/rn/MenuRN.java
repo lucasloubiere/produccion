@@ -71,7 +71,7 @@ public class MenuRN {
 
     public void HabilitarMenu(Usuario usuario, Menu m) throws Exception {
 
-        ItemMenuUsuario us = new ItemMenuUsuario(usuario.getUsuario(), m.getCodigo());
+        ItemMenuUsuario us = new ItemMenuUsuario(usuario.getId(), m.getCodigo());
 
         //Si el menú no se encuentra activado, entonces los habilitamos
         if(menuDAO.getUsuarioMenu(us)==null){
@@ -94,7 +94,7 @@ public class MenuRN {
 
         if(m.getMenuPrincipal()!=null){
 
-            ItemMenuUsuario us = new ItemMenuUsuario(usuario.getUsuario(), m.getMenuPrincipal().getCodigo());
+            ItemMenuUsuario us = new ItemMenuUsuario(usuario.getId(), m.getMenuPrincipal().getCodigo());
 
             //Si el menú no se encuentra activado, entonces los habilitamos
             if(menuDAO.getUsuarioMenu(us)==null){
@@ -106,7 +106,7 @@ public class MenuRN {
 
     public void BloquearMenu(Usuario usuario, Menu m) throws Exception {
 
-        ItemMenuUsuario us = new ItemMenuUsuario(usuario.getUsuario(), m.getCodigo());
+        ItemMenuUsuario us = new ItemMenuUsuario(usuario.getId(), m.getCodigo());
 
         //Si el menú no se encuentra activado, entonces los habilitamos
         if(menuDAO.getUsuarioMenu(us)!=null){

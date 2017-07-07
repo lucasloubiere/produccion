@@ -16,7 +16,7 @@
         
         <title>
             
-            Ingreso al Sistema
+            Ingreso al Sistema - #{aplicacionBean.empresa.nombreFantasia}
             
         </title>
         
@@ -47,13 +47,13 @@
                             </div>
                             <div class="ui-g-12">
                                 <h:panelGroup styleClass="md-inputfield">
-                                    <p:inputText value="#{usuarioSessionBean.nUsuario}"  />
+                                    <p:inputText value="#{usuarioSessionBean.nombreUsuario}"  />
                                     <label>Usuario</label>
                                 </h:panelGroup>
                             </div>
                             <div class="ui-g-12">
                                 <h:panelGroup styleClass="md-inputfield">
-                                    <p:password value="#{usuarioSessionBean.sPassword}"  />           
+                                    <p:password value="#{usuarioSessionBean.claveUsuario}"  />           
                                     <label>Password</label>
                                 </h:panelGroup>
                             </div>                

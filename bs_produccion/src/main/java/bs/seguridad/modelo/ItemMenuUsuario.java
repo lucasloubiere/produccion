@@ -20,23 +20,23 @@ import javax.persistence.Table;
  * @author ctrosch
  */
 @Entity
-@Table(name = "sg_itemmenuusuario")
+@Table(name = "sg_menu_usuario")
 @IdClass(ItemMenuUsuarioPK.class)
 public class ItemMenuUsuario implements Serializable {
     private static final long serialVersionUID = 1L;
-       
+
     @Id
     @Column(name = "ID_USUARIO", nullable = false)
-    private String idUsuario;
+    private int idUsuario;
     @Id
     @Column(name = "COD_MENU", nullable = false)
     private String codMenu;
 
-    @JoinColumn(name="ID_USUARIO",referencedColumnName="ID", nullable=false, insertable=false, updatable=false)
+    @JoinColumn(name="ID_USUARIO",referencedColumnName="id", nullable=false, insertable=false, updatable=false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
 
-    @JoinColumn(name="ID_MENU",referencedColumnName="ID", nullable=false, insertable=false, updatable=false)
+    @JoinColumn(name="COD_MENU",referencedColumnName="codigo", nullable=false, insertable=false, updatable=false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Menu menu;
     
@@ -44,7 +44,7 @@ public class ItemMenuUsuario implements Serializable {
 
     }
 
-    public ItemMenuUsuario(String idUsuario, String codMenu) {
+    public ItemMenuUsuario(int idUsuario, String codMenu) {
         this.idUsuario = idUsuario;
         this.codMenu = codMenu;
     }
@@ -56,12 +56,12 @@ public class ItemMenuUsuario implements Serializable {
     public void setCodMenu(String codMenu) {
         this.codMenu = codMenu;
     }
-
-    public String getIdUsuario() {
+    
+    public int getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -83,9 +83,9 @@ public class ItemMenuUsuario implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 23 * hash + (this.idUsuario != null ? this.idUsuario.hashCode() : 0);
-        hash = 23 * hash + (this.codMenu != null ? this.codMenu.hashCode() : 0);
+        int hash = 7;
+        hash = 67 * hash + this.idUsuario;
+        hash = 67 * hash + (this.codMenu != null ? this.codMenu.hashCode() : 0);
         return hash;
     }
 
@@ -101,19 +101,19 @@ public class ItemMenuUsuario implements Serializable {
             return false;
         }
         final ItemMenuUsuario other = (ItemMenuUsuario) obj;
-        if (this.codMenu != other.codMenu) {
+        if (this.idUsuario != other.idUsuario) {
             return false;
         }
-        if ((this.idUsuario == null) ? (other.idUsuario != null) : !this.idUsuario.equals(other.idUsuario)) {
+        if ((this.codMenu == null) ? (other.codMenu != null) : !this.codMenu.equals(other.codMenu)) {
             return false;
         }
         return true;
     }
+        
 
     @Override
     public String toString() {
-        return "ItemMenuUsuario{" + "idUsuario=" + idUsuario + ", codMenu=" + codMenu + '}';
+        return "isd.seguridad.modelo.SG_UsuarioMenuPK[idUsuario=" + idUsuario + ", codMenu=" + codMenu + "]";
     }
-    
 
 }

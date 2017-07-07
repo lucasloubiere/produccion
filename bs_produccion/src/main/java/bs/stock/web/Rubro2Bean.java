@@ -8,7 +8,7 @@ package bs.stock.web;
 
 import bs.global.web.GenericBean;
 import bs.global.util.JsfUtil;
-import bs.stock.modelo.Rubro2;
+import bs.stock.modelo.Rubro02;
 import bs.stock.modelo.TipoProducto;
 import bs.stock.rn.Rubro2RN;
 import bs.stock.rn.TipoProductoRN;
@@ -29,9 +29,9 @@ import org.primefaces.event.SelectEvent;
 @ViewScoped
 public class Rubro2Bean extends GenericBean implements Serializable{
     
-    private Rubro2 rubro;
+    private Rubro02 rubro;
     private TipoProducto tipoProducto;
-    private List<Rubro2> lista;
+    private List<Rubro02> lista;
         
     @EJB private Rubro2RN rubroRN;
     @EJB private TipoProductoRN tipoProductoRN;
@@ -55,7 +55,7 @@ public class Rubro2Bean extends GenericBean implements Serializable{
         
         esNuevo = true;
         buscaMovimiento = false;
-        rubro = new Rubro2();
+        rubro = new Rubro02();
                 
         if(tipoProducto != null){
             rubro.setTipoProducto(tipoProducto.getCodigo());            
@@ -124,24 +124,24 @@ public class Rubro2Bean extends GenericBean implements Serializable{
     }
     
     
-    public List<Rubro2> complete(String query) {
+    public List<Rubro02> complete(String query) {
         try {
             lista = rubroRN.getListaByBusqueda(tipoProducto.getCodigo(),query, false,10);
             return lista;
             
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-            return new ArrayList<Rubro2>();
+            return new ArrayList<Rubro02>();
         }
     }
     
     public void onSelect(SelectEvent event) {
-        rubro = (Rubro2) event.getObject();
+        rubro = (Rubro02) event.getObject();
         esNuevo = false;
         buscaMovimiento = false;
     }
     
-    public void seleccionar (Rubro2 r){
+    public void seleccionar (Rubro02 r){
         
         rubro = r;        
         esNuevo = false;
@@ -165,19 +165,19 @@ public class Rubro2Bean extends GenericBean implements Serializable{
     }
     
     
-    public Rubro2 getRubro() {
+    public Rubro02 getRubro() {
         return rubro;
     }
 
-    public void setRubro(Rubro2 r) {
+    public void setRubro(Rubro02 r) {
         this.rubro = r;
     }
 
-    public List<Rubro2> getLista() {
+    public List<Rubro02> getLista() {
         return lista;
     }
 
-    public void setLista(List<Rubro2> lista) {
+    public void setLista(List<Rubro02> lista) {
         this.lista = lista;
     }   
 

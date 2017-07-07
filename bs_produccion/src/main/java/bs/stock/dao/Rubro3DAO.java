@@ -6,7 +6,7 @@
 package bs.stock.dao;
 
 import bs.global.dao.BaseDAO;
-import bs.stock.modelo.Rubro3;
+import bs.stock.modelo.Rubro03;
 import bs.stock.modelo.TipoProducto;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import javax.persistence.Query;
 @Stateless
 public class Rubro3DAO extends BaseDAO {
 
-    public Rubro3 getRubro3(String codigo) {
-        return getObjeto(Rubro3.class, codigo);
+    public Rubro03 getRubro3(String codigo) {
+        return getObjeto(Rubro03.class, codigo);
     }
     
     public TipoProducto getTipoProducto(String codigo) {
@@ -30,7 +30,7 @@ public class Rubro3DAO extends BaseDAO {
         return getObjeto(TipoProducto.class, codigo);
     }
     
-    public List<Rubro3> getTipoRubro1ByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+    public List<Rubro03> getTipoRubro1ByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
         
         System.err.println("txtBusqueda " + txtBusqueda);
         System.err.println("mostrarDeBaja " + mostrarDeBaja);
@@ -55,16 +55,16 @@ public class Rubro3DAO extends BaseDAO {
             
         } catch (Exception e) {
             log.log(Level.SEVERE, "getListaByBusqueda", e.getCause());
-            return new ArrayList<Rubro3>();
+            return new ArrayList<Rubro03>();
         }  
     }
     
-     public Rubro3 getRubro3ByCodigo(String codigo) {
-        return getObjeto(Rubro3.class, "codigo", codigo);
+     public Rubro03 getRubro3ByCodigo(String codigo) {
+        return getObjeto(Rubro03.class, "codigo", codigo);
     }
 
-    public Rubro3 getRubro3ByDescripcion(String descripcion) {
-        return getObjeto(Rubro3.class, "descripcion", descripcion);
+    public Rubro03 getRubro3ByDescripcion(String descripcion) {
+        return getObjeto(Rubro03.class, "descripcion", descripcion);
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

@@ -18,7 +18,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -78,7 +77,8 @@ public class StockProductoFechaBean extends InformeBase implements Serializable{
         }
                 
         nombreArchivo = "ST_STOCK_PRODUCTO_FECHA";
-        pathReporte = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/stock/informe/ST_STOCK_PRODUCTO_FECHA.jasper");
+        reporte = reporteRN.getReporte(codigoReporte);
+        //pathReporte = "stock/informe/ST_STOCK_PRODUCTO_FECHA.jasper";
                
     }
         

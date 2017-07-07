@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 //    @NamedQuery(name = "Rubro3.findByCodigo", query = "SELECT r FROM Rubro3 r WHERE r.rubro3PK.codigo = :codigo"),
 //    @NamedQuery(name = "Rubro3.findByTipoProducto", query = "SELECT r FROM Rubro3 r WHERE r.rubro3PK.tipoProducto = :tipoProducto"),
 //    @NamedQuery(name = "Rubro3.findByDescripcion", query = "SELECT r FROM Rubro3 r WHERE r.descripcion = :descripcion")})
-public class Rubro3 implements Serializable {
+public class Rubro03 implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -49,22 +49,22 @@ public class Rubro3 implements Serializable {
     private Auditoria auditoria;
 
 
-    public Rubro3() {
+    public Rubro03() {
         this.auditoria = new Auditoria();
     }
 
-    public Rubro3(Rubro3PK rubro3PK) {
+    public Rubro03(Rubro3PK rubro3PK) {
         this.rubro3PK = rubro3PK;
         this.auditoria = new Auditoria();
     }
 
-    public Rubro3(Rubro3PK rubro3PK, String descripcion) {
+    public Rubro03(Rubro3PK rubro3PK, String descripcion) {
         this.auditoria = new Auditoria();
         this.rubro3PK = rubro3PK;
         this.descripcion = descripcion;
     }
 
-    public Rubro3(String codigo, String tipoProducto) {
+    public Rubro03(String codigo, String tipoProducto) {
         this.auditoria = new Auditoria();
         this.rubro3PK = new Rubro3PK(codigo, tipoProducto);
     }
@@ -112,10 +112,10 @@ public class Rubro3 implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Rubro3)) {
+        if (!(object instanceof Rubro03)) {
             return false;
         }
-        Rubro3 other = (Rubro3) object;
+        Rubro03 other = (Rubro03) object;
         if ((this.rubro3PK == null && other.rubro3PK != null) || (this.rubro3PK != null && !this.rubro3PK.equals(other.rubro3PK))) {
             return false;
         }

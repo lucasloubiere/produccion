@@ -29,8 +29,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRException;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -342,33 +342,44 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     } 
     */
     
-    public void imprimir(){
+    public void imprimir() {
+
+        generarReporte();
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formulario");
+
+        if (muestraReporte) {
+            context.execute("PF('dlg_reporte').show()");
+        }
+    }
+    
+    public void generarReporte(){
 
         try {
             
-            if (m.getFormulario().getNombreReporte() ==null){
+            if (m.getFormulario().getReporte()==null){
                 throw new ExcepcionGeneralSistema("El comprobante no tienen reporte asociado");
             }
             
             Map parameters = new HashMap();
-            
-            String pathReport = FacesContext.getCurrentInstance().getExternalContext().getRealPath(m.getFormulario().getNombreReporte()+".jasper");
-            nombreArchivo = m.getFormulario().getCodigo()+"-"+m.getNumeroFormulario();
-
-            
             parameters.put("ID", m.getId());
             parameters.put("CANT_COPIAS", m.getComprobante().getCopias());
            
-            reportFactory.exportReportToPdfFile(pathReport, nombreArchivo, parameters);
+            nombreArchivo = m.getFormulario().getCodigo()+"-"+m.getNumeroFormulario();
+            reportFactory.exportReportToPdfFile(m.getFormulario().getReporte(), nombreArchivo, parameters);
             muestraReporte = true;
 
         } catch (NullPointerException npe) {
-            JsfUtil.addErrorMessage("No se encontró el archivo: " + m.getFormulario().getNombreReporte()+".jasper");
+            JsfUtil.addErrorMessage("No se encontró el archivo: " + m.getFormulario().getReporte().getPath());
             muestraReporte = false;
         } catch (ExcepcionGeneralSistema e){            
             JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
             muestraReporte = false;
         } catch (JRException e) {
+            JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
+            muestraReporte = false;
+        } catch (Exception e) {
             JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
             muestraReporte = false;
         }

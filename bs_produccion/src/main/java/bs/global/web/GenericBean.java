@@ -2,146 +2,229 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bs.global.web;
 
-
+import bs.administracion.modelo.Vista;
+import bs.administracion.modelo.VistaDetalle;
+import bs.administracion.rn.ParametrosRN;
 import bs.global.modelo.Formulario;
+import bs.seguridad.rn.MenuRN;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import org.primefaces.event.TabChangeEvent;
 
 /**
  *
- * @author ctrosch
- * Bean genérico que contiene atributos y funcionalidades comunes a todos los bean
- * del sistema
+ * @author ctrosch Bean genérico que contiene atributos y funcionalidades
+ * comunes a todos los bean del sistema
  */
-
 public class GenericBean implements Serializable {
-    
+
+    @EJB
+    protected MenuRN menuRN;
+    @EJB
+    protected ParametrosRN parametrosRN;
+
     protected Logger log = Logger.getLogger(this.getClass().getName());
 
-    protected Map<String,String> filtro;
-    protected Map<String,String> filtroGrupo;
-    protected Map<String,String> filtroDetalle;
+    protected Map<String, String> filtro;
+    protected Map<String, String> filtroGrupo;
+    protected Map<String, String> filtroDetalle;
 
-    protected String titulo;  
+    protected String titulo;
+    protected String idMenu;
+    protected Vista vista;
     protected boolean beanIniciado = false;
     protected boolean mostrarDebaja;
     protected boolean esNuevo;
     protected boolean detalleVacio;
     protected String txtBusqueda;
     protected int cantidadRegistros;
-    
+
     private int indexTab1;
     private int indexTab2;
     private int indexTab3;
     private int indexTab4;
     private int indexTab5;
-           
+
+    protected int indiceWizard;
+
     protected boolean esAnulacion;
-    protected boolean seleccionaMovimiento;  
+    protected boolean seleccionaMovimiento;
     protected boolean seleccionaTodo;
-    protected boolean seleccionaPendiente;        
-    
+    protected boolean seleccionaPendiente;
+
     protected String nombreArchivo;
     protected String emailEnvioComprobante;
     protected String informacionAdicional;
     protected boolean muestraReporte;
-    protected boolean solicitaEmail; 
-        
-    // VARIABLES PARA BUSQUEDA DE COMPROBANTES
+    protected boolean solicitaEmail;
+
+    //VARIABLES PARA BUSQUEDA DE COMPROBANTES
     protected boolean buscaMovimiento;
     protected Formulario formulario;
     protected Integer numeroFormularioDesde;
     protected Integer numeroFormularioHasta;
     protected Date fechaMovimientoDesde;
     protected Date fechaMovimientoHasta;
+    protected Date fechaMovimeintoMaxima;
 
-    /** Creates a new instance of GenericBean */
+    /**
+     * Creates a new instance of GenericBean
+     */
     public GenericBean() {
-        
-        filtro = new HashMap<String,String>();
-        filtroGrupo = new HashMap<String,String>();
-        filtroDetalle = new HashMap<String,String>();
+
+        filtro = new HashMap<String, String>();
+        filtroGrupo = new HashMap<String, String>();
+        filtroDetalle = new HashMap<String, String>();
+
+        fechaMovimeintoMaxima = new Date();
 
         txtBusqueda = "";
-        mostrarDebaja = false;    
-        cantidadRegistros = 50;
-        
+        mostrarDebaja = false;
+        cantidadRegistros = 50;        
+
         indexTab1 = 0;
         indexTab2 = 0;
         indexTab3 = 0;
         indexTab4 = 0;
         indexTab5 = 0;
-        
-    }
-    
-    public void iniciar(){
-        
-        
-    }
-    
-    /**
-     * Permite controlar los tabs seleccionados luego de actualizar el formulario en la vista del usuario
-     * @param event 
-     */    
-    public void onTab1Change(TabChangeEvent event) {
-        
-        indexTab1 = getIndexTab(event.getTab().getId());
-    }
-    
-    public void onTab2Change(TabChangeEvent event) {
-        
-        indexTab2 = getIndexTab(event.getTab().getId());
-    }
-    
-    public void onTab3Change(TabChangeEvent event) {
-        
-        indexTab3 = getIndexTab(event.getTab().getId());
-    }
-    
-    public void onTab4Change(TabChangeEvent event) {
-        
-        indexTab4 = getIndexTab(event.getTab().getId());
-    }
-    
-    public void onTab5Change(TabChangeEvent event) {
-        
-        indexTab5 = getIndexTab(event.getTab().getId());
-    }
-    
-    
-    private int getIndexTab(String id){
-        
-        if(id.equals("t0")) return 0;
-        if(id.equals("t1")) return 1;
-        if(id.equals("t2")) return 2;
-        if(id.equals("t3")) return 3;
-        if(id.equals("t4")) return 4;
-        if(id.equals("t5")) return 5;
-        if(id.equals("t6")) return 6;
-        if(id.equals("t7")) return 7;
-        if(id.equals("t8")) return 8;
-        if(id.equals("t9")) return 9;
-        if(id.equals("t10")) return 10;        
-        if(id.equals("t11")) return 11;        
-        if(id.equals("t12")) return 12;        
-        if(id.equals("t13")) return 13;        
-        if(id.equals("t14")) return 14;        
-        if(id.equals("t15")) return 15;        
-        if(id.equals("t16")) return 16;        
-        if(id.equals("t17")) return 17;        
-        if(id.equals("t18")) return 18;        
-        if(id.equals("t19")) return 19;        
-        //Por defecto
-        return 0;        
+
+        indiceWizard = 0;
     }
 
+    public void iniciar() {
+
+        if (idMenu != null) {
+            vista = menuRN.getMenu(idMenu).getVista();
+        }
+    }
+
+    public boolean muestroCampo(String tipo, String campo) {
+
+        if (campo == null) {
+            return true;
+        }
+        if (vista == null) {
+            return true;
+        }
+        if (vista.getDetalle() == null) {
+            return true;
+        }
+
+        for (VistaDetalle i : vista.getDetalle()) {
+
+            if (i.getTipo().equals(tipo) && i.getCampo().equals(campo)) {
+
+                return i.isVisible();
+            }
+
+        }
+        return true;
+    }
+
+    /**
+     * Permite controlar los tabs seleccionados luego de actualizar el
+     * formulario en la vista del usuario
+     *
+     * @param event
+     */
+    public void onTab1Change(TabChangeEvent event) {
+
+        indexTab1 = getIndexTab(event.getTab().getId());
+    }
+
+    public void onTab2Change(TabChangeEvent event) {
+
+        indexTab2 = getIndexTab(event.getTab().getId());
+    }
+
+    public void onTab3Change(TabChangeEvent event) {
+
+        indexTab3 = getIndexTab(event.getTab().getId());
+    }
+
+    public void onTab4Change(TabChangeEvent event) {
+
+        indexTab4 = getIndexTab(event.getTab().getId());
+    }
+
+    public void onTab5Change(TabChangeEvent event) {
+
+        indexTab5 = getIndexTab(event.getTab().getId());
+    }
+
+    private int getIndexTab(String id) {
+
+        if (id.equals("t0")) {
+            return 0;
+        }
+        if (id.equals("t1")) {
+            return 1;
+        }
+        if (id.equals("t2")) {
+            return 2;
+        }
+        if (id.equals("t3")) {
+            return 3;
+        }
+        if (id.equals("t4")) {
+            return 4;
+        }
+        if (id.equals("t5")) {
+            return 5;
+        }
+        if (id.equals("t6")) {
+            return 6;
+        }
+        if (id.equals("t7")) {
+            return 7;
+        }
+        if (id.equals("t8")) {
+            return 8;
+        }
+        if (id.equals("t9")) {
+            return 9;
+        }
+        if (id.equals("t10")) {
+            return 10;
+        }
+        if (id.equals("t11")) {
+            return 11;
+        }
+        if (id.equals("t12")) {
+            return 12;
+        }
+        if (id.equals("t13")) {
+            return 13;
+        }
+        if (id.equals("t14")) {
+            return 14;
+        }
+        if (id.equals("t15")) {
+            return 15;
+        }
+        if (id.equals("t16")) {
+            return 16;
+        }
+        if (id.equals("t17")) {
+            return 17;
+        }
+        if (id.equals("t18")) {
+            return 18;
+        }
+        if (id.equals("t19")) {
+            return 19;
+        }
+        //Por defecto
+        return 0;
+    }
+
+    //---------------------------------------------------------------------------
     public Map<String, String> getFiltro() {
         return filtro;
     }
@@ -158,12 +241,12 @@ public class GenericBean implements Serializable {
         this.titulo = titulo;
     }
 
-    public String verDatos(){
+    public String verDatos() {
 
         return "Datos";
     }
 
-    public String verLista(){
+    public String verLista() {
 
         return "Lista";
     }
@@ -288,13 +371,13 @@ public class GenericBean implements Serializable {
         this.buscaMovimiento = buscaMovimiento;
     }
 
-//    public Formulario getFormulario() {
-//        return formulario;
-//    }
-//
-//    public void setFormulario(Formulario formulario) {
-//        this.formulario = formulario;
-//    }
+    public Formulario getFormulario() {
+        return formulario;
+    }
+
+    public void setFormulario(Formulario formulario) {
+        this.formulario = formulario;
+    }
 
     public Integer getNumeroFormularioDesde() {
         return numeroFormularioDesde;
@@ -392,14 +475,6 @@ public class GenericBean implements Serializable {
         this.indexTab5 = indexTab5;
     }
 
-    public Formulario getFormulario() {
-        return formulario;
-    }
-
-    public void setFormulario(Formulario formulario) {
-        this.formulario = formulario;
-    }
-
     public boolean isDetalleVacio() {
         return detalleVacio;
     }
@@ -407,5 +482,37 @@ public class GenericBean implements Serializable {
     public void setDetalleVacio(boolean detalleVacio) {
         this.detalleVacio = detalleVacio;
     }
-        
+
+    public Date getFechaMovimeintoMaxima() {
+        return fechaMovimeintoMaxima;
+    }
+
+    public void setFechaMovimeintoMaxima(Date fechaMovimeintoMaxima) {
+        this.fechaMovimeintoMaxima = fechaMovimeintoMaxima;
+    }
+
+    public String getIdMenu() {
+        return idMenu;
+    }
+
+    public void setIdMenu(String idMenu) {
+        this.idMenu = idMenu;
+    }
+
+    public Vista getVista() {
+        return vista;
+    }
+
+    public void setVista(Vista vista) {
+        this.vista = vista;
+    }
+
+    public int getIndiceWizard() {
+        return indiceWizard;
+    }
+
+    public void setIndiceWizard(int indiceWizard) {
+        this.indiceWizard = indiceWizard;
+    }
+
 }

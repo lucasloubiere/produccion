@@ -4,14 +4,13 @@
  */
 package bs.global.util;
 
-
 import bs.administracion.modelo.Parametro;
+import bs.administracion.modelo.Reporte;
+import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.web.AplicacionBean;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -40,28 +39,25 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 
-
 /**
  *
  * @author ctrosch
  */
-
 @ManagedBean
 @SessionScoped
 public class ReportFactory implements Serializable {
-    
+
     @ManagedProperty(value = "#{aplicacionBean}")
     protected AplicacionBean aplicacionBean;
-    
+
     private Context ctx;
     private javax.sql.DataSource ds;
-    
     private Connection conexion;
     private String pathTemporales;
-        
+    private String pathReportes;
+
 //    @ManagedProperty(value = "#{empresaBean}")
 //    protected EmpresaBean empresaBean;
-    
     public ReportFactory() throws NamingException, SQLException {
 //        ctx = new InitialContext();
 //        ds = (javax.sql.DataSource) ctx.lookup("bs-erp");
@@ -69,200 +65,136 @@ public class ReportFactory implements Serializable {
 //        conexion.setAutoCommit(true);
 //        context = FacesContext.getCurrentInstance();
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
             Parametro p = aplicacionBean.getParametro();
-                        
+
             ctx = new InitialContext();
-            ds = (javax.sql.DataSource) ctx.lookup((p.getDataSource()==null?"bs-erp":p.getDataSource()));
-            
+            ds = (javax.sql.DataSource) ctx.lookup((p.getDataSource() == null ? "bs-erp" : p.getDataSource()));
             conexion = ds.getConnection();
-            conexion.setAutoCommit(true);   
-            pathTemporales = System.getProperty("catalina.base")+ "\\docroot\\"+p.getCarpetaTemporales()+"\\";
-            
-            
+            conexion.setAutoCommit(true);
+            pathTemporales = p.getPathCarpetaTemporales();
+            pathReportes = p.getPathCarpetaReportes();
+
         } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "No es posible iniciar ReportFactory", ex);        
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "No es posible iniciar ReportFactory", ex);
         }
-        
-    }
-
-    public void verReportePDF(String pathReport,String nombreSalida,Map parameters) throws NamingException, SQLException, JRException, IOException {
-        
-        cargarDatosEmpresa(parameters);
-        
-        JasperPrint print = JasperFillManager.fillReport(pathReport, parameters, conexion);
-        byte[] bytes = JasperExportManager.exportReportToPdf(print);
-        
-        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        response.addHeader("Content-disposition","inline;filename="+nombreSalida+".pdf");        
-        response.setContentLength(bytes.length);
-        response.getOutputStream().write(bytes);
-        response.setContentType("application/pdf");
-        FacesContext.getCurrentInstance().responseComplete();
-        
-    }
-
-    public void descargarReportePDF(JasperReport jasperReport,String nombreSalida,Map parameters) throws NamingException, SQLException, JRException, IOException {
-
-        cargarDatosEmpresa(parameters);
-        
-        JasperPrint print = JasperFillManager.fillReport(jasperReport, parameters, conexion);
-        byte[] bytes = JasperExportManager.exportReportToPdf(print);
-
-        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        response.addHeader("Content-disposition","attachment;filename="+nombreSalida+".pdf");
-        response.setContentLength(bytes.length);
-        response.getOutputStream().write(bytes);
-        response.setContentType("application/pdf");
-        FacesContext.getCurrentInstance().responseComplete();
-
     }
     
-    public void exportReportToXlsFile(String pathReport,String nombreSalida,Map parameters)  throws NamingException, SQLException, JRException, IOException, Exception {
+    public void exportReportToPdfFile(Reporte reporte, String nombreSalida, Map parameters) throws Exception {
+        
+        if(reporte==null){
+            throw new ExcepcionGeneralSistema("El reporte es nulo");
+        }
+        
+        if(reporte.getPath()==null){
+            throw new ExcepcionGeneralSistema("El reporte no tienen un path asignado");
+        }
+        
+//        System.err.println("pathReport " + getPathReport(reporte));
+//        System.err.println("parameters " + parameters);
+//        System.err.println("nombreSalida "+nombreSalida);       
+        
+        cargarDatosEmpresa(parameters);        
+        String pathReport = getPathReport(reporte);        
+        JasperPrint print = JasperFillManager.fillReport(pathReport, parameters, conexion);
+        JasperExportManager.exportReportToPdfFile(print, pathTemporales + nombreSalida + ".pdf");
+    }
+    
+    public void exportReportToXlsFile(Reporte reporte, String nombreSalida, Map parameters) throws NamingException, SQLException, JRException, IOException, Exception {
 
-        generarExcel(pathReport, nombreSalida, parameters);        
+        if(reporte==null){
+            throw new ExcepcionGeneralSistema("El reporte es nulo");
+        }
         
+        if(reporte.getPath()==null){
+            throw new ExcepcionGeneralSistema("El reporte no tienen un path asignado");
+        }
+        
+        generarExcel(reporte, nombreSalida, parameters);
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        
-        FileInputStream entrada = new FileInputStream(pathTemporales+ nombreSalida +".xls");
+
+        FileInputStream entrada = new FileInputStream(pathTemporales + nombreSalida + ".xls");
         byte[] lectura = new byte[entrada.available()];
         entrada.read(lectura);
         response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition","attachment; filename="+nombreSalida+".xls");
+        response.setHeader("Content-Disposition", "attachment; filename=" + nombreSalida + ".xls");
         response.setContentLength(lectura.length);
         response.getOutputStream().write(lectura);
         response.getOutputStream().flush();
         response.getOutputStream().close();
-        entrada.close();        
+        entrada.close();
         FacesContext.getCurrentInstance().responseComplete();
     }
-    
-    
-    public void exportReportToPdfFile(String pathReport,String nombreSalida,Map parameters) throws JRException{
 
-        cargarDatosEmpresa(parameters);        
-        JasperPrint print = JasperFillManager.fillReport(pathReport, parameters, conexion);
-        JasperExportManager.exportReportToPdfFile(print, pathTemporales+ nombreSalida +".pdf");                      
+    public String exportReportToPdfFileGetPath(Reporte reporte, String nombreSalida, Map parameters) throws Exception {
+
+        exportReportToPdfFile(reporte, nombreSalida, parameters);
+        return pathTemporales + nombreSalida + ".pdf";
     }
-    
-    public String exportReportToHtmlFile(String reportName,String nombreSalida,Map parameters) throws NamingException, SQLException, JRException, IOException {
 
-        String pathReport = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/") ;
+    private void generarExcel(Reporte reporte, String nombreSalida, Map parameters) throws NamingException, SQLException, JRException, IOException, Exception {
 
-        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream(reportName));
-
-        JasperPrint print = JasperFillManager.fillReport(jasperReport, parameters, conexion);
-
-        JasperExportManager.exportReportToHtmlFile(print, pathReport+"pedidoweb.html");
-
-        File archivo = null;
-        FileReader fr = null;
-        BufferedReader br = null;
-        String linea="";
-        String contenido = "";
-        try {
-            // Apertura del fichero y creacion de BufferedReader para poder
-            // hacer una lectura comoda (disponer del metodo readLine()).
-            archivo = new File (pathReport+"pedidoweb.html");
-            fr = new FileReader (archivo);
-            br = new BufferedReader(fr);
-            // Lectura del fichero
-
-            while((linea=br.readLine())!=null) contenido+=linea+"\n";
-
-            //System.err.println(contenido);
-            return contenido;
-
-        }catch(Exception e){
-            e.printStackTrace();
-
-        }finally{
-         // En el finally cerramos el fichero, para asegurarnos
-         // que se cierra tanto si todo va bien como si salta
-         // una excepcion.
-         try{
-            if( null != fr ){
-               fr.close();
-            }
-
-            return "";
-         }catch (Exception e2){
-
-            e2.printStackTrace();
-            return "";
-         }
-      }
-    }
-    
-    public String exportReportToPdfFileGetPath(String pathReport,String nombreSalida,Map parameters) throws JRException{
-
-        exportReportToPdfFile(pathReport, nombreSalida, parameters);
-        return pathTemporales+ nombreSalida +".pdf";
-    }
-    
-    private void generarExcel(String pathReport,String nombreSalida,Map parameters)  throws NamingException, SQLException, JRException, IOException, Exception {
-               
+        String pathReport = getPathReport(reporte);
+        
         File sourceFile = new File(pathReport);
-        JasperReport jasperReport = (JasperReport)JRLoader.loadObject(sourceFile);
-        
-        String query =  jasperReport.getQuery().getText();
-        
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(sourceFile);
+
+        String query = jasperReport.getQuery().getText();
+
         Iterator<Map.Entry<String, Object>> entries;
         entries = parameters.entrySet().iterator();
         while (entries.hasNext()) {
-          Map.Entry<String, Object> entry = entries.next();
-          String key = entry.getKey();
-          Object value = entry.getValue();
-          String parametro = "";
-         
-          if (value.getClass() == Integer.class || value.getClass() == Long.class
-              ||value.getClass() == Float.class || value.getClass() == Double.class) {
-          
-              parametro = String.valueOf(value);              
-          
-          } else if (value.getClass() == java.util.Date.class || value.getClass() == java.sql.Date.class) {
-              
-              parametro = JsfUtil.getFechaSQL((java.util.Date) value);
-              
-          } else {
-              parametro = "'"+value+"'";
-          }
-          
-          query = query.replaceAll("\\$P\\{"+key+"\\}", parametro );
-          
-        }
-                    
-        query = query.replaceAll("EMPRESA.\\*", "' '" );
-        query = query.replaceAll("ad_empresa.\\*", "' '" );
-        
-        
-        
-        System.err.println("query" + query);
-        
-        PreparedStatement stmt = conexion.prepareStatement(query);
-        
-        ResultSet resultSet = stmt.executeQuery();
-        
-        ExcelFactory resultSetToExcel = new ExcelFactory(resultSet, nombreSalida);
-    
-        resultSetToExcel.generate(new File(pathTemporales+ nombreSalida +".xls"));
-        
-    }
-       
-    public DataSource getArchivoAdjuntoPDF(String reportName,String nombreSalida,Map parameters) throws JRException{
+            Map.Entry<String, Object> entry = entries.next();
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            String parametro = "";
 
-        JasperPrint jasperPrint = JasperFillManager.fillReport( this.getClass().getClassLoader().getResourceAsStream(reportName),parameters ,conexion);
+            if (value.getClass() == Integer.class || value.getClass() == Long.class
+                    || value.getClass() == Float.class || value.getClass() == Double.class) {
+
+                parametro = String.valueOf(value);
+
+            } else if (value.getClass() == java.util.Date.class || value.getClass() == java.sql.Date.class) {
+
+                parametro = JsfUtil.getFechaSQL((java.util.Date) value);
+
+            } else {
+                parametro = "'" + value + "'";
+            }
+
+            query = query.replaceAll("\\$P\\{" + key + "\\}", parametro);
+
+        }
+
+        query = query.replaceAll("EMPRESA.\\*", "' '");
+        query = query.replaceAll("ad_empresa.\\*", "' '");
+
+//        System.err.println("query" + query);
+
+        PreparedStatement stmt = conexion.prepareStatement(query);
+
+        ResultSet resultSet = stmt.executeQuery();
+
+        ExcelFactory resultSetToExcel = new ExcelFactory(resultSet, nombreSalida);
+
+        resultSetToExcel.generate(new File(pathTemporales + nombreSalida + ".xls"));
+
+    }
+
+    public DataSource getArchivoAdjuntoPDF(String reportName, String nombreSalida, Map parameters) throws JRException {
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(this.getClass().getClassLoader().getResourceAsStream(reportName), parameters, conexion);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
-        DataSource adjunto =  new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
+        DataSource adjunto = new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
         return adjunto;
 
     }
-    
+
     public void cargarDatosEmpresa(Map p) {
 
 //        Empresa e = empresaBean.getEmpresa();
@@ -279,9 +211,99 @@ public class ReportFactory implements Serializable {
 //        p.put("EMP_INIACT", e.getInicioActividades());
 //        p.put("EMP_IVA", e.getCondicionIVA());
 //        p.put("EMP_CIUDAD", e.getCiudad());
-        p.put("LOGO", FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/image/logo.png"));        
+        p.put("LOGO", FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/image/logo.png"));
     }
 
+    /**
+    public void verReportePDF(String pathReport, String nombreSalida, Map parameters) throws NamingException, SQLException, JRException, IOException {
+
+        cargarDatosEmpresa(parameters);
+
+        JasperPrint print = JasperFillManager.fillReport(pathReport, parameters, conexion);
+        byte[] bytes = JasperExportManager.exportReportToPdf(print);
+
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.addHeader("Content-disposition", "inline;filename=" + nombreSalida + ".pdf");
+        response.setContentLength(bytes.length);
+        response.getOutputStream().write(bytes);
+        response.setContentType("application/pdf");
+        FacesContext.getCurrentInstance().responseComplete();
+
+    }
+    **/
+    
+    /**
+    public void descargarReportePDF(JasperReport jasperReport, String nombreSalida, Map parameters) throws NamingException, SQLException, JRException, IOException {
+
+        cargarDatosEmpresa(parameters);
+
+        JasperPrint print = JasperFillManager.fillReport(jasperReport, parameters, conexion);
+        byte[] bytes = JasperExportManager.exportReportToPdf(print);
+
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        response.addHeader("Content-disposition", "attachment;filename=" + nombreSalida + ".pdf");
+        response.setContentLength(bytes.length);
+        response.getOutputStream().write(bytes);
+        response.setContentType("application/pdf");
+        FacesContext.getCurrentInstance().responseComplete();
+    }
+    **/
+
+    
+    /**
+    public String exportReportToHtmlFile(String reportName, String nombreSalida, Map parameters) throws NamingException, SQLException, JRException, IOException {
+
+        String pathReport = aplicacionBean.getParametro().getPathCarpetaReportes();
+
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream(reportName));
+
+        JasperPrint print = JasperFillManager.fillReport(jasperReport, parameters, conexion);
+
+        JasperExportManager.exportReportToHtmlFile(print, pathReport + "pedidoweb.html");
+
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        String linea = "";
+        String contenido = "";
+        try {
+            // Apertura del fichero y creacion de BufferedReader para poder
+            // hacer una lectura comoda (disponer del metodo readLine()).
+            archivo = new File(pathReport + "pedidoweb.html");
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+            // Lectura del fichero
+
+            while ((linea = br.readLine()) != null) {
+                contenido += linea + "\n";
+            }
+
+            //System.err.println(contenido);
+            return contenido;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            // En el finally cerramos el fichero, para asegurarnos
+            // que se cierra tanto si todo va bien como si salta
+            // una excepcion.
+            try {
+                if (null != fr) {
+                    fr.close();
+                }
+
+                return "";
+            } catch (Exception e2) {
+
+                e2.printStackTrace();
+                return "";
+            }
+        }
+    }
+    **/
+    
+    
 //    public void exportReportToXlsFile(String pathReport,String nombreSalida,Map parameters) throws JRException{
 //        
 //        cargarDatosEmpresa(parameters);        
@@ -304,8 +326,6 @@ public class ReportFactory implements Serializable {
 //            e.printStackTrace();
 //        }        
 //    }
-    
-    
     public Context getCtx() {
         return ctx;
     }
@@ -345,5 +365,21 @@ public class ReportFactory implements Serializable {
     public void setAplicacionBean(AplicacionBean aplicacionBean) {
         this.aplicacionBean = aplicacionBean;
     }
-    
+
+    /**
+     * Obtenemos el path del reporte. Si es un reporte de usuario lo obtenermos de un directorio diferente 
+     * si es un reporte de sistema, está dentro de la aplicación.
+     * @param origen
+     * @param nombreReporte
+     * @return 
+     */
+    private String getPathReport(Reporte reporte){
+        
+        if(reporte.getOrigen().equals("SIS")){
+            return FacesContext.getCurrentInstance().getExternalContext().getRealPath(reporte.getPath());            
+        }else{
+            return pathReportes + reporte.getPath();            
+        }
+    }
+
 }

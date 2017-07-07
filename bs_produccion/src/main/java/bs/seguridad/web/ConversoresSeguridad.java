@@ -6,8 +6,10 @@
 package bs.seguridad.web;
 
 import bs.seguridad.modelo.EstadoUsuario;
+import bs.seguridad.modelo.Menu;
 import bs.seguridad.modelo.TipoUsuario;
 import bs.seguridad.rn.EstadoUsuarioRN;
+import bs.seguridad.rn.MenuRN;
 import bs.seguridad.rn.TipoUsuarioRN;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -27,6 +29,7 @@ public class ConversoresSeguridad implements Serializable{
 
     @EJB private EstadoUsuarioRN estadoRN;
     @EJB private TipoUsuarioRN tipoRN;
+    @EJB private MenuRN menuRN;
     
     /** Creates a new instance of ConversoresBean */
     public ConversoresSeguridad() {
@@ -41,7 +44,7 @@ public class ConversoresSeguridad implements Serializable{
                 if (value.trim().equals("") || value == null) {
                     return null;
                 }
-                                
+                
                 EstadoUsuario e = estadoRN.getEstado(Integer.valueOf(value));
                 return e;
             }
@@ -76,6 +79,30 @@ public class ConversoresSeguridad implements Serializable{
                     return "";
                 } else {
                     return ((TipoUsuario) value).getId() + "";
+                }
+            }
+        };
+    }
+    
+    public Converter getMenu(){
+        return new Converter() {
+
+            @Override
+            public Object getAsObject(FacesContext context, UIComponent component, String value) {
+                if (value.trim().equals("") || value == null) {
+                    return null;
+                }
+
+                Menu t = menuRN.getMenu(value);
+                return t;
+            }
+
+            @Override
+            public String getAsString(FacesContext context, UIComponent component, Object value) {
+                if (value == null || value.equals("")) {
+                    return "";
+                } else {
+                    return ((Menu) value).getCodigo()+ "";
                 }
             }
         };

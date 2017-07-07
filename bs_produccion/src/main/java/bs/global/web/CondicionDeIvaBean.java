@@ -115,7 +115,7 @@ public class CondicionDeIvaBean extends GenericBean implements Serializable {
             JsfUtil.addInfoMessage("Los datos se actualizaron correctamente");
             
         } catch (Exception ex) {
-            Logger.getLogger(ModuloBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage("No es posible actualizar los datos " + ex);
         }
     }

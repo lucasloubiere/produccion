@@ -5,6 +5,9 @@
 package bs.global.util;
 
 import bs.administracion.modelo.CorreoElectronico;
+import bs.administracion.modelo.Reporte;
+import bs.administracion.rn.ParametrosRN;
+import bs.administracion.rn.ReporteRN;
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.web.AplicacionBean;
 import bs.global.web.GenericBean;
@@ -33,9 +36,15 @@ public abstract class InformeBase extends GenericBean implements Serializable {
     @EJB
     protected MailFactory mailFactoryBean;
 
+    @EJB
+    protected ReporteRN reporteRN;
+
+    @EJB
+    protected ParametrosRN parametrosRN;
+
     protected Map parameters;
-    protected String nombreReporte;
-    protected String pathReporte;
+    protected String codigoReporte;
+    protected Reporte reporte;
 
     protected boolean todoOk;
     protected Integer copias;
@@ -72,33 +81,32 @@ public abstract class InformeBase extends GenericBean implements Serializable {
 
         RequestContext context = RequestContext.getCurrentInstance();
         try {
+
             validarDatos();
             cargarParametros();
-            reportFactory.exportReportToPdfFile(pathReporte, nombreArchivo, parameters);
+
+            reportFactory.exportReportToPdfFile(reporte, nombreArchivo, parameters);
             muestraReporte = true;
             todoOk = true;
-            
 
         } catch (ExcepcionGeneralSistema e) {
 
             JsfUtil.addErrorMessage("No se puede ejecutar reporte pdf " + e);
             todoOk = false;
             muestraReporte = false;
-            
-            
+
         } catch (JRException e) {
 
             JsfUtil.addErrorMessage("No se puede ejecutar reporte pdf " + e);
             todoOk = false;
             muestraReporte = false;
-            
+
         } catch (Exception e) {
 
-            e.printStackTrace();
             JsfUtil.addErrorMessage("No se puede ejecutar reporte pdf " + e);
             todoOk = false;
             muestraReporte = false;
-            
+
         }
 
         if (muestraReporte) {
@@ -110,7 +118,7 @@ public abstract class InformeBase extends GenericBean implements Serializable {
         try {
             validarDatos();
             cargarParametros();
-            reportFactory.exportReportToXlsFile(pathReporte, nombreArchivo, parameters);
+            reportFactory.exportReportToXlsFile(reporte, nombreArchivo, parameters);
 
         } catch (ExcepcionGeneralSistema ex) {
             JsfUtil.addErrorMessage("No se puede ejecutar reporte xls " + ex);
@@ -159,20 +167,6 @@ public abstract class InformeBase extends GenericBean implements Serializable {
         solicitaEmail = false;
     }
 
-//    public void imprimir(){
-//
-//        try {
-//            validarDatos();
-//            cargarParametros();                        
-//            reportFactory.verReportePDF(pathReporte, nombreArchivo, parameters);
-//            todoOk = true;
-//
-//        } catch (Exception e){
-////          e.printStackTrace();
-//          JsfUtil.addErrorMessage("No se puede ejecutar reporte pdf " + e);
-//          todoOk = false;
-//        }
-//    }
     //----------------------------------------------------------------------------------
     public ReportFactory getReportFactory() {
         return reportFactory;
@@ -182,12 +176,12 @@ public abstract class InformeBase extends GenericBean implements Serializable {
         this.reportFactory = reportFactory;
     }
 
-    public String getPathReporte() {
-        return pathReporte;
+    public Reporte getReporte() {
+        return reporte;
     }
 
-    public void setPathReporte(String pathReporte) {
-        this.pathReporte = pathReporte;
+    public void setReporte(Reporte reporte) {
+        this.reporte = reporte;
     }
 
     public Map getParameters() {
@@ -222,12 +216,20 @@ public abstract class InformeBase extends GenericBean implements Serializable {
         this.aplicacionBean = aplicacionBean;
     }
 
-    public String getNombreReporte() {
-        return nombreReporte;
+    public MailFactory getMailFactoryBean() {
+        return mailFactoryBean;
     }
 
-    public void setNombreReporte(String nombreReporte) {
-        this.nombreReporte = nombreReporte;
+    public void setMailFactoryBean(MailFactory mailFactoryBean) {
+        this.mailFactoryBean = mailFactoryBean;
+    }
+
+    public String getCodigoReporte() {
+        return codigoReporte;
+    }
+
+    public void setCodigoReporte(String codigoReporte) {
+        this.codigoReporte = codigoReporte;
     }
 
 }

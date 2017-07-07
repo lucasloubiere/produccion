@@ -1,11 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package bs.seguridad.modelo;
 
-import bs.global.modelo.Modulo;
+import bs.administracion.modelo.Vista;
+import bs.administracion.modelo.Modulo;
+import bs.administracion.modelo.Reporte;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +22,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ide
+ * @author Claudio
  */
 @Entity
 @Table(name = "sg_menu")
-@XmlRootElement
 public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "CODIGO", nullable = false)
+    @Column(name = "codigo", nullable = false)
     private String codigo;
     @Column(name = "NOMBRE", length = 45)
     private String nombre;
@@ -64,19 +63,19 @@ public class Menu implements Serializable {
     @Column(name = "AYUDA", length = 2147483647)
     private String ayuda;
 
-    @JoinColumn(name = "MODULO", referencedColumnName = "CODIGO")
+    @JoinColumn(name = "MODULO", referencedColumnName = "codigo")
     @ManyToOne(fetch = FetchType.LAZY)
     private Modulo modulo;
 
-//    @JoinColumn(name = "COD_VISTA", referencedColumnName = "CODIGO")
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Vista vista;
+    @JoinColumn(name = "COD_VISTA", referencedColumnName = "codigo")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Vista vista;
 
-//    @JoinColumn(name = "codrep", referencedColumnName = "codigo")
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Reporte reporte;
+    @JoinColumn(name = "codrep", referencedColumnName = "codigo")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Reporte reporte;
 
-    @JoinColumn(name = "COD_MENU", referencedColumnName = "CODIGO")
+    @JoinColumn(name = "COD_MENU", referencedColumnName = "codigo")
     @ManyToOne(fetch = FetchType.LAZY)
     private Menu menuPrincipal;
 
@@ -328,4 +327,5 @@ public class Menu implements Serializable {
     public String toString() {
         return nombre;
     }
+
 }

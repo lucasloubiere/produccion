@@ -5,14 +5,12 @@
 
 package bs.stock.web;
 
-import bs.global.modelo.Modulo;
-import bs.global.rn.ModuloRN;
-import bs.global.rn.SucursalRN;
+
 import bs.stock.modelo.Deposito;
 import bs.stock.modelo.Formula;
 import bs.stock.modelo.Producto;
-import bs.stock.modelo.Rubro1;
-import bs.stock.modelo.Rubro2;
+import bs.stock.modelo.Rubro01;
+import bs.stock.modelo.Rubro02;
 import bs.stock.modelo.TipoProducto;
 import bs.stock.modelo.UnidadMedida;
 import bs.stock.rn.DepositoRN;
@@ -43,9 +41,7 @@ public class ConversoresStock implements Serializable{
     @EJB private UnidadMedidaRN unidadDeMedidaRN;
     @EJB private Rubro1RN rubro1RN;
     @EJB private Rubro2RN rubro2RN;
-    @EJB private FormulaRN formulaRN;
-    @EJB private ModuloRN moduloRN;
-    @EJB private SucursalRN sucursalRN;
+    @EJB private FormulaRN formulaRN;    
     @EJB private DepositoRN depositoRN;
     
     public Converter getProducto() {
@@ -121,32 +117,6 @@ public class ConversoresStock implements Serializable{
         };
     }
     
-    
-     public Converter getModulo() {
-        return new Converter() {
-
-            @Override
-            public Object getAsObject(FacesContext context, UIComponent component, String value) {
-                if (value.trim().equals("") || value == null) {
-                    return null;
-                }
-
-                Modulo m = moduloRN.getModulo(value);
-                return m;
-            }
-
-            @Override
-            public String getAsString(FacesContext context, UIComponent component, Object value) {
-                if (value == null || value.equals("")) {
-                    return "";
-                } else {
-                    return ((Modulo) value).getCodigo()+ "";
-                }
-            }
-        };
-    }
-   
-    
     public Converter getUnidadMedida() {
         return new Converter() {
 
@@ -210,7 +180,7 @@ public class ConversoresStock implements Serializable{
                 String tipo[] = a[0].split("=");
                 String codigo[] = a[1].split("=");
                 
-                Rubro1 t = rubro1RN.getRubro1(tipo[1], codigo[1]);
+                Rubro01 t = rubro1RN.getRubro1(tipo[1], codigo[1]);
                 
                 System.err.println("t" + t);
                 
@@ -223,7 +193,7 @@ public class ConversoresStock implements Serializable{
                     return "";
                 } else {
 
-                    return ((Rubro1) value).toString()+ "";
+                    return ((Rubro01) value).toString()+ "";
                 }
             }
         };
@@ -242,7 +212,7 @@ public class ConversoresStock implements Serializable{
                 String tipo[] = a[0].split("=");
                 String codigo[] = a[1].split("=");
                 
-                Rubro2 t = rubro2RN.getRubro2(tipo[1], codigo[1]);
+                Rubro02 t = rubro2RN.getRubro2(tipo[1], codigo[1]);
                 
                 System.err.println("t" + t);
                 return t;
@@ -254,7 +224,7 @@ public class ConversoresStock implements Serializable{
                     return "";
                 } else {
 
-                    return ((Rubro2) value).toString()+ "";
+                    return ((Rubro02) value).toString()+ "";
                 }
             }
         };

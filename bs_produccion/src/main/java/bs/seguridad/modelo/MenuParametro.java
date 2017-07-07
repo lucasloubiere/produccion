@@ -3,67 +3,64 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package bs.seguridad.modelo;
 
+import bs.global.modelo.Auditoria;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author ide
+ * @author Claudio
  */
 @Entity
 @Table(name = "sg_menu_parametro")
 @XmlRootElement
 public class MenuParametro implements Serializable {
-
     private static final long serialVersionUID = 1L;
-    @Id
+    @Id    
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
-    private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "nombre")
+    private String id;
+    @Size(max = 50)
+    @Column(name = "NOMBRE")
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "valor")
+    @Size(max = 50)
+    @Column(name = "VALOR")
     private String valor;
-    @JoinColumn(name = "menu", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    
+    @JoinColumn(name = "COD_MENU", referencedColumnName = "codigo")
+    @ManyToOne
     private Menu menu;
+    
+    @Embedded
+    private Auditoria auditoria;
 
     public MenuParametro() {
+        this.auditoria = new Auditoria();
     }
+    
 
-    public MenuParametro(Integer id) {
+    public MenuParametro(String id) {
         this.id = id;
+        this.auditoria = new Auditoria();
     }
-
-    public MenuParametro(Integer id, String nombre, String valor) {
-        this.id = id;
-        this.nombre = nombre;
-        this.valor = valor;
-    }
-
-    public Integer getId() {
+    
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -83,6 +80,14 @@ public class MenuParametro implements Serializable {
         this.valor = valor;
     }
 
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+
     public Menu getMenu() {
         return menu;
     }
@@ -90,7 +95,7 @@ public class MenuParametro implements Serializable {
     public void setMenu(Menu menu) {
         this.menu = menu;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -113,7 +118,7 @@ public class MenuParametro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.seguridad.modelo.MenuParametro[ id=" + id + " ]";
+        return "bs.seguridad.modelo.MenuParametro[ id=" + id + " ]";
     }
     
 }

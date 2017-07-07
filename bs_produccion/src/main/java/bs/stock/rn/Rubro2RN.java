@@ -7,7 +7,7 @@ package bs.stock.rn;
 
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.stock.dao.Rubro2DAO;
-import bs.stock.modelo.Rubro2;
+import bs.stock.modelo.Rubro02;
 import bs.stock.modelo.Rubro2PK;
 import java.io.Serializable;
 import java.util.List;
@@ -28,13 +28,13 @@ public class Rubro2RN implements Serializable {
     Rubro2DAO rubroDAO;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void guardar(Rubro2 rubro2, boolean esNuevo) throws ExcepcionGeneralSistema {
+    public void guardar(Rubro02 rubro2, boolean esNuevo) throws ExcepcionGeneralSistema {
 
         if (esNuevo) {
 
             Rubro2PK idPK = new Rubro2PK( rubro2.getCodigo(),rubro2.getTipoProducto());
 
-            if (rubroDAO.getObjeto(Rubro2.class, idPK) != null) {
+            if (rubroDAO.getObjeto(Rubro02.class, idPK) != null) {
                 throw new ExcepcionGeneralSistema("Ya existe un rubro con el código" + rubro2.getCodigo());
             }
             rubroDAO.crear(rubro2);
@@ -43,27 +43,27 @@ public class Rubro2RN implements Serializable {
         }
     }
 
-    public Rubro2 getRubro2(Rubro2PK idPK) {
+    public Rubro02 getRubro2(Rubro2PK idPK) {
 
-        return rubroDAO.getObjeto(Rubro2.class, idPK);
+        return rubroDAO.getObjeto(Rubro02.class, idPK);
     }
 
-    public Rubro2 getRubro2(String tipo,String codigo) {
+    public Rubro02 getRubro2(String tipo,String codigo) {
 
         Rubro2PK idPK = new Rubro2PK(tipo,codigo);
-        return rubroDAO.getObjeto(Rubro2.class, idPK);
+        return rubroDAO.getObjeto(Rubro02.class, idPK);
     }
 
-    public void eliminar(Rubro2 rubro2) throws Exception {
+    public void eliminar(Rubro02 rubro2) throws Exception {
         rubroDAO.eliminar(rubro2);
     }
 
-    public List<Rubro2> getLista(boolean mostrarDebaja) {
+    public List<Rubro02> getLista(boolean mostrarDebaja) {
 
         return rubroDAO.getListaByBusqueda(null, "", mostrarDebaja, 50);
     }
 
-    public List<Rubro2> getListaByBusqueda(String codTipo, String txtBusqueda, boolean mostrarDebaja, int cantRegistros) {
+    public List<Rubro02> getListaByBusqueda(String codTipo, String txtBusqueda, boolean mostrarDebaja, int cantRegistros) {
 
         if (codTipo == null) {
             return rubroDAO.getListaByBusqueda(null, txtBusqueda, mostrarDebaja, cantRegistros);

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "st_rubro1")
 @XmlRootElement
 @IdClass(Rubro1PK.class)
-public class Rubro1 implements Serializable {
+public class Rubro01 implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -51,7 +51,7 @@ public class Rubro1 implements Serializable {
     @Embedded
     private Auditoria auditoria;
 
-    public Rubro1() {
+    public Rubro01() {
         this.auditoria = new Auditoria();
     }
 
@@ -111,7 +111,7 @@ public class Rubro1 implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Rubro1 other = (Rubro1) obj;
+        final Rubro01 other = (Rubro01) obj;
         if ((this.codigo == null) ? (other.codigo != null) : !this.codigo.equals(other.codigo)) {
             return false;
         }

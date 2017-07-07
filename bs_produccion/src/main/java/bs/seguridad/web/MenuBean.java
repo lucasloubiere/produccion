@@ -6,9 +6,11 @@ package bs.seguridad.web;
 
 import bs.administracion.modelo.Parametro;
 import bs.administracion.rn.ParametrosRN;
+import bs.administracion.web.ModuloBean;
+import bs.administracion.web.ReporteBean;
+import bs.administracion.web.VistaBean;
 import bs.global.util.JsfUtil;
 import bs.global.web.GenericBean;
-import bs.global.web.ModuloBean;
 import bs.seguridad.modelo.Menu;
 import bs.seguridad.modelo.MenuParametro;
 import bs.seguridad.rn.MenuParametroRN;
@@ -56,13 +58,11 @@ public class MenuBean extends GenericBean implements Serializable {
     @ManagedProperty(value = "#{moduloBean}")
     protected ModuloBean moduloBean;
 
-    /**
     @ManagedProperty(value = "#{vistaBean}")
     protected VistaBean vistaBean;
     
     @ManagedProperty(value = "#{reporteBean}")
     protected ReporteBean reporteBean;
-    */
 
     /**
      * Creates a new instance of MenuBean

@@ -6,7 +6,7 @@
 package bs.stock.dao;
 
 import bs.global.dao.BaseDAO;
-import bs.stock.modelo.Rubro1;
+import bs.stock.modelo.Rubro01;
 import bs.stock.modelo.TipoProducto;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import javax.persistence.Query;
 @Stateless
 public class Rubro1DAO extends BaseDAO {
 
-    public Rubro1 getRubro1(String codigo) {
-        return getObjeto(Rubro1.class, codigo);
+    public Rubro01 getRubro1(String codigo) {
+        return getObjeto(Rubro01.class, codigo);
     }
     
     public TipoProducto getTipoProducto(String codigo) {
@@ -30,7 +30,7 @@ public class Rubro1DAO extends BaseDAO {
         return getObjeto(TipoProducto.class, codigo);
     }
     
-    public List<Rubro1> getListaByBusqueda(String codTipo, String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+    public List<Rubro01> getListaByBusqueda(String codTipo, String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
                        
         
         try {            
@@ -58,16 +58,16 @@ public class Rubro1DAO extends BaseDAO {
             
         } catch (Exception e) {
             log.log(Level.SEVERE, "getListaByBusqueda", e);
-            return new ArrayList<Rubro1>();
+            return new ArrayList<Rubro01>();
         }  
     }
     
-     public Rubro1 getRubro1ByCodigo(String codigo) {
-        return getObjeto(Rubro1.class, "codigo", codigo);
+     public Rubro01 getRubro1ByCodigo(String codigo) {
+        return getObjeto(Rubro01.class, "codigo", codigo);
     }
 
-    public Rubro1 getRubro1ByDescripcion(String descripcion) {
-        return getObjeto(Rubro1.class, "descripcion", descripcion);
+    public Rubro01 getRubro1ByDescripcion(String descripcion) {
+        return getObjeto(Rubro01.class, "descripcion", descripcion);
     }
 
     
