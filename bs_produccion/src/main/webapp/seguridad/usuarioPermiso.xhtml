@@ -13,7 +13,7 @@
     
     <ui:define name="contenido">
         
-        <p:panel header="Asignaci�n de permisos" id="pUsuario" style="height: auto;"  >
+        <p:panel header="Asignacion de permisos" id="pUsuario" style="height: auto;"  >
     
             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
 
@@ -22,8 +22,8 @@
                 <p:menuitem value="Bloquear"  update="treeSingle,messageg" actionListener="#{permisosBean.bloquearMenu}" icon="fa fa-close"/>
             </p:contextMenu>
                 
-            <div class="Container100 Responsive50">
-                <div class="Container40">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-5">
                     <p:dataTable value="#{permisosBean.lista}"  reflow="true"  var="u"  >
 
                         <p:column headerText="Nombre Usuario" style="text-align: center;"
@@ -48,7 +48,7 @@
                     </p:dataTable>
                 </div>
                    
-                <div class="Container60">
+                <div class="ui-g-5">
                     <p:tree id="treeSingle" value="#{permisosBean.menu}" 
                             var="node" rendered="#{not empty permisosBean.usuario}"
                             dynamic="true"

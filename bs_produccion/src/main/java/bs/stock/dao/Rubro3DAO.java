@@ -37,7 +37,7 @@ public class Rubro3DAO extends BaseDAO {
         System.err.println("cantMax " + cantMax);                
         
         try {            
-             String sQuery = "SELECT e FROM Rubro3 e "
+             String sQuery = "SELECT e FROM Rubro03 e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
                //     + (codigo==null ? " ": " AND e.tipoProducto.codigo = :tipoProducto ")
                     + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")

@@ -74,6 +74,7 @@ public class CronologiaBean extends InformeBase implements Serializable {
         }
         
         try {
+            
             producto = productoBean.getProducto();
             movimientos = stockRN.getMovimientosEntreFechas(producto, deposito, fechaDesde, fechaHasta);
             saldoInicial = stockRN.getStockAFecha(producto, deposito, fechaDesde);

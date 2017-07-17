@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:pa="http://primefaces.org/barcelona" >
+
+    <f:metadata>        
+        <ui:insert name="meta-data">              
+            <!--
+            <f:event type="preRenderView" listener="#{usuarioSessionBean.checkLogin()}"/>                     
+            -->
+        </ui:insert>
+    </f:metadata>
+
+    <h:head>
+
+        <title>
+            <ui:insert name="titulo">
+                Menú Principal
+            </ui:insert>
+        </title>
+
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>        
+        <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
+
+        <h:outputStylesheet name="estructura.css" library="css" />
+        <h:outputStylesheet name="estilos.css" library="css" />
+
+        <h:outputScript library="js" name="calendar_es.js" />
+        <h:outputScript name="js/nanoscroller.js" library="barcelona-layout" />
+        <h:outputScript name="js/layout.js" library="barcelona-layout" />
+        <h:outputScript name="js/ripple.js" library="barcelona-layout" />
+
+        <ui:insert name="head"></ui:insert>  
+
+        <ui:insert name="script" >            
+            <script type="text/javascript">
+                function heightSize() {
+                    f = document.getElementById('frame');
+                    if (f !== null) {
+                        f.height = screen.height - 200;
+                    } else {
+                    }
+                }
+            </script>
+        </ui:insert>        
+
+    </h:head>
+
+    <h:body styleClass="main-body" >
+
+
+
+        <div class="layout-wrapper">
+
+            <div class="topbar">
+                <div class="logo">                       
+                    <h:graphicImage value="/resources/barcelona-layout/images/vic.png" style="width: 30px;" />                       
+                </div>
+
+                <h:graphicImage value="/resources/image/logo.png" style="width: 200px;" />
+
+                <a id="topbar-menu-button" href="#">
+                    <i class="fa fa-bars"></i>
+                </a>
+
+                <ul class="topbar-menu fadeInDown animated">
+                    <li class="profile-item">
+                        <a href="#">                            
+                            <div class="profile-image">
+                                <p:graphicImage name="images/computer.png" library="barcelona-layout" />
+                            </div>
+                            <div class="profile-info">
+
+                                <span class="topbar-item-name profile-name">
+                                    <h:outputText value="#{usuarioSessionBean.usuario.nombre}"></h:outputText>
+                                </span>
+                                <span class="topbar-item-name profile-role">
+                                    <h:outputText value="#{usuarioSessionBean.usuario.tipo.descripcion}"></h:outputText>                                    
+                                </span>
+                            </div>
+                        </a>
+
+                        <ul class="animated">
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-user"></i>
+                                    <span>Perfil</span>
+                                    <span class="topbar-submenuitem-badge">5</span>
+                                </a>
+                            </li>
+
+                            <li role="menuitem">             
+                                <h:form>
+                                    <p:commandLink action="#{usuarioSessionBean.logout}" ajax="false" >                              
+                                        <i class="fa fa-fw fa-sign-out"></i>
+                                        <span>Salir</span>
+                                    </p:commandLink>
+                                </h:form>
+                            </li>
+                        </ul>
+                    </li>                    
+                    <li>
+                        <a href="#">
+                            <i class="topbar-icon material-icons animated swing fa fa-fw fa-envelope-o"></i>
+                            <span class="topbar-badge animated rubberBand">5</span>
+                            <span class="topbar-item-name">Mensajes</span>
+                        </a>
+                        <ul class="animated">
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar1.png" library="barcelona-layout" width="35"/>
+                                    <span>Give me a call</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar2.png" library="barcelona-layout" width="35"/>
+                                    <span>Reports attached</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar3.png" library="barcelona-layout" width="35"/>
+                                    <span>About your invoice</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar2.png" library="barcelona-layout" width="35"/>
+                                    <span>Meeting today</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar4.png" library="barcelona-layout" width="35"/>
+                                    <span>Out of office</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="topbar-icon fa fa-fw fa-bell-o"></i>
+                            <span class="topbar-badge animated rubberBand">4</span>
+                            <span class="topbar-item-name">Notifications</span>
+                        </a>
+                        <ul class="animated">
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-tasks"></i>
+                                    <span>Pending tasks</span>
+                                    <span class="topbar-submenuitem-badge">6</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-calendar-check-o"></i>
+                                    <span>Meeting today</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-download"></i>
+                                    <span>Download</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="fa fa-fw fa-plane"></i>
+                                    <span>Book flight</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="search-item">
+                        <h:form>
+                            <span class="md-inputfield">
+                                <p:inputText />
+                                <i class="fa fa-search"></i>
+                                <label>Buscar</label>
+                            </span>
+
+                        </h:form>
+                    </li>
+                    <li>
+                        <p:ajaxStatus widgetVar="ajaxStatus" >       
+                            <f:facet name="default" />          
+                            <f:facet name="start">
+                                <span>
+                                    <p:graphicImage value="/resources/ajax/ajax02.GIF"  />                                
+                                </span>      
+                            </f:facet>
+                            <f:facet name="complete" />                                  
+                        </p:ajaxStatus>
+                    </li>
+
+                </ul>
+            </div>   
+
+
+            <!--
+            <pa:tabMenu>
+                <pa:tab icon="home" title="Features">
+                    <h:form id="menu-form">
+                        <pa:menu widgetVar="me" model="#{principalBean.modelo}">
+
+                        </pa:menu>
+                    </h:form>
+                </pa:tab>
+            </pa:tabMenu>
+            -->
+
+            <!-- 
+         <ui:include src="./menu.xhtml" />
+            -->
+
+            <div class="layout-main">
+                <div class="layout-main-content">
+                    <p:menubar model="#{principalBean.modelo}"></p:menubar>
+                    <ui:insert name="contenido" >
+
+                        <div style="height:500px">
+                            <h:form>
+                                <p:growl id="msgs" showDetail="true" />
+
+                                <div style="clear:both" />
+                            </h:form>
+                        </div>
+                    </ui:insert>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+        <h:outputStylesheet name="css/nanoscroller.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/animate.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="barcelona-layout" />
+        <h:outputStylesheet name="css/layout-green.css" library="barcelona-layout" />
+
+
+    </h:body>
+
+</html>

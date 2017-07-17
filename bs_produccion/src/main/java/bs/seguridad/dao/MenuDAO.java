@@ -13,6 +13,7 @@ import bs.seguridad.modelo.Usuario;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 /**
@@ -83,10 +84,16 @@ public class MenuDAO extends BaseDAO {
             
             Query q = (Query) em.createQuery(sQuery);
 
-            q.setParameter("idUsuario", usuario.getUsuario());
+            q.setParameter("idUsuario", usuario.getId());
             q.setParameter("activo", "S");
 
             return q.getResultList();
+            
+        }catch(NoResultException e){
+            
+            System.out.println("EL usuario no tiene permisos asignados " + e.getMessage());
+            return null;
+            
         } catch (Exception e) {
             System.out.println("No se puede obtener lista de menu por usuario " + e.getMessage());
             return null;

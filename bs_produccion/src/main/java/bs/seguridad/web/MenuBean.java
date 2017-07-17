@@ -5,7 +5,6 @@
 package bs.seguridad.web;
 
 import bs.administracion.modelo.Parametro;
-import bs.administracion.rn.ParametrosRN;
 import bs.administracion.web.ModuloBean;
 import bs.administracion.web.ReporteBean;
 import bs.administracion.web.VistaBean;
@@ -14,7 +13,6 @@ import bs.global.web.GenericBean;
 import bs.seguridad.modelo.Menu;
 import bs.seguridad.modelo.MenuParametro;
 import bs.seguridad.rn.MenuParametroRN;
-import bs.seguridad.rn.MenuRN;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +36,8 @@ import org.primefaces.model.TreeNode;
 public class MenuBean extends GenericBean implements Serializable {
 
     @EJB
-    private MenuRN menuRN;
-    @EJB
     private MenuParametroRN menuParametroRN;
-    @EJB
-    private ParametrosRN parametrosRN;
+
 
     private Menu menu;
     private List<Menu> lista;
@@ -233,7 +228,7 @@ public class MenuBean extends GenericBean implements Serializable {
 
         Menu menuAux = menu;
         menu = new Menu();
-        menu.setNombre(menuAux.getNombre());
+        menu.setNombre(menuAux.getNombre()+"(duplicado)");
         menu.setOrden(menuAux.getMenuPrincipal().getMenuItem().size() + 1);
         menu.setTipo(menuAux.getTipo());
         menu.setIcono(menuAux.getIcono());
@@ -434,5 +429,7 @@ public class MenuBean extends GenericBean implements Serializable {
     public void setReporteBean(ReporteBean reporteBean) {
         this.reporteBean = reporteBean;
     }
+    
+    
     
 }

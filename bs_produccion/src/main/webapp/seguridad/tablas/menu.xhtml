@@ -172,7 +172,7 @@
                         <p:remoteCommand name="procesarVista" process="@this" update="pgDatosm"
                                          actionListener="#{menuBean.procesarVista()}"/>
                         <h:outputText value="Vista *" /> 
-                        <p:commandButton icon="fa fa-search" styleClass="Fright"                                         
+                        <p:commandButton icon="fa fa-search" styleClass="pull-right"                                         
                                          update="buscadorVista"
                                          oncomplete="PF('dlgVista').show()"                                          
                                          process="@this"  />
@@ -223,7 +223,7 @@
                         <p:remoteCommand name="procesarReporte"  process="@this" update="pgDatosm" 
                                          actionListener="#{menuBean.procesarReporte()}" />                        
                         <h:outputText value="Reporte" />                         
-                        <p:commandButton icon="fa fa-search" styleClass="Fright"                                         
+                        <p:commandButton icon="fa fa-search" styleClass="pull-right"                                         
                                          update="buscadorReporte"
                                          oncomplete="PF('dlgReporte').show()"                                          
                                          process="@this"  />
@@ -279,8 +279,10 @@
 
         <ui:define name="dialogos" >        
 
+            
             <ui:include src="/administracion/busqueda/buscadorVista.xhtml" />        
             <ui:include src="/administracion/busqueda/buscadorReporte.xhtml" />         
+            
 
             <h:form id="formParametro" prependId="false" >
                 <ui:include src="/seguridad/tablas/agregarMenuParametro.xhtml" />

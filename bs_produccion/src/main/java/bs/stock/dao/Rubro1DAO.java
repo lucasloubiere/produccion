@@ -34,7 +34,7 @@ public class Rubro1DAO extends BaseDAO {
                        
         
         try {            
-             String sQuery = "SELECT e FROM Rubro1 e "
+             String sQuery = "SELECT e FROM Rubro01 e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
                     + (codTipo==null ? " ": " AND e.tipoProducto = :tipoProducto ")
                     + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")

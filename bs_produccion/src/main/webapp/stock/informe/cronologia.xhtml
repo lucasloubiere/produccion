@@ -18,14 +18,11 @@
         <p:panel header="Cronología de Stock" >
 
             <p:remoteCommand name="procesarProducto" process="@this" update="@form" actionListener="#{cronologiaBean.limpiarMovimientos}" />
-
-            <p:panelGrid columns="2" layout="grid"                               
-                         styleClass="ui-panelgrid-blank"
-                         columnClasses="ui-g-5,ui-g-7" >
-                
-                <h:panelGroup layout="block">
+            
+            <div class="ui-g">
+                <div class="ui-g-5">
                     
-                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" >
+                    <p:panelGrid columns="2" layout="grid" >
 
                         <p:inputText id="txtBusqueda" value="#{productoBean.txtBusqueda}" placeholder="Ingrese busqueda" >
                             <p:ajax event="keyup" process="@this,tipoProducto" update="tablaProductos" listener="#{productoBean.buscar}"/>
@@ -74,12 +71,11 @@
 
                     </p:dataTable>
                     
-                </h:panelGroup>
-
-                <h:panelGroup layout="block">
-
-                    <p:panelGrid columns="2" layout="grid"                               
-                         styleClass="ui-panelgrid-blank"
+                </div>
+                
+                <div class="ui-g-7">
+                    
+                    <p:panelGrid columns="2" layout="grid"                                                        
                          columnClasses="ui-g-4, ui-g-8" >
 
                             <h:outputText value="Producto: " />
@@ -130,15 +126,13 @@
                                 <div style="width: 100%; text-align: right;">
 
                                     <h:commandLink  >
-                                        <p:graphicImage value="/resources/image/excel_64.png" width="32" 
-                                                        title="Descargar datos a excel"/>                                
+                                        <i class="fa fa-file-excel-o fa-2x" style="color: white;" />                                        
                                         <p:dataExporter type="xls" target="movimientos" fileName="movimientos-stock"                                                     
                                                         preProcessor="#{customizeDocument.postProcessXLS}"  />
                                     </h:commandLink>
 
                                     <h:commandLink >
-                                        <p:graphicImage value="/resources/image/pdf_64.png"
-                                                        title="Descargar datos a pdf" width="32"/>                                
+                                        <i class="fa fa-file-pdf-o fa-2x " style="color: white;" />                                        
                                         <p:dataExporter type="pdf" target="movimientos" fileName="movimientos-stock" 
                                                         preProcessor="#{customizeDocument.preProcessPDF}" 
                                                         />
@@ -221,10 +215,9 @@
                             </p:column>
 
                         </p:dataTable>
-
-                </h:panelGroup>
-
-            </p:panelGrid>
+                    
+                </div>
+            </div>
 
         </p:panel>
 

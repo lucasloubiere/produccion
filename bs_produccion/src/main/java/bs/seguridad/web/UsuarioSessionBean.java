@@ -296,7 +296,7 @@ public class UsuarioSessionBean extends GenericBean implements Serializable {
         setUsuario(new Usuario());
         estaRegistrado = false;
         session.invalidate();
-        return "../global/inicio.xhtml";
+        return "../seguridad/login.xhtml";
     }
 
     public void monitorearSesion() throws IOException {

@@ -6,11 +6,11 @@
 
 package bs.stock.web;
 
-
+import bs.administracion.web.ReporteBean;
 import bs.global.modelo.Formulario;
 import bs.global.rn.FormularioRN;
-import bs.global.web.GenericBean;
 import bs.global.util.JsfUtil;
+import bs.global.web.GenericBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.event.SelectEvent;
 
@@ -31,13 +32,14 @@ import org.primefaces.event.SelectEvent;
 @ViewScoped
 public class FormularioStockBean extends GenericBean implements Serializable {
     
-    @EJB private FormularioRN formularioRN;        
+    @EJB private FormularioRN formularioRN;            
     
-    private Formulario formulario;
-    private List<Formulario> lista;
-    
+    private List<Formulario> lista;    
     private String modulo;
     
+    @ManagedProperty(value = "#{reporteBean}")
+    protected ReporteBean reporteBean;
+       
 
     /**
      * Creates a new instance of FormularioVentaBean
@@ -145,14 +147,13 @@ public class FormularioStockBean extends GenericBean implements Serializable {
         }        
     }
     
-    public Formulario getFormulario() {
-        return formulario;
-    }
+    public void procesarReporte() {
 
-    public void setFormulario(Formulario formulario) {
-        this.formulario = formulario;
-    }
-
+        if (reporteBean.getReporte() != null) {
+            formulario.setReporte(reporteBean.getReporte());
+        }
+    }    
+  
     public List<Formulario> getLista() {
         return lista;
     }
@@ -160,5 +161,24 @@ public class FormularioStockBean extends GenericBean implements Serializable {
     public void setLista(List<Formulario> lista) {
         this.lista = lista;
     }
+
+    public String getModulo() {
+        return modulo;
+    }
+
+    public void setModulo(String modulo) {
+        this.modulo = modulo;
+    }
+
+    public ReporteBean getReporteBean() {
+        return reporteBean;
+    }
+
+    public void setReporteBean(ReporteBean reporteBean) {
+        this.reporteBean = reporteBean;
+    }
+    
+    
+    
     
 }

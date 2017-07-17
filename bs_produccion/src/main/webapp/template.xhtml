@@ -21,11 +21,11 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>        
         <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
-        
+
         <h:outputScript name="js/nanoscroller.js" library="barcelona-layout" />
         <h:outputScript name="js/layout.js" library="barcelona-layout" />
         <h:outputScript name="js/ripple.js" library="barcelona-layout" />
-        
+
         <h:outputScript library="js" name="calendar_es.js" />
         <h:outputStylesheet name="estructura.css" library="css" />
         <h:outputStylesheet name="estilos.css" library="css" />
@@ -61,7 +61,23 @@
                         <div class="ui-g-4" >
                             <h:graphicImage value="/resources/image/logo.png" style="width: 200px;" title="Logo" />
                         </div>
-                        <div class="ui-g-8" >
+                        <div class="ui-g-8 " >
+                            
+                            <span class="pull-right">
+                                
+                                <p:ajaxStatus >
+                                    <f:facet name="start">
+                                        <i class="fa fa-circle-o-notch fa-spin ajax-loader fa-2x" aria-hidden="true"></i>
+                                    </f:facet>
+
+                                    <f:facet name="complete">
+                                        <h:outputText value="" />
+                                    </f:facet>
+                                </p:ajaxStatus>
+                            </span>
+
+
+
 
                         </div>
                     </div>
@@ -96,7 +112,9 @@
         <ui:include src="/template/exceptionHandler.xhtml" />
         <ui:include src="/template/ajaxStatus-footer.xhtml"  />        
         -->
-        
+
+
+
         <h:outputStylesheet name="css/nanoscroller.css" library="barcelona-layout" />
         <h:outputStylesheet name="css/animate.css" library="barcelona-layout" />
         <h:outputStylesheet name="css/ripple.css" library="barcelona-layout" />
