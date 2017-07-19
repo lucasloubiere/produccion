@@ -5,8 +5,8 @@
  */
 package bs.stock.web;
 
-import bs.global.web.GenericBean;
 import bs.global.util.JsfUtil;
+import bs.global.web.GenericBean;
 import bs.stock.modelo.Deposito;
 import bs.stock.rn.DepositoRN;
 import java.io.Serializable;
@@ -98,12 +98,12 @@ public class DepositoBean extends GenericBean implements Serializable{
     }
     
     public void buscar(){
-        lista = depositoRN.getDepositoByBusqueda(txtBusqueda, mostrarDebaja);
+        lista = depositoRN.getDepositoByBusqueda(txtBusqueda, mostrarDebaja,cantidadRegistros);
     }
     
     public List<Deposito> complete(String query) {
         try {
-            lista = depositoRN.getDepositoByBusqueda(query, false);
+            lista = depositoRN.getDepositoByBusqueda(query, false, cantidadRegistros);
             return lista;
             
         } catch (Exception ex) {

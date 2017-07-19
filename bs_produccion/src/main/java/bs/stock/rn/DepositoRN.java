@@ -62,9 +62,9 @@ public class DepositoRN {
         return depositoDAO.getLista(maxResults, firstResult);
     }
 
-    public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja) {
+    public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
         
-        return depositoDAO.getDepositoByBusqueda(txtBusqueda,mostrarDeBaja,15);
+        return depositoDAO.getDepositoByBusqueda(txtBusqueda,mostrarDeBaja,cantMax);
     }
     
     // Add business logic below. (Right-click in editor and choose
