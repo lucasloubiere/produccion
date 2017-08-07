@@ -67,6 +67,8 @@
             <!--
             <p:remoteCommand name="procesarMascaraStock" process="@this" update="@form"   actionListener="#{movimientoStockBean.procesarMascaraStock}" />
             -->
+            
+            <div class="EmptyBox5" />
 
             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
 
@@ -285,7 +287,7 @@
                 <p:tab title="Items">  
 
                     <p:dataTable id="detalle" value="#{movimientoStockBean.m.itemsProducto}" var="i"
-                                 resizableColumns="true" resizeMode="expand" liveResize="true" >
+                                 resizeMode="expand" liveResize="true" >
 
                         <p:column headerText="Producto" width="300" >
                             <p:commandButton icon="fa fa-search" 

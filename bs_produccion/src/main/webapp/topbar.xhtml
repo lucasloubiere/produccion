@@ -1,0 +1,76 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/barcelona">
+
+    <div class="topbar">
+        <div class="logo">
+            <h:link outcome="/dashboard">
+                <!--
+                <h:graphicImage value="/resources/barcelona-layout/images/vic.png" style="width: 30px;" />                       
+                -->
+            </h:link>
+        </div>
+
+        <h:graphicImage value="/resources/image/logo.png" styleClass="app-name" />        
+
+        <a id="topbar-menu-button" href="#">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <ul class="topbar-menu fadeInDown animated">
+            <li class="profile-item">
+                <a href="#">                            
+                    <div class="profile-image">
+                        <i class="fa fa-user-circle-o fa-2x" ></i>
+                        <!--
+                        <p:graphicImage name="images/computer.png" library="barcelona-layout" />
+                        -->
+                    </div>
+                    <div class="profile-info">
+                        <span class="topbar-item-name profile-name"><h:outputText value="#{usuarioSessionBean.usuario.nombre}" /></span>
+                        <span class="topbar-item-name profile-role"><h:outputText value="#{usuarioSessionBean.usuario.tipo.descripcion}" /></span>
+                    </div>
+                </a>
+            </li>    
+
+            <li>
+                <a href="#">
+
+                    <style >
+                        .ui-clock {
+                           padding: 0px !important;
+                        }
+                    </style>
+
+                    <span class="pull-right">
+                        <span class="clearfix"><p:clock autoSync="true" pattern="HH:mm:ss" mode="server" /></span>
+                        <span class="clearfix"><p:clock autoSync="true" pattern="dd/MM/yyyy"  mode="server" /></span>
+                            
+                    </span>
+                </a>                
+            </li>
+
+            <li>
+                <a href="#">
+                    <span class="pull-right">
+                        <p:ajaxStatus >
+                            <f:facet name="start">
+                                <i class="fa fa-circle-o-notch fa-spin ajax-loader fa-2x" aria-hidden="true"></i>
+                            </f:facet>
+
+                            <f:facet name="complete">
+                                <h:outputText value="" />
+                            </f:facet>
+                        </p:ajaxStatus>
+                    </span>
+                </a>                
+            </li>
+
+        </ul>
+    </div>
+
+</ui:composition>

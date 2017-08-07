@@ -6,7 +6,6 @@ package bs.global.util;
 
 import bs.administracion.modelo.CorreoElectronico;
 import bs.administracion.modelo.Reporte;
-import bs.administracion.rn.ParametrosRN;
 import bs.administracion.rn.ReporteRN;
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.web.AplicacionBean;
@@ -38,10 +37,7 @@ public abstract class InformeBase extends GenericBean implements Serializable {
 
     @EJB
     protected ReporteRN reporteRN;
-
-    @EJB
-    protected ParametrosRN parametrosRN;
-
+    
     protected Map parameters;
     protected String codigoReporte;
     protected Reporte reporte;

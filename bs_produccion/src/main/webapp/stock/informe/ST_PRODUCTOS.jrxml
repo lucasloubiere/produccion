@@ -106,58 +106,27 @@
 	<queryString>
 		<![CDATA[Select
   st_producto.CODIGO As st_producto_CODIGO,
-  st_producto.DESCRP As st_producto_DESCRP,
+  st_producto.DESCRIPCION As st_producto_DESCRP,
   st_producto.UNIMED As st_producto_UNIMED,
-  st_producto.TIPPRO As st_producto_TIPPRO,
-  st_tipo_producto.DESCRP As st_tipo_producto_DESCRP,
-  st_producto.RUBR01 As st_producto_RUBR01,
-  st_rubro01_A.DESCRP As st_rubro01_A_DESCRP,
-  st_producto.RUBR02 As st_producto_RUBR02,
-  st_rubro02.DESCRP As st_rubro02_DESCRP,
-  st_producto.STOCKS As st_producto_STOCKS,
-  st_producto.BIEUSO As st_producto_BIEUSO,
-  st_producto.IMPCNT As st_producto_IMPCNT,
-  st_producto.CUENVT As st_producto_CUENVT,
-  st_producto.IMGCHI As st_producto_IMGCHI,
-  st_producto.IMGGRA As st_producto_IMGGRA,
-  st_producto.OBSERV As st_producto_OBSERV,
-  st_producto.PESMIN As st_producto_PESMIN,
-  st_producto.PESMAX As st_producto_PESMAX,
-  st_producto.PREPRD As st_producto_PREPRD,
-  st_producto.PREREF As st_producto_PREREF,
-  st_producto.PREREP As st_producto_PREREP,
-  st_producto.PREUCO As st_producto_PREUCO,
-  st_producto.PNUEVO As st_producto_PNUEVO,
-  st_producto.PTOPED As st_producto_PTOPED,
-  st_producto.STKMAX As st_producto_STKMAX,
-  st_producto.STKMIN As st_producto_STKMIN,
-  st_producto.MODCPC As st_producto_MODCPC,
-  st_producto.TIPCPC As st_producto_TIPCPC,
-  st_producto.CODCPC As st_producto_CODCPC,
-  st_producto.CODCPT As st_producto_CODCPT,
-  st_producto.TIPCPT As st_producto_TIPCPT,
-  st_producto.MODCPT As st_producto_MODCPT,
-  st_producto.MONPRD As st_producto_MONPRD,
-  st_producto.MONREF As st_producto_MONREF,
-  st_producto.MONREP As st_producto_MONREP,
-  st_producto.MONUCO As st_producto_MONUCO,
-  st_producto.CODBAR As st_producto_CODBAR,
-
-  st_producto.UNIPES As st_producto_UNIPES,
-  gr_concepto.DESCRP As gr_concepto_DESCRP,
+  st_producto.TIPOPRODUCTO As st_producto_TIPPRO,
+  st_tipo_producto.DESCRIPCION As st_tipo_producto_DESCRP,
+  st_producto.RUBRO1 As st_producto_RUBR01,
+  st_rubro01_A.DESCRIPCION As st_rubro01_A_DESCRP,
+  st_producto.RUBRO2 As st_producto_RUBR02,
+  st_rubro02.DESCRIPCION As st_rubro02_DESCRP,
+  st_producto.GESTIONASTOCK As st_producto_STOCKS,
+  st_producto.CODIGODEBARRA As st_producto_CODBAR,
+ 
   EMPRESA.*
  
 From
-  st_tipo_producto st_tipo_producto Inner Join
-  st_producto st_producto On st_tipo_producto.TIPPRO = st_producto.TIPPRO
+  st_tipoproducto st_tipo_producto Inner Join
+  st_producto st_producto On st_tipo_producto.CODIGO= st_producto.TIPOPRODUCTO
   Inner Join
-  st_rubro01 st_rubro01_A On st_producto.TIPPRO = st_rubro01_A.TIPPRO And
-    st_producto.RUBR01 = st_rubro01_A.CODIGO Inner Join
-  st_rubro02 st_rubro02 On st_producto.RUBR02 = st_rubro02.CODIGO And
-    st_producto.TIPPRO = st_rubro02.TIPPRO Inner Join
-  gr_concepto gr_concepto On st_producto.CODCPT = gr_concepto.CODIGO And
-    gr_concepto.MODULO = st_producto.MODCPT And gr_concepto.TIPCPT =
-    st_producto.TIPCPT,
+  st_rubro1 st_rubro01_A On st_producto.TIPOPRODUCTO = st_rubro01_A.TIPOPRODUCTO And
+    st_producto.RUBRO1 = st_rubro01_A.CODIGO Inner Join
+  st_rubro2 st_rubro02 On st_producto.RUBRO2 = st_rubro02.CODIGO And
+    st_producto.TIPOPRODUCTO = st_rubro02.TIPOPRODUCTO,
   ad_empresa EMPRESA]]>
 	</queryString>
 	<field name="st_producto_CODIGO" class="java.lang.String"/>
@@ -170,82 +139,57 @@ From
 	<field name="st_producto_RUBR02" class="java.lang.String"/>
 	<field name="st_rubro02_DESCRP" class="java.lang.String"/>
 	<field name="st_producto_STOCKS" class="java.lang.String"/>
-	<field name="st_producto_BIEUSO" class="java.lang.String"/>
-	<field name="st_producto_IMPCNT" class="java.lang.String"/>
-	<field name="st_producto_CUENVT" class="java.lang.String"/>
-	<field name="st_producto_IMGCHI" class="java.lang.String"/>
-	<field name="st_producto_IMGGRA" class="java.lang.String"/>
-	<field name="st_producto_OBSERV" class="java.lang.String"/>
-	<field name="st_producto_PESMIN" class="java.math.BigDecimal"/>
-	<field name="st_producto_PESMAX" class="java.math.BigDecimal"/>
-	<field name="st_producto_PREPRD" class="java.math.BigDecimal"/>
-	<field name="st_producto_PREREF" class="java.math.BigDecimal"/>
-	<field name="st_producto_PREREP" class="java.math.BigDecimal"/>
-	<field name="st_producto_PREUCO" class="java.math.BigDecimal"/>
-	<field name="st_producto_PNUEVO" class="java.lang.String"/>
-	<field name="st_producto_PTOPED" class="java.math.BigDecimal"/>
-	<field name="st_producto_STKMAX" class="java.math.BigDecimal"/>
-	<field name="st_producto_STKMIN" class="java.math.BigDecimal"/>
-	<field name="st_producto_MODCPC" class="java.lang.String"/>
-	<field name="st_producto_TIPCPC" class="java.lang.String"/>
-	<field name="st_producto_CODCPC" class="java.lang.String"/>
-	<field name="st_producto_CODCPT" class="java.lang.String"/>
-	<field name="st_producto_TIPCPT" class="java.lang.String"/>
-	<field name="st_producto_MODCPT" class="java.lang.String"/>
-	<field name="st_producto_MONPRD" class="java.lang.String"/>
-	<field name="st_producto_MONREF" class="java.lang.String"/>
-	<field name="st_producto_MONREP" class="java.lang.String"/>
-	<field name="st_producto_MONUCO" class="java.lang.String"/>
 	<field name="st_producto_CODBAR" class="java.lang.String"/>
-	<field name="st_producto_UNIPES" class="java.lang.String"/>
-	<field name="gr_concepto_DESCRP" class="java.lang.String"/>
 	<field name="CODIGO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[Código]]></fieldDescription>
 	</field>
 	<field name="RAZON_SOCIAL" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[Razón Social]]></fieldDescription>
 	</field>
 	<field name="NOMBRE_FANTASIA" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="CIUDAD" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="CONDICION_IVA" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="CUIT" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="DIRECCION" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[Nombre Fantasía]]></fieldDescription>
 	</field>
 	<field name="EMAIL" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="FAX" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="INICIO_ACTIVIDADES" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="LOGO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="NRO_IB" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="IMP_MUNIC" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="PAIS" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="PROVINCIA" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[Email]]></fieldDescription>
 	</field>
 	<field name="TELEFONO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[Telénofo]]></fieldDescription>
+	</field>
+	<field name="FAX" class="java.lang.String">
+		<fieldDescription><![CDATA[Fax]]></fieldDescription>
+	</field>
+	<field name="CONDICION_IVA" class="java.lang.String">
+		<fieldDescription><![CDATA[Condición de IVA]]></fieldDescription>
+	</field>
+	<field name="CUIT" class="java.lang.String">
+		<fieldDescription><![CDATA[Cuit]]></fieldDescription>
+	</field>
+	<field name="INICIO_ACTIVIDADES" class="java.lang.String">
+		<fieldDescription><![CDATA[Inicio de Actividades]]></fieldDescription>
+	</field>
+	<field name="NRO_IB" class="java.lang.String">
+		<fieldDescription><![CDATA[Nro Ingresos Brutos]]></fieldDescription>
+	</field>
+	<field name="NRO_AG" class="java.lang.String">
+		<fieldDescription><![CDATA[Nro Agente Retención]]></fieldDescription>
+	</field>
+	<field name="IMP_MUNIC" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuesto Municipal]]></fieldDescription>
+	</field>
+	<field name="DIRECCION" class="java.lang.String">
+		<fieldDescription><![CDATA[Dirección]]></fieldDescription>
+	</field>
+	<field name="CIUDAD" class="java.lang.String">
+		<fieldDescription><![CDATA[Ciudad]]></fieldDescription>
+	</field>
+	<field name="PROVINCIA" class="java.lang.String">
+		<fieldDescription><![CDATA[Provincia]]></fieldDescription>
+	</field>
+	<field name="PAIS" class="java.lang.String">
+		<fieldDescription><![CDATA[País]]></fieldDescription>
+	</field>
+	<field name="LOGO" class="java.lang.String">
+		<fieldDescription><![CDATA[Path Logo]]></fieldDescription>
 	</field>
 	<group name="TIPPRO">
 		<groupExpression><![CDATA[$F{st_producto_TIPPRO}]]></groupExpression>
@@ -306,13 +250,6 @@ From
 						<font size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Sub Rubro]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="504" y="15" width="25" height="13" uuid="fee446bd-a5e9-485b-80e6-df294aed176f"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Mon.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="530" y="15" width="25" height="13" uuid="bdbaf5e7-3d0f-4753-bba6-87e91643441f"/>
@@ -411,13 +348,6 @@ From
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{st_producto_UNIMED}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="505" y="0" width="25" height="12" uuid="e821dff4-3fae-44ad-896c-bb68a39f92cc"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{st_producto_MONREF}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="530" y="0" width="25" height="12" uuid="fbb65885-21e8-4d5c-97db-15901df2eb0a"/>

@@ -283,7 +283,8 @@ public class PrincipalBean extends GenericBean implements Serializable {
 
             DefaultSubMenu subMenu = new DefaultSubMenu(mp.getNombre());
             subMenu.setId("Item" + mp.getCodigo());
-            subMenu.setIcon("fa " + mp.getIcono());
+            subMenu.setIcon(mp.getIcono());
+            
             generarArbol(usuario, subMenu, mp.getMenuItem());
 
             if (subMenu.getElementsCount() > 0) {
@@ -319,7 +320,7 @@ public class PrincipalBean extends GenericBean implements Serializable {
                 item.setUrl(m.getUrlCompleta());
                 item.setTarget("_blank");
                 item.setAjax(false);
-                item.setIcon("fa " + m.getIcono());
+                item.setIcon(m.getIcono());                
                 item.setOncomplete("mostrarAlerta('" + m.getCodigo() + "')");
 //                item.setCommand("#{principalBean.probar}");
 //                item.setUpdate(":formulario");
@@ -330,7 +331,7 @@ public class PrincipalBean extends GenericBean implements Serializable {
 //                System.out.println("\tMenú: " +m.getNombre());
                 DefaultSubMenu subMenu = new DefaultSubMenu(m.getNombre());
                 subMenu.setId("Item" + m.getCodigo());
-                subMenu.setIcon("fa " + m.getIcono());
+                subMenu.setIcon(m.getIcono());
                 generarArbol(usuario, subMenu, m.getMenuItem());
 
                 if (subMenu.getElementsCount() > 0) {

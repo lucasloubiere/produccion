@@ -87,6 +87,7 @@ public class ReporteService extends InformeBase implements Serializable {
     public void cargarParametros() throws ExcepcionGeneralSistema {
 
         reporte = reporteRN.getReporte(codigoReporte);
+        
         parameters.put("TIPMOV", "");
         parameters.put("INCIMP", "N");
         parameters.put("TIPPRO", "");

@@ -49,53 +49,23 @@
         </ui:insert>
     </h:head>
 
-    <h:body>
+    <h:body styleClass="main-body">
 
         <p:tooltip  />
+        <div class="layout-wrapper">
 
-        <h:form id="formulario" prependId="false">
+            <ui:include src="./topbar.xhtml" />
 
-            <div class="ui-g ui-fluid">
-                <div class="ui-g-12 ui-md-12">
-                    <div class="ui-g">
-                        <div class="ui-g-4" >
-                            <h:graphicImage value="/resources/image/logo.png" style="width: 200px;" title="Logo" />
-                        </div>
-                        <div class="ui-g-8 " >
-                            
-                            <span class="pull-right">
-                                
-                                <p:ajaxStatus >
-                                    <f:facet name="start">
-                                        <i class="fa fa-circle-o-notch fa-spin ajax-loader fa-2x" aria-hidden="true"></i>
-                                    </f:facet>
-
-                                    <f:facet name="complete">
-                                        <h:outputText value="" />
-                                    </f:facet>
-                                </p:ajaxStatus>
-                            </span>
-
-
-
-
-                        </div>
-                    </div>
+            <div class="layout-main" style="margin-left: 0px;">
+                <div class="layout-main-content ui-fluid">
+                    <h:form id="formulario" prependId="false">
+                        <ui:insert name="menu" />  
+                        <div class="EmptyBox5" />
+                        <ui:insert name="contenido" />                                        
+                    </h:form>
                 </div>
-
-                <div class="ui-g-12 ui-md-12 " style="padding-left: 10px; padding-right: 10px;" >                
-                    <ui:insert name="menu" >                        
-                    </ui:insert>
-                </div>
-                <div class="ui-g-12 ui-md-12" style="padding-top: 1px; padding-left: 10px; padding-right: 10px;">
-
-                    <ui:insert name="contenido" >
-                    </ui:insert>
-                </div>            
-
-
-            </div>    
-        </h:form>
+            </div>
+        </div>
 
         <div class="ui-fluid">
             <ui:insert name="dialogos" >

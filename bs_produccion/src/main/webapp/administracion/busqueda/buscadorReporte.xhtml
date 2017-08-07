@@ -42,15 +42,15 @@
                 <p:ajax event="rowSelect" listener="#{reporteBean.onSelect}" update="@form" 
                         oncomplete="PF('dlgReporte').hide(), procesarReporte()" />
 
-                <p:column headerText="Nombre" sortBy="#{i.nombre}"                              >
+                <p:column headerText="Nombre" sortBy="#{i.nombre}" width="250"   >
                     <h:outputText value="#{i.nombre}" />
                 </p:column>
                 
-                <p:column headerText="Grupo" sortBy="#{i.grupo}"                              >
+                <p:column headerText="Grupo" sortBy="#{i.grupo}"  width="120" >
                     <h:outputText value="#{i.grupo}" />
                 </p:column>
 
-                <p:column headerText="Módulo" sortBy="#{i.modulo.descripcion}" >
+                <p:column headerText="Módulo" sortBy="#{i.modulo.descripcion}" width="60" >
                     <h:outputText value="#{i.modulo.descripcion}" />
                 </p:column>
                 
@@ -58,7 +58,7 @@
                     <h:outputText value="#{i.path}" />
                 </p:column>
                                 
-                <p:column headerText="Origen" >
+                <p:column headerText="Origen" width="60" >
                     <h:outputText value="Sistema" rendered="#{i.origen eq 'SIS'}" />
                     <h:outputText value="Usuario" rendered="#{i.origen eq 'USR'}" />
                 </p:column>

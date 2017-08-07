@@ -181,6 +181,14 @@
                                 <p:inputText />
                                 <i class="fa fa-search"></i>
                                 <label>Buscar</label>
+                                
+                                <p:commandButton id="btnBuscar" icon="fa fa-search"   
+                                                 actionListener="#{principalBean.buscarMenuItem}"
+                                                 process="@this,txtBusqueda"
+                                                 update="dgResultado,message,messageg" />
+
+                                <p:defaultCommand target="btnBuscar" />
+
                             </span>
 
                         </h:form>
