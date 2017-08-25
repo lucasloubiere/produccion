@@ -19,6 +19,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -94,9 +95,18 @@ public class TestWS {
                     ip.setProducto(producto);
                     ip.setUnidadMedida(producto.getUnidadDeMedida());
                     ip.setDeposito(ms.getDeposito());
+                    ip.setAtributo1("VICENTIN");
+                    ip.setAtributo2("2017");
+                    
+                    
+                    //System.err.println(new BigDecimal(mb.getNetoNeto()));
+                    
+                    ip.setCantidad(BigDecimal.ONE);
+                    ip.setTodoOk(true);            
 
                     //Cargarmos un nuevo item en blanco
                     ms.getItemsProducto().add(movimientoStockRN.nuevoItemProducto(ms));
+                    
 
                     try {
                         movimientoStockRN.guardar(ms);
