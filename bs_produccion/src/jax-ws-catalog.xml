@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://192.168.15.55:8080/sgc/rest/secure/detalleBalanza/fecha/02012016/codigoPlanta/0002/empresa/1" uri="wsdl/192.168.15.55_8080/sgc/rest/secure/detallebalanza/fecha/02012016/codigoplanta/0002/empresa/1"/>
+</catalog>

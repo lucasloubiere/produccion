@@ -189,6 +189,7 @@ public class Formulario implements Serializable {
         this.tipoNumeracion = "A";
         this.modificaFecha = "N";
         this.modificaNumeracion = "N";
+        this.nivelImpresion = 1;
         this.auditoria = new Auditoria();
     }
 

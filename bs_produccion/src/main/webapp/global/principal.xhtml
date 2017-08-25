@@ -7,10 +7,8 @@
       xmlns:pa="http://primefaces.org/barcelona" >
 
     <f:metadata>        
-        <ui:insert name="meta-data">              
-            <!--
-            <f:event type="preRenderView" listener="#{usuarioSessionBean.checkLogin()}"/>                     
-            -->
+        <ui:insert name="meta-data">            
+            <f:event type="preRenderView" listener="#{usuarioSessionBean.checkLogin()}"/>                                 
         </ui:insert>
     </f:metadata>
 
@@ -90,6 +88,10 @@
                     <h:form id="formDashboard">
 
                         <p:fragment id="dgResultado" >
+                            
+                            <p:commandButton value="Test WS" actionListener="#{testWS.test()}"
+                                             process="@this"
+                                             update="message" />
 
                             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="1000" />
 

@@ -62,7 +62,7 @@
         <ui:define name="contenido" >
 
             <p:remoteCommand name="procesarFormularioStock" process="@this" update="@form" />
-            <p:remoteCommand name="procesarReporte"  process="@this" update="@form" actionListener="#{formularioStockBean.procesarReporte()}" />                        
+            <p:remoteCommand name="procesarReporte"  process="@this" update="txtreporte" actionListener="#{formularioStockBean.procesarReporte()}" />                        
 
             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
 
@@ -110,7 +110,7 @@
                                          oncomplete="PF('dlgReporte').show()"                                          
                                          process="@this"  />
                     </h:panelGroup>   
-                    <p:inputText value="#{formularioStockBean.formulario.reporte.nombre}"   />
+                    <p:inputText id="txtreporte" value="#{formularioStockBean.formulario.reporte.nombre}"   />
 
                     <h:outputText value="Último número" />                                                  
                     <p:inputText value="#{formularioStockBean.formulario.ultimoNumero}"   />
