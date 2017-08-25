@@ -20,7 +20,6 @@ import javax.persistence.Query;
 @Stateless
 public class DepositoDAO extends BaseDAO {
 
-
     public List<Deposito> getLista() {
         return getLista(Deposito.class, true, -1, -1);
     }
@@ -28,8 +27,7 @@ public class DepositoDAO extends BaseDAO {
     public List<Deposito> getLista(int maxResults, int firstResult) {
         return getLista(Deposito.class, false, maxResults, firstResult);
     }
-    
-    
+
     public Deposito getDeposito(String codigo) {
         return getObjeto(Deposito.class, codigo);
     }
@@ -69,36 +67,32 @@ public class DepositoDAO extends BaseDAO {
     public Deposito getDepositoByDescripcion(String descripcion) {
         return getObjeto(Deposito.class, "descripcion", descripcion);
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 
-    public List<Deposito> getLista(boolean mostrarDebaja) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Deposito getDepositoByCodigoReferencia(String codigoReferencia) {
+        return getObjeto(Deposito.class, "codigoReferencia", codigoReferencia);
     }
-  
-   public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
+
+    public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
         try {
-            
+
             String sQuery = "SELECT e FROM Deposito e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
-                    + (mostrarDeBaja ? " ": " AND e.auditoria.debaja = 'N' ")
+                    + (mostrarDeBaja ? " " : " AND e.auditoria.debaja = 'N' ")
                     + " ORDER BY e.codigo";
-            
-            Query q = em.createQuery(sQuery);            
-            q.setParameter("codigo", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
-            q.setParameter("descripcion", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
-            
-            if(cantMax>0){
+
+            Query q = em.createQuery(sQuery);
+            q.setParameter("codigo", "%" + txtBusqueda.replaceAll(" ", "%") + "%");
+            q.setParameter("descripcion", "%" + txtBusqueda.replaceAll(" ", "%") + "%");
+
+            if (cantMax > 0) {
                 q.setMaxResults(cantMax);
             }
-          
-            return q.getResultList();            
-            
+
+            return q.getResultList();
+
         } catch (Exception e) {
             log.log(Level.SEVERE, "getDepositoByBusqueda", e.getCause());
             return new ArrayList<Deposito>();
-        }  
-   }
+        }
+    }
 }
- 
-    

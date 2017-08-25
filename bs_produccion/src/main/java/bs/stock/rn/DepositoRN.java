@@ -21,52 +21,51 @@ import javax.ejb.TransactionAttributeType;
 @Stateless
 public class DepositoRN {
 
-     @EJB private DepositoDAO depositoDAO;
-     
-      @TransactionAttribute(TransactionAttributeType.REQUIRED)     
-   public void guardar(Deposito deposito, boolean esNuevo) throws Exception{
-        
-       if(esNuevo){
-           
-           if(depositoDAO.getObjeto(Deposito.class, deposito.getCodigo())!=null){
-               throw new ExcepcionGeneralSistema("Ya existe un depósito con el código"+deposito.getCodigo());
-           }
-           depositoDAO.crear(deposito);
-            
-        }else{               
+    @EJB
+    private DepositoDAO depositoDAO;
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void guardar(Deposito deposito, boolean esNuevo) throws Exception {
+
+        if (esNuevo) {
+
+            if (depositoDAO.getObjeto(Deposito.class, deposito.getCodigo()) != null) {
+                throw new ExcepcionGeneralSistema("Ya existe un depósito con el código" + deposito.getCodigo());
+            }
+            depositoDAO.crear(deposito);
+
+        } else {
             depositoDAO.editar(deposito);
-        }        
-   }
-    
-   public void eliminar(Deposito deposito) throws Exception {
-        
-        depositoDAO.eliminar(deposito);
-        
-    }
-   
-   public List<Deposito> getLista(boolean mostrarDebaja) {
-        
-        return depositoDAO.getLista(mostrarDebaja);
-        
+        }
     }
 
-    public Deposito getDeposito(String id){
+    public void eliminar(Deposito deposito) throws Exception {
+
+        depositoDAO.eliminar(deposito);
+
+    }
+
+    public Deposito getDeposito(String id) {
         return depositoDAO.getDeposito(id);
     }
 
+    public Deposito getDepositoByCodigoReferencia(String codigoReferencia) {
+        return depositoDAO.getDepositoByCodigoReferencia(codigoReferencia);
+    }
+
     public List<Deposito> getLista() {
-       return depositoDAO.getLista();
+        return depositoDAO.getLista();
     }
 
     public List<Deposito> getLista(int maxResults, int firstResult) {
         return depositoDAO.getLista(maxResults, firstResult);
     }
 
-    public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja,int cantMax) {
-        
-        return depositoDAO.getDepositoByBusqueda(txtBusqueda,mostrarDeBaja,cantMax);
+    public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
+
+        return depositoDAO.getDepositoByBusqueda(txtBusqueda, mostrarDeBaja, cantMax);
     }
-    
+
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 }
