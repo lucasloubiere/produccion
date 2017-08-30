@@ -17,7 +17,7 @@ public class MovimientoBalanza {
     private Integer nroIngreso;    
     private String nroComprobante;    
     private String operacion;    
-    private Integer netoNeto;    
+    private String netoNeto;    
     private String productoCodigo;    
     private String productoDescripcion;    
     private Integer plataformaId;    
@@ -50,13 +50,15 @@ public class MovimientoBalanza {
         this.operacion = operacion;
     }
 
-    public Integer getNetoNeto() {
+    public String getNetoNeto() {
         return netoNeto;
     }
 
-    public void setNetoNeto(Integer netoNeto) {
+    public void setNetoNeto(String netoNeto) {
         this.netoNeto = netoNeto;
     }
+
+    
 
     public String getProductoCodigo() {
         return productoCodigo;

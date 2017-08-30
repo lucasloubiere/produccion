@@ -89,10 +89,7 @@
 
                         <p:fragment id="dgResultado" >
                             
-                            <p:commandButton value="Test WS" actionListener="#{testWS.test()}"
-                                             process="@this"
-                                             update="@form" />
-
+                            
                             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="1000" />
 
                             <p:dataList value="#{principalBean.resultadoBusqueda}" var="r" 

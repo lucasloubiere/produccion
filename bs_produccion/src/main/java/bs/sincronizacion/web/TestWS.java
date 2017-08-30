@@ -20,6 +20,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -32,9 +33,11 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class TestWS {
 
+    private Date fecha;
+    private String empresa;
+
     @EJB
     private MovimientoStockRN movimientoStockRN;
-
     @EJB
     private DepositoRN depositoRN;
     @EJB
@@ -49,12 +52,14 @@ public class TestWS {
     public void test() {
 
         try {
+            
+            int cantMovimientosProcesados = 0;
 
             Client client = Client.create();
 
             client.addFilter(new HTTPBasicAuthFilter("sistemastock", "n8a49s6v17e416f4c"));
 
-            WebResource webResource = client.resource("http://192.168.15.55:8080/sgc/rest/secure/detalleBalanza/fecha/02012016/codigoPlanta/0002/empresa/1");
+            WebResource webResource = client.resource("http://192.168.15.55:8080/sgc/rest/secure/detalleBalanza/fecha/" + JsfUtil.getFechaWS(fecha) + "/codigoPlanta/0002/empresa/" + empresa);
 
             ClientResponse response = webResource.accept("application/json")
                     .get(ClientResponse.class);
@@ -70,62 +75,92 @@ public class TestWS {
 
                 for (MovimientoBalanza mb : datos.getData()) {
 
-                    MovimientoStock ms = null;
-                    Deposito deposito = depositoRN.getDepositoByCodigoReferencia(String.valueOf(mb.getPlataformaId()));
-                    Producto producto = productoRN.getProducto(mb.getProductoCodigo());
+                    if (mb.getOperacion() != null && !mb.getOperacion().isEmpty()) {
 
-                    if (mb.getOperacion().equals("CARGA")) {
+                        MovimientoStock ms = null;
+                        Deposito deposito = depositoRN.getDepositoByCodigoReferencia(String.valueOf(mb.getPlataformaId()));
+                        Producto producto = productoRN.getProducto(mb.getProductoCodigo());
 
-                        ms = movimientoStockRN.nuevoMovimiento("ST", "INGB", "0001");
+                        if (mb.getOperacion().equals("CARGA")) {
+
+                            ms = movimientoStockRN.nuevoMovimiento("ST", "INGB", "0001");
+                        }
+
+                        if (mb.getOperacion().equals("DESCARGA")) {
+                            ms = movimientoStockRN.nuevoMovimiento("ST", "EGRB", "0001");
+                        }
+
+                        if (ms == null || deposito == null || producto == null) {
+                            continue;
+                        }
+
+                        ms.setNumeroFormulario(Integer.valueOf(mb.getNroComprobante()));
+                        ms.setNoSincronizaNumeroFormulario(true);
+                        ms.setDeposito(deposito);
+
+                        ItemProductoStock ip = ms.getItemsProducto().get(ms.getItemsProducto().size() - 1);
+
+                        ip.setProducto(producto);
+                        ip.setUnidadMedida(producto.getUnidadDeMedida());
+                        ip.setDeposito(ms.getDeposito());
+
+                        if (empresa.equals("1")) {
+                            ip.setAtributo1("VICENTIN");
+                        }
+
+                        if (empresa.equals("2")) {
+                            ip.setAtributo1("ALGODONERA");
+                        }
+
+                        if (empresa.equals("99")) {
+                            ip.setAtributo1("BUYANOR");
+                        }
+
+                        ip.setAtributo2("N/D");
+
+                        ip.setCantidad(new BigDecimal(mb.getNetoNeto()));
+                        ip.setTodoOk(true);
+
+                        //Cargarmos un nuevo item en blanco
+                        ms.getItemsProducto().add(movimientoStockRN.nuevoItemProducto(ms));
+
+                        try {
+                            movimientoStockRN.guardar(ms);
+                            cantMovimientosProcesados++;
+                            System.out.println("El documento " + ms.getComprobante().getDescripcion() + "-" + ms.getNumeroFormulario() + " se guardó correctamente");
+
+                        } catch (Exception ex) {
+                            System.err.println("Error guardando comprobante " + ex);
+
+                        }
                     }
-
-                    if (mb.getOperacion().equals("DESCARGA")) {
-                        ms = movimientoStockRN.nuevoMovimiento("ST", "EGRB", "0001");
-                    }
-
-                    if (ms == null || deposito == null || producto == null) {
-                        continue;
-                    }
-
-                    ms.setNumeroFormulario(Integer.valueOf(mb.getNroComprobante()));
-                    ms.setDeposito(deposito);
-
-                    ItemProductoStock ip = ms.getItemsProducto().get(ms.getItemsProducto().size() - 1);
-
-                    ip.setProducto(producto);
-                    ip.setUnidadMedida(producto.getUnidadDeMedida());
-                    ip.setDeposito(ms.getDeposito());
-                    ip.setAtributo1("VICENTIN");
-                    ip.setAtributo2("2017");
-                    
-                    
-                    //System.err.println(new BigDecimal(mb.getNetoNeto()));
-                    
-                    ip.setCantidad(BigDecimal.ONE);
-                    ip.setTodoOk(true);            
-
-                    //Cargarmos un nuevo item en blanco
-                    ms.getItemsProducto().add(movimientoStockRN.nuevoItemProducto(ms));
-                    
-
-                    try {
-                        movimientoStockRN.guardar(ms);
-                        System.out.println("El documento " + ms.getComprobante().getDescripcion() + "-" + ms.getNumeroFormulario() + " se guardó correctamente");
-
-                    } catch (Exception ex) {
-                        System.err.println("Error guardando comprobante " + ex);
-
-                    }
-
                 }
             }
+
+            JsfUtil.addInfoMessage("Proceso finalizado. Se procesaron " + cantMovimientosProcesados + " movmientos");
 
         } catch (Exception e) {
 
             e.printStackTrace();
+            JsfUtil.addErrorMessage("Ha ocurrido un error en la sincronización " + e);
         }
 
-        JsfUtil.addInfoMessage("Proceso finalizado");
-
     }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
+    }
+
 }

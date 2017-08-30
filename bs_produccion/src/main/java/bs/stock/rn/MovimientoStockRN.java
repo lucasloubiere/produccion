@@ -59,9 +59,12 @@ public class MovimientoStockRN {
         controlComprobante(m, false);
         generarStock(m);
 
-        Integer ultimoNumero = formularioRN.tomarProximoNumero(m.getFormulario());
-        m.setNumeroFormulario(ultimoNumero);
+        if (!m.isNoSincronizaNumeroFormulario() && m.getNumeroFormulario()>0) {
 
+            Integer ultimoNumero = formularioRN.tomarProximoNumero(m.getFormulario());
+            m.setNumeroFormulario(ultimoNumero);
+
+        }
         inventarioDAO.crear(m);
         m.setPersistido(true);
     }
@@ -374,9 +377,9 @@ public class MovimientoStockRN {
 
             if (m.getTipoMovimiento().equals("E")) {
 
-                nItem.setStocks(nItem.getCantidad().negate());                
+                nItem.setStocks(nItem.getCantidad().negate());
                 Stock s = new Stock(nItem);
-                
+
                 if (!stockRN.isProductoDisponible(s)) {
 
                     String mensaje = "Stock insuficiente. Hay " + s.getStockDisponible() + " " + s.getProducto().getUnidadDeMedida().getCodigo()
@@ -394,13 +397,13 @@ public class MovimientoStockRN {
             }
 
             if (m.getTipoMovimiento().equals("T")) {
-                
-                nItem.setStocks(nItem.getCantidad().negate());                
-                Stock s = new Stock(nItem);                                
-                
+
+                nItem.setStocks(nItem.getCantidad().negate());
+                Stock s = new Stock(nItem);
+
                 s.setDeposi(m.getDepositoTransferencia().getCodigo());
                 s.setDeposito(m.getDepositoTransferencia());
-                
+
                 if (!stockRN.isProductoDisponible(s)) {
 
                     String mensaje = "Stock insuficiente. Hay " + s.getStockDisponible() + " " + s.getProducto().getUnidadDeMedida().getCodigo()

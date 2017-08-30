@@ -127,6 +127,9 @@ public class MovimientoStock implements Serializable {
 
     @Transient
     private boolean persistido;
+    @Transient
+    private boolean noSincronizaNumeroFormulario;
+
     
     @Transient
     private String atributo1;
@@ -146,12 +149,14 @@ public class MovimientoStock implements Serializable {
     public MovimientoStock() {
         this.auditoria = new Auditoria();
         this.esAnulacion = "N";
+        this.noSincronizaNumeroFormulario = false;
     }
 
     public MovimientoStock(Integer id) {
         this.id = id;
         this.auditoria = new Auditoria();
         this.esAnulacion = "N";
+        this.noSincronizaNumeroFormulario = false;
     }
 
     public MovimientoStock(Integer id, int numero, Date fecha, String observaciones, String debaja) {
@@ -161,6 +166,7 @@ public class MovimientoStock implements Serializable {
         this.observaciones = observaciones;
         this.auditoria = new Auditoria();
         this.esAnulacion = "N";
+        this.noSincronizaNumeroFormulario = false;
     }
 
     public Integer getId() {
@@ -361,6 +367,14 @@ public class MovimientoStock implements Serializable {
 
     public void setCartaPorte(String cartaPorte) {
         this.cartaPorte = cartaPorte;
+    }
+
+    public boolean isNoSincronizaNumeroFormulario() {
+        return noSincronizaNumeroFormulario;
+    }
+
+    public void setNoSincronizaNumeroFormulario(boolean noSincronizaNumeroFormulario) {
+        this.noSincronizaNumeroFormulario = noSincronizaNumeroFormulario;
     }
     
     

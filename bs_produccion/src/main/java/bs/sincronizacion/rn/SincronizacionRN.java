@@ -11,6 +11,7 @@ import bs.sincronizacion.modelo.Sincronizacion;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -51,6 +52,11 @@ public class SincronizacionRN implements Serializable {
     public List<Sincronizacion> getListaByBusqueda(String txtBusqueda, boolean mostrarDebaja, int cantidadRegistros) {
 
         return sincronizacionDAO.getListaByBusqueda(txtBusqueda, mostrarDebaja, cantidadRegistros);
+    }
+    
+    @Schedule(second="*/10")
+    public void tareaProgramada(){
+        System.out.println("Lucas Dormilón ...Se ejecutó la tarea");
     }
     
 }

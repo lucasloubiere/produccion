@@ -260,6 +260,13 @@ public class JsfUtil implements Serializable{
     
     }
     
+    public static String getFechaWS(Date fechaMovimientoDesde) {
+        
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("ddMMyyyy");        
+        return sdf.format(fechaMovimientoDesde);
+    
+    }
+    
     
     public static Map<String,String> getMeses(){
     
