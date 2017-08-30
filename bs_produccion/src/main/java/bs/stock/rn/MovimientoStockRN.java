@@ -727,4 +727,18 @@ public class MovimientoStockRN {
         return inventarioDAO.getListaByBusqueda(filtro, cantidadRegistros);
     }
 
+    public boolean existeComprobante(MovimientoStock ms) {
+        
+        Map<String, String> filtro = inventarioDAO.getFiltro();
+        
+        filtro.put(" numeroFormulario = ", "'"+ms.getNumeroFormulario()+"'");
+        filtro.put(" formulario.codigo = ", "'"+ms.getFormulario().getCodigo()+"'");
+        filtro.put(" sucursal.codigo = ", "'"+ms.getSucursal().getCodigo()+"'");
+                
+        return (inventarioDAO.getObjeto(MovimientoStock.class, filtro)!=null);       
+        
+        
+    }
+
+
 }

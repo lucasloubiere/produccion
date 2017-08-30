@@ -201,7 +201,12 @@ public class BaseDAO implements Serializable {
 
         try {
             return (T) em.createQuery("SELECT o FROM " + entityClass.getSimpleName() + " o WHERE o." + nombreCampo + " ='" + valorCampo + "'").getSingleResult();
-        } catch (Exception e) {
+        
+        }catch (NoResultException e) {
+            
+            return null;
+        
+        }catch (Exception e) {
             System.err.println("No se puede obtener objeto " + entityClass.getSimpleName() + " - " + e.getMessage());
             System.err.println("Verificar parametros - Clase - nombre del campo - valor buscado");
             e.printStackTrace();
@@ -228,6 +233,10 @@ public class BaseDAO implements Serializable {
 
             return (T) em.createQuery(sQuery).getSingleResult();
 
+        }catch (NoResultException e) {
+            
+            return null;
+        
         } catch (Exception e) {
             System.err.println("No se puede obtener objeto " + entityClass.getSimpleName() + " - " + e.getCause());
             System.err.println("Verificar parametros - Clase - nombre del campo - valor buscado");
