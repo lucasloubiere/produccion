@@ -175,7 +175,7 @@
 
                                     <p:column headerText="Stock" width="150" style="text-align: right;"  >
                                         <h:outputText value="#{a.stocks}"  >
-                                            <f:convertNumber pattern="####0" />
+                                            <f:convertNumber pattern="#,###,##0.00" />
                                         </h:outputText>
                                     </p:column>
 
@@ -188,7 +188,7 @@
 
                             <p:column headerText="Stock" width="20%" style="text-align: right;"  >
                                 <h:outputText value="#{i.stocks}"  >
-                                    <f:convertNumber pattern="####0" />
+                                    <f:convertNumber pattern="#,###,##0.00" />
                                 </h:outputText>                           
 
                             </p:column>

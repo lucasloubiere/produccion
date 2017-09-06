@@ -39,6 +39,7 @@ public class DepositoBean extends GenericBean implements Serializable{
     
     @PostConstruct
     public void init(){
+        cantidadRegistros = 0;
         txtBusqueda = "";
         mostrarDebaja = false;
         nuevo();

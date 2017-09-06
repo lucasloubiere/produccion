@@ -4,6 +4,7 @@
  */
 package bs.stock.rn;
 
+import bs.administracion.rn.ModuloRN;
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.modelo.Formulario;
 import bs.global.modelo.Sucursal;
@@ -46,6 +47,8 @@ public class MovimientoStockRN {
     private FormularioRN formularioRN;
     @EJB
     private SucursalRN sucursalRN;
+    @EJB
+    private ModuloRN moduloRN; 
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public synchronized void guardar(MovimientoStock m) throws Exception {
@@ -222,6 +225,13 @@ public class MovimientoStockRN {
         if (m.getId() != null) {
             throw new ExcepcionGeneralSistema("No es posible modificar un comprobante de stock");
         }
+        
+        
+//        Modulo modulo  = null;
+//        
+//        if (!m.getFechaMovimiento().after(modulo.getfechahabilitacionDesde) & !m.getFechaMovimiento().before(modulo.getfechahabilitacionHasta)){
+//            throw new ExcepcionGeneralSistema("La fecha del movimiento no está dentro del período habilitado");
+//        }
 
         if (!permiteVacio && m.getItemsProducto().isEmpty()) {
             throw new ExcepcionGeneralSistema("El detalle está vacío, no es posible guardar el comprobante de stock");

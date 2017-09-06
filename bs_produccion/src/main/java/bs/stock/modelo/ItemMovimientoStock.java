@@ -109,25 +109,24 @@ public abstract class ItemMovimientoStock implements Serializable {
 
     public ItemMovimientoStock() {
         
-        this.cantidad = BigDecimal.ZERO;
+//        this.cantidad = BigDecimal.ZERO;
         this.auditoria = new Auditoria();
     }
 
     public ItemMovimientoStock(Integer id) {
         
         this.id = id;
-        this.cantidad = BigDecimal.ZERO;
+//        this.cantidad = BigDecimal.ZERO;
         this.auditoria = new Auditoria();
     }
 
     public ItemMovimientoStock(Integer id, int idcab, String artcod, BigDecimal cantidad, String natri1, String natri2, String natri3) {
         
         this.id = id;
-        this.cantidad = cantidad;
+//        this.cantidad = cantidad;
         this.atributo1 = natri1;
         this.atributo2 = natri2;
-        this.atributo3 = natri3;
-        this.cantidad = BigDecimal.ZERO;
+        this.atributo3 = natri3;        
         this.auditoria = new Auditoria();
     }
 

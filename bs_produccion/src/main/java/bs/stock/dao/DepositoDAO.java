@@ -70,6 +70,11 @@ public class DepositoDAO extends BaseDAO {
 
     public Deposito getDepositoByCodigoReferencia(String codigoReferencia) {
         return getObjeto(Deposito.class, "codigoReferencia", codigoReferencia);
+
+    }
+
+    public Deposito getDepositoByCodigoReferencia2(String codigoReferencia) {
+        return getObjeto(Deposito.class, "codigoReferencia2", codigoReferencia);
     }
 
     public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
@@ -95,4 +100,5 @@ public class DepositoDAO extends BaseDAO {
             return new ArrayList<Deposito>();
         }
     }
+
 }

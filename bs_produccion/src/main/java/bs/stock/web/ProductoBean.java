@@ -60,10 +60,9 @@ public class ProductoBean extends GenericBean implements Serializable{
         super.iniciar();
                 
         tipos = tipoProductoRN.getLista(false);
-        if(!tipos.isEmpty()){
-            tipoProducto = tipos.get(0);
-        }               
-                                                 
+//        if(!tipos.isEmpty()){
+//            tipoProducto = tipos.get(0);
+//        }                                                              
         
         nuevo();        
         buscar();

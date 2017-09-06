@@ -7,12 +7,15 @@ package bs.administracion.modelo;
 
 import bs.global.modelo.Auditoria;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -28,6 +31,12 @@ public class Modulo implements Serializable {
     private String codigo;
     @Column(name = "DESCRIPCION", length = 60)
     private String descripcion;
+    @Column(name = "habDes")
+    @Temporal(TemporalType.DATE)
+    private Date fechahabilitacionDesde;
+    @Column(name = "habhAS")
+    @Temporal(TemporalType.DATE)
+    private Date fechahabilitacionHasta;
     
     @Embedded
     private Auditoria auditoria;
@@ -55,6 +64,24 @@ public class Modulo implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public Date getFechahabilitacionDesde() {
+        return fechahabilitacionDesde;
+    }
+
+    public void setFechahabilitacionDesde(Date fechahabilitacionDesde) {
+        this.fechahabilitacionDesde = fechahabilitacionDesde;
+    }
+
+    public Date getFechahabilitacionHasta() {
+        return fechahabilitacionHasta;
+    }
+
+    public void setFechahabilitacionHasta(Date fechahabilitacionHasta) {
+        this.fechahabilitacionHasta = fechahabilitacionHasta;
+    }
+    
+    
     
     public Auditoria getAuditoria() {
         return auditoria;
@@ -63,6 +90,7 @@ public class Modulo implements Serializable {
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
     }
+    
 
     @Override
     public int hashCode() {

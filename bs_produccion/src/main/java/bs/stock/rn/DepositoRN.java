@@ -52,7 +52,11 @@ public class DepositoRN {
     public Deposito getDepositoByCodigoReferencia(String codigoReferencia) {
         return depositoDAO.getDepositoByCodigoReferencia(codigoReferencia);
     }
-
+    
+    public Deposito getDepositoByCodigoReferencia2(String codigoReferencia) {
+        return depositoDAO.getDepositoByCodigoReferencia2(codigoReferencia);
+    }
+    
     public List<Deposito> getLista() {
         return depositoDAO.getLista();
     }

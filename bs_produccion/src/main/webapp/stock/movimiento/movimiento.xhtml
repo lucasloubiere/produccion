@@ -357,12 +357,12 @@
 
                             <p:inputText  value="#{i.cantidad}" style="text-align: right;"
                                           rendered="#{empty movimientoStockBean.m.id}">                                
-                                <f:convertNumber pattern="#{i.producto.unidadDeMedida.formato}" />
+                                <f:convertNumber pattern="#,###,##0.00" />
                             </p:inputText>                        
 
                             <h:outputText value="#{i.cantidad}"   
                                           rendered="#{not empty movimientoStockBean.m.id}" >                            
-                                <f:convertNumber pattern="#{i.producto.unidadDeMedida.formato}" />
+                                <f:convertNumber pattern="#,###,##0.00" />
                             </h:outputText>
 
                         </p:column>

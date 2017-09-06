@@ -49,7 +49,10 @@ public class Deposito implements Serializable {
     
     @Column(name = "codref", length = 6)
     private String codigoReferencia;
-
+    
+     @Column(name = "codref2", length = 6)
+    private String codigoReferencia2;
+    
     public Deposito() {
         this.auditoria = new Auditoria();
     }
@@ -105,10 +108,15 @@ public class Deposito implements Serializable {
     public void setCodigoReferencia(String codigoReferencia) {
         this.codigoReferencia = codigoReferencia;
     }
-    
-    
 
-    
+    public String getCodigoReferencia2() {
+        return codigoReferencia2;
+    }
+
+    public void setCodigoReferencia2(String codigoReferencia2) {
+        this.codigoReferencia2 = codigoReferencia2;
+    }
+        
     @Override
     public int hashCode() {
         int hash = 0;

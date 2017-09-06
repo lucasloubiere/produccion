@@ -102,10 +102,20 @@ public class TestWS {
                             log += "No se encontró código de producto en comprobante " + mb.getNroComprobante() + " \n";
                             continue;
                         }
+                        
+                       Deposito deposito = null;
+                       
+                        if (empresa.equals("1")){ 
 
-                        Deposito deposito = depositoRN.getDepositoByCodigoReferencia(String.valueOf(mb.getPlataformaId()));
+                            deposito = depositoRN.getDepositoByCodigoReferencia(String.valueOf(mb.getPlataformaId()));
+                        }
+                        
+                        else if (empresa.equals("2")){
+                            deposito = depositoRN.getDepositoByCodigoReferencia2(String.valueOf(mb.getPlataformaId()));
+                        }
+                                                     
                         Producto producto = productoRN.getProducto(mb.getProductoCodigo());
-
+                        
                         if (ms == null) {
                             log += "No pudo crearse movimiento, codigo de operación vacío " + mb.getNroComprobante() + " \n";
                             continue;

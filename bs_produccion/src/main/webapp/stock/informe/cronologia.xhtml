@@ -196,20 +196,20 @@
 
                             <p:column headerText="Ingreso" style="text-align: right;"  >
                                 <h:outputText value="#{i.stocks}" rendered="#{i.stocks > 0 }" >
-                                    <f:convertNumber pattern="####0" />
+                                    <f:convertNumber pattern="#,###,##0.00" />
                                 </h:outputText>
                             </p:column>
 
                             <p:column headerText="Egreso"  style="text-align: right;" >
                                 <h:outputText value="#{i.stocks*(-1)}" rendered="#{0 > i.stocks }" >
-                                    <f:convertNumber pattern="####0" />
+                                    <f:convertNumber pattern="#,###,##0.00" />
                                 </h:outputText>
                             </p:column>
 
                             <p:column headerText="Saldo" style="text-align: right;"  >
 
                                 <h:outputText value="#{i.saldoInicial}" >
-                                    <f:convertNumber pattern="####0" />
+                                    <f:convertNumber pattern="#,###,##0.00" />
                                 </h:outputText>
 
                             </p:column>

@@ -5,12 +5,13 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
     
-    <application>
+    <!--<application>
        <locale-config>
             <default-locale>es_MX</default-locale>
        </locale-config>	   
      </application>
-     
+    -->
+
      <!--
      <component>
         <component-type>org.primefaces.component.OlymposMenu</component-type>
