@@ -85,11 +85,11 @@ public class TestWS {
 
                         MovimientoStock ms = null;
 
-                        if (mb.getOperacion().equals("CARGA")) {
+                        if (mb.getOperacion().equals("DESCARGA")) {
                             ms = movimientoStockRN.nuevoMovimiento("ST", "INGB", "0001");
                         }
 
-                        if (mb.getOperacion().equals("DESCARGA")) {
+                        if (mb.getOperacion().equals("CARGA")) {
                             ms = movimientoStockRN.nuevoMovimiento("ST", "EGRB", "0001");
                         }
 

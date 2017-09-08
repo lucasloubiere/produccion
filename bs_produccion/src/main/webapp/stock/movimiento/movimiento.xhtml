@@ -195,7 +195,7 @@
                     </h:outputText>                
                     <p:calendar value="#{movimientoStockBean.m.fechaMovimiento}" 
                                 rendered="#{movimientoStockBean.m.formulario.recuperacionFecha eq 'U'}"
-                                pattern="dd/MM/yyyy"   >
+                                pattern="dd/MM/yyyy" >
                         <p:ajax process="@this" event="dateSelect" />
                     </p:calendar>
 

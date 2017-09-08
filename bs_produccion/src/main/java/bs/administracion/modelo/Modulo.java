@@ -31,10 +31,10 @@ public class Modulo implements Serializable {
     private String codigo;
     @Column(name = "DESCRIPCION", length = 60)
     private String descripcion;
-    @Column(name = "habDes")
+    @Column(name = "habDesde")
     @Temporal(TemporalType.DATE)
     private Date fechahabilitacionDesde;
-    @Column(name = "habhAS")
+    @Column(name = "habHasta")
     @Temporal(TemporalType.DATE)
     private Date fechahabilitacionHasta;
     

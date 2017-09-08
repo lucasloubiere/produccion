@@ -197,7 +197,7 @@ public class MovimientoStockRN {
 
 //        nItem.setNroitm(m.getItemsProducto().size()+1);
 //        nItem.setSucursal(m.getSucursal().getCodigo());
-//        nItem.setFechaMovimiento(m.getFechaMovimiento());
+//          nItem.setFechaMovimiento(m.getFechaMovimiento());
 //        nItem.setMonedaSecundaria(m.getMonedaSecundaria());
 //        nItem.setCotizacion(m.getCotizacion());
         nItem.setAtributo1(m.getAtributo1() != null ? m.getAtributo1() : "");

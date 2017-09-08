@@ -183,7 +183,7 @@ public class Formulario implements Serializable {
 
     public Formulario() {
         
-        this.recuperacionFecha = "A";
+        this.recuperacionFecha = "U";
         this.ultimaFecha = new Date();
         this.ultimoNumero = 0;
         this.tipoNumeracion = "A";

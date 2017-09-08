@@ -8,6 +8,7 @@ package bs.stock.modelo;
 import bs.global.modelo.Auditoria;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -52,8 +53,7 @@ public abstract class ItemMovimientoStock implements Serializable {
     @ManyToOne
     private Producto producto;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
+    
     @Column(name = "cantid")
     private BigDecimal cantidad;
         
@@ -289,6 +289,10 @@ public abstract class ItemMovimientoStock implements Serializable {
     @Override
     public String toString() {
         return "com.stock.modelo.MovimientoItem[ id=" + id + " ]";
+    }
+
+    public void setFechaMovimiento(Date fechaMovimiento) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
