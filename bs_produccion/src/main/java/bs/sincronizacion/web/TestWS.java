@@ -57,9 +57,12 @@ public class TestWS {
     public void sincronizar() {
 
         try {
+            
+            if(log==null){
+                log = "";
+            }            
 
-            int cantMovimientosProcesados = 0;
-            log = "";
+            int cantMovimientosProcesados = 0;            
 
             Client client = Client.create();
 
@@ -94,45 +97,45 @@ public class TestWS {
                         }
 
                         if (mb.getPlataformaId() == null) {
-                            log += "No se encontró código de plataforma en comprobante " + mb.getNroComprobante() + " \n";
+                            log += JsfUtil.getFechaWS(fecha) + " - No se encontró código de plataforma en comprobante " + mb.getNroComprobante() + " \n";
                             continue;
                         }
 
                         if (mb.getProductoCodigo() == null || mb.getProductoCodigo().isEmpty()) {
-                            log += "No se encontró código de producto en comprobante " + mb.getNroComprobante() + " \n";
+                            log += JsfUtil.getFechaWS(fecha) + " - No se encontró código de producto en comprobante " + mb.getNroComprobante() + " \n";
                             continue;
                         }
-                        
-                       Deposito deposito = null;
-                       
-                        if (empresa.equals("1")){ 
+
+                        Deposito deposito = null;
+
+                        if (empresa.equals("1")) {
 
                             deposito = depositoRN.getDepositoByCodigoReferencia(String.valueOf(mb.getPlataformaId()));
-                        }
-                        
-                        else if (empresa.equals("2")){
+                        } else if (empresa.equals("2")) {
                             deposito = depositoRN.getDepositoByCodigoReferencia2(String.valueOf(mb.getPlataformaId()));
                         }
-                                                     
+
                         Producto producto = productoRN.getProducto(mb.getProductoCodigo());
-                        
+
                         if (ms == null) {
-                            log += "No pudo crearse movimiento, codigo de operación vacío " + mb.getNroComprobante() + " \n";
+                            log += JsfUtil.getFechaWS(fecha) + " - No pudo crearse movimiento, codigo de operación vacío " + mb.getNroComprobante() + " \n";
                             continue;
                         }
 
                         if (deposito == null) {
-                            log += "No se encontró depósito (" + mb.getPlataformaId() + ") en comprobante " + mb.getNroComprobante() + " \n";
+                            log += JsfUtil.getFechaWS(fecha) + " - No se encontró depósito (" + mb.getPlataformaId() + ") en comprobante " + mb.getNroComprobante() + " \n";
                             continue;
                         }
 
                         if (producto == null) {
-                            log += "No se encontró producto (" + mb.getProductoCodigo() + ") en comprobante " + mb.getNroComprobante() + " \n";
+                            log += JsfUtil.getFechaWS(fecha) + " - No se encontró producto (" + mb.getProductoCodigo() + ") en comprobante " + mb.getNroComprobante() + " \n";
                             continue;
                         }
 
+                        ms.setFechaMovimiento(fecha);
                         ms.setNumeroFormulario(Integer.valueOf(mb.getNroComprobante()));
                         ms.setNoSincronizaNumeroFormulario(true);
+                        ms.setNoValidaStockDisponible(true);
                         ms.setDeposito(deposito);
 
                         ItemProductoStock ip = ms.getItemsProducto().get(ms.getItemsProducto().size() - 1);
@@ -152,8 +155,13 @@ public class TestWS {
                         if (empresa.equals("99")) {
                             ip.setAtributo1("BUYANOR");
                         }
-
-                        ip.setAtributo2("N/D");
+                        
+                        //System.err.println("Cosecha " + mb.getCosecha());                        
+                        ip.setAtributo2("N/D");  
+                        
+//                        if(mb.getCosecha()!=null){
+//                            ip.setAtributo2(mb.getCosecha());
+//                        }
 
                         ip.setCantidad(new BigDecimal(mb.getNetoNeto()));
                         ip.setTodoOk(true);
@@ -162,21 +170,21 @@ public class TestWS {
                         ms.getItemsProducto().add(movimientoStockRN.nuevoItemProducto(ms));
 
                         try {
-                            
-                            if(!movimientoStockRN.existeComprobante(ms)){   
-                                
+
+                            if (!movimientoStockRN.existeComprobante(ms)) {
+
                                 movimientoStockRN.guardar(ms);
                                 cantMovimientosProcesados++;
-                            }                            
+                            }
 
                         } catch (Exception ex) {
-                            log += "No es posible guardar el movimiento comprobante " + mb.getNroComprobante() + " \n";
+                            log += JsfUtil.getFechaWS(fecha) + " - No es posible guardar el movimiento comprobante " + mb.getNroComprobante() +" - "+ ex +" \n";
                             System.err.println("Error guardando comprobante " + ex);
                         }
                     }
                 }
             }
-            
+
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
             JsfUtil.addInfoMessage("Proceso finalizado. Se procesaron " + cantMovimientosProcesados + " movimientos del día " + format.format(fecha));
@@ -195,6 +203,7 @@ public class TestWS {
 
     public void sincronizarEntreFechas() {
 
+        log = "";
         fecha = fechaDesde;
 
         while (!fecha.after(fechaHasta)) {

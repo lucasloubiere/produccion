@@ -85,7 +85,7 @@
                             <p:selectOneMenu value="#{cronologiaBean.deposito}" required="true"
                                              converter="#{conversoresStock.deposito}"
                                              requiredMessage="El depósito es obligatorio"
-                                             filter="true" filterMatchMode="startsWith" >
+                                             filter="true" filterMatchMode="contains" >
                                 <p:ajax process="@this" />
                                 <f:selectItem itemLabel="Seleccionar" itemValue="" />
                                 <f:selectItems value="#{depositoBean.lista}"

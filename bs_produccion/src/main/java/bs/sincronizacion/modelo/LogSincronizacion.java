@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
  * @author lloubiere
  */
 @Entity
-@Table(name = "sn_log", catalog = "produccion-ds", schema = "")
+@Table(name = "sn_log" )
 public class LogSincronizacion implements Serializable {
 
     private static final long serialVersionUID = 1L;

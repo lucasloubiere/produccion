@@ -491,7 +491,7 @@ public class MovimientoStockRN {
                 throw new ExcepcionGeneralSistema("Ingrese el atributo 7 para el producto " + i.getProducto().getDescripcion());
             }
 
-            if (m.getTipoMovimiento().equals("E")) {
+            if (m.getTipoMovimiento().equals("E") && !m.isNoValidaStockDisponible()) {
 
                 Stock s = new Stock(i);
                 //Es un egreso de stock por lo tanto convertimos la cantidad a negativo
@@ -510,7 +510,6 @@ public class MovimientoStockRN {
                             + (i.getProducto().getAdministraAtributo7().equals("S") ? "| Atributo7 " + i.getAtributo7() : "");
 
                     throw new ExcepcionGeneralSistema(mensaje);
-
                 }
             }
         }

@@ -73,7 +73,7 @@ public class MovimientoStock implements Serializable {
         
     @NotNull
     @Column(name = "fchmov")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP )
     private Date fechaMovimiento;
         
     @Lob
@@ -129,6 +129,8 @@ public class MovimientoStock implements Serializable {
     private boolean persistido;
     @Transient
     private boolean noSincronizaNumeroFormulario;
+    @Transient
+    private boolean noValidaStockDisponible;
 
     
     @Transient
@@ -376,9 +378,15 @@ public class MovimientoStock implements Serializable {
     public void setNoSincronizaNumeroFormulario(boolean noSincronizaNumeroFormulario) {
         this.noSincronizaNumeroFormulario = noSincronizaNumeroFormulario;
     }
-    
-    
-    
+
+    public boolean isNoValidaStockDisponible() {
+        return noValidaStockDisponible;
+    }
+
+    public void setNoValidaStockDisponible(boolean noValidaStockDisponible) {
+        this.noValidaStockDisponible = noValidaStockDisponible;
+    }
+        
     @Override
     public int hashCode() {
         int hash = 0;

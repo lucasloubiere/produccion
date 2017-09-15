@@ -18,6 +18,7 @@ public class MovimientoBalanza {
     private String nroComprobante;    
     private String operacion;    
     private String netoNeto;    
+    private String cosecha;
     private String productoCodigo;    
     private String productoDescripcion;    
     private Integer plataformaId;    
@@ -91,6 +92,15 @@ public class MovimientoBalanza {
     public void setPlataformaDescripcion(String plataformaDescripcion) {
         this.plataformaDescripcion = plataformaDescripcion;
     }
+
+    public String getCosecha() {
+        return cosecha;
+    }
+
+    public void setCosecha(String cosecha) {
+        this.cosecha = cosecha;
+    }
+    
 
     @Override
     public int hashCode() {

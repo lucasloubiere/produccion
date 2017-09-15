@@ -218,18 +218,7 @@ public class BaseDAO implements Serializable {
 
         try {
             String sQuery = "SELECT o FROM " + entityClass.getSimpleName() + " o ";
-
-            //Si el filtro no está vacio lo aplicamos
-            if (filtro.isEmpty()) {
-
-                sQuery = sQuery + "WHERE ";
-
-                Iterator it = filtro.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry ent = (Map.Entry) it.next();
-                    sQuery = sQuery + " o." + ent.getKey() + " ='" + ent.getValue() + "' ";
-                }
-            }
+            sQuery += generarStringFiltro(filtro, "o", true);            
 
             return (T) em.createQuery(sQuery).getSingleResult();
 
@@ -238,8 +227,8 @@ public class BaseDAO implements Serializable {
             return null;
         
         } catch (Exception e) {
-            System.err.println("No se puede obtener objeto " + entityClass.getSimpleName() + " - " + e.getCause());
-            System.err.println("Verificar parametros - Clase - nombre del campo - valor buscado");
+            System.err.println("No se puede obtener objeto " + entityClass.getSimpleName() + " - " + e);
+            System.err.println("Verificar parametros - Clase - nombre del campo - valor buscado" + filtro);
             return null;
         }
     }

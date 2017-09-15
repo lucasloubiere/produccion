@@ -191,11 +191,11 @@
                     <h:outputText value="Fecha" />
                     <h:outputText value="#{movimientoStockBean.m.fechaMovimiento}"
                                   rendered="#{movimientoStockBean.m.formulario.recuperacionFecha ne 'U'}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
                     </h:outputText>                
-                    <p:calendar value="#{movimientoStockBean.m.fechaMovimiento}" 
+                    <p:calendar value="#{movimientoStockBean.m.fechaMovimiento}" timeControlObject=""
                                 rendered="#{movimientoStockBean.m.formulario.recuperacionFecha eq 'U'}"
-                                pattern="dd/MM/yyyy" >
+                                pattern="dd/MM/yyyy HH:mm" >
                         <p:ajax process="@this" event="dateSelect" />
                     </p:calendar>
 
