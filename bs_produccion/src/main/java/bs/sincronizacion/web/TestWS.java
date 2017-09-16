@@ -109,7 +109,7 @@ public class TestWS {
                         Deposito deposito = null;
 
                         if (empresa.equals("1")) {
-
+                            
                             deposito = depositoRN.getDepositoByCodigoReferencia(String.valueOf(mb.getPlataformaId()));
                         } else if (empresa.equals("2")) {
                             deposito = depositoRN.getDepositoByCodigoReferencia2(String.valueOf(mb.getPlataformaId()));
@@ -155,13 +155,12 @@ public class TestWS {
                         if (empresa.equals("99")) {
                             ip.setAtributo1("BUYANOR");
                         }
+                                                                  
                         
-                        //System.err.println("Cosecha " + mb.getCosecha());                        
-                        ip.setAtributo2("N/D");  
-                        
-//                        if(mb.getCosecha()!=null){
-//                            ip.setAtributo2(mb.getCosecha());
-//                        }
+                        ip.setAtributo2("N/D");                          
+                        if(mb.getCosecha()!=null && !mb.getCosecha().isEmpty()){
+                            ip.setAtributo2(mb.getCosecha());
+                        }
 
                         ip.setCantidad(new BigDecimal(mb.getNetoNeto()));
                         ip.setTodoOk(true);
