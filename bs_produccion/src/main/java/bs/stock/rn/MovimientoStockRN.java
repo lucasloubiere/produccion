@@ -613,6 +613,7 @@ public class MovimientoStockRN {
 
             for (ItemMovimientoStock i : m.getItemsProducto()) {
 
+                i.setFechaMovimiento(m.getFechaMovimiento());
                 i.setDeposito(m.getDeposito());
             }
         }
@@ -622,6 +623,8 @@ public class MovimientoStockRN {
 
             if (m.getItemTransferencia() != null) {
                 for (ItemMovimientoStock i : m.getItemTransferencia()) {
+                    
+                    i.setFechaMovimiento(m.getFechaMovimiento());
                     i.setDeposito(m.getDepositoTransferencia());
                 }
             }
