@@ -199,7 +199,7 @@ GROUP BY
 	</field>
 	<variable name="SUM_CANTID" class="java.math.BigDecimal" resetType="Group" resetGroup="GRUPO_1" calculation="Sum">
 		<variableExpression><![CDATA[$F{CANTIDAD}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>
 	</variable>
 	<filterExpression><![CDATA[( $P{ARTCOD}.equals("")? !$F{ARTCOD}.equals("") : $F{ARTCOD}.equals($P{ARTCOD}))]]></filterExpression>
 	<group name="GRUPO_1">
@@ -230,7 +230,7 @@ GROUP BY
 		</groupHeader>
 		<groupFooter>
 			<band height="12">
-				<textField pattern="###0.00">
+				<textField pattern="#,##0.00">
 					<reportElement x="455" y="0" width="73" height="12" uuid="82df26dd-bb24-4745-ba75-96cc0b493c6c"/>
 					<textElement textAlignment="Right">
 						<font size="8" isBold="true"/>
@@ -244,6 +244,13 @@ GROUP BY
 					</textElement>
 					<text><![CDATA[Total]]></text>
 				</staticText>
+				<textField pattern="###0.00">
+					<reportElement x="528" y="0" width="27" height="12" uuid="6cbe4381-9eec-45ee-8c6c-c0019e648e97"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{UNIMED}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -332,7 +339,7 @@ GROUP BY
 	</columnHeader>
 	<detail>
 		<band height="16">
-			<textField pattern="###0.00">
+			<textField pattern="#,##0.00">
 				<reportElement x="455" y="0" width="73" height="12" uuid="8a4172d3-84a1-4bff-ace7-d030baf05352"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
