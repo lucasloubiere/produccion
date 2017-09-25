@@ -24,6 +24,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -97,6 +99,10 @@ public abstract class ItemMovimientoStock implements Serializable {
     //@Size(min = 1, max = 50)
     @Column(name = "natri7")
     private String atributo7;
+    
+    @Column(name = "fchmov")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaMovimiento;
 
     @Embedded
     private Auditoria auditoria;
@@ -265,6 +271,14 @@ public abstract class ItemMovimientoStock implements Serializable {
     public void setSaldoInicial(BigDecimal saldoInicial) {
         this.saldoInicial = saldoInicial;
     }
+
+    public Date getFechaMovimiento() {
+        return fechaMovimiento;
+    }
+    
+    public void setFechaMovimiento(Date fechaMovimiento) {
+        this.fechaMovimiento = fechaMovimiento;
+    }
      
     @Override
     public int hashCode() {
@@ -289,10 +303,6 @@ public abstract class ItemMovimientoStock implements Serializable {
     @Override
     public String toString() {
         return "com.stock.modelo.MovimientoItem[ id=" + id + " ]";
-    }
-
-    public void setFechaMovimiento(Date fechaMovimiento) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

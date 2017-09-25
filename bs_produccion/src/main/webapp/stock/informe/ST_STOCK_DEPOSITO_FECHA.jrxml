@@ -112,7 +112,7 @@
 		st_movimiento_item.ARTCOD,
 		st_producto.DESCRIPCION AS st_producto_DESCRP ,
 		st_producto.UNIMED,
-		Sum(st_movimiento_item.CANTID) AS CANTIDAD,
+		Sum(st_movimiento_item.STOCK) AS CANTIDAD,
 		ad_empresa.*
 FROM 	st_movimiento_item,
 		st_producto,

@@ -6,9 +6,13 @@
 package bs.stock.dao;
 
 import bs.global.dao.BaseDAO;
+import bs.stock.modelo.Deposito;
 import bs.stock.modelo.ItemMovimientoStock;
 import bs.stock.modelo.MovimientoStock;
+import bs.stock.modelo.Producto;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -65,11 +69,83 @@ public class MovimientoStockDAO extends BaseDAO {
         } catch (NoResultException e) {
 
             return new ArrayList<MovimientoStock>();
-        
+
         } catch (Exception e) {
 
             System.err.println("Error al obtener movimientos de inventario " + e);
             return new ArrayList<MovimientoStock>();
         }
+    }
+    
+    public BigDecimal getStockAFecha(Producto p,Deposito d, Date fecha){
+
+        try {
+
+            Query q = em.createNativeQuery(" SELECT ifnull(sum(st_movimiento_item.STOCK) ,0) "
+                    + " FROM st_movimiento INNER JOIN st_movimiento_item "
+                    + " ON   st_movimiento.ID = st_movimiento_item.IDCAB "
+                    + " WHERE st_movimiento_item.ARTCOD = ?1 "
+                    + " AND st_movimiento_item.DEPOSI = ?2 "
+                    + " AND st_movimiento.FCHMOV < ?3 " );
+
+            q.setParameter("1",p.getCodigo());
+            q.setParameter("2",d.getCodigo());
+            q.setParameter("3",fecha);
+            
+            return (BigDecimal) q.getSingleResult();
+            
+        } catch (Exception e) {            
+            System.out.println("No se puede obtener stock por producto a fecha" + e.getCause());
+            return BigDecimal.ZERO;
+        }
+
+    }
+
+    public List<ItemMovimientoStock> getMovimientosEntreFechas(Producto p, Deposito d, Date fDesde, Date fHasta) {
+        try {
+
+            Query q = em.createQuery("SELECT i FROM ItemMovimientoStock i "
+                    + "WHERE i.producto.codigo = :codigo "
+                    + "AND i.deposito.codigo = :deposi "
+                    + "AND i.movimiento.fechaMovimiento BETWEEN :fDesde AND :fHasta ");
+
+            q.setParameter("codigo", p.getCodigo());
+            q.setParameter("deposi", d.getCodigo());
+            q.setParameter("fDesde", fDesde);
+            q.setParameter("fHasta", fHasta);
+
+            return q.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("No se puede obtener stock entre fechas" + e.getMessage());
+            return new ArrayList<ItemMovimientoStock>();
+        }
+    }
+      
+
+    public BigDecimal getCantidadFromMovimiento(String tipoMovimiento, Producto producto, Deposito deposito, Date fechaMovimientoDesde, Date fechaMovimientoHasta) {
+
+        try {
+
+            Query q = em.createQuery("SELECT sum(i.stocks) FROM ItemMovimientoStock i "
+                    + "WHERE i.producto.codigo = :codigo "
+                    + "AND i.deposito.codigo = :deposi "
+                    + "AND i.movimiento.tipoMovimiento = :tipoMovimiento "
+                    + "AND i.movimiento.fechaMovimiento BETWEEN :fDesde AND :fHasta ");
+
+            q.setParameter("tipoMovimiento", tipoMovimiento);
+            q.setParameter("codigo", producto.getCodigo());
+            q.setParameter("deposi", deposito.getCodigo());
+            q.setParameter("fDesde", fechaMovimientoDesde);
+            q.setParameter("fHasta", fechaMovimientoHasta);
+
+            return (BigDecimal) q.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("getCantidadFromMovimiento" + e);
+            return BigDecimal.ZERO;
+
+        }
+
     }
 }

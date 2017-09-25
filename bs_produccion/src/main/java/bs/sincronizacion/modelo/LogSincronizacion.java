@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,6 +47,10 @@ public class LogSincronizacion implements Serializable {
     @Size(max = 15)
     @Column(length = 15)
     private String estado;
+    
+    @Lob
+    @Column(name = "errores")
+    private String errores;
     
     @Embedded
     private Auditoria auditoria;
@@ -96,6 +101,14 @@ public class LogSincronizacion implements Serializable {
 
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
+    }
+
+    public String getErrores() {
+        return errores;
+    }
+
+    public void setErrores(String errores) {
+        this.errores = errores;
     }
     
     @Override

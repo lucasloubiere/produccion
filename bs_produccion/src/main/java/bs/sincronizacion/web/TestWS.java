@@ -6,6 +6,8 @@
 package bs.sincronizacion.web;
 
 import bs.global.util.JsfUtil;
+import bs.sincronizacion.modelo.LogSincronizacion;
+import bs.sincronizacion.rn.LogSincronizacionRN;
 import bs.sincronizacion.ws.DatosBalanaza;
 import bs.sincronizacion.ws.MovimientoBalanza;
 import bs.stock.modelo.Deposito;
@@ -23,6 +25,8 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -47,6 +51,8 @@ public class TestWS {
     private DepositoRN depositoRN;
     @EJB
     private ProductoRN productoRN;
+    @EJB
+    private LogSincronizacionRN logSincronizacionRN;
 
     /**
      * Creates a new instance of TestWS
@@ -56,13 +62,18 @@ public class TestWS {
 
     public void sincronizar() {
 
-        try {
-            
-            if(log==null){
-                log = "";
-            }            
+        LogSincronizacion logSincronizacion = new LogSincronizacion();
 
-            int cantMovimientosProcesados = 0;            
+        try {
+
+            logSincronizacion.setFecha(fecha);
+            logSincronizacion.setErrores("");
+
+            if (log == null) {
+                log = "";
+            }
+
+            int cantMovimientosProcesados = 0;
 
             Client client = Client.create();
 
@@ -109,7 +120,7 @@ public class TestWS {
                         Deposito deposito = null;
 
                         if (empresa.equals("1")) {
-                            
+
                             deposito = depositoRN.getDepositoByCodigoReferencia(String.valueOf(mb.getPlataformaId()));
                         } else if (empresa.equals("2")) {
                             deposito = depositoRN.getDepositoByCodigoReferencia2(String.valueOf(mb.getPlataformaId()));
@@ -132,7 +143,7 @@ public class TestWS {
                             continue;
                         }
 
-                        ms.setFechaMovimiento(fecha);
+                        ms.setFechaMovimiento(JsfUtil.getFechaYHora(fecha, mb.getHoraSalida()));
                         ms.setNumeroFormulario(Integer.valueOf(mb.getNroComprobante()));
                         ms.setNoSincronizaNumeroFormulario(true);
                         ms.setNoValidaStockDisponible(true);
@@ -155,10 +166,9 @@ public class TestWS {
                         if (empresa.equals("99")) {
                             ip.setAtributo1("BUYANOR");
                         }
-                                                                  
-                        
-                        ip.setAtributo2("N/D");                          
-                        if(mb.getCosecha()!=null && !mb.getCosecha().isEmpty()){
+
+                        ip.setAtributo2("N/D");
+                        if (mb.getCosecha() != null && !mb.getCosecha().isEmpty()) {
                             ip.setAtributo2(mb.getCosecha());
                         }
 
@@ -177,7 +187,7 @@ public class TestWS {
                             }
 
                         } catch (Exception ex) {
-                            log += JsfUtil.getFechaWS(fecha) + " - No es posible guardar el movimiento comprobante " + mb.getNroComprobante() +" - "+ ex +" \n";
+                            log += JsfUtil.getFechaWS(fecha) + " - No es posible guardar el movimiento comprobante " + mb.getNroComprobante() + " - " + ex + " \n";
                             System.err.println("Error guardando comprobante " + ex);
                         }
                     }
@@ -185,19 +195,30 @@ public class TestWS {
             }
 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
             JsfUtil.addInfoMessage("Proceso finalizado. Se procesaron " + cantMovimientosProcesados + " movimientos del día " + format.format(fecha));
 
             if (log.isEmpty()) {
                 log = "Sin errores";
+                logSincronizacion.setEstado("OK");
+            }else{
+                logSincronizacion.setEstado("Con Falla");
             }
+            
+            logSincronizacion.setErrores("Proceso finalizado. Se procesaron " + cantMovimientosProcesados + " movimientos del día " + format.format(fecha) +"\n"+ log);
+            logSincronizacionRN.guardar(logSincronizacion, true);
 
         } catch (Exception e) {
 
             e.printStackTrace();
             JsfUtil.addErrorMessage("Ha ocurrido un error en la sincronización " + e);
+            logSincronizacion.setEstado("Con Falla");
+            logSincronizacion.setErrores(e.getMessage());
+            try {
+                logSincronizacionRN.guardar(logSincronizacion, true);
+            } catch (Exception ex) {
+                Logger.getLogger(TestWS.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
     }
 
     public void sincronizarEntreFechas() {

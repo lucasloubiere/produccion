@@ -93,6 +93,7 @@ public class ItemGestionTanque {
     
     public ItemGestionTanque() {
 
+        this.stockInicial   = BigDecimal.ZERO;
         this.stockFinal     = BigDecimal.ZERO;
         this.ingresos       = BigDecimal.ZERO;
         this.egresos        = BigDecimal.ZERO;

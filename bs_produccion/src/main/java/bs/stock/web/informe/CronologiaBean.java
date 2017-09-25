@@ -15,6 +15,7 @@ import bs.stock.modelo.ItemMovimientoStock;
 import bs.stock.modelo.ItemProductoStock;
 import bs.stock.modelo.MovimientoStock;
 import bs.stock.modelo.Producto;
+import bs.stock.rn.MovimientoStockRN;
 import bs.stock.rn.StockRN;
 import bs.stock.web.ProductoBean;
 import java.io.Serializable;
@@ -35,6 +36,7 @@ import javax.faces.bean.ViewScoped;
 public class CronologiaBean extends InformeBase implements Serializable {
 
     @EJB private StockRN stockRN;
+    @EJB private MovimientoStockRN movimientoStockRN;
 
     @ManagedProperty(value = "#{productoBean}")
     protected ProductoBean productoBean;
@@ -42,9 +44,9 @@ public class CronologiaBean extends InformeBase implements Serializable {
     private BigDecimal  saldoInicial;
     private Producto producto;
     private Deposito deposito;    
-    private Date        fechaDesde;
-    private Date        fechaHasta;
-    private Date        fechaMaxima;    
+    private Date fechaDesde;
+    private Date fechaHasta;
+    private Date fechaMaxima;    
     private List<ItemMovimientoStock> movimientos;
 
 
@@ -76,8 +78,8 @@ public class CronologiaBean extends InformeBase implements Serializable {
         try {
             
             producto = productoBean.getProducto();
-            movimientos = stockRN.getMovimientosEntreFechas(producto, deposito, fechaDesde, fechaHasta);
-            saldoInicial = stockRN.getStockAFecha(producto, deposito, fechaDesde);
+            movimientos = movimientoStockRN.getMovimientosEntreFechas(producto, deposito, fechaDesde, fechaHasta);
+            saldoInicial = movimientoStockRN.getStockAFecha(producto, deposito, fechaDesde);
             
             ItemMovimientoStock imi = new ItemProductoStock();
             

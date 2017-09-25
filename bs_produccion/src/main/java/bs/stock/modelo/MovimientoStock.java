@@ -32,6 +32,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 /**
  *
  * @author lloubiere

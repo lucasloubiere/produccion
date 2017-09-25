@@ -54,7 +54,7 @@ public class SincronizacionRN implements Serializable {
         return sincronizacionDAO.getListaByBusqueda(txtBusqueda, mostrarDebaja, cantidadRegistros);
     }
     
-    @Schedule(second="*")
+    @Schedule(minute="*/1")
     public void tareaProgramada(){
         System.out.println("Lucas Dormilón ...Se ejecutó la tarea");
     }

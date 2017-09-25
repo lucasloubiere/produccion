@@ -23,6 +23,7 @@ public class MovimientoBalanza {
     private String productoDescripcion;    
     private Integer plataformaId;    
     private String plataformaDescripcion;
+    private String horaSalida;
 
     public MovimientoBalanza() {
     }
@@ -99,6 +100,14 @@ public class MovimientoBalanza {
 
     public void setCosecha(String cosecha) {
         this.cosecha = cosecha;
+    }
+
+    public String getHoraSalida() {
+        return horaSalida;
+    }
+
+    public void setHoraSalida(String horaSalida) {
+        this.horaSalida = horaSalida;
     }
     
 

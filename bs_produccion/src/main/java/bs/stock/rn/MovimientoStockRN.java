@@ -13,10 +13,12 @@ import bs.global.rn.SucursalRN;
 import bs.stock.dao.ComprobanteStockDAO;
 import bs.stock.dao.MovimientoStockDAO;
 import bs.stock.modelo.ComprobanteStock;
+import bs.stock.modelo.Deposito;
 import bs.stock.modelo.ItemMovimientoStock;
 import bs.stock.modelo.ItemProductoStock;
 import bs.stock.modelo.ItemTransferenciaStock;
 import bs.stock.modelo.MovimientoStock;
+import bs.stock.modelo.Producto;
 import bs.stock.modelo.Stock;
 import bs.stock.modelo.TipoItemMovimiento;
 import java.math.BigDecimal;
@@ -749,6 +751,21 @@ public class MovimientoStockRN {
                 
         return (inventarioDAO.getObjeto(MovimientoStock.class, filtro)!=null);       
         
+        
+    }
+    
+     public BigDecimal getStockAFecha(Producto p, Deposito d, Date fecha) {
+        return inventarioDAO.getStockAFecha(p, d, fecha);
+    }
+
+    public List<ItemMovimientoStock> getMovimientosEntreFechas(Producto p, Deposito d, Date fDesde, Date fHasta) {
+
+        return inventarioDAO.getMovimientosEntreFechas(p, d, fDesde, fHasta);
+    }
+
+    public BigDecimal getCantidadFromMovimiento(String tipoMovimiento, Producto producto, Deposito deposito, Date fechaMovimientoDesde, Date fechaMovimientoHasta) {
+        
+        return inventarioDAO.getCantidadFromMovimiento(tipoMovimiento, producto, deposito, fechaMovimientoDesde, fechaMovimientoHasta);
         
     }
 

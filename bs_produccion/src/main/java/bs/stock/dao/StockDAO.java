@@ -6,17 +6,15 @@ package bs.stock.dao;
 
 
 import bs.global.dao.BaseDAO;
-import bs.stock.modelo.Deposito;
-import bs.stock.modelo.ItemMovimientoStock;
 import bs.stock.modelo.Producto;
 import bs.stock.modelo.Stock;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 @Stateless
@@ -154,6 +152,31 @@ public class StockDAO extends BaseDAO {
             return new ArrayList<Stock>();
         }
     }
+        
+    public Producto getProductoByDepositoConStock(String codDep){
+        try {
+                        
+            Query q = em.createQuery("SELECT DISTINCT s.producto FROM Stock s "
+                    + "WHERE s.deposi = :codigo "                    
+                    + "ORDER BY s.artcod " );
+
+            q.setParameter("codigo",codDep);
+            
+            return (Producto) q.getSingleResult();
+            
+        } catch (NoResultException e) {            
+            System.out.println("Deposito de producto único, con más de un producto "+ codDep);
+            return null;  
+            
+        } catch (NonUniqueResultException e) {            
+            return null;  
+            
+        } catch (Exception e) {            
+            e.printStackTrace();
+            System.out.println("getProductoByDepositoConStock" + e );
+            return null;
+        }
+    }
     
     
     public List<Stock> getStockByProductoSinAtributos(String artcod){
@@ -210,49 +233,6 @@ public class StockDAO extends BaseDAO {
         }
     }
 
-    public BigDecimal getStockAFecha(Producto p,Deposito d, Date fecha){
-
-        try {
-
-            Query q = em.createNativeQuery(" SELECT ifnull(sum(st_movimiento_item.STOCKS) ,0) "
-                    + " FROM st_movimiento INNER JOIN st_movimiento_item "
-                    + " ON   st_movimiento.ID = st_movimiento_item.ID_MCAB "
-                    + " WHERE st_movimiento_item.ARTCOD = ?1 "
-                    + " AND st_movimiento_item.DEPOSI = ?2 "
-                    + " AND st_movimiento.FCHMOV < ?3 " );
-
-            q.setParameter("1",p.getCodigo());
-            q.setParameter("2",d.getCodigo());
-            q.setParameter("3",fecha);
-            
-            return (BigDecimal) q.getSingleResult();
-            
-        } catch (Exception e) {            
-            System.out.println("No se puede obtener stock por producto a fecha" + e.getCause());
-            return BigDecimal.ZERO;
-        }
-
-    }
-
-    public List<ItemMovimientoStock> getMovimientosEntreFechas(Producto p, Deposito d, Date fDesde, Date fHasta) {
-        try {
-            
-            Query q = em.createQuery("SELECT i FROM ItemMovimientoStock i "
-                    + "WHERE i.producto.codigo = :codigo "                    
-                    + "AND i.deposito.codigo = :deposi "
-                    + "AND i.movimiento.fechaMovimiento BETWEEN :fDesde AND :fHasta ");
-
-            q.setParameter("codigo",p.getCodigo());
-            q.setParameter("deposi",d.getCodigo());            
-            q.setParameter("fDesde",fDesde);
-            q.setParameter("fHasta",fHasta);
-
-            return q.getResultList();
-        } catch (Exception e) {    
-            e.printStackTrace();
-            System.out.println("No se puede obtener stock entre fechas" + e.getMessage());
-            return new ArrayList<ItemMovimientoStock>();
-        }
-    }
+    
 
 }

@@ -10,7 +10,9 @@ import bs.global.web.GenericBean;
 import bs.stock.modelo.Deposito;
 import bs.stock.modelo.GestionTanque;
 import bs.stock.modelo.ItemGestionTanque;
+import bs.stock.modelo.Producto;
 import bs.stock.rn.DepositoRN;
+import bs.stock.rn.MovimientoStockRN;
 import bs.stock.rn.StockRN;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,60 +32,86 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean
 @ViewScoped
-public class GestionTanquesBean extends GenericBean{
-    
-    @EJB private StockRN stockRN;
-    @EJB private DepositoRN depositoRN;
+public class GestionTanquesBean extends GenericBean {
+
+    @EJB
+    private StockRN stockRN;
+    @EJB
+    private DepositoRN depositoRN;
+    @EJB
+    private MovimientoStockRN movimientoStockRN;
 
     private GestionTanque gestionTanque;
-    private List<GestionTanque> lista;    
-    private List<Deposito> depositos;    
+    private List<GestionTanque> lista;
+    private List<Deposito> depositos;
 
     @PostConstruct
-    private void init(){
-        
+    private void init() {
+
         cantidadRegistros = 0;
         txtBusqueda = "";
         mostrarDebaja = false;
         nuevo();
         buscar();
-        
+
     }
-    
-    public void nuevo(){
-        
+
+    public void nuevo() {
+
         esNuevo = true;
         buscaMovimiento = false;
         gestionTanque = new GestionTanque();
         gestionTanque.setFechaMovimiento(new Date());
-        
+
         filtro = new HashMap<String, String>();
-        filtro.put("calculaStock = ", "'S'");        
-        depositos = depositoRN.getDepositoByBusqueda(filtro,txtBusqueda, true, 0);        
+        filtro.put("calculaStock = ", "'S'");
+        depositos = depositoRN.getDepositoByBusqueda(filtro, txtBusqueda, true, 0);
     }
-    
-    public void obtenerDatos(){
-        
-        for(Deposito d:depositos){
-            
+
+    public void obtenerDatos() {
+
+        /**
+         * Obtenemos la última gestión guardada, anterior a la fecha de la
+         * actual gestión.
+         */
+        GestionTanque gestionAnterior = new GestionTanque();
+        gestionAnterior.setFechaMovimiento(new Date());
+
+        gestionTanque.getItems().clear();
+
+        for (Deposito deposito : depositos) {
+
             ItemGestionTanque item = new ItemGestionTanque();
-            item.setDeposito(d);            
+            item.setDeposito(deposito);
+
+            Producto producto = stockRN.getProductoByDepositoConStock(deposito);
+            item.setProducto(producto);
+
+            if (deposito != null && producto != null) {
+
+                item.setStockInicial(movimientoStockRN.getStockAFecha(producto, deposito, gestionAnterior.getFechaMovimiento()));
+                item.setIngresos(movimientoStockRN.getCantidadFromMovimiento("I", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));
+                item.setEgresos(movimientoStockRN.getCantidadFromMovimiento("E", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));
+                
+
+            }
+
+            gestionTanque.getItems().add(item);
         }
-    }    
-    
-    public void guardar(boolean nuevo){
-        
+    }
+
+    public void guardar(boolean nuevo) {
+
         try {
             if (gestionTanque != null) {
-                
+
 //                gestionTanqueRN.guardar(gestionTanque, esNuevo);
 //                esNuevo = false;                
 //                JsfUtil.addInfoMessage("Los datos se guardaron correctamente");
-                
-                if (nuevo){
+                if (nuevo) {
                     nuevo();
                 }
-            }else{
+            } else {
                 JsfUtil.addInfoMessage("No hay datos para guardar");
             }
         } catch (Exception ex) {
@@ -91,62 +119,60 @@ public class GestionTanquesBean extends GenericBean{
             JsfUtil.addErrorMessage("No es posible guardar los datos " + ex);
         }
     }
-    
-    public void habilitaDeshabilita(String habDes){
-        
+
+    public void habilitaDeshabilita(String habDes) {
+
         try {
             gestionTanque.getAuditoria().setDebaja(habDes);
 //            gestionTanqueRN.guardar(gestionTanque, false);            
             JsfUtil.addInfoMessage("Los datos se actualizaron correctamente");
-            
+
         } catch (Exception ex) {
             Logger.getLogger(DepositoBean.class.getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage("No es posible actualizar los datos " + ex);
         }
     }
-    
-    public void eliminar(){
+
+    public void eliminar() {
         try {
 //            gestionTanqueRN.eliminar(gestionTanque);
-            nuevo();            
+            nuevo();
             JsfUtil.addInfoMessage("Los datos fueron borrados");
         } catch (Exception ex) {
             Logger.getLogger(getClass().getSimpleName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage("No es posible borrar los datos " + ex);
-        }        
+        }
     }
-    
-    public void buscar(){
+
+    public void buscar() {
 //        lista = gestionTanqueRN.getListaByBusqueda(txtBusqueda, mostrarDebaja,cantidadRegistros);
     }
-    
+
     public List<GestionTanque> complete(String query) {
         try {
 //            lista = gestionTanqueRN.getListaByBusqueda(query, false, cantidadRegistros);
             return lista;
-            
+
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             return new ArrayList<GestionTanque>();
         }
     }
-    
+
     public void onSelect(SelectEvent event) {
         gestionTanque = (GestionTanque) event.getObject();
         esNuevo = false;
         buscaMovimiento = false;
     }
-    
-    public void seleccionar (GestionTanque d){
-        
+
+    public void seleccionar(GestionTanque d) {
+
         gestionTanque = d;
         esNuevo = false;
         buscaMovimiento = false;
     }
- 
-    
+
     //--------------------------------------------------------------------------
-    
     public List<Deposito> getDepositos() {
         return depositos;
     }
@@ -170,5 +196,5 @@ public class GestionTanquesBean extends GenericBean{
     public void setLista(List<GestionTanque> lista) {
         this.lista = lista;
     }
-    
+
 }

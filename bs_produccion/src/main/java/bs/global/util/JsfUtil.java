@@ -4,6 +4,8 @@ package bs.global.util;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -267,6 +269,28 @@ public class JsfUtil implements Serializable{
     
     }
     
+    public static Date getFechaYHora(Date fechaMovimiento, String sHora) {
+        
+        try {
+            
+            if(sHora==null || sHora.isEmpty()){
+                sHora = "00:00";
+            }
+            
+            DateFormat sdFecha = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            
+            String sFecha = sdFecha.format(fechaMovimiento);            
+            String sFechaFinal = sFecha +" "+ sHora;
+            
+            DateFormat sdHora = new java.text.SimpleDateFormat("yyyy-MM-dd kk:mm");            
+            return sdHora.parse(sFechaFinal);
+                    
+        } catch (ParseException ex) {
+            
+            return new Date();
+        }
+    
+    }    
     
     public static Map<String,String> getMeses(){
     

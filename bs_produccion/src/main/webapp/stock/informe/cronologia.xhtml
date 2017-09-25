@@ -5,47 +5,47 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/template.xhtml" >
+    <ui:composition template="/template.xhtml" >
 
-    <ui:define name="titulo" >
-        Cronología de productos
-    </ui:define>
+        <ui:define name="titulo" >
+            Cronología de productos
+        </ui:define>
 
-    <ui:define name="contenido" >
+        <ui:define name="contenido" >
 
-        <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />                
-        
-        <p:panel header="Cronología de Stock" >
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />                
 
-            <p:remoteCommand name="procesarProducto" process="@this" update="@form" actionListener="#{cronologiaBean.limpiarMovimientos}" />
-            
-            <div class="ui-g">
-                <div class="ui-g-5">
-                    
-                    <p:panelGrid columns="2" layout="grid" >
+            <p:panel header="Cronología de Stock" >
 
-                        <p:inputText id="txtBusqueda" value="#{productoBean.txtBusqueda}" placeholder="Ingrese busqueda" >
-                            <p:ajax event="keyup" process="@this,tipoProducto" update="tablaProductos" listener="#{productoBean.buscar}"/>
-                        </p:inputText>
+                <p:remoteCommand name="procesarProducto" process="@this" update="@form" actionListener="#{cronologiaBean.limpiarMovimientos}" />
 
-                        <p:selectOneMenu id="tipoProducto" value="#{productoBean.tipoProducto}"
-                                         converter="#{conversoresStock.tipoProducto}"  >
-                            <f:selectItem itemLabel="Todos" itemValue="" />
-                            <f:selectItems value="#{productoBean.tipos}"
-                                           var="i" itemLabel="#{i.descripcion}" itemValue="#{i}"/>
-                            <p:ajax process="@this,txtBusqueda" update="tablaProductos" listener="#{productoBean.buscar}"/>
-                        </p:selectOneMenu>
+                <div class="ui-g">
+                    <div class="ui-g-5">
 
-                    </p:panelGrid>   
+                        <p:panelGrid columns="2" layout="grid" >
 
-                    <div class="EmptyBox10"/>
+                            <p:inputText id="txtBusqueda" value="#{productoBean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                                <p:ajax event="keyup" process="@this,tipoProducto" update="tablaProductos" listener="#{productoBean.buscar}"/>
+                            </p:inputText>
 
-                    <p:dataTable id="tablaProductos" reflow="true"
-                                 value="#{productoBean.lista}" var="prd"
-                                 emptyMessage="No se encontraron productos"
-                                 rows="15" paginator="true" 
-                                 selectionMode="single" 
-                                 selection="#{productoBean.producto}" rowKey="#{prd}">
+                            <p:selectOneMenu id="tipoProducto" value="#{productoBean.tipoProducto}"
+                                             converter="#{conversoresStock.tipoProducto}"  >
+                                <f:selectItem itemLabel="Todos" itemValue="" />
+                                <f:selectItems value="#{productoBean.tipos}"
+                                               var="i" itemLabel="#{i.descripcion}" itemValue="#{i}"/>
+                                <p:ajax process="@this,txtBusqueda" update="tablaProductos" listener="#{productoBean.buscar}"/>
+                            </p:selectOneMenu>
+
+                        </p:panelGrid>   
+
+                        <div class="EmptyBox10"/>
+
+                        <p:dataTable id="tablaProductos" reflow="true"
+                                     value="#{productoBean.lista}" var="prd"
+                                     emptyMessage="No se encontraron productos"
+                                     rows="15" paginator="true" 
+                                     selectionMode="single" 
+                                     selection="#{productoBean.producto}" rowKey="#{prd}">
 
                             <f:facet name="header" >
                                 Productos
@@ -69,14 +69,14 @@
                                 <h:outputText value="#{prd.unidadDeMedida.codigo}" />
                             </p:column>
 
-                    </p:dataTable>
-                    
-                </div>
-                
-                <div class="ui-g-7">
-                    
-                    <p:panelGrid columns="2" layout="grid"                                                        
-                         columnClasses="ui-g-4, ui-g-8" >
+                        </p:dataTable>
+
+                    </div>
+
+                    <div class="ui-g-7">
+
+                        <p:panelGrid columns="2" layout="grid"                                                        
+                                     columnClasses="ui-g-4, ui-g-8" >
 
                             <h:outputText value="Producto: " />
                             <h:outputText value="#{productoBean.producto.codigo} - #{productoBean.producto.descripcion}" />                                            
@@ -93,26 +93,28 @@
                             </p:selectOneMenu>
 
                             <h:outputText value="Fecha Desde:" />
-                            <p:calendar value="#{cronologiaBean.fechaDesde}" pattern="dd/MM/yyyy"  
-                                         required="true" requiredMessage="La fecha desde es obligatoria"
+                            <p:calendar value="#{cronologiaBean.fechaDesde}" timeControlObject=""   
+                                        required="true" requiredMessage="La fecha desde es obligatoria"
+                                        pattern="dd/MM/yyyy HH:mm"
                                         maxdate="#{cronologiaBean.fechaMaxima}" />
 
                             <h:outputText value="Fecha Hasta:" />
-                            <p:calendar value="#{cronologiaBean.fechaHasta}" pattern="dd/MM/yyyy"  
-                                         required="true" requiredMessage="La fecha hasta es obligatoria"
+                            <p:calendar value="#{cronologiaBean.fechaHasta}" timeControlObject="" 
+                                        required="true" requiredMessage="La fecha hasta es obligatoria"
+                                        pattern="dd/MM/yyyy HH:mm"
                                         maxdate="#{cronologiaBean.fechaMaxima}" />
 
-                    </p:panelGrid>                                
+                        </p:panelGrid>                                
 
-                    <div class="EmptyBox10"/>
-                    
-                    <p:commandButton value="Consultar" icon="fa fa-check"
-                                             actionListener="#{cronologiaBean.verCronologia}"
-                                             update="@form" />
-                    
-                    <div class="EmptyBox10"/>                    
+                        <div class="EmptyBox10"/>
 
-                    <p:dataTable id="movimientos" reflow="true"
+                        <p:commandButton value="Consultar" icon="fa fa-check"
+                                         actionListener="#{cronologiaBean.verCronologia}"
+                                         update="@form" />
+
+                        <div class="EmptyBox10"/>                    
+
+                        <p:dataTable id="movimientos" reflow="true"
                                      value="#{cronologiaBean.movimientos}" var="i"
                                      emptyMessage="Haga clic en consultar para ver los movimientos"
                                      rows="15" paginator="true" >
@@ -142,57 +144,57 @@
 
                             </f:facet>
 
-                            <p:column headerText="Movimiento" >
+                            <p:column headerText="Movimiento" width="100" >
                                 <h:outputText value="#{i.movimiento.formulario.codigo}" />
                             </p:column>
 
-                            <p:column headerText="Número" style="text-align: right;" >
+                            <p:column headerText="Número" width="80"  style="text-align: right;" >
                                 <h:outputText value="#{i.movimiento.numeroFormulario}" />
                             </p:column>
 
-                            <p:column headerText="Fecha" style="text-align: center;" >
+                            <p:column headerText="Fecha" width="150" style="text-align: center;" >
                                 <h:outputText value="#{i.movimiento.fechaMovimiento}" >
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    <f:convertDateTime pattern="dd/MM/yyyy kk:mm" />
                                 </h:outputText>
                             </p:column>
-                        
+
                             <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" style="text-align: right;" width="120" 
                                       rendered="#{productoBean.producto.administraAtributo1 eq 'S'}">
                                 <h:outputText value="#{i.atributo1}" />
                             </p:column>
-                        
+
                             <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo2}" style="text-align: right;" width="120" 
                                       rendered="#{productoBean.producto.administraAtributo2 eq 'S'}">
                                 <h:outputText value="#{i.atributo2}" />
                             </p:column>
-                        
-                        <!--
-                        
-                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo3}" style="text-align: right;" width="120" 
-                                      rendered="#{productoBean.producto.administraAtributo5 eq 'S'}">
-                                <h:outputText value="#{i.atributo3}" />
-                            </p:column>
-                        
-                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo4}" style="text-align: right;" width="120" 
-                                      rendered="#{productoBean.producto.administraAtributo7 eq 'S'}">
-                                <h:outputText value="#{i.atributo4}" />
-                            </p:column>
-                        
-                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo5}" style="text-align: right;" width="120" 
-                                      rendered="#{productoBean.producto.administraAtributo6 eq 'S'}">
-                                <h:outputText value="#{i.atributo5}" />
-                            </p:column>
-                        
-                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo6}" style="text-align: right;" width="120" 
-                                      rendered="#{productoBean.producto.administraAtributo3 eq 'S'}">
-                                <h:outputText value="#{i.atributo6}" />
-                            </p:column>
-                        
-                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo7}" style="text-align: right;" width="120" 
-                                      rendered="#{productoBean.producto.administraAtributo4 eq 'S'}">
-                                <h:outputText value="#{i.atributo7}" />
-                            </p:column>
-                        -->
+
+                            <!--
+                            
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo3}" style="text-align: right;" width="120" 
+                                          rendered="#{productoBean.producto.administraAtributo5 eq 'S'}">
+                                    <h:outputText value="#{i.atributo3}" />
+                                </p:column>
+                            
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo4}" style="text-align: right;" width="120" 
+                                          rendered="#{productoBean.producto.administraAtributo7 eq 'S'}">
+                                    <h:outputText value="#{i.atributo4}" />
+                                </p:column>
+                            
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo5}" style="text-align: right;" width="120" 
+                                          rendered="#{productoBean.producto.administraAtributo6 eq 'S'}">
+                                    <h:outputText value="#{i.atributo5}" />
+                                </p:column>
+                            
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo6}" style="text-align: right;" width="120" 
+                                          rendered="#{productoBean.producto.administraAtributo3 eq 'S'}">
+                                    <h:outputText value="#{i.atributo6}" />
+                                </p:column>
+                            
+                                <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo7}" style="text-align: right;" width="120" 
+                                          rendered="#{productoBean.producto.administraAtributo4 eq 'S'}">
+                                    <h:outputText value="#{i.atributo7}" />
+                                </p:column>
+                            -->
 
                             <p:column headerText="Ingreso" style="text-align: right;"  >
                                 <h:outputText value="#{i.stocks}" rendered="#{i.stocks > 0 }" >
@@ -215,13 +217,13 @@
                             </p:column>
 
                         </p:dataTable>
-                    
+
+                    </div>
                 </div>
-            </div>
 
-        </p:panel>
+            </p:panel>
 
-    </ui:define>
-    
-</ui:composition>
+        </ui:define>
+
+    </ui:composition>
 </html>
