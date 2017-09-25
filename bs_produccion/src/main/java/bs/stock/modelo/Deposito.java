@@ -45,21 +45,27 @@ public class Deposito implements Serializable {
     private String signo;
     @Embedded
     private Auditoria auditoria;
-    
-    
+
     @Column(name = "codref", length = 6)
     private String codigoReferencia;
-    
-     @Column(name = "codref2", length = 6)
+
+    @Column(name = "codref2", length = 6)
     private String codigoReferencia2;
+
+    @Column(name = "calcula_stock", length = 1)
+    private String calculaStock;
+
     
+
     public Deposito() {
         this.auditoria = new Auditoria();
+        this.calculaStock = "N";
     }
 
     public Deposito(String codigo) {
         this.auditoria = new Auditoria();
         this.codigo = codigo;
+        this.calculaStock = "N";
     }
 
     public Deposito(String codigo, String descripcion, String signo) {
@@ -67,6 +73,7 @@ public class Deposito implements Serializable {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.signo = signo;
+        this.calculaStock = "N";
     }
 
     public String getCodigo() {
@@ -116,7 +123,15 @@ public class Deposito implements Serializable {
     public void setCodigoReferencia2(String codigoReferencia2) {
         this.codigoReferencia2 = codigoReferencia2;
     }
-        
+
+    public String getCalculaStock() {
+        return calculaStock;
+    }
+
+    public void setCalculaStock(String calculaStock) {
+        this.calculaStock = calculaStock;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -141,5 +156,5 @@ public class Deposito implements Serializable {
     public String toString() {
         return "com.stock.modelo.Deposito[ codigo=" + codigo + " ]";
     }
-    
+
 }

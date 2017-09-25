@@ -9,6 +9,7 @@ import bs.global.dao.BaseDAO;
 import bs.stock.modelo.Deposito;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -77,12 +78,13 @@ public class DepositoDAO extends BaseDAO {
         return getObjeto(Deposito.class, "codigoReferencia2", codigoReferencia);
     }
 
-    public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
+    public List<Deposito> getDepositoByBusqueda(Map<String, String> filtro,String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
         try {
 
             String sQuery = "SELECT e FROM Deposito e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
                     + (mostrarDeBaja ? " " : " AND e.auditoria.debaja = 'N' ")
+                    + generarStringFiltro(filtro,"e", false)
                     + " ORDER BY e.codigo";
 
             Query q = em.createQuery(sQuery);

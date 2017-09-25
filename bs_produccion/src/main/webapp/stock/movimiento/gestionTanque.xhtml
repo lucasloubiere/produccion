@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml" >
+
+        <f:metadata>        
+            <f:viewParam name="TITULO" value="#{gestionTanquesBean.titulo}"/>
+        </f:metadata>
+
+        <ui:define name="titulo" >
+            Depositos
+        </ui:define>
+
+        <ui:define name="menu">
+            <!-- MENU -->                        
+            <p:menubar id="menuBar">               
+
+                <!--
+                <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                           actionListener="#{gestionTanquesBean.nuevo}"
+                           process="@this"
+                           update="@form"
+                           immediate="true" />
+    
+                <p:menuitem value="Guardar" icon="fa fa-save"
+                            actionListener="#{gestionTanquesBean.guardar(false)}"       
+                            rendered="#{not gestionTanquesBean.buscaMovimiento}"
+                            update="@form" />
+    
+                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                            actionListener="#{gestionTanquesBean.guardar(true)}"                            
+                            rendered="#{not gestionTanquesBean.buscaMovimiento}"
+                            oncomplete="btnNew.click()"
+                            update="@form" />
+    
+                <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                            actionListener="#{gestionTanquesBean.habilitaDeshabilita('S')}"
+                            rendered="#{not empty gestionTanquesBean.deposito and not gestionTanquesBean.esNuevo and gestionTanquesBean.deposito.auditoria.debaja eq 'N'}"
+                            process="@this"
+                            update="@form" />
+    
+                <p:menuitem value="Habilitar" icon="fa fa-check"
+                            actionListener="#{gestionTanquesBean.habilitaDeshabilita('N')}"
+                            rendered="#{not empty gestionTanquesBean.deposito and not gestionTanquesBean.esNuevo and gestionTanquesBean.deposito.auditoria.debaja eq 'S'}"
+                            process="@this"
+                            update="@form" />
+    
+                <p:menuitem value="Buscar" icon="fa fa-search" 
+                            actionListener="#{gestionTanquesBean.buscar()}"
+                            update="buscadorDeposito"
+                            process="@this" 
+                            oncomplete="PF('dlg_deposito').show()" 
+                            immediate="true" /> 
+                
+                -->            
+            </p:menubar>
+        </ui:define>
+
+        <ui:define name="contenido" >
+
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+            <!-- DATOS -->
+            <p:panel header="Datos"  >
+
+                <p:panelGrid columns="2" layout="grid"              
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="ui-g-12 ui-md-4 ui-lg-3, ui-g-12 ui-md-8 ui-lg-6" >
+
+                    <h:outputText value="Fecha" />
+                    <p:inputText value="#{gestionTanquesBean.gestionTanque.fechaMovimiento}"                              
+                                 required="true"
+                                 requiredMessage="La fecha es necesaria" />
+
+                </p:panelGrid>                    
+            </p:panel>    
+            
+            <div class="EmptyBox10" />
+            
+            <p:commandButton value="Obtener datos" 
+                             actionListener="#{gestionTanquesBean.obtenerDatos()}"
+                             process="@form"
+                             update="@form" />                             
+            
+            <div class="EmptyBox10" />
+
+            <p:dataTable id="tablaGestionTanque" value="#{gestionTanquesBean.gestionTanque.items}"  reflow="true" var="i"
+                         emptyMessage="No se encontraron datos"                         
+                         rows="50" paginator="true" >
+                
+                <p:column headerText="Código" sortBy="#{i.deposito.codigo}"  width="50"   >
+                    <h:outputText value="#{i.deposito.codigo}" />
+                </p:column>
+
+                <p:column headerText="Deposito" sortBy="#{i.deposito.descripcion}"   >
+                    <h:outputText value="#{i.deposito.descripcion}" />
+                </p:column>
+
+                <p:column headerText="Código" sortBy="#{i.producto.codigo}" width="50" filterBy="#{i.producto.codigo}"
+                          filterMatchMode="contains" >
+                    <h:outputText value="#{i.producto.codigo}" />
+                </p:column>
+                
+                <p:column headerText="Descripción" sortBy="#{i.producto.descripcion}" width="50" filterBy="#{i.producto.descripcion}"
+                          filterMatchMode="contains" >
+                    <h:outputText value="#{i.producto.descripcion}" />
+                </p:column>
+                
+                <p:column headerText="Stock inicial" sortBy="#{i.stockInicial}" width="50"  >                    
+                    <h:outputText value="#{i.stockInicial}" >
+                        <f:convertNumber pattern="#,###,##0.00" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Ingresos" sortBy="#{i.ingresos}" width="50"  >                    
+                    <h:outputText value="#{i.ingresos}" >
+                        <f:convertNumber pattern="#,###,##0.00" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Egresos" sortBy="#{i.egresos}" width="50"  >                    
+                    <h:outputText value="#{i.egresos}" >
+                        <f:convertNumber pattern="#,###,##0.00" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="50"  >                    
+                    <h:outputText value="#{i.stockFinal}" >
+                        <f:convertNumber pattern="#,###,##0.00" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Stock Calculado" sortBy="#{i.stockCalculado}" width="50"  >                    
+                    <h:outputText value="#{i.stockCalculado}" >
+                        <f:convertNumber pattern="#,###,##0.00" />
+                    </h:outputText>
+                </p:column>
+                
+            </p:dataTable>
+
+        </ui:define>
+
+        <ui:define name="dialogos" >  
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

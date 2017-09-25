@@ -9,6 +9,7 @@ import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.stock.dao.DepositoDAO;
 import bs.stock.modelo.Deposito;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -67,7 +68,12 @@ public class DepositoRN {
 
     public List<Deposito> getDepositoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
 
-        return depositoDAO.getDepositoByBusqueda(txtBusqueda, mostrarDeBaja, cantMax);
+        return depositoDAO.getDepositoByBusqueda(null,txtBusqueda, mostrarDeBaja, cantMax);
+    }
+    
+    public List<Deposito> getDepositoByBusqueda(Map<String, String> filtro,String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
+
+        return depositoDAO.getDepositoByBusqueda(filtro,txtBusqueda, mostrarDeBaja, cantMax);
     }
 
     // Add business logic below. (Right-click in editor and choose
