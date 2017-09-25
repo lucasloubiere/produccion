@@ -81,7 +81,7 @@ public class GestionTanquesBean extends GenericBean {
 
         for (Deposito deposito : depositos) {
 
-            ItemGestionTanque item = new ItemGestionTanque();
+            ItemGestionTanque item = new ItemGestionTanque() {};
             item.setDeposito(deposito);
 
             Producto producto = stockRN.getProductoByDepositoConStock(deposito);
