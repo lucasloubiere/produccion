@@ -117,7 +117,7 @@
                 </p:column>
                 
                 <p:column headerText="Stock inicial" sortBy="#{i.stockInicial}" width="100" styleClass="TextAlRight"  >                    
-                    <h:outputText value="#{i.stockInicial}" styleClass="pull-right" >
+                    <h:outputText value="#{i.stockInicial}" styleClass="pull-right #{not empty i.stockInicial?(i.stockInicial>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
                         <f:convertNumber pattern="#,###,##0.00" />
                     </h:outputText>
                 </p:column>
@@ -129,22 +129,36 @@
                 </p:column>
                 
                 <p:column headerText="Egresos" sortBy="#{i.egresos}" width="100" >                    
-                    <h:outputText value="#{i.egresos}" styleClass="pull-right" >
+                    <h:outputText value="#{i.egresos*(-1)}" styleClass="pull-right" >
                         <f:convertNumber pattern="#,###,##0.00" />
                     </h:outputText>
+                </p:column>
+                
+                <p:column headerText="" width="40" >
+                    <p:commandButton  value="=" actionListener="#{gestionTanquesBean.calcularStock(i)}" process="@this" update="tablaGestionTanque" >
+                        <f:setPropertyActionListener target="#{i.stockFinal}" value="#{i.stockInicial}" />
+                    </p:commandButton>
                 </p:column>
                 
                 <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >                    
                     <p:inputText value="#{i.stockFinal}" style="text-align: right;" >
                         <f:convertNumber pattern="#,###,##0.00" />
-                        <p:ajax event="keyup" process="@this" update="tablaGestionTanque" />
+                        <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
                     </p:inputText>
                 </p:column>
                 
                 <p:column headerText="Stock Calculado" sortBy="#{i.stockCalculado}" width="100"  >                    
-                    <h:outputText value="#{i.stockInicial+i.ingresos-i.egresos-i.stockFinal}" styleClass="pull-right" >
+                    <h:outputText value="#{i.stockCalculado}" 
+                                  styleClass="pull-right  #{not empty i.stockCalculado?(i.stockCalculado>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
                         <f:convertNumber pattern="#,###,##0.00" />
                     </h:outputText>
+                    
+                    <!--                    
+                    <h:outputText value="#{(i.stockInicial*(-1))-i.ingresos-i.egresos+i.stockFinal}" 
+                                  styleClass="pull-right  #{not empty i.stockCalculado?(i.stockCalculado>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
+                        <f:convertNumber pattern="#,###,##0.00" />
+                    </h:outputText>
+                    -->
                 </p:column>
                 
             </p:dataTable>

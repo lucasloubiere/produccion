@@ -6,7 +6,14 @@
 package bs.stock.dao;
 
 import bs.global.dao.BaseDAO;
+import bs.stock.modelo.ItemGestionTanque;
+import bs.stock.modelo.GestionTanque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 /**
  *
@@ -16,6 +23,55 @@ import javax.ejb.Stateless;
 @Stateless
 public class GestionTanqueDAO extends BaseDAO{
     
-    
-    
+        public void crearMovimiento(GestionTanque m) {
+        em.persist(m);
+    }
+
+    public void editarMovimiento(GestionTanque m) {
+        em.merge(m);
+    }
+
+    public void crearItemProducto(ItemGestionTanque im) {
+        em.persist(im);
+
+    }
+
+    public void editarItemProducto(ItemGestionTanque im) {
+        em.merge(im);
+    }
+
+    public GestionTanque getMovimiento(Integer id) {
+
+        return getObjeto(GestionTanque.class, id);
+    }
+
+    public ItemGestionTanque getItemProducto(Integer id) {
+        return getObjeto(ItemGestionTanque.class, id);
+    }
+
+    public List<GestionTanque> getListaByBusqueda(Map<String, String> filtro, int cantMax) {
+        try {
+            String sQuery = "SELECT m FROM GestionTanque m ";
+            sQuery += generarStringFiltro(filtro, "m", true);
+            sQuery += " ORDER BY m.fechaMovimiento DESC, m.numeroFormulario DESC";
+
+            Query q = em.createQuery(sQuery);
+
+            if (cantMax > 0) {
+                q.setMaxResults(cantMax);
+            }
+
+            return q.getResultList();
+
+        } catch (NoResultException e) {
+
+            return new ArrayList<GestionTanque>();
+
+        } catch (Exception e) {
+
+            System.err.println("Error al obtener movimientos de inventario " + e);
+            return new ArrayList<GestionTanque>();
+        }
+    }
+   
 }

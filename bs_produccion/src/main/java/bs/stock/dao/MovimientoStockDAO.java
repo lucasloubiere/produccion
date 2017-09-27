@@ -76,8 +76,8 @@ public class MovimientoStockDAO extends BaseDAO {
             return new ArrayList<MovimientoStock>();
         }
     }
-    
-    public BigDecimal getStockAFecha(Producto p,Deposito d, Date fecha){
+
+    public BigDecimal getStockAFecha(Producto p, Deposito d, Date fecha) {
 
         try {
 
@@ -86,16 +86,20 @@ public class MovimientoStockDAO extends BaseDAO {
                     + " ON   st_movimiento.ID = st_movimiento_item.IDCAB "
                     + " WHERE st_movimiento_item.ARTCOD = ?1 "
                     + " AND st_movimiento_item.DEPOSI = ?2 "
-                    + " AND st_movimiento.FCHMOV < ?3 " );
+                    + " AND st_movimiento.FCHMOV < ?3 ");
 
-            q.setParameter("1",p.getCodigo());
-            q.setParameter("2",d.getCodigo());
-            q.setParameter("3",fecha);
-            
+            q.setParameter("1", p.getCodigo());
+            q.setParameter("2", d.getCodigo());
+            q.setParameter("3", fecha);
+
             return (BigDecimal) q.getSingleResult();
-            
-        } catch (Exception e) {            
-            System.out.println("No se puede obtener stock por producto a fecha" + e.getCause());
+
+        } catch (NoResultException nre) {
+
+            return BigDecimal.ZERO;
+
+        } catch (Exception e) {
+            System.out.println("No se puede obtener stock por producto a fecha " + e);
             return BigDecimal.ZERO;
         }
 
@@ -121,7 +125,6 @@ public class MovimientoStockDAO extends BaseDAO {
             return new ArrayList<ItemMovimientoStock>();
         }
     }
-      
 
     public BigDecimal getCantidadFromMovimiento(String tipoMovimiento, Producto producto, Deposito deposito, Date fechaMovimientoDesde, Date fechaMovimientoHasta) {
 
@@ -140,6 +143,11 @@ public class MovimientoStockDAO extends BaseDAO {
             q.setParameter("fHasta", fechaMovimientoHasta);
 
             return (BigDecimal) q.getSingleResult();
+
+        } catch (NoResultException nre) {
+
+            return BigDecimal.ZERO;
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("getCantidadFromMovimiento" + e);

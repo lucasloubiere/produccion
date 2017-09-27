@@ -14,7 +14,9 @@ import bs.stock.modelo.Producto;
 import bs.stock.rn.DepositoRN;
 import bs.stock.rn.MovimientoStockRN;
 import bs.stock.rn.StockRN;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +77,13 @@ public class GestionTanquesBean extends GenericBean {
          * actual gestión.
          */
         GestionTanque gestionAnterior = new GestionTanque();
-        gestionAnterior.setFechaMovimiento(new Date());
+        
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_YEAR, -20);
+        
+        gestionAnterior.setFechaMovimiento(c.getTime());
+        
+        System.err.println("gestionAnterior.fecha " + gestionAnterior.getFechaMovimiento());
 
         gestionTanque.getItems().clear();
 
@@ -91,11 +99,9 @@ public class GestionTanquesBean extends GenericBean {
 
                 item.setStockInicial(movimientoStockRN.getStockAFecha(producto, deposito, gestionAnterior.getFechaMovimiento()));
                 item.setIngresos(movimientoStockRN.getCantidadFromMovimiento("I", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));
-                item.setEgresos(movimientoStockRN.getCantidadFromMovimiento("E", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));
-                
+                item.setEgresos(movimientoStockRN.getCantidadFromMovimiento("E", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));                
 
             }
-
             gestionTanque.getItems().add(item);
         }
     }
@@ -170,6 +176,15 @@ public class GestionTanquesBean extends GenericBean {
         gestionTanque = d;
         esNuevo = false;
         buscaMovimiento = false;
+    }
+    
+    public void calcularStock(ItemGestionTanque i){
+        
+        if(i.getStockInicial()==null) i.setStockInicial(BigDecimal.ZERO);
+        if(i.getIngresos()==null) i.setIngresos(BigDecimal.ZERO);
+        if(i.getEgresos()==null) i.setEgresos(BigDecimal.ZERO);
+        
+        i.setStockCalculado(i.getStockInicial().negate().add(i.getIngresos().negate()).add(i.getEgresos().negate()).add(i.getStockFinal()));        
     }
 
     //--------------------------------------------------------------------------

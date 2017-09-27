@@ -35,3 +35,11 @@ and open the template in the editor.
 .EmptyBox150{ display: block; width: 100%; height:150px; overflow:hidden;}
 
 
+.cantidadNegativa{
+    color: red;
+}
+
+.cantidadPositiva{
+    color: blue;
+}
+

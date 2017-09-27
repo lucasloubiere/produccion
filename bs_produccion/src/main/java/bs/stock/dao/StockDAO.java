@@ -164,11 +164,12 @@ public class StockDAO extends BaseDAO {
             
             return (Producto) q.getSingleResult();
             
-        } catch (NoResultException e) {            
-            System.out.println("Deposito de producto único, con más de un producto "+ codDep);
+        } catch (NoResultException e) {                        
             return null;  
             
-        } catch (NonUniqueResultException e) {            
+        } catch (NonUniqueResultException e) {     
+            
+            System.out.println("Deposito de producto único, con más de un producto "+ codDep);
             return null;  
             
         } catch (Exception e) {            

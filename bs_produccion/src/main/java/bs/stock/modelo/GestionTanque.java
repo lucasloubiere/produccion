@@ -6,6 +6,7 @@
 package bs.stock.modelo;
 
 import bs.global.modelo.Auditoria;
+import bs.global.modelo.Formulario;
 import bs.global.modelo.Sucursal;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -51,14 +53,16 @@ public class GestionTanque implements Serializable {
         @JoinColumn(name = "modcom", referencedColumnName = "MODCOM", nullable = false),
         @JoinColumn(name = "codcom", referencedColumnName = "CODCOM", nullable = false)
     })
-     @ManyToOne(fetch = FetchType.LAZY)      
+     @ManyToOne(fetch = FetchType.LAZY)   
+    private ComprobanteStock comprobante;
 
-    ComprobanteStock comprobante;
-
-    @JoinColumns({
+       @JoinColumns({
         @JoinColumn(name = "modfor", referencedColumnName = "modfor"),
         @JoinColumn(name = "codfor", referencedColumnName = "codfor")})
-
+    @ManyToOne(optional = false)
+    private Formulario formulario;        
+    
+    
     @JoinColumn(name = "sucurs", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
     private Sucursal sucursal;
@@ -80,6 +84,9 @@ public class GestionTanque implements Serializable {
 
     @Embedded
     private Auditoria auditoria;
+    
+    @Transient
+    private boolean persistido;
 
     public GestionTanque() {
 
@@ -87,14 +94,54 @@ public class GestionTanque implements Serializable {
         this.items = new ArrayList<ItemGestionTanque>();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }    
+
+    public ComprobanteStock getComprobante() {
+        return comprobante;
     }
 
+    public void setComprobante(ComprobanteStock comprobante) {
+        this.comprobante = comprobante;
+    }
+
+    public Formulario getFormulario() {
+        return formulario;
+    }
+
+    public void setFormulario(Formulario formulario) {
+        this.formulario = formulario;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public int getNumeroFormulario() {
+        return numeroFormulario;
+    }
+
+    public void setNumeroFormulario(int numeroFormulario) {
+        this.numeroFormulario = numeroFormulario;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+    
     public Date getFechaMovimiento() {
         return fechaMovimiento;
     }
@@ -118,6 +165,15 @@ public class GestionTanque implements Serializable {
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
     }
+
+    public boolean isPersistido() {
+        return persistido;
+    }
+
+    public void setPersistido(boolean persistido) {
+        this.persistido = persistido;
+    }
+           
 
     @Override
     public int hashCode() {

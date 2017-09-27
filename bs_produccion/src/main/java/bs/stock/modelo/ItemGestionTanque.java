@@ -8,35 +8,32 @@ package bs.stock.modelo;
 import bs.global.modelo.Auditoria;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Claudio
+ * @author lloubiere
  */
-
 
 @Entity
 @Table(name = "st_gestion_tanque_item")
 @XmlRootElement
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "TIPITM", discriminatorType = DiscriminatorType.STRING, length = 10)
-public abstract class ItemGestionTanque implements Serializable {
+
+public class ItemGestionTanque implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,7 +43,7 @@ public abstract class ItemGestionTanque implements Serializable {
 
     @JoinColumn(name = "idcab", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private MovimientoStock movimiento;
+    private GestionTanque gestionTanque;
         
     @JoinColumn(name = "deposi", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -66,12 +63,14 @@ public abstract class ItemGestionTanque implements Serializable {
     private BigDecimal stockFinal;
     @Column(name = "stock_calculado")
     private BigDecimal stockCalculado;
+    @Column(name = "stock")
+    private BigDecimal stock;
     
     @JoinColumn(name = "unimed", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private UnidadMedida unidadMedida;
-
-
+    
+    
     //@Size(min = 1, max = 50)
     @Column(name = "natri1")
     private String atributo1;
@@ -99,6 +98,10 @@ public abstract class ItemGestionTanque implements Serializable {
     //@Size(min = 1, max = 50)
     @Column(name = "natri7")
     private String atributo7;
+    
+    @Column(name = "fchmov")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaMovimiento;
 
     @Embedded
     private Auditoria auditoria;
@@ -112,8 +115,17 @@ public abstract class ItemGestionTanque implements Serializable {
         this.stockFinal     = BigDecimal.ZERO;
         this.ingresos       = BigDecimal.ZERO;
         this.egresos        = BigDecimal.ZERO;
-        this.stockFinal     = BigDecimal.ZERO;
+        //this.stockFinal     = BigDecimal.ZERO;
         this.stockCalculado = BigDecimal.ZERO;
+        this.stock = BigDecimal.ZERO;
+        
+        this.atributo1 = "";
+        this.atributo2 = "";
+        this.atributo3 = "";
+        this.atributo4 = "";
+        this.atributo5 = "";
+        this.atributo6 = "";
+        this.atributo7 = "";
     }
 
     public Deposito getDeposito() {
@@ -172,13 +184,14 @@ public abstract class ItemGestionTanque implements Serializable {
         this.id = id;
     }
 
-    public MovimientoStock getMovimiento() {
-        return movimiento;
+    public GestionTanque getGestionTanque() {
+        return gestionTanque;
     }
 
-    public void setMovimiento(MovimientoStock movimiento) {
-        this.movimiento = movimiento;
+    public void setGestionTanque(GestionTanque gestionTanque) {
+        this.gestionTanque = gestionTanque;
     }
+
 
     public Producto getProducto() {
         return producto;
@@ -245,8 +258,27 @@ public abstract class ItemGestionTanque implements Serializable {
     }
 
     public String getAtributo7() {
+        
         return atributo7;
     }
+
+    public BigDecimal getStock() {
+        return stock;
+    }
+
+    public void setStock(BigDecimal stock) {
+        this.stock = stock;
+    }
+
+    public Date getFechaMovimiento() {
+        return fechaMovimiento;
+    }
+
+    public void setFechaMovimiento(Date fechaMovimiento) {
+        this.fechaMovimiento = fechaMovimiento;
+    }
+    
+    
 
     public void setAtributo7(String atributo7) {
         this.atributo7 = atributo7;

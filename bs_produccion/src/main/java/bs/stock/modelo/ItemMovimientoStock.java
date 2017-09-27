@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author lloubiere
  */
+
 @Entity
 @Table(name = "st_movimiento_item")
 @XmlRootElement
