@@ -133,7 +133,7 @@
   st_movimiento.FCHMOV as st_movimiento_FCHMOV,
   st_movimiento.SUCURS as st_movimiento_SUCURS,
   st_movimiento.TIPMOV as st_movimiento_TIPMOV,
-  st_movimiento_item.CANTID as st_movimiento_item_CANTID,
+  st_movimiento_item.STOCK as st_movimiento_item_CANTID,
   st_movimiento_item.UNIMED as st_movimiento_item_UNIMED,
   st_movimiento_item.NATRI1 as st_movimiento_item_NATRI1,
   st_movimiento_item.NATRI2 as st_movimiento_item_NATRI2,
@@ -179,7 +179,7 @@ ORDER BY
 	<field name="st_movimiento_MODFOR" class="java.lang.String"/>
 	<field name="st_movimiento_CODFOR" class="java.lang.String"/>
 	<field name="st_movimiento_NROFOR" class="java.lang.Integer"/>
-	<field name="st_movimiento_FCHMOV" class="java.sql.Date"/>
+	<field name="st_movimiento_FCHMOV" class="java.sql.Timestamp"/>
 	<field name="st_movimiento_SUCURS" class="java.lang.String"/>
 	<field name="st_movimiento_TIPMOV" class="java.lang.String"/>
 	<field name="st_movimiento_item_CANTID" class="java.math.BigDecimal"/>
@@ -491,39 +491,39 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{st_movimiento_item_NATRI2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="0000000">
-				<reportElement x="259" y="0" width="51" height="12" uuid="7bcaa877-5a0e-4a40-aa63-8db357c2f1a0"/>
+				<reportElement x="229" y="0" width="51" height="12" uuid="7bcaa877-5a0e-4a40-aa63-8db357c2f1a0"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{st_movimiento_NROFOR}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="186" y="0" width="48" height="12" uuid="6920de6c-2a0c-4dde-9de4-fd5c89e58aa6"/>
+				<reportElement x="156" y="0" width="48" height="12" uuid="6920de6c-2a0c-4dde-9de4-fd5c89e58aa6"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{st_movimiento_CODFOR}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement x="310" y="0" width="55" height="12" uuid="4257b706-37be-46e3-8e73-613a8bccf8a0"/>
+			<textField pattern="dd/MM/yyyy kk.mm">
+				<reportElement x="280" y="0" width="85" height="12" uuid="4257b706-37be-46e3-8e73-613a8bccf8a0"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{st_movimiento_FCHMOV}]]></textFieldExpression>
 			</textField>
 			<textField pattern="0000">
-				<reportElement x="234" y="0" width="25" height="12" uuid="7a546e4e-e11e-426f-b394-8e119f568697"/>
+				<reportElement x="204" y="0" width="25" height="12" uuid="7a546e4e-e11e-426f-b394-8e119f568697"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{st_movimiento_SUCURS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="186" height="12" uuid="0d13e3c0-3f24-4e52-8d56-b5269539ce7f"/>
+				<reportElement x="0" y="0" width="156" height="12" uuid="0d13e3c0-3f24-4e52-8d56-b5269539ce7f"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{st_producto_DESCRP}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{st_producto_CODIGO}+"-"+$F{st_producto_DESCRP}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

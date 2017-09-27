@@ -70,11 +70,11 @@
                 </p:autoComplete>
                 
                 <h:outputText value="Fecha desde" />
-                <p:calendar value="#{reporteService.fechaDesde}" pattern="dd/MM/yyyy" 
+                <p:calendar value="#{reporteService.fechaDesde}" pattern="dd/MM/yyyy HH:mm" timeControlObject=""
                             required="true" requiredMessage="La fecha desde es obligatoria" />
 
                 <h:outputText value="Fecha hasta" />
-                <p:calendar value="#{reporteService.fechaHasta}" pattern="dd/MM/yyyy" 
+                <p:calendar value="#{reporteService.fechaHasta}" pattern="dd/MM/yyyy HH:mm" timeControlObject="" 
                             required="true" requiredMessage="La fecha hasta es obligatoria" />
                 
             </p:panelGrid>
