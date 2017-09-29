@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml" >
-        
+
         <ui:define name="titulo" >
             Gestión de Tanques
         </ui:define>
@@ -75,93 +75,131 @@
 
                 </p:panelGrid>                    
             </p:panel>    
-            
+
             <div class="EmptyBox10" />
-            
+
             <p:commandButton value="Obtener datos" 
                              actionListener="#{gestionTanquesBean.obtenerDatos()}"
                              process="@form"
                              update="@form" />                             
-            
+
             <div class="EmptyBox10" />
 
-            <p:dataTable id="tablaGestionTanque" value="#{gestionTanquesBean.gestionTanque.items}"  reflow="true" var="i"
-                         emptyMessage="No se encontraron datos"                         
-                         rows="50" paginator="true" >
-                
-                <p:column headerText="Código" sortBy="#{i.deposito.codigo}"  width="100"   
-                          filterBy="#{i.deposito.codigo}"
-                          filterMatchMode="contains" >
-                    
-                    <h:outputText value="#{i.deposito.codigo}" />
-                </p:column>
+            <p:wizard backLabel="Atras" nextLabel="Siguiente" >
 
-                <p:column headerText="Deposito" sortBy="#{i.deposito.descripcion}"  
-                          filterBy="#{i.deposito.descripcion}"
-                          filterMatchMode="contains">
-                    <h:outputText value="#{i.deposito.descripcion}" />
-                </p:column>
+                <p:tab id="productos" title="Productos">
 
-                <p:column headerText="Código" sortBy="#{i.producto.codigo}" width="70" filterBy="#{i.producto.codigo}"
-                          filterMatchMode="contains" >
-                    <h:outputText value="#{i.producto.codigo}" />
-                </p:column>
-                
-                <p:column headerText="Descripción" sortBy="#{i.producto.descripcion}" filterBy="#{i.producto.descripcion}"
-                          filterMatchMode="contains" >
-                    <h:outputText value="#{i.producto.descripcion}" />
-                </p:column>
-                
-                <p:column headerText="U.M." width="50" >
-                    <h:outputText value="#{i.producto.unidadDeMedida.codigo}" />
-                </p:column>
-                
-                <p:column headerText="Stock inicial" sortBy="#{i.stockInicial}" width="100" styleClass="TextAlRight"  >                    
-                    <h:outputText value="#{i.stockInicial}" styleClass="pull-right #{not empty i.stockInicial?(i.stockInicial>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
-                        <f:convertNumber pattern="#,###,##0.00" />
-                    </h:outputText>
-                </p:column>
-                
-                <p:column headerText="Ingresos" sortBy="#{i.ingresos}" width="100"  >                    
-                    <h:outputText value="#{i.ingresos}" styleClass="pull-right" >
-                        <f:convertNumber pattern="#,###,##0.00" />
-                    </h:outputText>
-                </p:column>
-                
-                <p:column headerText="Egresos" sortBy="#{i.egresos}" width="100" >                    
-                    <h:outputText value="#{i.egresos*(-1)}" styleClass="pull-right" >
-                        <f:convertNumber pattern="#,###,##0.00" />
-                    </h:outputText>
-                </p:column>
-                
-                <p:column headerText="" width="40" >
-                    <p:commandButton  value="=" actionListener="#{gestionTanquesBean.calcularStock(i)}" process="@this" update="tablaGestionTanque" >
-                        <f:setPropertyActionListener target="#{i.stockFinal}" value="#{i.stockInicial}" />
-                    </p:commandButton>
-                </p:column>
-                
-                <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >                    
-                    <p:inputText value="#{i.stockFinal}" style="text-align: right;" >
-                        <f:convertNumber pattern="#,###,##0.00" />
-                        <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
-                    </p:inputText>
-                </p:column>
-                
-                <p:column headerText="Stock Calculado" sortBy="#{i.stockCalculado}" width="100"  >                    
-                    <h:outputText value="#{i.stockCalculado}" 
-                                  styleClass="pull-right  #{not empty i.stockCalculado?(i.stockCalculado>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
-                        <f:convertNumber pattern="#,###,##0.00" />
-                    </h:outputText>
+                    <p:dataTable id="tablaGestionTanque" value="#{gestionTanquesBean.gestionTanque.items}"  reflow="true" var="i"
+                                 emptyMessage="No se encontraron datos"                         
+                                 rows="50" paginator="true" >
+
+                        <p:column headerText="Código" sortBy="#{i.deposito.codigo}"  width="100"   
+                                  filterBy="#{i.deposito.codigo}"
+                                  filterMatchMode="contains" >
+
+                            <h:outputText value="#{i.deposito.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Deposito" sortBy="#{i.deposito.descripcion}"  
+                                  filterBy="#{i.deposito.descripcion}"
+                                  filterMatchMode="contains">
+                            <h:outputText value="#{i.deposito.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Código" sortBy="#{i.producto.codigo}" width="70" filterBy="#{i.producto.codigo}"
+                                  filterMatchMode="contains" >
+                            <h:outputText value="#{i.producto.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Descripción" sortBy="#{i.producto.descripcion}" filterBy="#{i.producto.descripcion}"
+                                  filterMatchMode="contains" >
+                            <h:outputText value="#{i.producto.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="U.M." width="50" >
+                            <h:outputText value="#{i.producto.unidadDeMedida.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Stock inicial" sortBy="#{i.stockInicial}" width="100" styleClass="TextAlRight"  >                    
+                            <h:outputText value="#{i.stockInicial}" styleClass="pull-right #{not empty i.stockInicial?(i.stockInicial>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
+                                <f:convertNumber pattern="#,###,##0.00" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Ingresos" sortBy="#{i.ingresos}" width="100"  >                    
+                            <h:outputText value="#{i.ingresos}" styleClass="pull-right" >
+                                <f:convertNumber pattern="#,###,##0.00" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Egresos" sortBy="#{i.egresos}" width="100" >                    
+                            <h:outputText value="#{i.egresos*(-1)}" styleClass="pull-right" >
+                                <f:convertNumber pattern="#,###,##0.00" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="" width="40" >
+                            <p:commandButton  icon="ui-icon-done-all" actionListener="#{gestionTanquesBean.marcarDepositoSinMovimiento(i)}" process="@this" update="tablaGestionTanque" />                                            
+                        </p:column>
+
+                        <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >                    
+                            <p:inputText value="#{i.stockFinal}" style="text-align: right;" >
+                                <f:convertNumber pattern="#,###,##0.00" />
+                                <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
+                            </p:inputText>
+                        </p:column>
+
+                        <p:column headerText="Producción Calculada" sortBy="#{i.stockCalculado}" width="100"  >                    
+                            <h:outputText value="#{i.stockCalculado}" 
+                                          styleClass="pull-right  #{not empty i.stockCalculado?(i.stockCalculado>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
+                                <f:convertNumber pattern="#,###,##0.00" />
+                            </h:outputText>
+
+                            <!--                    
+                            <h:outputText value="#{(i.stockInicial*(-1))-i.ingresos-i.egresos+i.stockFinal}" 
+                                          styleClass="pull-right  #{not empty i.stockCalculado?(i.stockCalculado>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
+                                <f:convertNumber pattern="#,###,##0.00" />
+                            </h:outputText>
+                            -->
+                        </p:column>
+
+                    </p:dataTable>
+                </p:tab>
+
+                <p:tab id="resumen" title="resumen">
+
+                    <p:commandButton value="Generar resumen" 
+                                     actionListener="#{gestionTanquesBean.generarResumen()}"
+                                     process="@form"
+                                     update="@form" />
                     
-                    <!--                    
-                    <h:outputText value="#{(i.stockInicial*(-1))-i.ingresos-i.egresos+i.stockFinal}" 
-                                  styleClass="pull-right  #{not empty i.stockCalculado?(i.stockCalculado>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
-                        <f:convertNumber pattern="#,###,##0.00" />
-                    </h:outputText>
-                    -->
-                </p:column>
-                
-            </p:dataTable>
+                    <p:dataTable id="tablaResumen" value="#{gestionTanquesBean.resumen}"  reflow="true" var="i"
+                                 style="max-width: 600px;"
+                                 emptyMessage="No se encontraron datos"                         
+                                 rows="50" paginator="true" >
+
+                       
+                        <p:column headerText="Código" sortBy="#{i.producto.codigo}" width="70" filterBy="#{i.producto.codigo}"
+                                  filterMatchMode="contains" >
+                            <h:outputText value="#{i.producto.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Descripción" sortBy="#{i.producto.descripcion}" filterBy="#{i.producto.descripcion}"
+                                  filterMatchMode="contains" >
+                            <h:outputText value="#{i.producto.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >                    
+                            <p:inputText value="#{i.stockFinal}" style="text-align: right;" >
+                                <f:convertNumber pattern="#,###,##0.00" />
+                                <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
+                            </p:inputText>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:tab>
+
+            </p:wizard>
 
         </ui:define>
 

@@ -17,6 +17,8 @@ import bs.stock.rn.StockRN;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -47,12 +49,15 @@ public class GestionTanquesBean extends GenericBean {
     private List<GestionTanque> lista;
     private List<Deposito> depositos;
 
+    private List<ItemGestionTanque> resumen;
+
     @PostConstruct
     private void init() {
 
         cantidadRegistros = 0;
         txtBusqueda = "";
         mostrarDebaja = false;
+        resumen = new ArrayList<ItemGestionTanque>();
         nuevo();
         buscar();
 
@@ -77,19 +82,20 @@ public class GestionTanquesBean extends GenericBean {
          * actual gestión.
          */
         GestionTanque gestionAnterior = new GestionTanque();
-        
+
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_YEAR, -20);
-        
+
         gestionAnterior.setFechaMovimiento(c.getTime());
-        
+
         System.err.println("gestionAnterior.fecha " + gestionAnterior.getFechaMovimiento());
 
         gestionTanque.getItems().clear();
 
         for (Deposito deposito : depositos) {
 
-            ItemGestionTanque item = new ItemGestionTanque() {};
+            ItemGestionTanque item = new ItemGestionTanque() {
+            };
             item.setDeposito(deposito);
 
             Producto producto = stockRN.getProductoByDepositoConStock(deposito);
@@ -99,11 +105,30 @@ public class GestionTanquesBean extends GenericBean {
 
                 item.setStockInicial(movimientoStockRN.getStockAFecha(producto, deposito, gestionAnterior.getFechaMovimiento()));
                 item.setIngresos(movimientoStockRN.getCantidadFromMovimiento("I", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));
-                item.setEgresos(movimientoStockRN.getCantidadFromMovimiento("E", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));                
+                item.setEgresos(movimientoStockRN.getCantidadFromMovimiento("E", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));
+
+                calcularStock(item);
 
             }
             gestionTanque.getItems().add(item);
         }
+
+        Collections.sort(gestionTanque.getItems(), new Comparator() {
+
+            @Override
+            public int compare(Object o1, Object o2) {
+                //return new Integer(p1.getEdad()).compareTo(new Integer(p2.getEdad()));
+                ItemGestionTanque item1 = (ItemGestionTanque) o1;
+                ItemGestionTanque item2 = (ItemGestionTanque) o2;
+
+                String cod1 = (item1.getProducto() == null ? "99999" : item1.getProducto().getCodigo());
+                String cod2 = (item2.getProducto() == null ? "99999" : item2.getProducto().getCodigo());
+
+                return (new Integer(cod1)).compareTo(new Integer(cod2));
+
+            }
+        });
+
     }
 
     public void guardar(boolean nuevo) {
@@ -177,18 +202,72 @@ public class GestionTanquesBean extends GenericBean {
         esNuevo = false;
         buscaMovimiento = false;
     }
-    
-    public void calcularStock(ItemGestionTanque i){
-        
-        if(i.getStockInicial()==null) i.setStockInicial(BigDecimal.ZERO);
-        if(i.getIngresos()==null) i.setIngresos(BigDecimal.ZERO);
-        if(i.getEgresos()==null) i.setEgresos(BigDecimal.ZERO);
-        
-        i.setStockCalculado(i.getStockInicial().negate().add(i.getIngresos().negate()).add(i.getEgresos().negate()).add(i.getStockFinal()));        
+
+    public void calcularStock(ItemGestionTanque i) {
+
+        if (i.getStockInicial() == null) {
+            i.setStockInicial(BigDecimal.ZERO);
+        }
+        if (i.getIngresos() == null) {
+            i.setIngresos(BigDecimal.ZERO);
+        }
+        if (i.getEgresos() == null) {
+            i.setEgresos(BigDecimal.ZERO);
+        }
+
+        i.setStockCalculado(i.getStockInicial().negate().add(i.getIngresos().negate()).add(i.getEgresos().negate()).add(i.getStockFinal()));
     }
 
-    //--------------------------------------------------------------------------
-    public List<Deposito> getDepositos() {
+    public void marcarDepositoSinMovimiento(ItemGestionTanque i) {
+
+        if (i.getStockInicial() == null) {
+            i.setStockInicial(BigDecimal.ZERO);
+        }
+        if (i.getIngresos() == null) {
+            i.setIngresos(BigDecimal.ZERO);
+        }
+        if (i.getEgresos() == null) {
+            i.setEgresos(BigDecimal.ZERO);
+        }
+
+        i.setStockFinal(i.getStockInicial().add(i.getIngresos()).add(i.getEgresos()));
+        i.setStockCalculado(i.getStockInicial().negate().add(i.getIngresos().negate()).add(i.getEgresos().negate()).add(i.getStockFinal()));
+    }
+
+    public void generarResumen() {
+
+        resumen.clear();
+        
+        for (ItemGestionTanque item : gestionTanque.getItems()) {
+            
+            boolean existe = false;
+            int posicion = 0;
+
+            for(ItemGestionTanque itemResumen: resumen){
+
+                if(item.getProducto().equals(itemResumen.getProducto())){                    
+                    existe=true;
+                    break;                                     
+                }
+                posicion++;
+            }            
+            
+            if(existe){                
+                ItemGestionTanque itemExistente = resumen.get(posicion);                
+                itemExistente.setStockFinal(itemExistente.getStockFinal().add(item.getStockFinal()));                
+            }else{
+                
+                ItemGestionTanque itemAgregar = new ItemGestionTanque();
+                itemAgregar.setProducto(item.getProducto());
+                itemAgregar.setStockFinal(item.getStockFinal());                                       
+                resumen.add(itemAgregar);
+            }
+        }
+    }
+
+
+//--------------------------------------------------------------------------
+public List<Deposito> getDepositos() {
         return depositos;
     }
 
@@ -212,4 +291,12 @@ public class GestionTanquesBean extends GenericBean {
         this.lista = lista;
     }
 
+    public List<ItemGestionTanque> getResumen() {
+        return resumen;
+    }
+
+    public void setResumen(List<ItemGestionTanque> resumen) {
+        this.resumen = resumen;
+    }
+    
 }
