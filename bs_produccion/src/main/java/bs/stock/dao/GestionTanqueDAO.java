@@ -6,8 +6,8 @@
 package bs.stock.dao;
 
 import bs.global.dao.BaseDAO;
-import bs.stock.modelo.ItemGestionTanque;
 import bs.stock.modelo.GestionTanque;
+import bs.stock.modelo.ItemGestionTanque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +72,29 @@ public class GestionTanqueDAO extends BaseDAO{
             System.err.println("Error al obtener movimientos de inventario " + e);
             return new ArrayList<GestionTanque>();
         }
+    }
+
+    public GestionTanque getUltimoRegistro() {        
+        
+        try {
+            String sQuery = "SELECT m FROM GestionTanque m ";            
+            sQuery += " ORDER BY m.fechaMovimiento DESC, m.numeroFormulario DESC";
+
+            Query q = em.createQuery(sQuery);
+            
+            q.setMaxResults(1);
+            return (GestionTanque) q.getSingleResult();
+
+        } catch (NoResultException e) {
+
+            return null;
+
+        } catch (Exception e) {
+
+            System.err.println("Error al obtener ultimo movimiento " + e);
+            return null;
+        }
+            
     }
    
 }

@@ -32,7 +32,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "st_gestion_tanque_item")
 @XmlRootElement
-
 public class ItemGestionTanque implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -126,6 +125,9 @@ public class ItemGestionTanque implements Serializable {
         this.atributo5 = "";
         this.atributo6 = "";
         this.atributo7 = "";
+        
+        this.auditoria = new Auditoria();
+                
     }
 
     public Deposito getDeposito() {
@@ -303,7 +305,7 @@ public class ItemGestionTanque implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 31 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
@@ -329,5 +331,5 @@ public class ItemGestionTanque implements Serializable {
     public String toString() {
         return "ItemGestionTanque{" + "id=" + id + '}';
     }
-    
+
 }

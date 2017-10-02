@@ -15,7 +15,7 @@
             <!-- MENU -->                        
             <p:menubar id="menuBar">               
 
-                <!--
+                
                 <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
                            actionListener="#{gestionTanquesBean.nuevo}"
                            process="@this"
@@ -27,67 +27,138 @@
                             rendered="#{not gestionTanquesBean.buscaMovimiento}"
                             update="@form" />
     
-                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
-                            actionListener="#{gestionTanquesBean.guardar(true)}"                            
-                            rendered="#{not gestionTanquesBean.buscaMovimiento}"
-                            oncomplete="btnNew.click()"
-                            update="@form" />
-    
-                <p:menuitem value="Deshabilitar" icon="fa fa-ban"
-                            actionListener="#{gestionTanquesBean.habilitaDeshabilita('S')}"
-                            rendered="#{not empty gestionTanquesBean.deposito and not gestionTanquesBean.esNuevo and gestionTanquesBean.deposito.auditoria.debaja eq 'N'}"
-                            process="@this"
-                            update="@form" />
-    
-                <p:menuitem value="Habilitar" icon="fa fa-check"
-                            actionListener="#{gestionTanquesBean.habilitaDeshabilita('N')}"
-                            rendered="#{not empty gestionTanquesBean.deposito and not gestionTanquesBean.esNuevo and gestionTanquesBean.deposito.auditoria.debaja eq 'S'}"
-                            process="@this"
-                            update="@form" />
-    
-                <p:menuitem value="Buscar" icon="fa fa-search" 
-                            actionListener="#{gestionTanquesBean.buscar()}"
-                            update="buscadorDeposito"
-                            process="@this" 
-                            oncomplete="PF('dlg_deposito').show()" 
-                            immediate="true" /> 
+                <p:menuitem value="Buscar" icon="fa fa-search"
+                            actionListener="#{gestionTanquesBean.nuevaBusqueda}"                            
+                            immediate="true"
+                            update="@form" /> 
                 
-                -->            
             </p:menubar>
         </ui:define>
 
         <ui:define name="contenido" >
 
             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+            
+                        <!-- BUSQUEDA -->
+            <p:panel id="panelBusqueda" header="Busqueda" rendered="#{gestionTanquesBean.buscaMovimiento}" >
+
+                <p:panelGrid columns="3" layout="grid"                               
+                             styleClass="ui-panelgrid-blank form-group"
+                             columnClasses="Container40, Container60" >
+
+                    <h:outputText value="Formulario" />
+                    <h:panelGroup id="formularioFacturacion" layout="block" style="text-align: left;">                                            
+                        <h:outputText value="#{gestionTanquesBean.formulario.descripcion}" />
+                    </h:panelGroup>  
+                    <h:outputText value="" />                    
+
+                    <h:outputText value="Fecha formulario" /> 
+
+
+                    <p:calendar value="#{gestionTanquesBean.fechaMovimientoDesde}" placeholder="Desde"
+                                pattern="dd/MM/yyyy"   />
+
+                    <p:calendar value="#{gestionTanquesBean.fechaMovimientoHasta}" placeholder="Hasta"
+                                pattern="dd/MM/yyyy"   />
+
+
+                    <h:outputText value="Número formulario" />                    
+
+                    <p:inputText value="#{gestionTanquesBean.numeroFormularioDesde}"  placeholder="Desde" styleClass="md-inputfield"/>
+                    <p:inputText value="#{gestionTanquesBean.numeroFormularioHasta}"  placeholder="Hasta" styleClass="md-inputfield"/>
+
+
+                </p:panelGrid>
+
+                <p:spacer width="100%" height="1em" /> 
+
+                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank" >  
+
+                    <p:commandButton value="Buscar" icon="fa fa-search"
+                                     process="panelBusqueda" 
+                                     update="@form"                                                                          
+                                     actionListener="#{gestionTanquesBean.buscarMovimiento()}"   />
+
+                    <p:commandButton value="Limpiar" icon="fa fa-trash"
+                                     process="panelBusqueda" 
+                                     update="@form"                                                                          
+                                     actionListener="#{gestionTanquesBean.resetParametros}"   />
+
+                    <p:commandButton value="Cerrar" icon="fa fa-close"
+                                     process="panelBusqueda" 
+                                     update="@form" >
+                        <f:setPropertyActionListener target="#{gestionTanquesBean.buscaMovimiento}" value="#{false}" />
+                    </p:commandButton>
+
+                </p:panelGrid>
+
+                <p:spacer width="100%" height="1em" /> 
+
+                <p:dataTable id="detalle" value="#{gestionTanquesBean.lista}" var="i" reflow="true"
+                             paginator="true" rows="15"
+                             rendered="#{not empty gestionTanquesBean.lista}"  >
+
+                    <f:facet name="header">
+                        Movimientos encontrados
+                    </f:facet>
+
+                    <p:column headerText="Formulario" >
+                        <h:outputText value="#{i.formulario.codigo}" />                            
+                    </p:column>
+
+                    <p:column headerText="Número" >                            
+                        <h:outputText value="#{i.numeroFormulario}" >    
+                            <f:convertNumber pattern="00000000" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Fecha" >    
+                        <h:outputText value="#{i.fechaMovimiento}"  >    
+                            <f:convertDateTime pattern="dd/MM/yyyy hh:MM"/>
+                        </h:outputText>                                               
+                    </p:column>
+
+                    <p:column headerText="" width="10%" style="text-align: center;">
+                        <p:commandButton icon="fa fa-edit"
+                                         actionListener="#{gestionTanquesBean.seleccionarMovimiento(i)}"
+                                         process="@this"
+                                         update="@form"  />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+            <p:spacer width="100%" height="1em" rendered="#{gestionTanquesBean.buscaMovimiento}" /> 
 
             <!-- DATOS -->
             <p:panel header="Datos"  >
 
-                <p:panelGrid columns="2" layout="grid"              
+                <p:panelGrid columns="4" layout="grid"              
                              styleClass="ui-panelgrid-blank"
-                             columnClasses="ui-g-12 ui-md-4 ui-lg-3, ui-g-12 ui-md-8 ui-lg-6" >
+                             columnClasses="ui-g-2 ui-md-2 ui-lg-3, ui-g-4 ui-md-8 ui-lg-6,ui-g-2 ui-md-2 ui-lg-3, ui-g-4 ui-md-8 ui-lg-6" >
 
                     <h:outputText value="Fecha" />
                     <p:calendar value="#{gestionTanquesBean.gestionTanque.fechaMovimiento}"  timeControlObject="true"                             
                                 pattern="dd/MM/yyyy HH:mm" 
                                 required="true"
-                                requiredMessage="La fecha es necesaria" />
+                                requiredMessage="La fecha es necesaria" >
+                        <p:ajax event="dateSelect" listener="#{gestionTanquesBean.onDateSelect}" update="@form" />
+                    </p:calendar>
 
-                </p:panelGrid>                    
+                    <h:outputText value="Observaciones" />
+                    <p:inputTextarea style="width: 100%" rows="3" value="#{gestionTanquesBean.gestionTanque.observaciones}" />
+
+                </p:panelGrid>  
+
             </p:panel>    
 
             <div class="EmptyBox10" />
 
-            <p:commandButton value="Obtener datos" 
-                             actionListener="#{gestionTanquesBean.obtenerDatos()}"
-                             process="@form"
-                             update="@form" />                             
-
-            <div class="EmptyBox10" />
-
-            <p:wizard backLabel="Atras" nextLabel="Siguiente" >
+            <p:wizard backLabel="Atras" nextLabel="Siguiente"
+                      flowListener="#{gestionTanquesBean.onFlowProcess}" >
 
                 <p:tab id="productos" title="Productos">
+                    
+                    <div class="EmptyBox10" />
 
                     <p:dataTable id="tablaGestionTanque" value="#{gestionTanquesBean.gestionTanque.items}"  reflow="true" var="i"
                                  emptyMessage="No se encontraron datos"                         
@@ -164,39 +235,55 @@
                         </p:column>
 
                     </p:dataTable>
+
+                    <div class="EmptyBox20" />
                 </p:tab>
 
                 <p:tab id="resumen" title="resumen">
 
-                    <p:commandButton value="Generar resumen" 
-                                     actionListener="#{gestionTanquesBean.generarResumen()}"
-                                     process="@form"
-                                     update="@form" />
-                    
-                    <p:dataTable id="tablaResumen" value="#{gestionTanquesBean.resumen}"  reflow="true" var="i"
-                                 style="max-width: 600px;"
-                                 emptyMessage="No se encontraron datos"                         
-                                 rows="50" paginator="true" >
+                    <div class="EmptyBox10" />
 
-                       
-                        <p:column headerText="Código" sortBy="#{i.producto.codigo}" width="70" filterBy="#{i.producto.codigo}"
-                                  filterMatchMode="contains" >
-                            <h:outputText value="#{i.producto.codigo}" />
-                        </p:column>
+                    <div class="ui-g-12">
 
-                        <p:column headerText="Descripción" sortBy="#{i.producto.descripcion}" filterBy="#{i.producto.descripcion}"
-                                  filterMatchMode="contains" >
-                            <h:outputText value="#{i.producto.descripcion}" />
-                        </p:column>
+                        <div class="Responsive100" style="width: 40%;margin-left: auto; margin-right: auto;">
 
-                        <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >                    
-                            <p:inputText value="#{i.stockFinal}" style="text-align: right;" >
-                                <f:convertNumber pattern="#,###,##0.00" />
-                                <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
-                            </p:inputText>
-                        </p:column>
+                            <p:dataTable id="tablaResumen" value="#{gestionTanquesBean.resumen}"  reflow="true" var="i"                                         
+                                         emptyMessage="No se encontraron datos"                         
+                                         rows="50" paginator="true" >
 
-                    </p:dataTable>
+
+                                <p:column headerText="Código" sortBy="#{i.producto.codigo}" width="70" filterBy="#{i.producto.codigo}"
+                                          filterMatchMode="contains" >
+                                    <h:outputText value="#{i.producto.codigo}" />
+                                </p:column>
+
+                                <p:column headerText="Descripción" sortBy="#{i.producto.descripcion}" filterBy="#{i.producto.descripcion}"
+                                          filterMatchMode="contains" >
+                                    <h:outputText value="#{i.producto.descripcion}" />
+                                </p:column>
+
+                                <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >                    
+                                    <p:inputText value="#{i.stockFinal}" style="text-align: right;" >
+                                        <f:convertNumber pattern="#,###,##0.00" />
+                                        <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
+                                    </p:inputText>
+                                </p:column>
+
+
+                            </p:dataTable>
+
+                            <div class="EmptyBox10" />
+
+                            <p:commandButton icon="fa fa-check" value="Guardar"
+                                             actionListener="#{gestionTanquesBean.guardar(false)}"
+                                             process="@this"
+                                             update="@form" />
+                        </div>
+
+                    </div>
+
+                    <div class="EmptyBox20" />
+
                 </p:tab>
 
             </p:wizard>

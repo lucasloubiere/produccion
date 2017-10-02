@@ -5,6 +5,7 @@
  */
 package bs.stock.web;
 
+import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.util.JsfUtil;
 import bs.global.web.GenericBean;
 import bs.stock.modelo.Deposito;
@@ -12,14 +13,13 @@ import bs.stock.modelo.GestionTanque;
 import bs.stock.modelo.ItemGestionTanque;
 import bs.stock.modelo.Producto;
 import bs.stock.rn.DepositoRN;
+import bs.stock.rn.GestionTanqueRN;
 import bs.stock.rn.MovimientoStockRN;
 import bs.stock.rn.StockRN;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,6 +28,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -44,6 +45,8 @@ public class GestionTanquesBean extends GenericBean {
     private DepositoRN depositoRN;
     @EJB
     private MovimientoStockRN movimientoStockRN;
+    @EJB
+    private GestionTanqueRN gestionTanqueRN;
 
     private GestionTanque gestionTanque;
     private List<GestionTanque> lista;
@@ -59,43 +62,42 @@ public class GestionTanquesBean extends GenericBean {
         mostrarDebaja = false;
         resumen = new ArrayList<ItemGestionTanque>();
         nuevo();
-        buscar();
-
     }
 
     public void nuevo() {
 
         esNuevo = true;
         buscaMovimiento = false;
-        gestionTanque = new GestionTanque();
-        gestionTanque.setFechaMovimiento(new Date());
+        try {
+            gestionTanque = gestionTanqueRN.nuevoMovimiento("ST", "GT", "0001");
+        } catch (ExcepcionGeneralSistema ex) {
+            Logger.getLogger(GestionTanquesBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         filtro = new HashMap<String, String>();
         filtro.put("calculaStock = ", "'S'");
         depositos = depositoRN.getDepositoByBusqueda(filtro, txtBusqueda, true, 0);
+
+    }
+    
+    public void onDateSelect(SelectEvent event) {
+        
+        obtenerDatos();
     }
 
     public void obtenerDatos() {
-
+        
         /**
          * Obtenemos la última gestión guardada, anterior a la fecha de la
          * actual gestión.
          */
-        GestionTanque gestionAnterior = new GestionTanque();
-
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_YEAR, -20);
-
-        gestionAnterior.setFechaMovimiento(c.getTime());
-
-        System.err.println("gestionAnterior.fecha " + gestionAnterior.getFechaMovimiento());
+        GestionTanque gestionAnterior = gestionTanqueRN.getUltimoRegistro();//        
 
         gestionTanque.getItems().clear();
 
         for (Deposito deposito : depositos) {
 
-            ItemGestionTanque item = new ItemGestionTanque() {
-            };
+            ItemGestionTanque item = new ItemGestionTanque();
             item.setDeposito(deposito);
 
             Producto producto = stockRN.getProductoByDepositoConStock(deposito);
@@ -108,8 +110,9 @@ public class GestionTanquesBean extends GenericBean {
                 item.setEgresos(movimientoStockRN.getCantidadFromMovimiento("E", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));
 
                 calcularStock(item);
-
             }
+
+            item.setGestionTanque(gestionTanque);
             gestionTanque.getItems().add(item);
         }
 
@@ -136,9 +139,9 @@ public class GestionTanquesBean extends GenericBean {
         try {
             if (gestionTanque != null) {
 
-//                gestionTanqueRN.guardar(gestionTanque, esNuevo);
-//                esNuevo = false;                
-//                JsfUtil.addInfoMessage("Los datos se guardaron correctamente");
+                gestionTanqueRN.guardar(gestionTanque);
+                esNuevo = false;
+                JsfUtil.addInfoMessage("Los datos se guardaron correctamente");
                 if (nuevo) {
                     nuevo();
                 }
@@ -164,6 +167,19 @@ public class GestionTanquesBean extends GenericBean {
         }
     }
 
+    public String onFlowProcess(FlowEvent event) {
+
+        if (event.getNewStep().equals("resumen")) {
+            generarResumen();
+        }
+
+        if (event.getNewStep().equals("finalizar")) {
+
+        }
+
+        return event.getNewStep();
+    }
+
     public void eliminar() {
         try {
 //            gestionTanqueRN.eliminar(gestionTanque);
@@ -175,8 +191,77 @@ public class GestionTanquesBean extends GenericBean {
         }
     }
 
-    public void buscar() {
-//        lista = gestionTanqueRN.getListaByBusqueda(txtBusqueda, mostrarDebaja,cantidadRegistros);
+    public void nuevaBusqueda(){
+                
+        if(gestionTanque!=null && gestionTanque.getFormulario()!=null){
+            formulario = gestionTanque.getFormulario();
+        }        
+        buscaMovimiento = true;
+    }
+
+    public void buscarMovimiento(){
+        
+        if(!validarParametros()){
+            return;
+        }
+        cargarFiltroBusqueda();
+        
+        lista = gestionTanqueRN.getListaByBusqueda(filtro, 0);
+        
+        if(lista==null || lista.isEmpty()){
+            JsfUtil.addWarningMessage("No se han encontrado movimientos");
+        }
+    }
+    
+    public boolean validarParametros(){
+        
+        if(formulario==null){
+            JsfUtil.addWarningMessage("Seleccione un formulario");
+            return false;
+        }
+        
+        if(numeroFormularioDesde!=null && numeroFormularioHasta!=null){
+            if(numeroFormularioDesde > numeroFormularioHasta){
+                JsfUtil.addWarningMessage("Número de formulario desde es mayor al número de formulario hasta");
+                return false;
+            }                    
+        }                
+        return true;
+    }
+    
+    public void cargarFiltroBusqueda(){
+        
+        filtro.clear();
+        
+        if(formulario!=null){
+            filtro.put("formulario.codigo = ","'"+formulario.getCodigo()+"'");
+        }
+        
+        if(numeroFormularioDesde!=null){
+            
+            filtro.put("numeroFormulario >=",String.valueOf(numeroFormularioDesde));
+        }
+
+        if(numeroFormularioHasta!=null){
+            
+            filtro.put("numeroFormulario <=",String.valueOf(numeroFormularioHasta));
+        }
+        
+        if(fechaMovimientoDesde!=null){
+            
+            filtro.put("fechaMovimiento >= ", JsfUtil.getFechaSQL(fechaMovimientoDesde));
+        }
+        
+        if(fechaMovimientoHasta!=null){
+            
+            filtro.put("fechaMovimiento <= ", JsfUtil.getFechaSQL(fechaMovimientoHasta));
+        }       
+    }
+    
+    public void seleccionarMovimiento(GestionTanque mSel){
+        
+        gestionTanque = mSel;           
+        buscaMovimiento = false;
     }
 
     public List<GestionTanque> complete(String query) {
@@ -242,6 +327,10 @@ public class GestionTanquesBean extends GenericBean {
             
             boolean existe = false;
             int posicion = 0;
+            
+            if(item.getProducto()==null){
+                continue;
+            }
 
             for(ItemGestionTanque itemResumen: resumen){
 
@@ -263,6 +352,19 @@ public class GestionTanquesBean extends GenericBean {
                 resumen.add(itemAgregar);
             }
         }
+    }
+    
+    public void resetParametros(){
+
+//        formulario = null;
+        numeroFormularioDesde = null;
+        numeroFormularioHasta = null;
+        fechaMovimientoDesde = null;
+        fechaMovimientoHasta = null;
+        muestraReporte = false;
+        solicitaEmail = false;        
+        gestionTanque = null;        
+        
     }
 
 

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -24,6 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,8 +42,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 
 public class GestionTanque implements Serializable {
-
-    private List<ItemGestionTanque> items;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -81,6 +81,10 @@ public class GestionTanque implements Serializable {
 //    @Size(min = 1, max = 65535)
     @Column(name = "observ")
     private String observaciones;
+    
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gestionTanque", fetch = FetchType.LAZY)
+    private List<ItemGestionTanque> items;
 
     @Embedded
     private Auditoria auditoria;
@@ -90,8 +94,8 @@ public class GestionTanque implements Serializable {
 
     public GestionTanque() {
 
-        this.auditoria = new Auditoria();
         this.items = new ArrayList<ItemGestionTanque>();
+        this.auditoria = new Auditoria();
     }
 
     public Integer getId() {
@@ -173,12 +177,11 @@ public class GestionTanque implements Serializable {
     public void setPersistido(boolean persistido) {
         this.persistido = persistido;
     }
-           
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 11 * hash + this.id;
+        hash = 31 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
@@ -194,12 +197,12 @@ public class GestionTanque implements Serializable {
             return false;
         }
         final GestionTanque other = (GestionTanque) obj;
-        if (this.id != other.id) {
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "GestionTanque{" + "id=" + id + '}';

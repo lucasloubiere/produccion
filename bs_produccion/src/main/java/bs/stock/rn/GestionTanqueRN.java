@@ -5,7 +5,6 @@
  */
 package bs.stock.rn;
 
-import bs.administracion.rn.ModuloRN;
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.modelo.Formulario;
 import bs.global.modelo.Sucursal;
@@ -38,13 +37,9 @@ public class GestionTanqueRN {
     @EJB
     private ComprobanteStockDAO comprobanteDAO;
     @EJB
-    private StockRN stockRN;
-    @EJB
     private FormularioRN formularioRN;
     @EJB
     private SucursalRN sucursalRN;
-    @EJB
-    private ModuloRN moduloRN;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public synchronized void guardar(GestionTanque m) throws Exception {
@@ -181,7 +176,7 @@ public class GestionTanqueRN {
         if (!permiteVacio && m.getItems().isEmpty()) {
             throw new ExcepcionGeneralSistema("El detalle está vacío, no es posible guardar el comprobante de gestión");
         }
-        
+
     }
 
     public void puedoAgregarItem(GestionTanque m, ItemGestionTanque nItem) throws ExcepcionGeneralSistema {
@@ -195,7 +190,6 @@ public class GestionTanqueRN {
         }
 
     }
-
 
     public List<GestionTanque> getListaByBusqueda(Map<String, String> filtro, int cantidadRegistros) {
 
@@ -211,7 +205,20 @@ public class GestionTanqueRN {
         filtro.put(" sucursal.codigo = ", "'" + ms.getSucursal().getCodigo() + "'");
 
         return (gestionTanqueDAO.getObjeto(GestionTanque.class, filtro) != null);
+    }
 
+    public GestionTanque getUltimoRegistro() {
+
+        GestionTanque gestionAnterior = gestionTanqueDAO.getUltimoRegistro();
+
+        if (gestionAnterior == null) {
+            
+            gestionAnterior = new GestionTanque();
+            gestionAnterior.setFechaMovimiento(new Date());            
+        }            
+
+        return gestionAnterior;
+        
     }
 
 }
