@@ -287,7 +287,7 @@ public class GestionTanqueRN {
                 itemProducto.setAtributo1("VICENTIN");
                 itemProducto.setAtributo2("N/D");
 
-                itemProducto.setCantidad(itemGestion.getStockCalculado());
+                itemProducto.setCantidad(itemGestion.getStockCalculado().negate());
                 itemProducto.setTodoOk(true);
 
                 movimientoStockRN.asignarCantidadStock(movEgreso);
