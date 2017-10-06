@@ -53,3 +53,7 @@ and open the template in the editor.
     width: 30% !important;
 }
 
+.MarAuto{
+    margin-left: auto;
+    margin-right: auto;
+}

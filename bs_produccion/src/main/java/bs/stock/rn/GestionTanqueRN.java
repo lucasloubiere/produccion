@@ -15,6 +15,9 @@ import bs.stock.dao.GestionTanqueDAO;
 import bs.stock.modelo.ComprobanteStock;
 import bs.stock.modelo.GestionTanque;
 import bs.stock.modelo.ItemGestionTanque;
+import bs.stock.modelo.ItemProductoStock;
+import bs.stock.modelo.MovimientoStock;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,24 +43,28 @@ public class GestionTanqueRN {
     private FormularioRN formularioRN;
     @EJB
     private SucursalRN sucursalRN;
+    @EJB
+    private MovimientoStockRN movimientoStockRN;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public synchronized void guardar(GestionTanque m) throws Exception {
+    public synchronized void guardar(GestionTanque gestionTanque) throws Exception {
 
         //Validamos que se pueda guardar el comprobante
-        controlComprobante(m, false);
+        controlComprobante(gestionTanque, false);
 
-        if (m.getId() == null) {
+        generarMovimientosStock(gestionTanque);
 
-            Integer ultimoNumero = formularioRN.tomarProximoNumero(m.getFormulario());
-            m.setNumeroFormulario(ultimoNumero);
+        if (gestionTanque.getId() == null) {
 
-            gestionTanqueDAO.crear(m);
+            Integer ultimoNumero = formularioRN.tomarProximoNumero(gestionTanque.getFormulario());
+            gestionTanque.setNumeroFormulario(ultimoNumero);
+
+            gestionTanqueDAO.crear(gestionTanque);
         } else {
-            gestionTanqueDAO.editar(m);
+            gestionTanqueDAO.editar(gestionTanque);
         }
 
-        m.setPersistido(true);
+        gestionTanque.setPersistido(true);
     }
 
     /*
@@ -212,13 +219,88 @@ public class GestionTanqueRN {
         GestionTanque gestionAnterior = gestionTanqueDAO.getUltimoRegistro();
 
         if (gestionAnterior == null) {
-            
+
             gestionAnterior = new GestionTanque();
-            gestionAnterior.setFechaMovimiento(new Date());            
-        }            
+            gestionAnterior.setFechaMovimiento(new Date());
+        }
 
         return gestionAnterior;
-        
+
+    }
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    private void generarMovimientosStock(GestionTanque gestionTanque) throws ExcepcionGeneralSistema, Exception {
+
+        for (ItemGestionTanque itemGestion : gestionTanque.getItems()) {
+
+            if (itemGestion.getProducto() == null) {
+                continue;
+            }
+
+            //Mayor a 0
+            if (itemGestion.getStockCalculado().compareTo(BigDecimal.ZERO) == 1) {
+
+                MovimientoStock movIngreso = movimientoStockRN.nuevoMovimiento("ST", "IPA", "0001");
+
+                movIngreso.setFechaMovimiento(gestionTanque.getFechaMovimiento());
+                movIngreso.setDeposito(itemGestion.getDeposito());
+                movIngreso.setNoValidaStockDisponible(true);
+
+                ItemProductoStock itemProducto = movIngreso.getItemsProducto().get(movIngreso.getItemsProducto().size() - 1);
+
+                itemProducto.setProducto(itemGestion.getProducto());
+                itemProducto.setUnidadMedida(itemGestion.getProducto().getUnidadDeMedida());
+                itemProducto.setDeposito(itemGestion.getDeposito());
+
+                itemProducto.setAtributo1("VICENTIN");
+                itemProducto.setAtributo2("N/D");
+
+                itemProducto.setCantidad(itemGestion.getStockCalculado());
+                itemProducto.setTodoOk(true);
+
+                movimientoStockRN.asignarCantidadStock(movIngreso);
+                movimientoStockRN.controlComprobante(movIngreso, false);
+                movimientoStockRN.generarStock(movIngreso);
+                Integer ultimoNumero = formularioRN.tomarProximoNumero(movIngreso.getFormulario());
+                movIngreso.setNumeroFormulario(ultimoNumero);
+
+                movIngreso.setGestionTanque(gestionTanque);
+                gestionTanque.getMovimientosStock().add(movIngreso);
+
+            }
+
+            //Menor a 0
+            if (itemGestion.getStockCalculado().compareTo(BigDecimal.ZERO) == -1) {
+
+                MovimientoStock movEgreso = movimientoStockRN.nuevoMovimiento("ST", "EPA", "0001");
+
+                movEgreso.setFechaMovimiento(gestionTanque.getFechaMovimiento());
+                movEgreso.setDeposito(itemGestion.getDeposito());
+                movEgreso.setNoValidaStockDisponible(true);
+
+                ItemProductoStock itemProducto =  movEgreso.getItemsProducto().get(movEgreso.getItemsProducto().size() - 1);
+
+                itemProducto.setProducto(itemGestion.getProducto());
+                itemProducto.setUnidadMedida(itemGestion.getProducto().getUnidadDeMedida());
+                itemProducto.setDeposito(itemGestion.getDeposito());
+
+                itemProducto.setAtributo1("VICENTIN");
+                itemProducto.setAtributo2("N/D");
+
+                itemProducto.setCantidad(itemGestion.getStockCalculado());
+                itemProducto.setTodoOk(true);
+
+                movimientoStockRN.asignarCantidadStock(movEgreso);
+                movimientoStockRN.controlComprobante(movEgreso, false);
+                movimientoStockRN.generarStock(movEgreso);
+                Integer ultimoNumero = formularioRN.tomarProximoNumero(movEgreso.getFormulario());
+                movEgreso.setNumeroFormulario(ultimoNumero);
+
+                movEgreso.setGestionTanque(gestionTanque);
+                gestionTanque.getMovimientosStock().add(movEgreso);
+            }
+        }
+
     }
 
 }

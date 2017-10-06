@@ -18,6 +18,7 @@ import bs.stock.rn.MovimientoStockRN;
 import bs.stock.rn.StockRN;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -82,7 +83,8 @@ public class GestionTanquesBean extends GenericBean {
     
     public void onDateSelect(SelectEvent event) {
         
-        obtenerDatos();
+        obtenerDatos();       
+        
     }
 
     public void obtenerDatos() {
@@ -91,8 +93,14 @@ public class GestionTanquesBean extends GenericBean {
          * Obtenemos la última gestión guardada, anterior a la fecha de la
          * actual gestión.
          */
-        GestionTanque gestionAnterior = gestionTanqueRN.getUltimoRegistro();//        
-
+        GestionTanque gestionAnterior = gestionTanqueRN.getUltimoRegistro();// 
+        
+        Calendar c = Calendar.getInstance();
+        c.setTime(gestionAnterior.getFechaMovimiento());
+        c.add(Calendar.MINUTE, 1);        
+        gestionAnterior.setFechaMovimiento(c.getTime());
+        
+        
         gestionTanque.getItems().clear();
 
         for (Deposito deposito : depositos) {
@@ -116,21 +124,7 @@ public class GestionTanquesBean extends GenericBean {
             gestionTanque.getItems().add(item);
         }
 
-        Collections.sort(gestionTanque.getItems(), new Comparator() {
-
-            @Override
-            public int compare(Object o1, Object o2) {
-                //return new Integer(p1.getEdad()).compareTo(new Integer(p2.getEdad()));
-                ItemGestionTanque item1 = (ItemGestionTanque) o1;
-                ItemGestionTanque item2 = (ItemGestionTanque) o2;
-
-                String cod1 = (item1.getProducto() == null ? "99999" : item1.getProducto().getCodigo());
-                String cod2 = (item2.getProducto() == null ? "99999" : item2.getProducto().getCodigo());
-
-                return (new Integer(cod1)).compareTo(new Integer(cod2));
-
-            }
-        });
+        ordenarItems();
 
     }
 
@@ -261,7 +255,8 @@ public class GestionTanquesBean extends GenericBean {
     public void seleccionarMovimiento(GestionTanque mSel){
         
         gestionTanque = mSel;           
-        buscaMovimiento = false;
+        buscaMovimiento = false;        
+        ordenarItems();
     }
 
     public List<GestionTanque> complete(String query) {
@@ -365,6 +360,26 @@ public class GestionTanquesBean extends GenericBean {
         solicitaEmail = false;        
         gestionTanque = null;        
         
+    }
+    
+    
+    public void ordenarItems(){
+        
+        Collections.sort(gestionTanque.getItems(), new Comparator() {
+
+            @Override
+            public int compare(Object o1, Object o2) {
+                //return new Integer(p1.getEdad()).compareTo(new Integer(p2.getEdad()));
+                ItemGestionTanque item1 = (ItemGestionTanque) o1;
+                ItemGestionTanque item2 = (ItemGestionTanque) o2;
+
+                String cod1 = (item1.getProducto() == null ? "99999" : item1.getProducto().getCodigo());
+                String cod2 = (item2.getProducto() == null ? "99999" : item2.getProducto().getCodigo());
+
+                return (new Integer(cod1)).compareTo(new Integer(cod2));
+
+            }
+        });
     }
 
 

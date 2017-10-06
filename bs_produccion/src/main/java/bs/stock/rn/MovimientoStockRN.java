@@ -53,25 +53,25 @@ public class MovimientoStockRN {
     private ModuloRN moduloRN; 
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public synchronized void guardar(MovimientoStock m) throws Exception {
+    public synchronized void guardar(MovimientoStock movimiento) throws Exception {
 
-        borrarItemsNoValidos(m);
-        generarItemTransferencia(m);
-        asignarDepositoItems(m);
-        asignarCantidadStock(m);
+        borrarItemsNoValidos(movimiento);
+        generarItemTransferencia(movimiento);
+        asignarDepositoItems(movimiento);
+        asignarCantidadStock(movimiento);
 
         //Validamos que se pueda guardar el comprobante
-        controlComprobante(m, false);
-        generarStock(m);
+        controlComprobante(movimiento, false);
+        generarStock(movimiento);
 
-        if (!m.isNoSincronizaNumeroFormulario() && m.getNumeroFormulario()>0) {
+        if (!movimiento.isNoSincronizaNumeroFormulario() && movimiento.getNumeroFormulario()>0) {
 
-            Integer ultimoNumero = formularioRN.tomarProximoNumero(m.getFormulario());
-            m.setNumeroFormulario(ultimoNumero);
+            Integer ultimoNumero = formularioRN.tomarProximoNumero(movimiento.getFormulario());
+            movimiento.setNumeroFormulario(ultimoNumero);
 
         }
-        inventarioDAO.crear(m);
-        m.setPersistido(true);
+        inventarioDAO.crear(movimiento);
+        movimiento.setPersistido(true);
     }
 
     /*
@@ -591,7 +591,7 @@ public class MovimientoStockRN {
      * @param m Movimiento de stock
      * @throws Exception
      */
-    private synchronized void generarStock(MovimientoStock m) throws Exception {
+    public synchronized void generarStock(MovimientoStock m) throws Exception {
 
         for (ItemProductoStock i : m.getItemsProducto()) {
 
@@ -633,7 +633,7 @@ public class MovimientoStockRN {
         }
     }
 
-    private void asignarCantidadStock(MovimientoStock m) {
+    public void asignarCantidadStock(MovimientoStock m) {
 
         if (m.getItemsProducto() == null) {
             return;

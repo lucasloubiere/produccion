@@ -83,8 +83,13 @@ public class GestionTanque implements Serializable {
     private String observaciones;
     
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gestionTanque", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gestionTanque", fetch = FetchType.LAZY)    
+    //@OrderBy("producto.codigo ASC, deposito")
     private List<ItemGestionTanque> items;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gestionTanque", fetch = FetchType.LAZY)
+    //@OrderBy("producto.codigo ASC, deposito")
+    private List<MovimientoStock> movimientosStock;
 
     @Embedded
     private Auditoria auditoria;
@@ -95,6 +100,7 @@ public class GestionTanque implements Serializable {
     public GestionTanque() {
 
         this.items = new ArrayList<ItemGestionTanque>();
+        this.movimientosStock = new ArrayList<MovimientoStock>();
         this.auditoria = new Auditoria();
     }
 
@@ -178,6 +184,14 @@ public class GestionTanque implements Serializable {
         this.persistido = persistido;
     }
 
+    public List<MovimientoStock> getMovimientosStock() {
+        return movimientosStock;
+    }
+
+    public void setMovimientosStock(List<MovimientoStock> movimientosStock) {
+        this.movimientosStock = movimientosStock;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

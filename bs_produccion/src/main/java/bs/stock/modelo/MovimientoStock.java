@@ -116,6 +116,10 @@ public class MovimientoStock implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_mrev", referencedColumnName = "ID")
     private MovimientoStock movimientoReversion;
+    
+    @JoinColumn(name = "id_gest", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private GestionTanque gestionTanque;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch = FetchType.LAZY)
     private List<ItemProductoStock> itemsProducto;
@@ -386,6 +390,14 @@ public class MovimientoStock implements Serializable {
 
     public void setNoValidaStockDisponible(boolean noValidaStockDisponible) {
         this.noValidaStockDisponible = noValidaStockDisponible;
+    }
+
+    public GestionTanque getGestionTanque() {
+        return gestionTanque;
+    }
+
+    public void setGestionTanque(GestionTanque gestionTanque) {
+        this.gestionTanque = gestionTanque;
     }
         
     @Override
