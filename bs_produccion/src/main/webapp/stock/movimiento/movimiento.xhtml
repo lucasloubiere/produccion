@@ -66,8 +66,7 @@
             <p:remoteCommand name="procesarStock"    process="@this" update="tb:detalle"  actionListener="#{movimientoStockBean.procesarStock}" />
             <!--
             <p:remoteCommand name="procesarMascaraStock" process="@this" update="@form"   actionListener="#{movimientoStockBean.procesarMascaraStock}" />
-            -->
-            
+            -->            
             <div class="EmptyBox5" />
 
             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
@@ -204,7 +203,7 @@
                                      rendered="#{movimientoStockBean.m.tipoMovimiento ne 'T' and movimientoStockBean.detalleVacio}"
                                      required="true" requiredMessage="Seleccione el depósito"
                                      converter="#{conversoresStock.deposito}"                                      
-                                     effect="fade" filter="true" >  
+                                     effect="fade" filter="true" filterMatchMode="contains"  >  
                         <p:ajax process="@this" update="@form" />
                         <f:selectItem itemValue="" itemLabel="Seleccionar" />
                         <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
@@ -221,7 +220,7 @@
                                      rendered="#{movimientoStockBean.m.tipoMovimiento eq 'T' and movimientoStockBean.detalleVacio}"
                                      required="true" requiredMessage="Seleccione el depósito de egreso"
                                      converter="#{conversoresStock.deposito}"                                      
-                                     effect="fade" filter="true" >  
+                                     effect="fade" filter="true" filterMatchMode="contains"  >  
                         <p:ajax process="@this" update="@form" />
                         <f:selectItem itemValue="" itemLabel="Seleccionar" />
                         <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
@@ -235,7 +234,7 @@
                                      rendered="#{movimientoStockBean.m.tipoMovimiento eq 'T' and movimientoStockBean.detalleVacio}"
                                      required="true" requiredMessage="Seleccione el depósito de ingreso"
                                      converter="#{conversoresStock.deposito}"                                      
-                                     effect="fade" filter="true" >  
+                                     effect="fade" filter="true" filterMatchMode="contains"   >  
                         <p:ajax process="@this" update="@form" />
                         <f:selectItem itemValue="" itemLabel="Seleccionar" />
                         <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    

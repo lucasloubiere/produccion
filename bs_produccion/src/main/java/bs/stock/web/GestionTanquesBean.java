@@ -114,8 +114,36 @@ public class GestionTanquesBean extends GenericBean {
             if (deposito != null && producto != null) {
 
                 item.setStockInicial(movimientoStockRN.getStockAFecha(producto, deposito, gestionAnterior.getFechaMovimiento()));
-                item.setIngresos(movimientoStockRN.getCantidadFromMovimiento("I", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));
-                item.setEgresos(movimientoStockRN.getCantidadFromMovimiento("E", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento()));
+
+                BigDecimal transferencias = movimientoStockRN.getCantidadFromMovimiento("T", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento());
+                BigDecimal ajustes        = movimientoStockRN.getCantidadFromMovimiento("A", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento());
+                BigDecimal ingresos = movimientoStockRN.getCantidadFromMovimiento("I", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento());
+                BigDecimal egresos = movimientoStockRN.getCantidadFromMovimiento("E", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento());
+
+
+                if(ingresos == null) ingresos = BigDecimal.ZERO;
+                if(egresos == null) egresos = BigDecimal.ZERO;                
+                if(transferencias == null) transferencias = BigDecimal.ZERO;                
+                if(ajustes == null) ajustes = BigDecimal.ZERO;
+                
+                if(transferencias.compareTo(BigDecimal.ZERO)>0){                    
+                    ingresos = ingresos.add(transferencias);                    
+                }
+                
+                if(ajustes.compareTo(BigDecimal.ZERO)>0){                    
+                    ingresos = ingresos.add(ajustes);                    
+                }
+                
+                if(transferencias.compareTo(BigDecimal.ZERO)<0){                    
+                    egresos = egresos.add(transferencias);                    
+                }
+                
+                if(ajustes.compareTo(BigDecimal.ZERO)<0){                    
+                    egresos = egresos.add(ajustes);                    
+                }
+                
+                item.setIngresos(ingresos);
+                item.setEgresos(egresos);                
 
                 calcularStock(item);
             }

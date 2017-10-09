@@ -145,7 +145,7 @@ public class MovimientoStockDAO extends BaseDAO {
             return (BigDecimal) q.getSingleResult();
 
         } catch (NoResultException nre) {
-
+            nre.printStackTrace();
             return BigDecimal.ZERO;
 
         } catch (Exception e) {
