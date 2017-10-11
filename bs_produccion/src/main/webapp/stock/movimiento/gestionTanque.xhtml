@@ -41,6 +41,8 @@
 
             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
 
+            <p:remoteCommand name="procesarProducto" process="@this" update="@form"  actionListener="#{gestionTanquesBean.procesarProducto}" />
+
             <!-- BUSQUEDA -->
             <p:panel id="panelBusqueda" header="Busqueda" rendered="#{gestionTanquesBean.buscaMovimiento}" >
 
@@ -152,23 +154,23 @@
                     <p:inputTextarea style="width: 100%" rows="3" value="#{gestionTanquesBean.gestionTanque.observaciones}" />
 
                 </p:panelGrid>  
-                
+
                 <div class="EmptyBox10" />
-                    
+
                 <div class="ui-g">
                     <div class="ui-g-6 ui-md-6 MarAuto" >
-                        
+
                         <p:commandButton icon="fa fa-gears" value="Obtener datos"
                                          actionListener="#{gestionTanquesBean.obtenerDatos()}"
                                          process="@form"
                                          update="@form" />
-                        
+
                     </div>                    
                 </div>
-                
+
                 <div class="EmptyBox10" />
             </p:panel>    
-            
+
             <div class="EmptyBox10" />
 
             <p:wizard backLabel="Atras" nextLabel="Siguiente" rendered="#{not gestionTanquesBean.buscaMovimiento}" 
@@ -197,6 +199,13 @@
 
                         <p:column headerText="Código" sortBy="#{i.producto.codigo}" width="70" filterBy="#{i.producto.codigo}"
                                   filterMatchMode="contains" >
+
+                            <p:commandButton icon="fa fa-search" 
+                                             process="@this" oncomplete="PF('dlgProducto').show()"                                              
+                                             rendered="#{not i.depositoConStock}" >      
+                                <f:setPropertyActionListener value="#{i}" target="#{gestionTanquesBean.itemGestionTanque}" />
+                            </p:commandButton>
+
                             <h:outputText value="#{i.producto.codigo}" />
                         </p:column>
 
@@ -207,6 +216,14 @@
 
                         <p:column headerText="U.M." width="50" >
                             <h:outputText value="#{i.producto.unidadDeMedida.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Medida Manual" sortBy="#{i.medida}" width="100" styleClass="TextAlRight"  >                    
+
+                            <p:inputText value="#{i.medida}" style="text-align: right;" >
+                                <f:convertNumber pattern="#,###,##0.00" />
+                                <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
+                            </p:inputText>                            
                         </p:column>
 
                         <p:column headerText="Stock inicial" sortBy="#{i.stockInicial}" width="100" styleClass="TextAlRight"  >                    
@@ -232,10 +249,9 @@
                         </p:column>
 
                         <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >                    
-                            <p:inputText value="#{i.stockFinal}" style="text-align: right;" >
+                            <h:outputText value="#{i.stockFinal}" >
                                 <f:convertNumber pattern="#,###,##0.00" />
-                                <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
-                            </p:inputText>
+                            </h:outputText>
                         </p:column>
 
                         <p:column headerText="Producción Calculada" sortBy="#{i.stockCalculado}" width="100"  >                    
@@ -309,6 +325,8 @@
         </ui:define>
 
         <ui:define name="dialogos" >  
+
+            <ui:include src="/stock/busqueda/buscadorProducto.xhtml" />             
 
         </ui:define>
 

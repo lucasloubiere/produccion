@@ -17,6 +17,7 @@ import bs.stock.modelo.GestionTanque;
 import bs.stock.modelo.ItemGestionTanque;
 import bs.stock.modelo.ItemProductoStock;
 import bs.stock.modelo.MovimientoStock;
+import bs.stock.modelo.Producto;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -278,7 +279,7 @@ public class GestionTanqueRN {
                 movEgreso.setDeposito(itemGestion.getDeposito());
                 movEgreso.setNoValidaStockDisponible(true);
 
-                ItemProductoStock itemProducto =  movEgreso.getItemsProducto().get(movEgreso.getItemsProducto().size() - 1);
+                ItemProductoStock itemProducto = movEgreso.getItemsProducto().get(movEgreso.getItemsProducto().size() - 1);
 
                 itemProducto.setProducto(itemGestion.getProducto());
                 itemProducto.setUnidadMedida(itemGestion.getProducto().getUnidadDeMedida());
@@ -300,6 +301,20 @@ public class GestionTanqueRN {
                 gestionTanque.getMovimientosStock().add(movEgreso);
             }
         }
+
+    }
+
+    public void asignarProducto(ItemGestionTanque itemGestionTanque, Producto producto) throws ExcepcionGeneralSistema {
+
+        if (itemGestionTanque.getDeposito() == null) {
+            throw new ExcepcionGeneralSistema("El deposito en el item no puede se nulo");
+        }
+        
+        if (itemGestionTanque.isDepositoConStock()) {
+            throw new ExcepcionGeneralSistema("El deposito ya tienen producto con stock en este deposito");
+        }
+        
+        itemGestionTanque.setProducto(producto);
 
     }
 

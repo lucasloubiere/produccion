@@ -52,6 +52,8 @@ public class ItemGestionTanque implements Serializable {
     @ManyToOne
     private Producto producto;
     
+    @Column(name = "medida")
+    private BigDecimal medida;
     @Column(name = "stock_inicial")
     private BigDecimal stockInicial;
     @Column(name = "ingresos")
@@ -107,6 +109,9 @@ public class ItemGestionTanque implements Serializable {
         
     @Transient
     private boolean todoOk;
+    
+    @Transient
+    private boolean depositoConStock;
     
     public ItemGestionTanque() {
 
@@ -211,6 +216,15 @@ public class ItemGestionTanque implements Serializable {
         this.unidadMedida = unidadMedida;
     }
 
+    public BigDecimal getMedida() {
+        return medida;
+    }
+
+    public void setMedida(BigDecimal medida) {
+        this.medida = medida;
+    }
+        
+
     public String getAtributo1() {
         return atributo1;
     }
@@ -302,6 +316,14 @@ public class ItemGestionTanque implements Serializable {
         this.todoOk = todoOk;
     }
 
+    public boolean isDepositoConStock() {
+        return depositoConStock;
+    }
+
+    public void setDepositoConStock(boolean depositoConStock) {
+        this.depositoConStock = depositoConStock;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

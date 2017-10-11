@@ -7,6 +7,7 @@ package bs.stock.modelo;
 
 import bs.global.modelo.Auditoria;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -55,7 +56,14 @@ public class Deposito implements Serializable {
     @Column(name = "calcula_stock", length = 1)
     private String calculaStock;
 
+    @Column(name = "constante")
+    private BigDecimal constante;
     
+    @Column(name = "sumando")
+    private BigDecimal sumando;
+    
+    @Column(name = "divisor")
+    private BigDecimal divisor;
 
     public Deposito() {
         this.auditoria = new Auditoria();
@@ -130,6 +138,30 @@ public class Deposito implements Serializable {
 
     public void setCalculaStock(String calculaStock) {
         this.calculaStock = calculaStock;
+    }
+
+    public BigDecimal getConstante() {
+        return constante;
+    }
+
+    public void setConstante(BigDecimal constante) {
+        this.constante = constante;
+    }
+
+    public BigDecimal getSumando() {
+        return sumando;
+    }
+
+    public void setSumando(BigDecimal sumando) {
+        this.sumando = sumando;
+    }
+
+    public BigDecimal getDivisor() {
+        return divisor;
+    }
+
+    public void setDivisor(BigDecimal divisor) {
+        this.divisor = divisor;
     }
     
     @Override
