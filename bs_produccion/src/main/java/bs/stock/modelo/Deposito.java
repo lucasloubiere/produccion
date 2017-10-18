@@ -13,6 +13,8 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -58,12 +60,16 @@ public class Deposito implements Serializable {
 
     @Column(name = "constante")
     private BigDecimal constante;
-    
+
     @Column(name = "sumando")
     private BigDecimal sumando;
-    
+
     @Column(name = "divisor")
     private BigDecimal divisor;
+
+    @JoinColumn(name = "codsec", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne(optional = false)
+    private Sector sector;
 
     public Deposito() {
         this.auditoria = new Auditoria();
@@ -162,6 +168,14 @@ public class Deposito implements Serializable {
 
     public void setDivisor(BigDecimal divisor) {
         this.divisor = divisor;
+    }
+
+    public Sector getSector() {
+        return sector;
+    }
+
+    public void setSector(Sector sector) {
+        this.sector = sector;
     }
     
     @Override

@@ -70,6 +70,7 @@ public class GestionTanquesBean extends GenericBean {
         txtBusqueda = "";
         mostrarDebaja = false;
         resumen = new ArrayList<ItemGestionTanque>();
+        filtro = new HashMap<String, String>();
         nuevo();
     }
     
@@ -82,11 +83,6 @@ public class GestionTanquesBean extends GenericBean {
         } catch (ExcepcionGeneralSistema ex) {
             Logger.getLogger(GestionTanquesBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        filtro = new HashMap<String, String>();
-        filtro.put("calculaStock = ", "'S'");
-        depositos = depositoRN.getDepositoByBusqueda(filtro, txtBusqueda, true, 0);
-        
     }
     
     public void onDateSelect(SelectEvent event) {
@@ -96,6 +92,16 @@ public class GestionTanquesBean extends GenericBean {
     }
     
     public void obtenerDatos() {
+        
+        if(gestionTanque.getSector()==null){
+            JsfUtil.addErrorMessage("Debe seleccionar el sector");
+            return;
+        }
+        
+        cagarFiltroDeposito();
+                
+        
+        depositos = depositoRN.getDepositoByBusqueda(filtro, txtBusqueda, true, 0);
 
         /**
          * Obtenemos la última gestión guardada, anterior a la fecha de la
@@ -496,6 +502,14 @@ public class GestionTanquesBean extends GenericBean {
 
     public void setItemGestionTanque(ItemGestionTanque itemGestionTanque) {
         this.itemGestionTanque = itemGestionTanque;
+    }
+
+    private void cagarFiltroDeposito() {
+        
+        filtro.clear();
+        filtro.put("calculaStock = ", "'S'");
+        filtro.put("sector.codigo = ", "'"+gestionTanque.getSector().getCodigo()+"'");
+        
     }
     
 }

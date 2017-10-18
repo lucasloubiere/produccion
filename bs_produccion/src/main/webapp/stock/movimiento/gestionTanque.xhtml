@@ -57,8 +57,7 @@
                     <h:outputText value="" />                    
 
                     <h:outputText value="Fecha formulario" /> 
-
-
+                    
                     <p:calendar value="#{gestionTanquesBean.fechaMovimientoDesde}" placeholder="Desde"
                                 pattern="dd/MM/yyyy"   />
 
@@ -149,10 +148,29 @@
                     <!--
                     <p:ajax event="dateSelect" listener="#{gestionTanquesBean.onDateSelect}" update="@form" />
                     -->
-
+                    
+                     <h:outputText value="Número" />
+                    <p:inputText value="#{gestionTanquesBean.gestionTanque.numeroFormulario}" readonly="true" >
+                        <f:convertNumber pattern="00000000" />
+                    </p:inputText>
+                     
+                    <h:outputText value="Sector" />
+                    <p:selectOneMenu value="#{gestionTanquesBean.gestionTanque.sector}"                                      
+                                     rendered="#{empty gestionTanquesBean.gestionTanque.id}"
+                                     required="true" requiredMessage="Seleccione el sector"
+                                     converter="#{conversoresStock.sector}"                                      
+                                     effect="fade" filter="true" filterMatchMode="contains" >  
+                        <p:ajax process="@this" update="@form" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{sectorBean.lista}" var="s" itemLabel="#{s.descripcion}" itemValue="#{s}" />                                    
+                    </p:selectOneMenu>
+                    <p:inputText value="#{gestionTanquesBean.gestionTanque.sector.descripcion}"
+                                 rendered="#{not empty gestionTanquesBean.gestionTanque.id}"
+                                 readonly="true" />
+                    
                     <h:outputText value="Observaciones" />
                     <p:inputTextarea style="width: 100%" rows="3" value="#{gestionTanquesBean.gestionTanque.observaciones}" />
-
+                    
                 </p:panelGrid>  
 
                 <div class="EmptyBox10" />
@@ -161,6 +179,7 @@
                     <div class="ui-g-6 ui-md-6 MarAuto" >
 
                         <p:commandButton icon="fa fa-gears" value="Obtener datos"
+                                         rendered="#{empty gestionTanquesBean.gestionTanque.id}"
                                          actionListener="#{gestionTanquesBean.obtenerDatos()}"
                                          process="@form"
                                          update="@form" />
@@ -309,6 +328,7 @@
                             <div class="EmptyBox10" />
 
                             <p:commandButton icon="fa fa-check" value="Guardar"
+                                             rendered="#{empty gestionTanquesBean.gestionTanque.id}"
                                              actionListener="#{gestionTanquesBean.guardar(false)}"
                                              process="@this"
                                              update="@form" />

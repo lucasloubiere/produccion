@@ -11,6 +11,7 @@ import bs.stock.modelo.Formula;
 import bs.stock.modelo.Producto;
 import bs.stock.modelo.Rubro01;
 import bs.stock.modelo.Rubro02;
+import bs.stock.modelo.Sector;
 import bs.stock.modelo.TipoProducto;
 import bs.stock.modelo.UnidadMedida;
 import bs.stock.rn.DepositoRN;
@@ -18,6 +19,7 @@ import bs.stock.rn.FormulaRN;
 import bs.stock.rn.ProductoRN;
 import bs.stock.rn.Rubro1RN;
 import bs.stock.rn.Rubro2RN;
+import bs.stock.rn.SectorRN;
 import bs.stock.rn.TipoProductoRN;
 import bs.stock.rn.UnidadMedidaRN;
 import java.io.Serializable;
@@ -43,6 +45,7 @@ public class ConversoresStock implements Serializable{
     @EJB private Rubro2RN rubro2RN;
     @EJB private FormulaRN formulaRN;    
     @EJB private DepositoRN depositoRN;
+    @EJB private SectorRN sectorRN;
     
     public Converter getProducto() {
         return new Converter() {
@@ -112,6 +115,31 @@ public class ConversoresStock implements Serializable{
                     return "";
                 } else {
                     return ((Formula) value).getCodigo()+ "";
+                }
+            }
+        };
+    }
+    
+     public Converter getSector() {
+        return new Converter() {
+
+            @Override
+            public Object getAsObject(FacesContext context, UIComponent component, String value) {
+                if (value.trim().equals("") || value == null) {
+                    return null;
+                }
+
+                Sector o = sectorRN.getSector(value);
+                return o;
+            }
+
+            @Override
+            public String getAsString(FacesContext context, UIComponent component, Object value) {
+                if (value == null || value.equals("")) {
+                    return "";
+                } else {
+
+                    return ((Sector) value).getCodigo()+ "";
                 }
             }
         };

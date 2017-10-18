@@ -48,21 +48,20 @@ public class GestionTanque implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-   
+
     @JoinColumns({
         @JoinColumn(name = "modcom", referencedColumnName = "MODCOM", nullable = false),
         @JoinColumn(name = "codcom", referencedColumnName = "CODCOM", nullable = false)
     })
-     @ManyToOne(fetch = FetchType.LAZY)   
+    @ManyToOne(fetch = FetchType.LAZY)
     private ComprobanteStock comprobante;
 
-       @JoinColumns({
+    @JoinColumns({
         @JoinColumn(name = "modfor", referencedColumnName = "modfor"),
         @JoinColumn(name = "codfor", referencedColumnName = "codfor")})
     @ManyToOne(optional = false)
-    private Formulario formulario;        
-    
-    
+    private Formulario formulario;
+
     @JoinColumn(name = "sucurs", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
     private Sucursal sucursal;
@@ -77,23 +76,26 @@ public class GestionTanque implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMovimiento;
 
+    @JoinColumn(name = "codsec", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne(optional = false)
+    private Sector sector;
+
     @Lob
 //    @Size(min = 1, max = 65535)
     @Column(name = "observ")
     private String observaciones;
-    
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gestionTanque", fetch = FetchType.LAZY)    
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gestionTanque", fetch = FetchType.LAZY)
     //@OrderBy("producto.codigo ASC, deposito")
     private List<ItemGestionTanque> items;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gestionTanque", fetch = FetchType.LAZY)
     //@OrderBy("producto.codigo ASC, deposito")
     private List<MovimientoStock> movimientosStock;
 
     @Embedded
     private Auditoria auditoria;
-    
+
     @Transient
     private boolean persistido;
 
@@ -110,7 +112,7 @@ public class GestionTanque implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }    
+    }
 
     public ComprobanteStock getComprobante() {
         return comprobante;
@@ -151,7 +153,7 @@ public class GestionTanque implements Serializable {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
-    
+
     public Date getFechaMovimiento() {
         return fechaMovimiento;
     }
@@ -191,6 +193,14 @@ public class GestionTanque implements Serializable {
     public void setMovimientosStock(List<MovimientoStock> movimientosStock) {
         this.movimientosStock = movimientosStock;
     }
+
+    public Sector getSector() {
+        return sector;
+    }
+
+    public void setSector(Sector sector) {
+        this.sector = sector;
+    }
     
     @Override
     public int hashCode() {
@@ -216,7 +226,7 @@ public class GestionTanque implements Serializable {
         }
         return true;
     }
-    
+
     @Override
     public String toString() {
         return "GestionTanque{" + "id=" + id + '}';

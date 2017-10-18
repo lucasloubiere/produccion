@@ -33,11 +33,7 @@ public class DepositoDAO extends BaseDAO {
         return getObjeto(Deposito.class, codigo);
     }
 
-    public List<Deposito> getTipoProductoByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
-
-        System.err.println("txtBusqueda " + txtBusqueda);
-        System.err.println("mostrarDeBaja " + mostrarDeBaja);
-        System.err.println("cantMax " + cantMax);
+    public List<Deposito> getListaByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
 
         try {
             String sQuery = "SELECT e FROM Deposito e "
@@ -78,13 +74,13 @@ public class DepositoDAO extends BaseDAO {
         return getObjeto(Deposito.class, "codigoReferencia2", codigoReferencia);
     }
 
-    public List<Deposito> getDepositoByBusqueda(Map<String, String> filtro,String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
+    public List<Deposito> getDepositoByBusqueda(Map<String, String> filtro, String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
         try {
 
             String sQuery = "SELECT e FROM Deposito e "
                     + " WHERE (e.codigo LIKE :codigo OR e.descripcion LIKE :descripcion) "
                     + (mostrarDeBaja ? " " : " AND e.auditoria.debaja = 'N' ")
-                    + generarStringFiltro(filtro,"e", false)
+                    + generarStringFiltro(filtro, "e", false)
                     + " ORDER BY e.codigo";
 
             Query q = em.createQuery(sQuery);
