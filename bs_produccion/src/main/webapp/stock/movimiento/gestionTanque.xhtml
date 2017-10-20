@@ -215,15 +215,19 @@
                                   filterMatchMode="contains">
                             <h:outputText value="#{i.deposito.descripcion}" />
                         </p:column>
+                        
+                        <p:column width="30"  >
+                            
+                            <p:commandButton icon="fa fa-search" 
+                                             process="@this" oncomplete="PF('dlgProducto').show()"                                              
+                                             rendered="#{not i.depositoConStock and empty i.id}" >      
+                                <f:setPropertyActionListener value="#{i}" target="#{gestionTanquesBean.itemGestionTanque}" />
+                            </p:commandButton>
+                        </p:column> 
 
                         <p:column headerText="Código" sortBy="#{i.producto.codigo}" width="70" filterBy="#{i.producto.codigo}"
                                   filterMatchMode="contains" >
 
-                            <p:commandButton icon="fa fa-search" 
-                                             process="@this" oncomplete="PF('dlgProducto').show()"                                              
-                                             rendered="#{not i.depositoConStock}" >      
-                                <f:setPropertyActionListener value="#{i}" target="#{gestionTanquesBean.itemGestionTanque}" />
-                            </p:commandButton>
 
                             <h:outputText value="#{i.producto.codigo}" />
                         </p:column>
@@ -239,10 +243,12 @@
 
                         <p:column headerText="Medida Manual" sortBy="#{i.medida}" width="100" styleClass="TextAlRight"  >                    
 
-                            <p:inputText value="#{i.medida}" style="text-align: right;" >
+                            <p:inputText value="#{i.medida}" style="text-align: right;"
+                                         rendered="#{i.deposito.calculaStock eq 'M' and not empty i.producto}" >
                                 <f:convertNumber pattern="#,###,##0.00" />
                                 <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
-                            </p:inputText>                            
+                            </p:inputText>       
+                                                                                    
                         </p:column>
 
                         <p:column headerText="Stock inicial" sortBy="#{i.stockInicial}" width="100" styleClass="TextAlRight"  >                    
@@ -267,13 +273,20 @@
                             <p:commandButton  icon="ui-icon-done-all" actionListener="#{gestionTanquesBean.marcarDepositoSinMovimiento(i)}" process="@this" update="tablaGestionTanque" />                                            
                         </p:column>
 
-                        <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >                    
-                            <h:outputText value="#{i.stockFinal}" >
+                        <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >    
+                            
+                            <h:outputText value="#{i.stockFinal}" rendered="#{i.deposito.calculaStock eq 'M'}" styleClass="pull-right" >
                                 <f:convertNumber pattern="#,###,##0.00" />
                             </h:outputText>
+                            
+                            <p:inputText value="#{i.stockFinal}" rendered="#{i.deposito.calculaStock eq 'F' and not empty i.producto}" style="text-align: right;" >
+                                <f:convertNumber pattern="#,###,##0.00" />
+                                <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
+                            </p:inputText>   
                         </p:column>
 
                         <p:column headerText="Producción Calculada" sortBy="#{i.stockCalculado}" width="100"  >                    
+                            
                             <h:outputText value="#{i.stockCalculado}" 
                                           styleClass="pull-right  #{not empty i.stockCalculado?(i.stockCalculado>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
                                 <f:convertNumber pattern="#,###,##0.00" />
@@ -285,6 +298,7 @@
                                 <f:convertNumber pattern="#,###,##0.00" />
                             </h:outputText>
                             -->
+                            
                         </p:column>
 
                     </p:dataTable>
