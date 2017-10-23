@@ -76,7 +76,10 @@
 
     <h:body styleClass="main-body">
 
+        <p:tooltip position="top" showEffect="clip" hideEffect="explode" />
+
         <div class="layout-wrapper">
+
 
             <ui:include src="/topbar1.xhtml" />                
 
@@ -84,52 +87,109 @@
 
             <div class="layout-main">
                 <div class="layout-main-content">
-
                     <h:form id="formDashboard">
 
-                        <p:fragment id="dgResultado" >
-                            
-                            
-                            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="1000" />
+                        <div class="ui-g" >
+                            <div class="ui-g-12">
+                                <p:dataGrid value="#{principalBean.favoritos}" var="r" columns="6" rows="12" layout="grid" 
+                                            >
 
-                            <p:dataList value="#{principalBean.resultadoBusqueda}" var="r" 
-                                        rendered="#{not empty principalBean.resultadoBusqueda}"  
-                                        type="unordered" itemType="none"
-                                        rows="40" paginator="true" paginatorAlwaysVisible="false" >
+                                    <f:facet name="header" >
+                                        Favoritos
+                                    </f:facet>
 
-                                <f:facet name="header">
-                                    Resultados
-                                </f:facet>
+                                    <p:panel header="#{car.id}" style="text-align:center">
+                                        <h:panelGrid columns="1" style="width:100%">
+                                            <h:outputLink  value="#{request.contextPath}#{r.menu.urlCompleta}" style="display:inline-block; vertical-align: middle; padding: 5px; "
+                                                           target="_blank" > 
 
-                                <h:outputLink  value="#{request.contextPath}#{r.urlCompleta}" style="display:inline-block; vertical-align: middle; padding: 5px; "
-                                               target="_blank"                                        
-                                               rendered="#{empty r.menuItem}" > 
+                                                <i class="material-icons Fs48" >#{r.menu.icono}</i>
+                                                <br/>
+                                                <span style="display:inline-block; vertical-align: middle; ">
+
+                                                    <h:outputText  value="#{r.menu.modulo.descripcion} - #{r.menu.nombre}" />
+                                                </span>
+
+                                            </h:outputLink>                            
+                                        </h:panelGrid>
+                                    </p:panel>
+
+                                </p:dataGrid>
+                            </div>
+
+
+                            <div class="ui-g-12 ui-md-6 ">
+                                <p:dataGrid value="#{principalBean.recientes}" var="r" columns="2" rows="12" layout="grid" >
+
+                                    <f:facet name="header" >
+                                        Accesos recientes
+                                    </f:facet>
+
+                                    <p:panel header="#{car.id}" style="text-align:center">
+                                        <h:panelGrid columns="1" style="width:100%">
+                                            <h:outputLink  value="#{request.contextPath}#{r.menu.urlCompleta}" style="display:inline-block; vertical-align: middle; padding: 5px; "
+                                                           target="_blank" > 
+
+                                                <i class="material-icons Fs48" >#{r.menu.icono}</i>
+                                                <br/>
+                                                <span style="display:inline-block; vertical-align: middle; ">
+
+                                                    <h:outputText  value="#{r.menu.modulo.descripcion} - #{r.menu.nombre}" />
+                                                </span>
+
+                                            </h:outputLink>                            
+                                        </h:panelGrid>
+                                    </p:panel>
+
+                                </p:dataGrid>
+
+                            </div>
+
+                            <div class="ui-g-12 ui-md-6">
+
+                                <p:fragment id="dgResultado" >
+
+
+                                    <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="1000" />
+
+                                    <p:dataList value="#{principalBean.resultadoBusqueda}" var="r" 
+                                                rendered="#{not empty principalBean.resultadoBusqueda}"  
+                                                type="unordered" itemType="none"
+                                                rows="40" paginator="true" paginatorAlwaysVisible="false" >
+
+                                        <f:facet name="header">
+                                            Resultados
+                                        </f:facet>
+
+                                        <h:outputLink  value="#{request.contextPath}#{r.urlCompleta}" style="display:inline-block; vertical-align: middle; padding: 5px; "
+                                                       target="_blank"                                        
+                                                       rendered="#{empty r.menuItem}" > 
 
 
 
-                                    <i class="material-icons Fs18" style="margin-top:5px; margin-right: 5px;display:inline-block; vertical-align: middle;">#{r.icono}</i>
-                                    <span style="display:inline-block; vertical-align: middle; ">
+                                            <i class="material-icons Fs18" style="margin-top:5px; margin-right: 5px;display:inline-block; vertical-align: middle;">#{r.icono}</i>
+                                            <span style="display:inline-block; vertical-align: middle; ">
 
-                                        <h:outputText  value="#{r.modulo.descripcion} - #{r.nombre}" />
-                                    </span>
+                                                <h:outputText  value="#{r.modulo.descripcion} - #{r.nombre}" />
+                                            </span>
 
 
-                                    <p:ajax event="click" update="@form" listener="#{principalBean.agregarReciente(r)}" />
+                                            <p:ajax event="click" update="@form" listener="#{principalBean.agregarReciente(r)}" />
 
-                                    <!--
-                                    <p:contextMenu id="cm#{r.codigo}">
-                                        <p:menuitem value="Agregar a Favoritos" 
-                                                    actionListener="#{principalBean.agregarFavorito(r)}" update="@form" icon="fa fa-star"/>                            
-                                    </p:contextMenu>
-                                    -->
+                                            <p:commandLink actionListener="#{principalBean.agregarFavorito(r)}" process="@this"  update="@form" 
+                                                           title="Agregar a Favoritos" >
+                                                <i class="fa fa-star" ></i>
+                                            </p:commandLink>
 
-                                </h:outputLink>                            
-                            </p:dataList>
+                                        </h:outputLink>                            
+                                    </p:dataList>
 
-                        </p:fragment>
-                        <!--
-                        <ui:include src="./footer.xhtml" />
-                        -->
+                                </p:fragment>
+
+                            </div>
+
+
+                        </div>
                     </h:form>
                 </div>
             </div>

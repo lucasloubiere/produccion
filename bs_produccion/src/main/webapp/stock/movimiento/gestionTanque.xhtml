@@ -216,8 +216,7 @@
                             <h:outputText value="#{i.deposito.descripcion}" />
                         </p:column>
                         
-                        <p:column width="30"  >
-                            
+                        <p:column width="30"  >                            
                             <p:commandButton icon="fa fa-search" 
                                              process="@this" oncomplete="PF('dlgProducto').show()"                                              
                                              rendered="#{not i.depositoConStock and empty i.id}" >      

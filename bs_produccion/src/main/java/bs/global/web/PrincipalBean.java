@@ -164,7 +164,7 @@ public class PrincipalBean extends GenericBean implements Serializable {
                 return;
             }
 
-            if (favoritos.size() >= 15) {
+            if (favoritos.size() >= 18) {
                 favoritos.remove(favoritos.size() - 1);
             }
             favoritos.add(0, i);
