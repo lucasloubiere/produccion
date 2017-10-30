@@ -1,3 +1,4 @@
+
 PrimeFaces.locales['es'] = {
         closeText: 'Cerrar',
         prevText: '',

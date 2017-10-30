@@ -37,6 +37,7 @@
             </p:menubar>
         </ui:define>
 
+
         <ui:define name="contenido" >
 
             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
@@ -57,7 +58,7 @@
                     <h:outputText value="" />                    
 
                     <h:outputText value="Fecha formulario" /> 
-                    
+
                     <p:calendar value="#{gestionTanquesBean.fechaMovimientoDesde}" placeholder="Desde"
                                 pattern="dd/MM/yyyy"   />
 
@@ -148,12 +149,12 @@
                     <!--
                     <p:ajax event="dateSelect" listener="#{gestionTanquesBean.onDateSelect}" update="@form" />
                     -->
-                    
-                     <h:outputText value="Número" />
+
+                    <h:outputText value="Número" />
                     <p:inputText value="#{gestionTanquesBean.gestionTanque.numeroFormulario}" readonly="true" >
                         <f:convertNumber pattern="00000000" />
                     </p:inputText>
-                     
+
                     <h:outputText value="Sector" />
                     <p:selectOneMenu value="#{gestionTanquesBean.gestionTanque.sector}"                                      
                                      rendered="#{empty gestionTanquesBean.gestionTanque.id}"
@@ -167,10 +168,10 @@
                     <p:inputText value="#{gestionTanquesBean.gestionTanque.sector.descripcion}"
                                  rendered="#{not empty gestionTanquesBean.gestionTanque.id}"
                                  readonly="true" />
-                    
+
                     <h:outputText value="Observaciones" />
                     <p:inputTextarea style="width: 100%" rows="3" value="#{gestionTanquesBean.gestionTanque.observaciones}" />
-                    
+
                 </p:panelGrid>  
 
                 <div class="EmptyBox10" />
@@ -182,7 +183,8 @@
                                          rendered="#{empty gestionTanquesBean.gestionTanque.id}"
                                          actionListener="#{gestionTanquesBean.obtenerDatos()}"
                                          process="@form"
-                                         update="@form" />
+                                         update="@form" >                            
+                        </p:commandButton>
 
                     </div>                    
                 </div>
@@ -215,7 +217,7 @@
                                   filterMatchMode="contains">
                             <h:outputText value="#{i.deposito.descripcion}" />
                         </p:column>
-                        
+
                         <p:column width="30"  >                            
                             <p:commandButton icon="fa fa-search" 
                                              process="@this" oncomplete="PF('dlgProducto').show()"                                              
@@ -242,14 +244,15 @@
 
                         <p:column headerText="Medida Manual" sortBy="#{i.medida}" width="100" styleClass="TextAlRight"  >                    
 
-                            <p:inputText value="#{i.medida}" style="text-align: right;"
+                            <p:inputText value="#{i.medida}" style="text-align: right;" styleClass="plus-as-tab"
+                                         onkeydown=""
                                          rendered="#{i.deposito.calculaStock eq 'M' and not empty i.producto}" >
                                 <f:convertNumber pattern="#,###,##0.00" />
                                 <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
                             </p:inputText>       
-                                                                                    
-                        </p:column>
 
+                        </p:column>
+                       
                         <p:column headerText="Stock inicial" sortBy="#{i.stockInicial}" width="100" styleClass="TextAlRight"  >                    
                             <h:outputText value="#{i.stockInicial}" styleClass="pull-right #{not empty i.stockInicial?(i.stockInicial>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
                                 <f:convertNumber pattern="#,###,##0.00" />
@@ -273,11 +276,11 @@
                         </p:column>
 
                         <p:column headerText="Stock Final" sortBy="#{i.stockFinal}" width="100"  >    
-                            
+
                             <h:outputText value="#{i.stockFinal}" rendered="#{i.deposito.calculaStock eq 'M'}" styleClass="pull-right" >
                                 <f:convertNumber pattern="#,###,##0.00" />
                             </h:outputText>
-                            
+
                             <p:inputText value="#{i.stockFinal}" rendered="#{i.deposito.calculaStock eq 'F' and not empty i.producto}" style="text-align: right;" >
                                 <f:convertNumber pattern="#,###,##0.00" />
                                 <p:ajax  process="@this" update="tablaGestionTanque" listener="#{gestionTanquesBean.calcularStock(i)}" />
@@ -285,7 +288,7 @@
                         </p:column>
 
                         <p:column headerText="Producción Calculada" sortBy="#{i.stockCalculado}" width="100"  >                    
-                            
+
                             <h:outputText value="#{i.stockCalculado}" 
                                           styleClass="pull-right  #{not empty i.stockCalculado?(i.stockCalculado>=0?'cantidadPositiva':'cantidadNegativa'):''}" >
                                 <f:convertNumber pattern="#,###,##0.00" />
@@ -297,7 +300,7 @@
                                 <f:convertNumber pattern="#,###,##0.00" />
                             </h:outputText>
                             -->
-                            
+
                         </p:column>
 
                     </p:dataTable>
@@ -354,6 +357,8 @@
                 </p:tab>
 
             </p:wizard>
+
+
 
         </ui:define>
 

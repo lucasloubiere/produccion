@@ -58,7 +58,7 @@
 
             <div class="layout-main" style="margin-left: 0px;">
                 <div class="layout-main-content ui-fluid">
-                    <h:form id="formulario" prependId="false">
+                    <h:form id="formulario" prependId="false" onkeypress="return event.keyCode != 13;" >
                         <ui:insert name="menu" />  
                         <div class="EmptyBox5" />
                         <ui:insert name="contenido" />                                        
@@ -90,6 +90,8 @@
         <h:outputStylesheet name="css/ripple.css" library="barcelona-layout" />
         <h:outputStylesheet name="css/layout-green.css" library="barcelona-layout" />
 
+        <h:outputScript library="js" name="emulatetab.js" />
+        <h:outputScript library="js" name="plusastab.js" />
     </h:body>
 
 </html>
