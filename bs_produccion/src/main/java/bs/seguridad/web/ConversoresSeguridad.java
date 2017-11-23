@@ -8,9 +8,11 @@ package bs.seguridad.web;
 import bs.seguridad.modelo.EstadoUsuario;
 import bs.seguridad.modelo.Menu;
 import bs.seguridad.modelo.TipoUsuario;
+import bs.seguridad.modelo.Usuario;
 import bs.seguridad.rn.EstadoUsuarioRN;
 import bs.seguridad.rn.MenuRN;
 import bs.seguridad.rn.TipoUsuarioRN;
+import bs.seguridad.rn.UsuarioRN;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -29,6 +31,7 @@ public class ConversoresSeguridad implements Serializable{
 
     @EJB private EstadoUsuarioRN estadoRN;
     @EJB private TipoUsuarioRN tipoRN;
+    @EJB private UsuarioRN usuarioRN;
     @EJB private MenuRN menuRN;
     
     /** Creates a new instance of ConversoresBean */
@@ -55,6 +58,30 @@ public class ConversoresSeguridad implements Serializable{
                     return "";
                 } else {
                     return ((EstadoUsuario) value).getId() + "";
+                }
+            }
+        };
+    }
+
+    public Converter getUsuario() {
+        return new Converter() {
+
+            @Override
+            public Object getAsObject(FacesContext context, UIComponent component, String value) {
+                if (value.trim().equals("") || value == null) {
+                    return null;
+                }
+                
+                Usuario e = usuarioRN.getUsuario(Integer.valueOf(value));
+                return e;
+            }
+
+            @Override
+            public String getAsString(FacesContext context, UIComponent component, Object value) {
+                if (value == null || value.equals("")) {
+                    return "";
+                } else {
+                    return ((Usuario) value).getId() + "";
                 }
             }
         };

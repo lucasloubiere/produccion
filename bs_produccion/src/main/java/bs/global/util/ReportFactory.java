@@ -159,7 +159,7 @@ public class ReportFactory implements Serializable {
 
             } else if (value.getClass() == java.util.Date.class || value.getClass() == java.sql.Date.class) {
 
-                parametro = JsfUtil.getFechaSQL((java.util.Date) value);
+                parametro = JeeUtil.getFechaSQL((java.util.Date) value);
 
             } else {
                 parametro = "'" + value + "'";

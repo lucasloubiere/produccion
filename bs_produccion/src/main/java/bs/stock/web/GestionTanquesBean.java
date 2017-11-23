@@ -6,6 +6,7 @@
 package bs.stock.web;
 
 import bs.global.excepciones.ExcepcionGeneralSistema;
+import bs.global.util.JeeUtil;
 import bs.global.util.JsfUtil;
 import bs.global.web.GenericBean;
 import bs.stock.modelo.Deposito;
@@ -298,12 +299,12 @@ public class GestionTanquesBean extends GenericBean {
 
         if (fechaMovimientoDesde != null) {
 
-            filtro.put("fechaMovimiento >= ", JsfUtil.getFechaSQL(fechaMovimientoDesde));
+            filtro.put("fechaMovimiento >= ", JeeUtil.getFechaSQL(fechaMovimientoDesde));
         }
 
         if (fechaMovimientoHasta != null) {
 
-            filtro.put("fechaMovimiento <= ", JsfUtil.getFechaSQL(fechaMovimientoHasta));
+            filtro.put("fechaMovimiento <= ", JeeUtil.getFechaSQL(fechaMovimientoHasta));
         }
     }
 

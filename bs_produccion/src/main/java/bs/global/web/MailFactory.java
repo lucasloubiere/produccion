@@ -12,7 +12,7 @@ import bs.administracion.modelo.Parametro;
 import bs.administracion.rn.CorreoElectronicoRN;
 import bs.administracion.rn.ParametrosRN;
 import bs.global.excepciones.ExcepcionGeneralSistema;
-import bs.global.util.JsfUtil;
+import bs.global.util.JeeUtil;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -222,7 +222,7 @@ public class MailFactory implements Serializable{
                 
                 s = s.trim();
                 
-                if(!JsfUtil.validateEmail(s)){
+                if(!JeeUtil.validateEmail(s)){
                     throw  new ExcepcionGeneralSistema("Cuenta de correo inválida:" + s);      
                 }
             }

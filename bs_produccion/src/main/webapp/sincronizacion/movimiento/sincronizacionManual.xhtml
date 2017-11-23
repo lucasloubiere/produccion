@@ -28,13 +28,13 @@
                              columnClasses="ui-g-2,ui-g-4,ui-g-2,ui-g-4" >
 
                     <h:outputText value="Desde" />                    
-                    <p:calendar value="#{testWS.fechaDesde}"  pattern="dd/MM/yyyy"  navigator="true" required="true"   />
+                    <p:calendar value="#{sincronizacionBean.fechaDesde}"  pattern="dd/MM/yyyy"  navigator="true" required="true"   />
                     
                     <h:outputText value="Hasta" />                    
-                    <p:calendar value="#{testWS.fechaHasta}"  pattern="dd/MM/yyyy"  navigator="true" required="true"   />
+                    <p:calendar value="#{sincronizacionBean.fechaHasta}"  pattern="dd/MM/yyyy"  navigator="true" required="true"   />
 
                     <h:outputText value="Empresa" />   
-                    <p:selectOneMenu  value="#{testWS.empresa}" rendered="true">
+                    <p:selectOneMenu  value="#{sincronizacionBean.empresa}" rendered="true">
                         <f:selectItem itemLabel="Seleccionar" itemValue="" />                        
                         <f:selectItem itemLabel="Vicentin"    itemValue="1" />                        
                         <f:selectItem itemLabel="Algodonera"  itemValue="2" />                        
@@ -43,7 +43,7 @@
 
                 </p:panelGrid>
 
-                <p:commandButton value="Sincronizar Datos" actionListener="#{testWS.sincronizarEntreFechas()}"
+                <p:commandButton value="Sincronizar Datos" actionListener="#{sincronizacionBean.sincronizarEntreFechas()}"
                                  process="@form"
                                  update="@form" />
                 
@@ -54,7 +54,7 @@
                              columnClasses="ui-g-2,ui-g-10" >
 
                     <h:outputText value="Log" />                                        
-                    <p:inputTextarea value="#{testWS.log}" />
+                    <p:inputTextarea value="#{sincronizacionBean.log}" />
 
                 </p:panelGrid>
                 

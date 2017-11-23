@@ -88,8 +88,23 @@
             <div class="layout-main">
                 <div class="layout-main-content">
                     <h:form id="formDashboard">
+                        
+                        <div class="ui-g" >
+
+                            <div class="ui-g-12" >
+
+                                <h:outputLink value="#{request.contextPath}/global/mensajeria.jsf" target="_blank" >
+                                    <h:outputText value="Mensajería" />
+                                </h:outputLink>
+
+                            </div>
+
+                            
+                        </div>
 
                         <div class="ui-g" >
+
+                            
                             <div class="ui-g-12">
                                 <p:dataGrid value="#{principalBean.favoritos}" var="r" columns="6" rows="12" layout="grid" 
                                             >
