@@ -34,13 +34,11 @@
                 </p:menuitem>
 
                 <p:menuitem value="Guardar" icon="fa fa-save"
-                            action="#{movimientoStockBean.guardar(false)}"
-                            rendered="#{empty movimientoStockBean.m.id }"
+                            action="#{movimientoStockBean.guardar(false)}"                            
                             update="@form" />
 
                 <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
-                            action="#{movimientoStockBean.guardar(true)}"
-                            rendered="#{empty movimientoStockBean.m.id }"
+                            action="#{movimientoStockBean.guardar(true)}"                            
                             oncomplete="btnNew.click()"
                             update="@form" />
 
@@ -354,15 +352,9 @@
 
                         <p:column headerText="Cantidad" width="80" style="text-align: right;"  >
 
-                            <p:inputText  value="#{i.cantidad}" style="text-align: right;"
-                                          rendered="#{empty movimientoStockBean.m.id}">                                
+                            <p:inputText  value="#{i.cantidad}" style="text-align: right;">
                                 <f:convertNumber pattern="#,###,##0.00" />
                             </p:inputText>                        
-
-                            <h:outputText value="#{i.cantidad}"   
-                                          rendered="#{not empty movimientoStockBean.m.id}" >                            
-                                <f:convertNumber pattern="#,###,##0.00" />
-                            </h:outputText>
 
                         </p:column>
 

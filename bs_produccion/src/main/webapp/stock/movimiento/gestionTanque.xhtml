@@ -139,13 +139,21 @@
                 <p:panelGrid columns="4" layout="grid"              
                              styleClass="ui-panelgrid-blank"
                              columnClasses="ui-g-2 ui-md-2 ui-lg-3, ui-g-4 ui-md-8 ui-lg-6,ui-g-2 ui-md-2 ui-lg-3, ui-g-4 ui-md-8 ui-lg-6" >
+                    
+                    <h:outputText value="Sector" />
+                    <p:selectOneMenu value="#{gestionTanquesBean.gestionTanque.sector}"                                      
+                                     rendered="#{empty gestionTanquesBean.gestionTanque.id}"
+                                     required="true" requiredMessage="Seleccione el sector"
+                                     converter="#{conversoresStock.sector}"                                      
+                                     effect="fade" filter="true" filterMatchMode="contains" >  
+                        <p:ajax process="@this" update="@this" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{sectorBean.lista}" var="s" itemLabel="#{s.descripcion}" itemValue="#{s}" />                                    
+                    </p:selectOneMenu>
+                    <p:inputText value="#{gestionTanquesBean.gestionTanque.sector.descripcion}"
+                                 rendered="#{not empty gestionTanquesBean.gestionTanque.id}"
+                                 readonly="true" />
 
-                    <h:outputText value="Fecha" />
-                    <p:calendar value="#{gestionTanquesBean.gestionTanque.fechaMovimiento}"  timeControlObject="true"                             
-                                pattern="dd/MM/yyyy HH:mm" 
-                                required="true"
-                                requiredMessage="La fecha es necesaria" >
-                    </p:calendar>
                     <!--
                     <p:ajax event="dateSelect" listener="#{gestionTanquesBean.onDateSelect}" update="@form" />
                     -->
@@ -154,21 +162,15 @@
                     <p:inputText value="#{gestionTanquesBean.gestionTanque.numeroFormulario}" readonly="true" >
                         <f:convertNumber pattern="00000000" />
                     </p:inputText>
+                    
+                    <h:outputText value="Fecha" />
+                    <p:calendar value="#{gestionTanquesBean.gestionTanque.fechaMovimiento}"  timeControlObject="true"                             
+                                pattern="dd/MM/yyyy HH:mm" 
+                                required="true"
+                                requiredMessage="La fecha es necesaria" >
+                    </p:calendar>
 
-                    <h:outputText value="Sector" />
-                    <p:selectOneMenu value="#{gestionTanquesBean.gestionTanque.sector}"                                      
-                                     rendered="#{empty gestionTanquesBean.gestionTanque.id}"
-                                     required="true" requiredMessage="Seleccione el sector"
-                                     converter="#{conversoresStock.sector}"                                      
-                                     effect="fade" filter="true" filterMatchMode="contains" >  
-                        <p:ajax process="@this" update="@form" />
-                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
-                        <f:selectItems value="#{sectorBean.lista}" var="s" itemLabel="#{s.descripcion}" itemValue="#{s}" />                                    
-                    </p:selectOneMenu>
-                    <p:inputText value="#{gestionTanquesBean.gestionTanque.sector.descripcion}"
-                                 rendered="#{not empty gestionTanquesBean.gestionTanque.id}"
-                                 readonly="true" />
-
+                    
                     <h:outputText value="Observaciones" />
                     <p:inputTextarea style="width: 100%" rows="3" value="#{gestionTanquesBean.gestionTanque.observaciones}" />
 

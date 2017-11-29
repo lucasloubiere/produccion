@@ -50,7 +50,7 @@ public class MovimientoStockRN {
     @EJB
     private SucursalRN sucursalRN;
     @EJB
-    private ModuloRN moduloRN; 
+    private ModuloRN moduloRN;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public synchronized void guardar(MovimientoStock movimiento) throws Exception {
@@ -59,18 +59,27 @@ public class MovimientoStockRN {
         generarItemTransferencia(movimiento);
         asignarDepositoItems(movimiento);
         asignarCantidadStock(movimiento);
-
+        
         //Validamos que se pueda guardar el comprobante
         controlComprobante(movimiento, false);
-        generarStock(movimiento);
 
-        if (!movimiento.isNoSincronizaNumeroFormulario() && movimiento.getNumeroFormulario()>0) {
+        if (movimiento.getId() == null) {
 
-            Integer ultimoNumero = formularioRN.tomarProximoNumero(movimiento.getFormulario());
-            movimiento.setNumeroFormulario(ultimoNumero);
+            generarStock(movimiento);
+            
+            if (!movimiento.isNoSincronizaNumeroFormulario() && movimiento.getNumeroFormulario() > 0) {
 
+                Integer ultimoNumero = formularioRN.tomarProximoNumero(movimiento.getFormulario());
+                movimiento.setNumeroFormulario(ultimoNumero);
+
+            }
+            inventarioDAO.crear(movimiento);
+        } else {
+            inventarioDAO.editar(movimiento);            
+            recalcularStock();
+            
         }
-        inventarioDAO.crear(movimiento);
+
         movimiento.setPersistido(true);
     }
 
@@ -224,17 +233,15 @@ public class MovimientoStockRN {
      */
     public void controlComprobante(MovimientoStock m, boolean permiteVacio) throws ExcepcionGeneralSistema {
 
-        if (m.getId() != null) {
-            throw new ExcepcionGeneralSistema("No es posible modificar un comprobante de stock");
-        }
-        
-        
+//        if (m.getId() != null) {
+//            throw new ExcepcionGeneralSistema("No es posible modificar un comprobante de stock");
+//        }
+
 //        Modulo modulo  = null;
 //        
 //        if (!m.getFechaMovimiento().after(modulo.getfechahabilitacionDesde) & !m.getFechaMovimiento().before(modulo.getfechahabilitacionHasta)){
 //            throw new ExcepcionGeneralSistema("La fecha del movimiento no está dentro del período habilitado");
 //        }
-
         if (!permiteVacio && m.getItemsProducto().isEmpty()) {
             throw new ExcepcionGeneralSistema("El detalle está vacío, no es posible guardar el comprobante de stock");
         }
@@ -625,7 +632,7 @@ public class MovimientoStockRN {
 
             if (m.getItemTransferencia() != null) {
                 for (ItemMovimientoStock i : m.getItemTransferencia()) {
-                    
+
                     i.setFechaMovimiento(m.getFechaMovimiento());
                     i.setDeposito(m.getDepositoTransferencia());
                 }
@@ -684,7 +691,7 @@ public class MovimientoStockRN {
                 continue;
             }
 
-            if (!im.isTodoOk()) {
+            if (im.getProducto() == null && !im.isTodoOk()) {
                 indiceBorrar[i] = "S";
             }
         }
@@ -742,19 +749,18 @@ public class MovimientoStockRN {
     }
 
     public boolean existeComprobante(MovimientoStock ms) {
-        
+
         Map<String, String> filtro = inventarioDAO.getFiltro();
-        
-        filtro.put(" numeroFormulario = ", "'"+ms.getNumeroFormulario()+"'");
-        filtro.put(" formulario.codigo = ", "'"+ms.getFormulario().getCodigo()+"'");
-        filtro.put(" sucursal.codigo = ", "'"+ms.getSucursal().getCodigo()+"'");
-                
-        return (inventarioDAO.getObjeto(MovimientoStock.class, filtro)!=null);       
-        
-        
+
+        filtro.put(" numeroFormulario = ", "'" + ms.getNumeroFormulario() + "'");
+        filtro.put(" formulario.codigo = ", "'" + ms.getFormulario().getCodigo() + "'");
+        filtro.put(" sucursal.codigo = ", "'" + ms.getSucursal().getCodigo() + "'");
+
+        return (inventarioDAO.getObjeto(MovimientoStock.class, filtro) != null);
+
     }
-    
-     public BigDecimal getStockAFecha(Producto p, Deposito d, Date fecha) {
+
+    public BigDecimal getStockAFecha(Producto p, Deposito d, Date fecha) {
         return inventarioDAO.getStockAFecha(p, d, fecha);
     }
 
@@ -764,10 +770,15 @@ public class MovimientoStockRN {
     }
 
     public BigDecimal getCantidadFromMovimiento(String tipoMovimiento, Producto producto, Deposito deposito, Date fechaMovimientoDesde, Date fechaMovimientoHasta) {
-        
+
         return inventarioDAO.getCantidadFromMovimiento(tipoMovimiento, producto, deposito, fechaMovimientoDesde, fechaMovimientoHasta);
-        
+
     }
 
+    private void recalcularStock() {
+        
+        inventarioDAO.recalcularStock();
+        
+    }
 
 }
