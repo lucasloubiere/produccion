@@ -5,16 +5,19 @@
  */
 package bs.produccion.modelo;
 
+import bs.global.modelo.Auditoria;
+import bs.global.modelo.Comprobante;
 import bs.global.modelo.Formulario;
 import bs.global.modelo.Sucursal;
-import bs.stock.modelo.ComprobanteStock;
 import bs.stock.modelo.Deposito;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,17 +30,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author lloubiere
  */
 @Entity
-@Table(name = "pd_movimiento", catalog = "produccion-ds", schema = "")
+@Table(name = "pd_movimiento")
 @XmlRootElement
 
 public class MovimientoProduccion implements Serializable {
@@ -49,44 +50,36 @@ public class MovimientoProduccion implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "nroform")
-    private Integer nroform;
+    private Integer numeroformulario;
     @Column(name = "fchmov")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fchmov;
+    private Date fchaMovimiento;
     @Lob
     @Size(max = 65535)
     @Column(name = "observaciones", length = 65535)
     private String observaciones;
     @Column(name = "fchreq")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fchreq;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
-    @Column(name = "DEBAJA", nullable = false, length = 1)
-    private String debaja;
-    @Column(name = "FECALT")
-    @Temporal(TemporalType.DATE)
-    private Date fecalt;
-    @Column(name = "FECMOD")
-    @Temporal(TemporalType.DATE)
-    private Date fecmod;
-    @Size(max = 1)
-    @Column(name = "ULTOPR", length = 1)
-    private String ultopr;
-    @Size(max = 15)
-    @Column(name = "USERID", length = 15)
-    private String userid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcab")
-    private List<ItemMovimientoProduccion> itemMovimientoProduccionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idcab")
-    private List<ItemMovimientoOperario> itemMovimientoOperarioList;
+    private Date fchaRequerida;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento")
+    private List<ItemProductoProduccion> itemsProducto;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento")
+    private List<ItemProcesoProduccion> itemsProceso;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento")
+    private List<ItemComponenteProduccion> itemsComponente;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento")
+    private List<ItemMovimientoOperario> itemsOperario;
+
     @JoinColumn(name = "deptra", referencedColumnName = "codigo")
     @ManyToOne
-    private Deposito deptra;
+    private Deposito depositoTransferencia;
     @JoinColumn(name = "deposi", referencedColumnName = "codigo")
     @ManyToOne
-    private Deposito deposi;
+    private Deposito deposito;
     @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
     private SectorProduccion sector;
@@ -94,10 +87,10 @@ public class MovimientoProduccion implements Serializable {
         @JoinColumn(name = "circom", referencedColumnName = "circom"),
         @JoinColumn(name = "cirapl", referencedColumnName = "cirapl")})
     @ManyToOne
-    private Circuito circuito;
+    private CircuitoProduccion circuito;
     @JoinColumn(name = "sucurs", referencedColumnName = "codigo")
     @ManyToOne
-    private Sucursal sucurs;
+    private Sucursal sucursal;
     @JoinColumns({
         @JoinColumn(name = "codform", referencedColumnName = "modfor"),
         @JoinColumn(name = "modform", referencedColumnName = "codfor")})
@@ -107,42 +100,36 @@ public class MovimientoProduccion implements Serializable {
         @JoinColumn(name = "codcom", referencedColumnName = "modcom"),
         @JoinColumn(name = "modcom", referencedColumnName = "codcom")})
     @ManyToOne
-    private ComprobanteStock comprobanteStock;
+    private Comprobante comprobante;
+
+    @Embedded
+    private Auditoria auditoria;
 
     public MovimientoProduccion() {
+        this.auditoria = new Auditoria();
+        this.itemsComponente = new ArrayList<ItemComponenteProduccion>();
+        this.itemsOperario = new ArrayList<ItemMovimientoOperario>();
+        this.itemsProceso = new ArrayList<ItemProcesoProduccion>();
+        this.itemsProducto = new ArrayList<ItemProductoProduccion>();
     }
 
     public MovimientoProduccion(Integer id) {
+        this.itemsComponente = new ArrayList<ItemComponenteProduccion>();
+        this.itemsOperario = new ArrayList<ItemMovimientoOperario>();
+        this.itemsProceso = new ArrayList<ItemProcesoProduccion>();
+        this.itemsProducto = new ArrayList<ItemProductoProduccion>();
+        this.auditoria = new Auditoria();
         this.id = id;
     }
 
-    public MovimientoProduccion(Integer id, String debaja) {
-        this.id = id;
-        this.debaja = debaja;
-    }
-
+    
     public Integer getId() {
+
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getNroform() {
-        return nroform;
-    }
-
-    public void setNroform(Integer nroform) {
-        this.nroform = nroform;
-    }
-
-    public Date getFchmov() {
-        return fchmov;
-    }
-
-    public void setFchmov(Date fchmov) {
-        this.fchmov = fchmov;
     }
 
     public String getObservaciones() {
@@ -153,88 +140,6 @@ public class MovimientoProduccion implements Serializable {
         this.observaciones = observaciones;
     }
 
-    public Date getFchreq() {
-        return fchreq;
-    }
-
-    public void setFchreq(Date fchreq) {
-        this.fchreq = fchreq;
-    }
-
-    public String getDebaja() {
-        return debaja;
-    }
-
-    public void setDebaja(String debaja) {
-        this.debaja = debaja;
-    }
-
-    public Date getFecalt() {
-        return fecalt;
-    }
-
-    public void setFecalt(Date fecalt) {
-        this.fecalt = fecalt;
-    }
-
-    public Date getFecmod() {
-        return fecmod;
-    }
-
-    public void setFecmod(Date fecmod) {
-        this.fecmod = fecmod;
-    }
-
-    public String getUltopr() {
-        return ultopr;
-    }
-
-    public void setUltopr(String ultopr) {
-        this.ultopr = ultopr;
-    }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
-
-    @XmlTransient
-    public List<ItemMovimientoProduccion> getItemMovimientoProduccionList() {
-        return itemMovimientoProduccionList;
-    }
-
-    public void setItemMovimientoProduccionList(List<ItemMovimientoProduccion> itemMovimientoProduccionList) {
-        this.itemMovimientoProduccionList = itemMovimientoProduccionList;
-    }
-
-    @XmlTransient
-    public List<ItemMovimientoOperario> getItemMovimientoOperarioList() {
-        return itemMovimientoOperarioList;
-    }
-
-    public void setItemMovimientoOperarioList(List<ItemMovimientoOperario> itemMovimientoOperarioList) {
-        this.itemMovimientoOperarioList = itemMovimientoOperarioList;
-    }
-
-    public Deposito getDeptra() {
-        return deptra;
-    }
-
-    public void setDeptra(Deposito deptra) {
-        this.deptra = deptra;
-    }
-
-    public Deposito getDeposi() {
-        return deposi;
-    }
-
-    public void setDeposi(Deposito deposi) {
-        this.deposi = deposi;
-    }
-
     public SectorProduccion getSector() {
         return sector;
     }
@@ -243,20 +148,12 @@ public class MovimientoProduccion implements Serializable {
         this.sector = sector;
     }
 
-    public Circuito getCircuito() {
+    public CircuitoProduccion getCircuito() {
         return circuito;
     }
 
-    public void setCircuito(Circuito circuito) {
+    public void setCircuito(CircuitoProduccion circuito) {
         this.circuito = circuito;
-    }
-
-    public Sucursal getSucurs() {
-        return sucurs;
-    }
-
-    public void setSucurs(Sucursal sucurs) {
-        this.sucurs = sucurs;
     }
 
     public Formulario getFormulario() {
@@ -265,14 +162,6 @@ public class MovimientoProduccion implements Serializable {
 
     public void setFormulario(Formulario formulario) {
         this.formulario = formulario;
-    }
-
-    public ComprobanteStock getComprobanteStock() {
-        return comprobanteStock;
-    }
-
-    public void setComprobanteStock(ComprobanteStock comprobanteStock) {
-        this.comprobanteStock = comprobanteStock;
     }
 
     @Override
@@ -299,5 +188,5 @@ public class MovimientoProduccion implements Serializable {
     public String toString() {
         return "bs.produccion.modelo.MovimientoProduccion[ id=" + id + " ]";
     }
-    
+
 }

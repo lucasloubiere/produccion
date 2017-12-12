@@ -5,9 +5,11 @@
  */
 package bs.produccion.modelo;
 
+import bs.global.modelo.Auditoria;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -41,19 +43,25 @@ public class Operario implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;   
-    
     @JoinColumn(name = "codpues", referencedColumnName = "codigo", nullable = false)
     @ManyToOne(optional = false)
     private OperarioPuesto puesto;
 
+    @Embedded
+    private Auditoria auditoria;
+    
+    
     public Operario() {
+    this.auditoria = new Auditoria();
     }
 
     public Operario(String codigo) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
     }
 
     public Operario(String codigo, String nombre, String debaja) {
+        this.auditoria = new Auditoria();
         this.codigo = codigo;
         this.nombre = nombre;
         
@@ -83,6 +91,23 @@ public class Operario implements Serializable {
         this.nombre = nombre;
     }
 
+    public OperarioPuesto getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(OperarioPuesto puesto) {
+        this.puesto = puesto;
+    }
+
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+
+   
   
   
     @Override

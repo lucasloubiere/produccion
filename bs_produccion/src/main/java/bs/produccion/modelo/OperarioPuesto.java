@@ -5,10 +5,12 @@
  */
 package bs.produccion.modelo;
 
+import bs.global.modelo.Auditoria;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -21,9 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author lloubiere
  */
 @Entity
-@Table(name = "pd_operario_puesto", catalog = "produccion-ds", schema = "")
+@Table(name = "pd_operario_puesto")
 @XmlRootElement
-
 public class OperarioPuesto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,18 +41,25 @@ public class OperarioPuesto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "valorhora", nullable = false, precision = 10, scale = 2)
-    private BigDecimal valorhora;
+    private BigDecimal valorHora;
+    
+    @Embedded
+    private Auditoria auditoria;
+    
     
     public OperarioPuesto() {
+    this.auditoria = new Auditoria();
     }
 
     public OperarioPuesto(String codigo) {
         this.codigo = codigo;
+        this.auditoria = new Auditoria();
     }
 
     public OperarioPuesto(String codigo, BigDecimal valorhora, String debaja) {
         this.codigo = codigo;
-        this.valorhora = valorhora;
+        this.valorHora = valorhora;
+        this.auditoria = new Auditoria();
         
     }
 
@@ -71,14 +79,23 @@ public class OperarioPuesto implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getValorhora() {
-        return valorhora;
+    public BigDecimal getValorHora() {
+        return valorHora;
     }
 
-    public void setValorhora(BigDecimal valorhora) {
-        this.valorhora = valorhora;
+    public void setValorHora(BigDecimal valorhora) {
+        this.valorHora = valorhora;
     }
 
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+
+    
     
     @Override
     public int hashCode() {

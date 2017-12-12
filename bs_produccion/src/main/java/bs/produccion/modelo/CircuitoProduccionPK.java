@@ -6,34 +6,23 @@
 package bs.produccion.modelo;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author lloubiere
  */
 @Embeddable
-public class CircuitoPK implements Serializable {
+public class CircuitoProduccionPK implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
-    @Column(name = "circom", nullable = false, length = 6)
+    
     private String circom;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
-    @Column(name = "cirapl", nullable = false, length = 6)
     private String cirapl;
 
-    public CircuitoPK() {
+    public CircuitoProduccionPK() {
     }
 
-    public CircuitoPK(String circom, String cirapl) {
+    public CircuitoProduccionPK(String circom, String cirapl) {
         this.circom = circom;
         this.cirapl = cirapl;
     }
@@ -65,10 +54,10 @@ public class CircuitoPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CircuitoPK)) {
+        if (!(object instanceof CircuitoProduccionPK)) {
             return false;
         }
-        CircuitoPK other = (CircuitoPK) object;
+        CircuitoProduccionPK other = (CircuitoProduccionPK) object;
         if ((this.circom == null && other.circom != null) || (this.circom != null && !this.circom.equals(other.circom))) {
             return false;
         }
