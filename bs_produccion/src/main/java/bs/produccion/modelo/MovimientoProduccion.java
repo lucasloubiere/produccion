@@ -82,7 +82,7 @@ public class MovimientoProduccion implements Serializable {
     private Deposito deposito;
     @JoinColumn(name = "sector", referencedColumnName = "codigo")
     @ManyToOne
-    private SectorProduccion sector;
+    private DepartamentoProduccion sector;
     @JoinColumns({
         @JoinColumn(name = "circom", referencedColumnName = "circom"),
         @JoinColumn(name = "cirapl", referencedColumnName = "cirapl")})
@@ -140,11 +140,11 @@ public class MovimientoProduccion implements Serializable {
         this.observaciones = observaciones;
     }
 
-    public SectorProduccion getSector() {
+    public DepartamentoProduccion getSector() {
         return sector;
     }
 
-    public void setSector(SectorProduccion sector) {
+    public void setSector(DepartamentoProduccion sector) {
         this.sector = sector;
     }
 

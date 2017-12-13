@@ -7,14 +7,18 @@ package bs.produccion.modelo;
 
 import bs.global.modelo.Auditoria;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -62,6 +66,18 @@ public class CircuitoProduccion implements Serializable {
     @JoinColumn(name = "cirapl", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private CodigoCircuitoProduccion circuitoAplicacion;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "circuito", fetch = FetchType.LAZY)
+    private List<ItemCircuitoProduccionProduccion> itemCircuitoProduccion;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "circuito", fetch = FetchType.LAZY)
+    private List<ItemCircuitoProduccionStock> itemCircuitoStock;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "circuito", fetch = FetchType.LAZY)
+    private List<ItemCircuitoProduccionValeConsumo> itemCircuitoValeConsumo;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "circuito", fetch = FetchType.LAZY)
+    private List<ItemCircuitoProduccionParteProceso> itemCircuitoParteProceso;
     
     @Embedded
     private Auditoria auditoria;
@@ -133,6 +149,40 @@ public class CircuitoProduccion implements Serializable {
         this.circuitoAplicacion = circuitoAplicacion;
     }
 
+    public List<ItemCircuitoProduccionProduccion> getItemCircuitoProduccion() {
+        return itemCircuitoProduccion;
+    }
+
+    public void setItemCircuitoProduccion(List<ItemCircuitoProduccionProduccion> itemCircuitoProduccion) {
+        this.itemCircuitoProduccion = itemCircuitoProduccion;
+    }
+
+    public List<ItemCircuitoProduccionStock> getItemCircuitoStock() {
+        return itemCircuitoStock;
+    }
+
+    public void setItemCircuitoStock(List<ItemCircuitoProduccionStock> itemCircuitoStock) {
+        this.itemCircuitoStock = itemCircuitoStock;
+    }
+
+    public List<ItemCircuitoProduccionValeConsumo> getItemCircuitoValeConsumo() {
+        return itemCircuitoValeConsumo;
+    }
+
+    public void setItemCircuitoValeConsumo(List<ItemCircuitoProduccionValeConsumo> itemCircuitoValeConsumo) {
+        this.itemCircuitoValeConsumo = itemCircuitoValeConsumo;
+    }
+
+    public List<ItemCircuitoProduccionParteProceso> getItemCircuitoParteProceso() {
+        return itemCircuitoParteProceso;
+    }
+
+    public void setItemCircuitoParteProceso(List<ItemCircuitoProduccionParteProceso> itemCircuitoParteProceso) {
+        this.itemCircuitoParteProceso = itemCircuitoParteProceso;
+    }
+
+    
+    
   
     public Auditoria getAuditoria() {
         return auditoria;

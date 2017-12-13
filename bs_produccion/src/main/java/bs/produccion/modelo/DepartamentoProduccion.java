@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "pd_sector")
 @XmlRootElement
-public class SectorProduccion implements Serializable {
+public class DepartamentoProduccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,16 +42,16 @@ public class SectorProduccion implements Serializable {
 
     
     
-    public SectorProduccion() {
+    public DepartamentoProduccion() {
     this.auditoria = new Auditoria();
     }
 
-    public SectorProduccion(String codigo) {
+    public DepartamentoProduccion(String codigo) {
         this.codigo = codigo;
         this.auditoria = new Auditoria();
     }
 
-    public SectorProduccion(String codigo, String debaja) {
+    public DepartamentoProduccion(String codigo, String debaja) {
         this.codigo = codigo;
         this.auditoria = new Auditoria();
        
@@ -92,10 +92,10 @@ public class SectorProduccion implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SectorProduccion)) {
+        if (!(object instanceof DepartamentoProduccion)) {
             return false;
         }
-        SectorProduccion other = (SectorProduccion) object;
+        DepartamentoProduccion other = (DepartamentoProduccion) object;
         if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
             return false;
         }
