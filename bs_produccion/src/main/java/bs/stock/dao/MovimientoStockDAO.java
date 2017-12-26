@@ -11,6 +11,7 @@ import bs.stock.modelo.ItemMovimientoStock;
 import bs.stock.modelo.MovimientoStock;
 import bs.stock.modelo.Producto;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,6 +81,8 @@ public class MovimientoStockDAO extends BaseDAO {
     public BigDecimal getStockAFecha(Producto p, Deposito d, Date fecha) {
 
         try {
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 
             Query q = em.createNativeQuery(" SELECT ifnull(sum(st_movimiento_item.STOCK) ,0) "
                     + " FROM st_movimiento INNER JOIN st_movimiento_item "
@@ -87,10 +90,12 @@ public class MovimientoStockDAO extends BaseDAO {
                     + " WHERE st_movimiento_item.ARTCOD = ?1 "
                     + " AND st_movimiento_item.DEPOSI = ?2 "
                     + " AND st_movimiento.FCHMOV < ?3 ");
+            
+            System.err.println("sdf.format(fecha)" + sdf.format(fecha));
 
             q.setParameter("1", p.getCodigo());
             q.setParameter("2", d.getCodigo());
-            q.setParameter("3", fecha);
+            q.setParameter("3", sdf.format(fecha));
 
             return (BigDecimal) q.getSingleResult();
 

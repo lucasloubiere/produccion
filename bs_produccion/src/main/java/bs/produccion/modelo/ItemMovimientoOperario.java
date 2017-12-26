@@ -36,11 +36,21 @@ public class ItemMovimientoOperario implements Serializable {
     @NotNull
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @JoinColumn(name = "idcab", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private MovimientoProduccion movimiento;
+
+    @JoinColumn(name = "codoper", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne(optional = false)
+    private Operario operario;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1)
     @Column(name = "responsable", nullable = false, length = 1)
     private String responsable;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1)
@@ -58,12 +68,7 @@ public class ItemMovimientoOperario implements Serializable {
     @Size(max = 15)
     @Column(name = "USERID", length = 15)
     private String userid;
-    @JoinColumn(name = "codoper", referencedColumnName = "codigo", nullable = false)
-    @ManyToOne(optional = false)
-    private Operario codoper;
-    @JoinColumn(name = "idcab", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private MovimientoProduccion idcab;
+
 
     public ItemMovimientoOperario() {
     }
@@ -134,22 +139,22 @@ public class ItemMovimientoOperario implements Serializable {
         this.userid = userid;
     }
 
-    public Operario getCodoper() {
-        return codoper;
+    public MovimientoProduccion getMovimiento() {
+        return movimiento;
     }
 
-    public void setCodoper(Operario codoper) {
-        this.codoper = codoper;
+    public void setMovimiento(MovimientoProduccion movimiento) {
+        this.movimiento = movimiento;
     }
 
-    public MovimientoProduccion getIdcab() {
-        return idcab;
+    public Operario getOperario() {
+        return operario;
     }
 
-    public void setIdcab(MovimientoProduccion idcab) {
-        this.idcab = idcab;
+    public void setOperario(Operario operario) {
+        this.operario = operario;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -174,5 +179,5 @@ public class ItemMovimientoOperario implements Serializable {
     public String toString() {
         return "bs.produccion.modelo.ItemMovimientoOperario[ id=" + id + " ]";
     }
-    
+
 }

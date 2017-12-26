@@ -20,6 +20,7 @@ import bs.stock.modelo.MovimientoStock;
 import bs.stock.modelo.Producto;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +148,13 @@ public class GestionTanqueRN {
         m.setFormulario(formulario);
         m.setComprobante(comprobante);
         m.setNumeroFormulario(formulario.getUltimoNumero() + 1);
-        m.setFechaMovimiento(new Date());
+        
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.set(Calendar.HOUR_OF_DAY, 4);
+        c.set(Calendar.MINUTE, 0);
+                
+        m.setFechaMovimiento(c.getTime());
         m.setSucursal(sucursal);
 
         //Generamos el item producto vacío
@@ -221,8 +228,8 @@ public class GestionTanqueRN {
 
         if (gestionAnterior == null) {
 
-            gestionAnterior = new GestionTanque();
-            gestionAnterior.setFechaMovimiento(new Date());
+//            gestionAnterior = new GestionTanque();
+//            gestionAnterior.setFechaMovimiento(new Date());
         }
 
         return gestionAnterior;
@@ -238,12 +245,16 @@ public class GestionTanqueRN {
                 continue;
             }
 
+            Calendar c = Calendar.getInstance();
+            c.setTime(gestionTanque.getFechaMovimiento());
+            c.add(Calendar.MINUTE, -1);
+
             //Mayor a 0
             if (itemGestion.getStockCalculado().compareTo(BigDecimal.ZERO) == 1) {
 
                 MovimientoStock movIngreso = movimientoStockRN.nuevoMovimiento("ST", "IPA", "0001");
 
-                movIngreso.setFechaMovimiento(gestionTanque.getFechaMovimiento());
+                movIngreso.setFechaMovimiento(c.getTime());
                 movIngreso.setDeposito(itemGestion.getDeposito());
                 movIngreso.setNoValidaStockDisponible(true);
 
@@ -275,7 +286,7 @@ public class GestionTanqueRN {
 
                 MovimientoStock movEgreso = movimientoStockRN.nuevoMovimiento("ST", "EPA", "0001");
 
-                movEgreso.setFechaMovimiento(gestionTanque.getFechaMovimiento());
+                movEgreso.setFechaMovimiento(c.getTime());
                 movEgreso.setDeposito(itemGestion.getDeposito());
                 movEgreso.setNoValidaStockDisponible(true);
 
@@ -309,11 +320,11 @@ public class GestionTanqueRN {
         if (itemGestionTanque.getDeposito() == null) {
             throw new ExcepcionGeneralSistema("El deposito en el item no puede se nulo");
         }
-        
+
         if (itemGestionTanque.isDepositoConStock()) {
             throw new ExcepcionGeneralSistema("El deposito ya tienen producto con stock en este deposito");
         }
-        
+
         itemGestionTanque.setProducto(producto);
 
     }

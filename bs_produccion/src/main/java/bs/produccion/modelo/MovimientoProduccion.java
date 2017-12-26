@@ -164,6 +164,102 @@ public class MovimientoProduccion implements Serializable {
         this.formulario = formulario;
     }
 
+    public Integer getNumeroformulario() {
+        return numeroformulario;
+    }
+
+    public void setNumeroformulario(Integer numeroformulario) {
+        this.numeroformulario = numeroformulario;
+    }
+
+    public Date getFchaMovimiento() {
+        return fchaMovimiento;
+    }
+
+    public void setFchaMovimiento(Date fchaMovimiento) {
+        this.fchaMovimiento = fchaMovimiento;
+    }
+
+    public Date getFchaRequerida() {
+        return fchaRequerida;
+    }
+
+    public void setFchaRequerida(Date fchaRequerida) {
+        this.fchaRequerida = fchaRequerida;
+    }
+
+    public List<ItemProductoProduccion> getItemsProducto() {
+        return itemsProducto;
+    }
+
+    public void setItemsProducto(List<ItemProductoProduccion> itemsProducto) {
+        this.itemsProducto = itemsProducto;
+    }
+
+    public List<ItemProcesoProduccion> getItemsProceso() {
+        return itemsProceso;
+    }
+
+    public void setItemsProceso(List<ItemProcesoProduccion> itemsProceso) {
+        this.itemsProceso = itemsProceso;
+    }
+
+    public List<ItemComponenteProduccion> getItemsComponente() {
+        return itemsComponente;
+    }
+
+    public void setItemsComponente(List<ItemComponenteProduccion> itemsComponente) {
+        this.itemsComponente = itemsComponente;
+    }
+
+    public List<ItemMovimientoOperario> getItemsOperario() {
+        return itemsOperario;
+    }
+
+    public void setItemsOperario(List<ItemMovimientoOperario> itemsOperario) {
+        this.itemsOperario = itemsOperario;
+    }
+
+    public Deposito getDepositoTransferencia() {
+        return depositoTransferencia;
+    }
+
+    public void setDepositoTransferencia(Deposito depositoTransferencia) {
+        this.depositoTransferencia = depositoTransferencia;
+    }
+
+    public Deposito getDeposito() {
+        return deposito;
+    }
+
+    public void setDeposito(Deposito deposito) {
+        this.deposito = deposito;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public Comprobante getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(Comprobante comprobante) {
+        this.comprobante = comprobante;
+    }
+
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

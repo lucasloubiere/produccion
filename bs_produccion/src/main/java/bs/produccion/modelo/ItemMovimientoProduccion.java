@@ -85,7 +85,7 @@ public abstract class ItemMovimientoProduccion implements Serializable {
     @ManyToOne(optional = false)
     private Producto producto;
     @JoinColumns({
-        @JoinColumn(name = "artcod", referencedColumnName = "artcod", nullable = false),
+        @JoinColumn(name = "artcod", referencedColumnName = "artcod", nullable = false, insertable = false, updatable = false),
         @JoinColumn(name = "codfor", referencedColumnName = "codfor", nullable = false)})
     @ManyToOne(optional = false)
     private ComposicionFormula composicionFormula;

@@ -106,7 +106,12 @@ public class GestionTanquesBean extends GenericBean {
          * actual gestión.
          */
         GestionTanque gestionAnterior = gestionTanqueRN.getUltimoRegistro();// 
-
+        
+        if (gestionAnterior == null) {
+            gestionAnterior = new GestionTanque();
+            gestionAnterior.setFechaMovimiento(gestionTanque.getFechaMovimiento());
+        }
+        
         Calendar c = Calendar.getInstance();
         c.setTime(gestionAnterior.getFechaMovimiento());
         c.add(Calendar.MINUTE, 1);
