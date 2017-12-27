@@ -781,4 +781,11 @@ public class MovimientoStockRN {
         
     }
 
+    public void eliminarMovimiento(Integer id) {
+        
+        inventarioDAO.eliminar(MovimientoStock.class, id);
+        recalcularStock();
+        
+    }
+
 }

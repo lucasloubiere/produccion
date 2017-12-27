@@ -9,20 +9,12 @@ import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.util.JeeUtil;
 import bs.global.util.JsfUtil;
 import bs.global.web.GenericBean;
-import bs.stock.modelo.Deposito;
 import bs.stock.modelo.GestionTanque;
 import bs.stock.modelo.ItemGestionTanque;
-import bs.stock.modelo.Producto;
-import bs.stock.rn.DepositoRN;
 import bs.stock.rn.GestionTanqueRN;
 import bs.stock.rn.MovimientoStockRN;
-import bs.stock.rn.StockRN;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -44,10 +36,6 @@ import org.primefaces.event.SelectEvent;
 public class GestionTanquesBean extends GenericBean {
 
     @EJB
-    private StockRN stockRN;
-    @EJB
-    private DepositoRN depositoRN;
-    @EJB
     private MovimientoStockRN movimientoStockRN;
     @EJB
     private GestionTanqueRN gestionTanqueRN;
@@ -55,8 +43,7 @@ public class GestionTanquesBean extends GenericBean {
     private GestionTanque gestionTanque;
     private ItemGestionTanque itemGestionTanque;
     private List<GestionTanque> lista;
-    private List<Deposito> depositos;
-
+    
     private List<ItemGestionTanque> resumen;
 
     @ManagedProperty(value = "#{productoBean}")
@@ -92,100 +79,12 @@ public class GestionTanquesBean extends GenericBean {
 
     public void obtenerDatos() {
 
-        if (gestionTanque.getSector() == null) {
-            JsfUtil.addErrorMessage("Debe seleccionar el sector");
-            return;
+        try {
+            gestionTanqueRN.obtenerDatos(gestionTanque);
+        } catch (ExcepcionGeneralSistema ex) {
+            Logger.getLogger(GestionTanquesBean.class.getName()).log(Level.SEVERE, null, ex);
+            JsfUtil.addErrorMessage("No es posible obtener datos " + ex);
         }
-
-        cagarFiltroDeposito();
-
-        depositos = depositoRN.getDepositoByBusqueda(filtro, txtBusqueda, true, 0);
-
-        /**
-         * Obtenemos la última gestión guardada, anterior a la fecha de la
-         * actual gestión.
-         */
-        GestionTanque gestionAnterior = gestionTanqueRN.getUltimoRegistro();// 
-        
-        if (gestionAnterior == null) {
-            gestionAnterior = new GestionTanque();
-            gestionAnterior.setFechaMovimiento(gestionTanque.getFechaMovimiento());
-        }
-        
-        Calendar c = Calendar.getInstance();
-        c.setTime(gestionAnterior.getFechaMovimiento());
-        c.add(Calendar.MINUTE, 1);
-        gestionAnterior.setFechaMovimiento(c.getTime());
-
-        gestionTanque.getItems().clear();
-
-        for (Deposito deposito : depositos) {
-
-            ItemGestionTanque item = new ItemGestionTanque();
-            item.setDeposito(deposito);
-
-            Producto producto = stockRN.getProductoByDepositoConStock(deposito);
-            item.setProducto(producto);
-
-            if (deposito != null && producto != null) {
-
-                item.setStockInicial(movimientoStockRN.getStockAFecha(producto, deposito, gestionAnterior.getFechaMovimiento()));
-
-                BigDecimal transferencias = movimientoStockRN.getCantidadFromMovimiento("T", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento());
-                BigDecimal ajustes = movimientoStockRN.getCantidadFromMovimiento("A", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento());
-                BigDecimal ingresos = movimientoStockRN.getCantidadFromMovimiento("I", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento());
-                BigDecimal egresos = movimientoStockRN.getCantidadFromMovimiento("E", producto, deposito, gestionAnterior.getFechaMovimiento(), gestionTanque.getFechaMovimiento());
-
-                if (ingresos == null) {
-                    ingresos = BigDecimal.ZERO;
-                }
-                if (egresos == null) {
-                    egresos = BigDecimal.ZERO;
-                }
-                if (transferencias == null) {
-                    transferencias = BigDecimal.ZERO;
-                }
-                if (ajustes == null) {
-                    ajustes = BigDecimal.ZERO;
-                }
-
-                if (transferencias.compareTo(BigDecimal.ZERO) > 0) {
-                    ingresos = ingresos.add(transferencias);
-                }
-
-                if (ajustes.compareTo(BigDecimal.ZERO) > 0) {
-                    ingresos = ingresos.add(ajustes);
-                }
-
-                if (transferencias.compareTo(BigDecimal.ZERO) < 0) {
-                    egresos = egresos.add(transferencias);
-                }
-
-                if (ajustes.compareTo(BigDecimal.ZERO) < 0) {
-                    egresos = egresos.add(ajustes);
-                }
-
-                item.setIngresos(ingresos);
-                item.setEgresos(egresos);
-
-                calcularStock(item);
-                
-                if (item.getStockInicial().compareTo(BigDecimal.ZERO) > 0
-                        || item.getIngresos().compareTo(BigDecimal.ZERO) > 0
-                        || item.getEgresos().compareTo(BigDecimal.ZERO) > 0) {
-                    
-                    item.setDepositoConStock(true);
-                    
-                }else{
-                    item.setProducto(null);
-                }                
-            }
-
-            item.setGestionTanque(gestionTanque);
-            gestionTanque.getItems().add(item);
-        }
-
-        ordenarItems();
 
     }
 
@@ -317,7 +216,7 @@ public class GestionTanquesBean extends GenericBean {
 
         gestionTanque = mSel;
         buscaMovimiento = false;
-        ordenarItems();
+        gestionTanqueRN.ordenarItems(gestionTanque);
     }
 
     public List<GestionTanque> complete(String query) {
@@ -346,31 +245,7 @@ public class GestionTanquesBean extends GenericBean {
 
     public void calcularStock(ItemGestionTanque i) {
 
-        if (i.getStockInicial() == null) {
-            i.setStockInicial(BigDecimal.ZERO);
-        }
-        if (i.getIngresos() == null) {
-            i.setIngresos(BigDecimal.ZERO);
-        }
-        if (i.getEgresos() == null) {
-            i.setEgresos(BigDecimal.ZERO);
-        }
-
-        if (i.getMedida() == null) {
-            i.setMedida(BigDecimal.ZERO);
-        }
-
-        if (i.getDeposito().getCalculaStock().equals("M")) {
-
-            if (i.getMedida().compareTo(BigDecimal.ZERO) > 0) {
-                i.setStockFinal((i.getMedida().multiply(i.getDeposito().getConstante()).add(i.getDeposito().getSumando())).divide(i.getDeposito().getDivisor(), 2, RoundingMode.HALF_UP));
-                i.setStockFinal(i.getStockFinal().multiply(new BigDecimal("1000")));
-            } else {
-                i.setStockFinal(BigDecimal.ZERO);
-            }
-        }
-
-        i.setStockCalculado(i.getStockInicial().negate().add(i.getIngresos().negate()).add(i.getEgresos().negate()).add(i.getStockFinal()));
+        gestionTanqueRN.calcularStock(i);
     }
 
     public void marcarDepositoSinMovimiento(ItemGestionTanque i) {
@@ -437,25 +312,6 @@ public class GestionTanquesBean extends GenericBean {
 
     }
 
-    public void ordenarItems() {
-
-        Collections.sort(gestionTanque.getItems(), new Comparator() {
-
-            @Override
-            public int compare(Object o1, Object o2) {
-                //return new Integer(p1.getEdad()).compareTo(new Integer(p2.getEdad()));
-                ItemGestionTanque item1 = (ItemGestionTanque) o1;
-                ItemGestionTanque item2 = (ItemGestionTanque) o2;
-
-                String cod1 = (item1.getProducto() == null ? "99999" : item1.getProducto().getCodigo());
-                String cod2 = (item2.getProducto() == null ? "99999" : item2.getProducto().getCodigo());
-
-                return (new Integer(cod1)).compareTo(new Integer(cod2));
-
-            }
-        });
-    }
-
     public void procesarProducto() {
 
         if (gestionTanque != null && productoBean.getProducto() != null && itemGestionTanque != null) {
@@ -469,13 +325,6 @@ public class GestionTanquesBean extends GenericBean {
     }
 
 //--------------------------------------------------------------------------
-    public List<Deposito> getDepositos() {
-        return depositos;
-    }
-
-    public void setDepositos(List<Deposito> depositos) {
-        this.depositos = depositos;
-    }
 
     public GestionTanque getGestionTanque() {
         return gestionTanque;
@@ -517,12 +366,6 @@ public class GestionTanquesBean extends GenericBean {
         this.itemGestionTanque = itemGestionTanque;
     }
 
-    private void cagarFiltroDeposito() {
-
-        filtro.clear();
-        filtro.put("calculaStock IN ", "('M','F')");
-        filtro.put("sector.codigo = ", "'" + gestionTanque.getSector().getCodigo() + "'");
-
-    }
+    
 
 }

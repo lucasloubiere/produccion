@@ -96,5 +96,31 @@ public class GestionTanqueDAO extends BaseDAO{
         }
             
     }
+
+    public GestionTanque getProximaGestion(GestionTanque gestionTanque) {
+        
+        try {
+            String sQuery = "SELECT m FROM GestionTanque m "
+                    + " WHERE m.fechaMovimiento > :fechaMovimiento";            
+            sQuery += " ORDER BY m.fechaMovimiento, m.numeroFormulario DESC";
+
+            Query q = em.createQuery(sQuery);
+            
+            q.setParameter("fechaMovimiento", gestionTanque.getFechaMovimiento());
+            
+            q.setMaxResults(1);
+            return (GestionTanque) q.getSingleResult();
+
+        } catch (NoResultException e) {
+
+            return null;
+
+        } catch (Exception e) {
+
+            System.err.println("Error al obtener ultimo movimiento " + e);
+            return null;
+        }
+        
+    }
    
 }

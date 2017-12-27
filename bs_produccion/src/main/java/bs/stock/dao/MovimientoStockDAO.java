@@ -91,8 +91,6 @@ public class MovimientoStockDAO extends BaseDAO {
                     + " AND st_movimiento_item.DEPOSI = ?2 "
                     + " AND st_movimiento.FCHMOV < ?3 ");
             
-            System.err.println("sdf.format(fecha)" + sdf.format(fecha));
-
             q.setParameter("1", p.getCodigo());
             q.setParameter("2", d.getCodigo());
             q.setParameter("3", sdf.format(fecha));
