@@ -99,6 +99,8 @@ public class StockRN implements Serializable {
 
         return resultado;
     }
+    
+    
 
     /**
      *
@@ -148,6 +150,11 @@ public class StockRN implements Serializable {
         }
 
         return stockDAO.getStockByProductoDeposito(artcod, deposi);
+    }
+    
+    public List<Stock> getSumStockByProductoRefineria(){
+        
+        return stockDAO.getSumStockByProductoRefineria();
     }
 
    

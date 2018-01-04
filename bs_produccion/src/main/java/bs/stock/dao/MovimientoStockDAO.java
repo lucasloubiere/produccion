@@ -114,7 +114,8 @@ public class MovimientoStockDAO extends BaseDAO {
             Query q = em.createQuery("SELECT i FROM ItemMovimientoStock i "
                     + "WHERE i.producto.codigo = :codigo "
                     + "AND i.deposito.codigo = :deposi "
-                    + "AND i.movimiento.fechaMovimiento BETWEEN :fDesde AND :fHasta ");
+                    + "AND i.movimiento.fechaMovimiento BETWEEN :fDesde AND :fHasta "
+                    + "ORDER BY i.movimiento.fechaMovimiento ");
 
             q.setParameter("codigo", p.getCodigo());
             q.setParameter("deposi", d.getCodigo());

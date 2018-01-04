@@ -500,7 +500,8 @@ public class MovimientoStockRN {
                 throw new ExcepcionGeneralSistema("Ingrese el atributo 7 para el producto " + i.getProducto().getDescripcion());
             }
 
-            if (m.getTipoMovimiento().equals("E") && !m.isNoValidaStockDisponible()) {
+            if (m.getTipoMovimiento().equals("E") 
+                    && (!m.isNoValidaStockDisponible() || m.getDepositoTransferencia().getSigno().equals("+"))) {
 
                 Stock s = new Stock(i);
                 //Es un egreso de stock por lo tanto convertimos la cantidad a negativo
@@ -523,7 +524,9 @@ public class MovimientoStockRN {
             }
         }
 
-        if (m.getItemTransferencia() != null) {
+        if (m.getItemTransferencia() != null 
+                && m.getDepositoTransferencia() != null
+                && (!m.isNoValidaStockDisponible() || m.getDepositoTransferencia().getSigno().equals("+"))) {
 
             for (ItemTransferenciaStock i : m.getItemTransferencia()) {
 

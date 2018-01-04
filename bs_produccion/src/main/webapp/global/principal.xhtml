@@ -88,8 +88,24 @@
             <div class="layout-main">
                 <div class="layout-main-content">
                     <h:form id="formDashboard">
-                        
-                        <div class="ui-g" >
+
+                        <div class="ui-g dashboard" >
+
+                            <ui:repeat value="#{dashboardBean.stocks}" var="s" >
+
+
+                                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                                    <div class="ui-g card overview-box overview-box-1">
+                                        <span class="overview-box-name">#{s.producto.descripcion}</span>                                        
+                                        <span class="overview-box-count">
+                                            <h:outputText value="#{s.stocks/1000}" >
+                                                <f:convertNumber pattern="# Tn" />
+                                            </h:outputText>
+                                        </span>                                                                                
+                                    </div>
+                                </div>
+                            </ui:repeat>
+
 
                             <div class="ui-g-12" >
 
@@ -99,15 +115,14 @@
 
                             </div>
 
-                            
+
                         </div>
 
                         <div class="ui-g" >
 
-                            
+
                             <div class="ui-g-12">
-                                <p:dataGrid value="#{principalBean.favoritos}" var="r" columns="6" rows="12" layout="grid" 
-                                            >
+                                <p:dataGrid value="#{principalBean.favoritos}" var="r" columns="6" rows="12" layout="grid" >
 
                                     <f:facet name="header" >
                                         Favoritos

@@ -169,7 +169,7 @@ public class SincronizacionRN implements Serializable {
 
                         ms.setFechaMovimiento(JeeUtil.getFechaYHora(fecha, mb.getHoraSalida()));
                         ms.setNumeroFormulario(Integer.valueOf(mb.getNroComprobante()));
-                        ms.setNoSincronizaNumeroFormulario(true);
+                        ms.setNoSincronizaNumeroFormulario(true);                        
                         ms.setNoValidaStockDisponible(true);
                         ms.setDeposito(deposito);
 

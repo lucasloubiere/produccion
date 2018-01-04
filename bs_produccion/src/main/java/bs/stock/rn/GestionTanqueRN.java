@@ -288,7 +288,7 @@ public class GestionTanqueRN {
                 movIngreso.setFechaMovimiento(c.getTime());
                 movIngreso.setDeposito(itemGestion.getDeposito());
                 movIngreso.setNoValidaStockDisponible(true);
-
+                
                 ItemProductoStock itemProducto = movIngreso.getItemsProducto().get(movIngreso.getItemsProducto().size() - 1);
 
                 itemProducto.setProducto(itemGestion.getProducto());
@@ -318,7 +318,7 @@ public class GestionTanqueRN {
                 MovimientoStock movEgreso = movimientoStockRN.nuevoMovimiento("ST", "EPA", "0001");
 
                 movEgreso.setFechaMovimiento(c.getTime());
-                movEgreso.setDeposito(itemGestion.getDeposito());
+                movEgreso.setDeposito(itemGestion.getDeposito());                
                 movEgreso.setNoValidaStockDisponible(true);
 
                 ItemProductoStock itemProducto = movEgreso.getItemsProducto().get(movEgreso.getItemsProducto().size() - 1);

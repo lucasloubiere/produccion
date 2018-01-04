@@ -136,7 +136,7 @@ public class MovimientoStock implements Serializable {
     private boolean noSincronizaNumeroFormulario;
     @Transient
     private boolean noValidaStockDisponible;
-
+    
     
     @Transient
     private String atributo1;

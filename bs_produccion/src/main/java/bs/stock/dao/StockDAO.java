@@ -234,6 +234,26 @@ public class StockDAO extends BaseDAO {
         }
     }
 
+    public List<Stock> getSumStockByProductoRefineria() {
+        
+        try {
+                        
+            Query q = em.createNativeQuery(" SELECT ARTCOD, DEPOSI, '' AS NATRI1,'' AS NATRI2,'' AS NATRI3,'' AS NATRI4,'' AS NATRI5,'' AS NATRI6,'' AS NATRI7, SUM(STOCKS) AS STOCKS " +
+                                           " FROM st_stock s inner join st_producto p on s.artcod = p.codigo" +
+                    " inner join st_deposito d on s.deposi = d.codigo" +
+                    " where d.codsec = 'REF' " +
+                    " GROUP BY ARTCOD ", Stock.class);
+
+            return q.getResultList();
+            
+        } catch (Exception e) {            
+            System.out.println("getSumStockByProductoRefineria" + e );
+            return new ArrayList<Stock>();
+        }
+
+        
+    }
+
     
 
 }
