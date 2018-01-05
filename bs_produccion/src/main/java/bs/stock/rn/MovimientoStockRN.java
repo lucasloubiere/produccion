@@ -394,8 +394,10 @@ public class MovimientoStockRN {
                 throw new ExcepcionGeneralSistema("El producto " + nItem.getProducto().getDescripcion() + " no gestiona stock");
             }
 
-            if (m.getTipoMovimiento().equals("E")) {
-
+            if (m.getTipoMovimiento().equals("E") 
+                    && !m.isNoValidaStockDisponible() 
+                    && m.getDeposito().getSigno().equals("+")) {
+                
                 nItem.setStocks(nItem.getCantidad().negate());
                 Stock s = new Stock(nItem);
 
@@ -415,7 +417,10 @@ public class MovimientoStockRN {
                 }
             }
 
-            if (m.getTipoMovimiento().equals("T")) {
+            if (m.getTipoMovimiento().equals("T") 
+                && m.getDepositoTransferencia() != null
+                && !m.isNoValidaStockDisponible() 
+                &&  m.getDepositoTransferencia().getSigno().equals("+")) {
 
                 nItem.setStocks(nItem.getCantidad().negate());
                 Stock s = new Stock(nItem);
@@ -501,7 +506,8 @@ public class MovimientoStockRN {
             }
 
             if (m.getTipoMovimiento().equals("E") 
-                    && (!m.isNoValidaStockDisponible() || m.getDepositoTransferencia().getSigno().equals("+"))) {
+                    && !m.isNoValidaStockDisponible() 
+                    && m.getDeposito().getSigno().equals("+")) {
 
                 Stock s = new Stock(i);
                 //Es un egreso de stock por lo tanto convertimos la cantidad a negativo
@@ -526,7 +532,8 @@ public class MovimientoStockRN {
 
         if (m.getItemTransferencia() != null 
                 && m.getDepositoTransferencia() != null
-                && (!m.isNoValidaStockDisponible() || m.getDepositoTransferencia().getSigno().equals("+"))) {
+                && !m.isNoValidaStockDisponible() 
+                && m.getDepositoTransferencia().getSigno().equals("+")) {
 
             for (ItemTransferenciaStock i : m.getItemTransferencia()) {
 
