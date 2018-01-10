@@ -8,6 +8,7 @@ package bs.stock.web;
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.util.JeeUtil;
 import bs.global.util.JsfUtil;
+import bs.global.web.DashboardBean;
 import bs.global.web.GenericBean;
 import bs.stock.modelo.GestionTanque;
 import bs.stock.modelo.ItemGestionTanque;
@@ -48,6 +49,9 @@ public class GestionTanquesBean extends GenericBean {
 
     @ManagedProperty(value = "#{productoBean}")
     protected ProductoBean productoBean;
+    
+    @ManagedProperty(value = "#{dashboardBean}")
+    protected DashboardBean dashboardBean;
 
     @PostConstruct
     private void init() {
@@ -99,9 +103,12 @@ public class GestionTanquesBean extends GenericBean {
                 if (nuevo) {
                     nuevo();
                 }
+                
+                dashboardBean.actualizarResumenTanques();
             } else {
                 JsfUtil.addInfoMessage("No hay datos para guardar");
             }
+            
         } catch (Exception ex) {
             Logger.getLogger(DepositoBean.class.getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage("No es posible guardar los datos " + ex);
@@ -366,6 +373,13 @@ public class GestionTanquesBean extends GenericBean {
         this.itemGestionTanque = itemGestionTanque;
     }
 
+    public DashboardBean getDashboardBean() {
+        return dashboardBean;
+    }
+
+    public void setDashboardBean(DashboardBean dashboardBean) {
+        this.dashboardBean = dashboardBean;
+    }
     
 
 }

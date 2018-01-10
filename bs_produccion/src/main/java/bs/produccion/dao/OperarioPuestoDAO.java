@@ -6,7 +6,7 @@
 package bs.produccion.dao;
 
 import bs.global.dao.BaseDAO;
-import bs.produccion.modelo.Operario;
+import bs.produccion.modelo.OperarioPuesto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,20 +20,20 @@ import javax.persistence.Query;
  * @author Claudio
  */
 @Stateless
-public class OperarioDAO_1 extends BaseDAO {
+public class OperarioPuestoDAO extends BaseDAO {
 
-    public Operario getOperario(String cod) {
-        return getObjeto(Operario.class, cod);
+    public OperarioPuesto getOperarioPuesto(String cod) {
+        return getObjeto(OperarioPuesto.class, cod);
     }
     
     
-    public List<Operario> getListaByBusqueda(String txtBusqueda, boolean mostrarDebaja, int cantMax) {
+    public List<OperarioPuesto> getListaByBusqueda(String txtBusqueda, boolean mostrarDebaja, int cantMax) {
             
         try {
-            String sQuery = "SELECT e FROM Operario e "
+            String sQuery = "SELECT e FROM OperarioPuesto e "
                     + "WHERE 1=1 "
                     + " AND ((e.codigo LIKE :codigo) "
-                    + "  OR  (e.nombre LIKE :nombre) "                                      
+                    + "  OR  (e.descripcion LIKE :descripcion) "                                      
                     + "     ) "
                     + (mostrarDebaja ? " ": " AND e.auditoria.debaja = 'N' ")
                     + "ORDER BY e.codigo ";
@@ -41,7 +41,7 @@ public class OperarioDAO_1 extends BaseDAO {
             Query q = em.createQuery(sQuery);
             
             q.setParameter("codigo", "%"+txtBusqueda.replaceAll(" ", "%")+"%");
-            q.setParameter("nombre", "%"+txtBusqueda.replaceAll(" ", "%")+"%");            
+            q.setParameter("descripcion", "%"+txtBusqueda.replaceAll(" ", "%")+"%");            
                         
             if(cantMax>0){
                 q.setMaxResults(cantMax);
@@ -51,8 +51,8 @@ public class OperarioDAO_1 extends BaseDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
-            log.log(Level.SEVERE, "getOperarioByBusqueda", e.getMessage());
-            return new ArrayList<Operario>();
+            log.log(Level.SEVERE, "getOperarioPuestoByBusqueda", e.getMessage());
+            return new ArrayList<OperarioPuesto>();
         }        
     
     }

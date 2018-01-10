@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bs.stock.web;
 
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.util.JeeUtil;
 import bs.global.util.JsfUtil;
 import bs.global.util.ReportFactory;
+import bs.global.web.DashboardBean;
 import bs.global.web.GenericBean;
 import bs.seguridad.web.UsuarioSessionBean;
 import bs.stock.modelo.ItemMovimientoStock;
@@ -39,78 +39,92 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @ViewScoped
-public class MovimientoStockBean extends GenericBean implements Serializable{
+public class MovimientoStockBean extends GenericBean implements Serializable {
 
-    @EJB protected MovimientoStockRN movimientoStockRN;    
-    @EJB private StockRN stockRN;     
-    
+    @EJB
+    protected MovimientoStockRN movimientoStockRN;
+    @EJB
+    private StockRN stockRN;
+
     @ManagedProperty(value = "#{usuarioSessionBean}")
     protected UsuarioSessionBean usuarioSessionBean;
 
     @ManagedProperty(value = "#{productoBean}")
     protected ProductoBean productoBean;
-        
+
     @ManagedProperty(value = "#{consultaStock}")
     protected ConsultaStock consultaStock;
-    
+
 //    @ManagedProperty(value = "#{mascaraStockBean}")
 //    protected MascaraStockBean mascaraStockBean;
-    
     @ManagedProperty(value = "#{depositoBean}")
     protected DepositoBean depositoBean;
-    
+
     @ManagedProperty(value = "#{formularioStockBean}")
     protected FormularioStockBean formularioStockBean;
-                
+
     @ManagedProperty(value = "#{reportFactory}")
     protected ReportFactory reportFactory;
 
-    protected String SUCURS = "";    
-    protected String MODST = "";    
+    @ManagedProperty(value = "#{dashboardBean}")
+    protected DashboardBean dashboardBean;
+
+    protected String SUCURS = "";
+    protected String MODST = "";
     protected String CODST = "";
-        
+
     protected MovimientoStock m;
     protected ItemProductoStock item;
     protected List<MovimientoStock> movimientos;
 
     protected Date fechaMinima;
 
-
-    /** Creates a new instance of MovimientoInventarioBean */
+    /**
+     * Creates a new instance of MovimientoInventarioBean
+     */
     public MovimientoStockBean() {
-        
+
         fechaMinima = new Date();
         muestraReporte = false;
     }
-    
-    public void iniciarVariables(){
-        
+
+    public void iniciarVariables() {
+
         try {
-            if(!beanIniciado){  
-                
-                if(SUCURS==null)SUCURS = "";                
-                if(MODST==null) MODST = "";
-                if(CODST==null) CODST = "";
-                
-                nuevoMovimiento();    
+            if (!beanIniciado) {
+
+                if (SUCURS == null) {
+                    SUCURS = "";
+                }
+                if (MODST == null) {
+                    MODST = "";
+                }
+                if (CODST == null) {
+                    CODST = "";
+                }
+
+                nuevoMovimiento();
                 beanIniciado = true;
-            }            
-        }catch (Exception e){
-           JsfUtil.addErrorMessage("Error al iniciar el bean " + e.getMessage());
-        }        
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Error al iniciar el bean " + e.getMessage());
+        }
     }
-    
-    public void guardar(boolean nuevo){
-        
-        try {            
+
+    public void guardar(boolean nuevo) {
+
+        try {
             movimientoStockRN.guardar(m);
-            JsfUtil.addInfoMessage("El documento " + m.getComprobante().getDescripcion()+ "-" + m.getNumeroFormulario() + " se guardó correctamente", "");
+            JsfUtil.addInfoMessage("El documento " + m.getComprobante().getDescripcion() + "-" + m.getNumeroFormulario() + " se guardó correctamente", "");
 
             if (nuevo) {
                 m = movimientoStockRN.nuevoMovimiento(MODST, CODST, SUCURS);
                 depositoBean.setDeposito(null);
                 productoBean.setProducto(null);
             }
+            
+            dashboardBean.actualizarResumenTanques();
+            
         } catch (Exception ex) {
 
             m.getItemsProducto().add(movimientoStockRN.nuevoItemProducto(m));
@@ -118,112 +132,110 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
         }
 
     }
-    
-    public void nuevoMovimiento(){
-        
+
+    public void nuevoMovimiento() {
+
         super.iniciar();
-        
+
         try {
-            
-            nombreArchivo = "";            
-            buscaMovimiento = false;  
+
+            nombreArchivo = "";
+            buscaMovimiento = false;
             muestraReporte = false;
-            
+
             m = movimientoStockRN.nuevoMovimiento(MODST, CODST, SUCURS);
-            
+
         } catch (ExcepcionGeneralSistema egs) {
             JsfUtil.addErrorMessage("nuevoMovimiento" + egs);
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, egs);
-        }      
+        }
     }
 
-    public void agregarItem(ItemMovimientoStock nItem){
+    public void agregarItem(ItemMovimientoStock nItem) {
         try {
-          
-            movimientoStockRN.puedoAgregarItem(m, nItem);            
-            nItem.setTodoOk(true);            
-            
+
+            movimientoStockRN.puedoAgregarItem(m, nItem);
+            nItem.setTodoOk(true);
+
             //Cargarmos un nuevo item en blanco
             m.getItemsProducto().add(movimientoStockRN.nuevoItemProducto(m));
-            
+
             productoBean.setProducto(null);
-            
-        } catch (ExcepcionGeneralSistema ex) {            
-            JsfUtil.addErrorMessage("agregarItem" +ex);
+
+        } catch (ExcepcionGeneralSistema ex) {
+            JsfUtil.addErrorMessage("agregarItem" + ex);
         }
     }
 
-    public void eliminarItem(ItemMovimientoStock nItem){
+    public void eliminarItem(ItemMovimientoStock nItem) {
 
-        if(movimientoStockRN.eliminarItemProducto(m, nItem)){
-            JsfUtil.addWarningMessage("Se ha borrado el item "+ nItem.getProducto().getDescripcion() + "");
-        }else{
-            JsfUtil.addErrorMessage("No es posible borrar el item "+ nItem.getProducto().getDescripcion() + "");
+        if (movimientoStockRN.eliminarItemProducto(m, nItem)) {
+            JsfUtil.addWarningMessage("Se ha borrado el item " + nItem.getProducto().getDescripcion() + "");
+        } else {
+            JsfUtil.addErrorMessage("No es posible borrar el item " + nItem.getProducto().getDescripcion() + "");
         }
     }
-    
-    public void procesarDeposito(){
-        
-        if(depositoBean!=null && m!=null){                        
-            m.setDeposito(depositoBean.getDeposito());            
+
+    public void procesarDeposito() {
+
+        if (depositoBean != null && m != null) {
+            m.setDeposito(depositoBean.getDeposito());
         }
     }
-    
-    public void procesarDepositoTransferencia(){
-        
-        if(depositoBean!=null && m!=null){                        
-            m.setDepositoTransferencia(depositoBean.getDeposito());            
+
+    public void procesarDepositoTransferencia() {
+
+        if (depositoBean != null && m != null) {
+            m.setDepositoTransferencia(depositoBean.getDeposito());
         }
     }
-    
-    public void procesarProducto(){
-      
-        if(productoBean.getProducto()!=null && m!=null){
-            
-            
-            
-            Producto p = productoBean.getProducto();            
-            ItemProductoStock ip = m.getItemsProducto().get(m.getItemsProducto().size()-1);
-            
-            ip.setProducto(p);            
-            ip.setUnidadMedida(p.getUnidadDeMedida());                                    
-            ip.setDeposito(m.getDeposito());            
+
+    public void procesarProducto() {
+
+        if (productoBean.getProducto() != null && m != null) {
+
+            Producto p = productoBean.getProducto();
+            ItemProductoStock ip = m.getItemsProducto().get(m.getItemsProducto().size() - 1);
+
+            ip.setProducto(p);
+            ip.setUnidadMedida(p.getUnidadDeMedida());
+            ip.setDeposito(m.getDeposito());
             ip.setAtributo1("");
             ip.setAtributo2("");
             ip.setAtributo3("");
             ip.setAtributo4("");
             ip.setAtributo5("");
             ip.setAtributo6("");
-            ip.setAtributo7("");            
-            
+            ip.setAtributo7("");
+
         }
-    } 
-    
-    public void procesarStock(){
-      
-        if(consultaStock.getItemStock()!=null && m!=null && item!=null){
-                   
+    }
+
+    public void procesarStock() {
+
+        if (consultaStock.getItemStock() != null && m != null && item != null) {
+
             Stock s = consultaStock.getItemStock();
-                        
+
             item.setAtributo1(s.getAtributo1());
             item.setAtributo2(s.getAtributo2());
             item.setAtributo3(s.getAtributo3());
             item.setAtributo4(s.getAtributo4());
             item.setAtributo5(s.getAtributo5());
             item.setAtributo6(s.getAtributo6());
-            item.setAtributo7(s.getAtributo7());             
+            item.setAtributo7(s.getAtributo7());
         }
-    } 
-      
-    public void nuevaBusqueda(){
-                
-        if(m!=null && m.getFormulario()!=null){
+    }
+
+    public void nuevaBusqueda() {
+
+        if (m != null && m.getFormulario() != null) {
             formulario = m.getFormulario();
-        }        
+        }
         buscaMovimiento = true;
     }
-    
-    public void resetParametros(){
+
+    public void resetParametros() {
 
 //        formulario = null;
         numeroFormularioDesde = null;
@@ -231,118 +243,107 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
         fechaMovimientoDesde = null;
         fechaMovimientoHasta = null;
         muestraReporte = false;
-        solicitaEmail = false;        
-        movimientos = null;        
-        
+        solicitaEmail = false;
+        movimientos = null;
+
     }
-    
-    public void buscarMovimiento(){
-        
-        if(!validarParametros()){
+
+    public void buscarMovimiento() {
+
+        if (!validarParametros()) {
             return;
         }
         cargarFiltroBusqueda();
-        
+
         movimientos = movimientoStockRN.getListaByBusqueda(filtro, cantidadRegistros);
-        
-        if(movimientos==null || movimientos.isEmpty()){
+
+        if (movimientos == null || movimientos.isEmpty()) {
             JsfUtil.addWarningMessage("No se han encontrado movimientos");
         }
     }
-    
-    public boolean validarParametros(){
-        
-        if(formulario==null){
+
+    public boolean validarParametros() {
+
+        if (formulario == null) {
             JsfUtil.addWarningMessage("Seleccione un formulario");
             return false;
         }
-        
-        if(numeroFormularioDesde!=null && numeroFormularioHasta!=null){
-            if(numeroFormularioDesde > numeroFormularioHasta){
+
+        if (numeroFormularioDesde != null && numeroFormularioHasta != null) {
+            if (numeroFormularioDesde > numeroFormularioHasta) {
                 JsfUtil.addWarningMessage("Número de formulario desde es mayor al número de formulario hasta");
                 return false;
-            }                    
-        }                
+            }
+        }
         return true;
     }
-    
-    public void cargarFiltroBusqueda(){
-        
+
+    public void cargarFiltroBusqueda() {
+
         filtro.clear();
-        
-        if(formulario!=null){
-            filtro.put("formulario.codigo = ","'"+formulario.getCodigo()+"'");
-        }
-        
-        if(numeroFormularioDesde!=null){
-            
-            filtro.put("numeroFormulario >=",String.valueOf(numeroFormularioDesde));
+
+        if (formulario != null) {
+            filtro.put("formulario.codigo = ", "'" + formulario.getCodigo() + "'");
         }
 
-        if(numeroFormularioHasta!=null){
-            
-            filtro.put("numeroFormulario <=",String.valueOf(numeroFormularioHasta));
+        if (numeroFormularioDesde != null) {
+
+            filtro.put("numeroFormulario >=", String.valueOf(numeroFormularioDesde));
         }
-        
-        if(fechaMovimientoDesde!=null){
-            
+
+        if (numeroFormularioHasta != null) {
+
+            filtro.put("numeroFormulario <=", String.valueOf(numeroFormularioHasta));
+        }
+
+        if (fechaMovimientoDesde != null) {
+
             filtro.put("fechaMovimiento >= ", JeeUtil.getFechaSQL(fechaMovimientoDesde));
         }
-        
-        if(fechaMovimientoHasta!=null){
-            
+
+        if (fechaMovimientoHasta != null) {
+
             filtro.put("fechaMovimiento <= ", JeeUtil.getFechaSQL(fechaMovimientoHasta));
-        }       
+        }
     }
-    
-    public void seleccionarMovimiento(MovimientoStock mSel){
-        
-        m = mSel;           
+
+    public void seleccionarMovimiento(MovimientoStock mSel) {
+
+        m = mSel;
         buscaMovimiento = false;
     }
-    
-    public void procesarFormulario(){
-      
-        if(formularioStockBean.getFormulario()!=null){            
+
+    public void procesarFormulario() {
+
+        if (formularioStockBean.getFormulario() != null) {
             formulario = formularioStockBean.getFormulario();
         }
     }
-    
+
     /**
-    public void procesarMascaraStock(){
-      
-        if(mascaraStockBean.getMascaraStock()!=null && m!=null){
-            
-            m.setMascara(mascaraStockBean.getMascaraStock());
-            
-            if(mascaraStockBean.getMascaraStock().getItems()!=null){
-                
-                m.getItemsProducto().clear();
-                
-                for(ItemMascaraStock im:mascaraStockBean.getMascaraStock().getItems()){
-                    
-                    ItemProductoStock ip = movimientoStockRN.nuevoItemProducto(m);                    
-                    
-                    ip.setProducto(im.getProducto());            
-                    ip.setUnidadMedida(im.getProducto().getUnidadDeMedida());                        
-                    ip.setPrecio(im.getProducto().getPrecioReposicion());
-                    ip.setCantidad(im.getCantidad());
-                    ip.setAtributo1("");
-                    ip.setAtributo2("");
-                    ip.setAtributo3("");
-                    ip.setAtributo4("");
-                    ip.setAtributo5("");
-                    ip.setAtributo6("");
-                    ip.setAtributo7("");  
-                    ip.setTodoOk(true);
-                    
-                    m.getItemsProducto().add(ip);
-                }
-            }
-        }
-    } 
-    */
-    
+     * public void procesarMascaraStock(){
+     *
+     * if(mascaraStockBean.getMascaraStock()!=null && m!=null){
+     *
+     * m.setMascara(mascaraStockBean.getMascaraStock());
+     *
+     * if(mascaraStockBean.getMascaraStock().getItems()!=null){
+     *
+     * m.getItemsProducto().clear();
+     *
+     * for(ItemMascaraStock im:mascaraStockBean.getMascaraStock().getItems()){
+     *
+     * ItemProductoStock ip = movimientoStockRN.nuevoItemProducto(m);      *
+     * ip.setProducto(im.getProducto());
+     * ip.setUnidadMedida(im.getProducto().getUnidadDeMedida());
+     * ip.setPrecio(im.getProducto().getPrecioReposicion());
+     * ip.setCantidad(im.getCantidad()); ip.setAtributo1("");
+     * ip.setAtributo2(""); ip.setAtributo3(""); ip.setAtributo4("");
+     * ip.setAtributo5(""); ip.setAtributo6(""); ip.setAtributo7("");
+     * ip.setTodoOk(true);
+     *
+     * m.getItemsProducto().add(ip); } } } }
+     */
     public void imprimir() {
 
         generarReporte();
@@ -354,40 +355,39 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
             context.execute("PF('dlg_reporte').show()");
         }
     }
-    
-    public void generarReporte(){
+
+    public void generarReporte() {
 
         try {
-            
-            if (m.getFormulario().getReporte()==null){
+
+            if (m.getFormulario().getReporte() == null) {
                 throw new ExcepcionGeneralSistema("El comprobante no tienen reporte asociado");
             }
-            
+
             Map parameters = new HashMap();
             parameters.put("ID", m.getId());
             parameters.put("CANT_COPIAS", m.getComprobante().getCopias());
-           
-            nombreArchivo = m.getFormulario().getCodigo()+"-"+m.getNumeroFormulario();
+
+            nombreArchivo = m.getFormulario().getCodigo() + "-" + m.getNumeroFormulario();
             reportFactory.exportReportToPdfFile(m.getFormulario().getReporte(), nombreArchivo, parameters);
             muestraReporte = true;
 
         } catch (NullPointerException npe) {
             JsfUtil.addErrorMessage("No se encontró el archivo: " + m.getFormulario().getReporte().getPath());
             muestraReporte = false;
-        } catch (ExcepcionGeneralSistema e){            
-            JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
+        } catch (ExcepcionGeneralSistema e) {
+            JsfUtil.addErrorMessage("No se puede imprimir a pdf " + e);
             muestraReporte = false;
         } catch (JRException e) {
-            JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
+            JsfUtil.addErrorMessage("No se puede imprimir a pdf " + e);
             muestraReporte = false;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage("No se puede imprimir a pdf " +  e);
+            JsfUtil.addErrorMessage("No se puede imprimir a pdf " + e);
             muestraReporte = false;
         }
     }
-    
-    //-------------------------------------------------------------------------
 
+    //-------------------------------------------------------------------------
     public ProductoBean getProductoBean() {
         return productoBean;
     }
@@ -403,7 +403,7 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     public void setUsuarioSessionBean(UsuarioSessionBean usuarioSessionBean) {
         this.usuarioSessionBean = usuarioSessionBean;
     }
-    
+
     public MovimientoStock getM() {
         return m;
     }
@@ -427,7 +427,7 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     public void setDepositoBean(DepositoBean depositoBean) {
         this.depositoBean = depositoBean;
     }
-    
+
     public String getSUCURS() {
         return SUCURS;
     }
@@ -475,43 +475,43 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
     public void setConsultaStock(ConsultaStock consultaStock) {
         this.consultaStock = consultaStock;
     }
-    
-    
-    
+
     public boolean isDetalleVacio() {
-                  
+
         detalleVacio = true;
-        
-        if(m==null) return detalleVacio;
-                
-        if(m.getItemsProducto()!=null){
-                        
-            if(m.getItemsProducto().size()==1 && m.getId()!=null){                
-                detalleVacio = false;                
-            }
-            
-            if(m.getItemsProducto().size()>1){                
+
+        if (m == null) {
+            return detalleVacio;
+        }
+
+        if (m.getItemsProducto() != null) {
+
+            if (m.getItemsProducto().size() == 1 && m.getId() != null) {
                 detalleVacio = false;
             }
-        }else{
+
+            if (m.getItemsProducto().size() > 1) {
+                detalleVacio = false;
+            }
+        } else {
             detalleVacio = true;
         }
-        
+
         return detalleVacio;
     }
-    
+
     @Override
     public void setDetalleVacio(boolean detalleVacio) {
         this.detalleVacio = detalleVacio;
     }
-    
+
     public ItemProductoStock getItem() {
         return item;
     }
 
     public void setItem(ItemProductoStock item) {
         this.item = item;
-    }    
+    }
 
     public ReportFactory getReportFactory() {
         return reportFactory;
@@ -519,6 +519,14 @@ public class MovimientoStockBean extends GenericBean implements Serializable{
 
     public void setReportFactory(ReportFactory reportFactory) {
         this.reportFactory = reportFactory;
+    }
+
+    public DashboardBean getDashboardBean() {
+        return dashboardBean;
+    }
+
+    public void setDashboardBean(DashboardBean dashboardBean) {
+        this.dashboardBean = dashboardBean;
     }
     
 }
