@@ -16,7 +16,7 @@ import javax.ejb.TransactionAttributeType;
 
 /**
  *
- * @author Claudio
+ * @author lloubiere
  */
 @Stateless
 

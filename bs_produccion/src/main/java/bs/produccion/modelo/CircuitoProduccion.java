@@ -20,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -78,6 +79,9 @@ public class CircuitoProduccion implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "circuito", fetch = FetchType.LAZY)
     private List<ItemCircuitoProduccionParteProceso> itemCircuitoParteProceso;
+    
+     @Transient
+    private List<CircuitoProduccion> circuitosRelacionados;
     
     @Embedded
     private Auditoria auditoria;
@@ -162,6 +166,7 @@ public class CircuitoProduccion implements Serializable {
     }
 
     public void setItemCircuitoStock(List<ItemCircuitoProduccionStock> itemCircuitoStock) {
+       
         this.itemCircuitoStock = itemCircuitoStock;
     }
 
@@ -180,7 +185,15 @@ public class CircuitoProduccion implements Serializable {
     public void setItemCircuitoParteProceso(List<ItemCircuitoProduccionParteProceso> itemCircuitoParteProceso) {
         this.itemCircuitoParteProceso = itemCircuitoParteProceso;
     }
+    
+   public List<CircuitoProduccion> getCircuitosRelacionados() {
+        return circuitosRelacionados;
+    }
 
+    public void setCircuitosRelacionados(List<CircuitoProduccion> circuitosRelacionados) {
+        this.circuitosRelacionados = circuitosRelacionados;
+    }
+ 
     
     
   
