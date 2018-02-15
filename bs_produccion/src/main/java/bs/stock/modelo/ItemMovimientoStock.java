@@ -22,6 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -104,6 +105,15 @@ public abstract class ItemMovimientoStock implements Serializable {
     @Column(name = "fchmov")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMovimiento;
+    
+    @Column(name = "PRECIO", precision = 15, scale = 4)
+    private BigDecimal precio;
+    @Column(name = "PRESEC", precision = 15, scale = 4)
+    private BigDecimal precioSecundario;
+    
+    @Lob
+    @Column(name = "OBSERV", length = 65535)
+    private String observaciones;
 
     @Embedded
     private Auditoria auditoria;
@@ -279,6 +289,30 @@ public abstract class ItemMovimientoStock implements Serializable {
     
     public void setFechaMovimiento(Date fechaMovimiento) {
         this.fechaMovimiento = fechaMovimiento;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
+
+    public BigDecimal getPrecioSecundario() {
+        return precioSecundario;
+    }
+
+    public void setPrecioSecundario(BigDecimal precioSecundario) {
+        this.precioSecundario = precioSecundario;
     }
      
     @Override

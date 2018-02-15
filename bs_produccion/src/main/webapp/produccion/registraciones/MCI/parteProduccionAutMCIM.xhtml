@@ -1,0 +1,48 @@
+<ui:composition 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" >
+
+
+    <p:menubar style="width: 100%" >
+
+       <p:menuitem value=" #{msgs.nuevo}" icon="blank16" id="btnNew"
+                   action="#{parteProduccionAutomaticoBeanMCI.nuevoMovimiento}"
+                   process="@this"
+                   update="@form"                   
+                   oncomplete="wiz.back();" />
+
+        <p:menuitem value=" #{msgs.pcc_guardar}" icon="save16"
+                    action="#{parteProduccionAutomaticoBeanMCI.guardar(false)}"
+                    rendered="#{not parteProduccionAutomaticoBeanMCI.m.persistido }"
+                    update="@form" />
+
+        <p:menuitem value=" #{msgs.guardar_nuevo}" icon="saveNew16"
+                    action="#{parteProduccionAutomaticoBeanMCI.guardar(true)}"
+                    rendered="#{not parteProduccionAutomaticoBeanMCI.m.persistido }"
+                    oncomplete="btnNew.click()"
+                    update="@form" />
+
+        <p:menuitem value=" #{msgs.imprimir}" icon="print16"
+                    action="#{parteProduccionAutomaticoBeanMCI.imprimir}"
+                    rendered="#{parteProduccionAutomaticoBeanMCI.m.persistido }"
+                    ajax="false" target="blank" >
+        </p:menuitem>
+
+        <p:menuitem value=" #{msgs.imprimir} VC" icon="print16"
+                    action="#{parteProduccionAutomaticoBeanMCI.imprimir(parteProduccionAutomaticoBeanMCI.m.valeConsumo)}"
+                    rendered="#{not empty parteProduccionAutomaticoBeanMCI.m.valeConsumo and parteProduccionAutomaticoBeanMCI.m.valeConsumo.persistido }"
+                    ajax="false" target="blank" >
+        </p:menuitem>
+
+        <p:menuitem value=" #{msgs.imprimir} PR" icon="print16"
+                    action="#{parteProduccionAutomaticoBeanMCI.imprimir(parteProduccionAutomaticoBeanMCI.m.parteProceso)}"
+                    rendered="#{not empty parteProduccionAutomaticoBeanMCI.m.parteProceso and parteProduccionAutomaticoBeanMCI.m.parteProceso.persistido }"
+                    ajax="false" target="blank" >
+        </p:menuitem>
+
+    </p:menubar>
+  
+</ui:composition>

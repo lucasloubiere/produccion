@@ -16,7 +16,7 @@ import javax.ejb.TransactionAttributeType;
 
 /**
  *
- * @author lloubiere
+ * @author Claudio
  */
 @Stateless
 
@@ -31,7 +31,7 @@ public class OperarioRN {
         if (esNuevo) {
 
             if (operarioDAO.getObjeto(Operario.class, operario.getCodigo()) != null) {
-                throw new ExcepcionGeneralSistema("Ya existe un operario con ese código " + operario.getCodigo());
+                throw new ExcepcionGeneralSistema("Ya existe unidad de medida con el código" + operario.getCodigo());
             }
             operarioDAO.crear(operario);
         } else {

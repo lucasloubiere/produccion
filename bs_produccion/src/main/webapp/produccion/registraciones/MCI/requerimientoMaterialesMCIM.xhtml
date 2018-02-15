@@ -1,0 +1,43 @@
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui" >
+
+    <p:menubar style="width: 100%" >
+
+           <p:menuitem value=" #{msgs.nuevo}" icon="blank16" id="btnNew"
+                       action="#{requerimientoMaterialesMCIBean.nuevoMovimiento}"
+                       process="@this"
+                       update="@form"                       
+                       oncomplete="wiz.back(); "/>
+
+            <p:menuitem value=" #{msgs.pcc_guardar}" icon="save16"
+                        action="#{requerimientoMaterialesMCIBean.guardar(false)}"
+                        rendered="#{not requerimientoMaterialesMCIBean.m.persistido }"
+                        update="@form" />
+
+            <p:menuitem value=" #{msgs.guardar_nuevo}" icon="saveNew16"
+                        action="#{requerimientoMaterialesMCIBean.guardar(true)}"
+                        rendered="#{not requerimientoMaterialesMCIBean.m.persistido }"
+                        oncomplete="btnNew.click()"
+                        update="@form" />
+
+            <p:menuitem value=" #{msgs.imprimir}" icon="print16"
+                        action="#{requerimientoMaterialesMCIBean.imprimir}"
+                        rendered="#{requerimientoMaterialesMCIBean.m.persistido }"
+                        ajax="false" target="blank" >
+            </p:menuitem>
+
+            <p:submenu label="Consultas" icon="report24" >
+                <p:menuitem value=" Ver pendientes" icon="report24"
+                        outcome="/produccion/informe/pendienteRequerimiento?nroComprobante=#{requerimientoMaterialesMCIBean.movimientoPendiente.nroapl}"
+                        ajax="false" target="blank" >
+                </p:menuitem>
+            </p:submenu>
+
+
+        </p:menubar>
+
+</ui:composition>

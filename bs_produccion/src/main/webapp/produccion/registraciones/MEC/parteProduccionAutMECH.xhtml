@@ -1,0 +1,85 @@
+<ui:composition
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui" >
+
+    <p:messages showDetail="true" />    
+
+    <p:tabView rendered="#{not parteProduccionAutomaticoBeanMEC.m.persistido}">
+
+            <p:tab title="Datos Generales"  rendered="#{not empty parteProduccionAutomaticoBeanMEC.m}">
+
+                <h:panelGrid columns="4" cellspacing="2" columnClasses="colLabel,colDato,colLabel,colDato" width="700" >
+
+                   <h:outputLabel value="Circuito a generar" for="circuito1" />
+                   <h:outputText id="circuito1" value="#{parteProduccionAutomaticoBeanMEC.circuito.descrp}"  />
+
+                   <h:outputText value="Comprobante" />
+                   <h:outputText value="#{parteProduccionAutomaticoBeanMEC.m.comprobante.idPK.codcom} -
+                                         #{parteProduccionAutomaticoBeanMEC.m.comprobante.descrp}" />
+
+                   <h:outputLabel value="Número" for="numero" />
+                   <h:outputText id="numero" value="#{parteProduccionAutomaticoBeanMEC.m.nrofor}" >
+                       <f:convertNumber pattern="0000000" />
+                   </h:outputText>
+
+                    <h:outputText value="#{msgs.pcc_fechaDocumento}: " />
+                    <p:calendar value="#{parteProduccionAutomaticoBeanMEC.m.fchmov}" pattern="dd/MM/yyyy" size="12" locale="es"
+                                navigator="true"
+                                required="true"
+                                requiredMessage="#{msgs.pcc_msgfechaRequeridaObligatoria}"
+                                mindate="#{parteProduccionAutomaticoBeanMEC.fechaMinina}"   />
+
+                    <h:outputLabel value="Deposito ingreso:" for="deposito" />
+                    <h:outputText id="deping" value="#{parteProduccionAutomaticoBeanMEC.m.deposito.deposi} - #{parteProduccionAutomaticoBeanMEC.m.deposito.descrp}" />
+
+                    <h:outputText value="" />
+                    <h:outputText value="" />
+
+                    <h:outputText value="#{msgs.pcc_observaciones}: " />
+                    <p:inputTextarea value="#{parteProduccionAutomaticoBeanMEC.m.textos}" rows="3" cols="50" />
+
+            </h:panelGrid>
+
+            </p:tab>
+
+            <p:tab title="Comprobantes Adicionales"  rendered="#{not empty parteProduccionAutomaticoBeanMEC.m}">
+
+                <h:panelGrid columns="1" cellspacing="2" columnClasses="colLabel,colDato" >
+
+                    <h:panelGroup>
+
+                       <h:outputLabel value="Modulo: " for="comVC" />
+                       <h:outputText id="comVC" value="#{parteProduccionAutomaticoBeanMEC.m.valeConsumo.modfor}"  />
+
+                       <h:outputLabel value="Código: " for="codVC" />
+                       <h:outputText id="codVC" value="#{parteProduccionAutomaticoBeanMEC.m.valeConsumo.codfor}"  />
+
+                       <h:outputLabel value="Número: " for="nroVC" />
+                       <h:outputText id="nroVC" value="#{parteProduccionAutomaticoBeanMEC.m.valeConsumo.nrofor}"  />
+
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+
+                       <h:outputLabel value="Modulo: " for="comPR" />
+                       <h:outputText id="comPR" value="#{parteProduccionAutomaticoBeanMEC.m.parteProceso.modfor}"  />
+
+                       <h:outputLabel value="Código: " for="codPR" />
+                       <h:outputText id="codPR" value="#{parteProduccionAutomaticoBeanMEC.m.parteProceso.codfor}"  />
+
+                       <h:outputLabel value="Número: " for="nroPR" />
+                       <h:outputText id="nroPR" value="#{parteProduccionAutomaticoBeanMEC.m.parteProceso.nrofor}"  />
+
+                    </h:panelGroup>
+
+                </h:panelGrid>
+
+
+            </p:tab>
+
+        </p:tabView>
+
+</ui:composition>

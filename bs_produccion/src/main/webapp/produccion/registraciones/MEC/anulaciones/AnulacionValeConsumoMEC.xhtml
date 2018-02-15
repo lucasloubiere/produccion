@@ -1,0 +1,66 @@
+<ui:composition template="../../../../template/principal_00.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui" >
+
+    <ui:define name="titulo">
+        #{anulacionValeConsumoMECBean.titulo}
+    </ui:define>
+
+    <ui:define name="panelPrincipal">
+
+        <h:form id="formulario" prependId="false">
+
+            <p:panel header="#{anulacionValeConsumoMECBean.titulo}" style="width:100%">
+
+                <p:wizard widgetVar="wiz"                            
+                          flowListener="#{anulacionValeConsumoMECBean.procesoSeleccionPendientes}"
+                      showNavBar="true" showStepStatus="false"
+                      backLabel="Atrás" nextLabel="Siguiente" >
+
+                    <p:tab id="filtro" title="Aplicar filtros">
+
+                        <p:messages showDetail="true" />
+
+                        <h:panelGrid columns="2" >
+
+                            <h:outputText value="Nro comprobante:" />
+                            <p:inputText value="#{anulacionValeConsumoMECBean.nrofor}" >
+                                <f:convertNumber pattern="0" />
+                            </p:inputText>
+
+                        </h:panelGrid>
+
+                    </p:tab>
+
+
+                    <p:tab id="seleccion" title="Seleccionar Movimientos Pendientes">
+
+                        <ui:include src="AnulacionValeConsumoMECS.xhtml" />
+
+                    </p:tab>
+
+                    <p:tab id="movimiento" title="Seleccionar Movimientos Pendientes">
+
+                        <ui:include src="AnulacionValeConsumoMECM.xhtml" />
+                        <p:spacer height="3" />
+                        <ui:include src="AnulacionValeConsumoMECH.xhtml" />
+                        <p:spacer height="3" />
+                        <ui:include src="AnulacionValeConsumoMECI.xhtml" />
+
+                    </p:tab>
+
+                </p:wizard>
+
+            </p:panel>
+
+            <ui:include src="../../../../inventario/consultaStockByProductoDeposito.xhtml" />
+
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

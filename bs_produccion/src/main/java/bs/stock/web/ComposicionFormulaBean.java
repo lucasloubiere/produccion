@@ -5,10 +5,11 @@
  */
 package bs.stock.web;
 
-import bs.global.web.GenericBean;
 import bs.global.util.JsfUtil;
+import bs.global.web.GenericBean;
 import bs.stock.modelo.ComposicionFormula;
-import bs.stock.modelo.ComposicionFormulaItem;
+import bs.stock.modelo.ItemComposicionFormulaComponente;
+import bs.stock.modelo.ItemComposicionFormulaProceso;
 import bs.stock.rn.ComposicionFormulaRN;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +32,8 @@ import org.primefaces.event.SelectEvent;
 public class ComposicionFormulaBean extends GenericBean implements Serializable {
 
     private ComposicionFormula composicionFormula;
-    private ComposicionFormulaItem composicionFormulaItem;
+    private ItemComposicionFormulaComponente itemComponente;
+    private ItemComposicionFormulaProceso itemProceso;
     private List<ComposicionFormula> lista;
 
     @ManagedProperty(value = "#{productoBean}")
@@ -176,7 +178,7 @@ public class ComposicionFormulaBean extends GenericBean implements Serializable 
         }
     }
 
-    public void agregarItem() {
+    public void agregarItemComponente() {
 
         if (composicionFormula.getFormula() == null) {
             JsfUtil.addErrorMessage("Seleccione una formula antes de agregar un item");
@@ -188,41 +190,62 @@ public class ComposicionFormulaBean extends GenericBean implements Serializable 
             return;
         }
 
-        composicionFormulaItem = new ComposicionFormulaItem();
-        composicionFormulaItem.setNroitem(composicionFormula.getItemsComposicion().size() + 1);
-        composicionFormulaItem.setArtcod(composicionFormula.getArtcod());
-        composicionFormulaItem.setCodfor(composicionFormula.getCodfor());
-        composicionFormulaItem.setComposicionFormula(composicionFormula);
-        composicionFormula.getItemsComposicion().add(composicionFormulaItem);
+        itemComponente = new ItemComposicionFormulaComponente();
+        itemComponente.setNroitm(composicionFormula.getItemsComponente().size() + 1);
+        itemComponente.setArtcod(composicionFormula.getArtcod());
+        itemComponente.setCodigo(composicionFormula.getCodfor());
+        itemComponente.setComposicionFormula(composicionFormula);
+        composicionFormula.getItemsComponente().add(itemComponente);
+
+    }
+    
+    public void agregarItemProceso() {
+
+        if (composicionFormula.getFormula() == null) {
+            JsfUtil.addErrorMessage("Seleccione una formula antes de agregar un item");
+            return;
+        }
+
+        if (composicionFormula.getProducto() == null) {
+            JsfUtil.addErrorMessage("Seleccione el producto principal antes de agregar un item");
+            return;
+        }
+
+        itemProceso = new ItemComposicionFormulaProceso();
+        itemProceso.setNroitm(composicionFormula.getItemsComponente().size() + 1);
+        itemProceso.setArtcod(composicionFormula.getArtcod());
+        itemProceso.setCodigo(composicionFormula.getCodfor());
+        itemProceso.setComposicionFormula(composicionFormula);
+        composicionFormula.getItemsProceso().add(itemProceso);
 
     }
 
-    public void eliminarItem(ComposicionFormulaItem ci) {
+    public void eliminarItemComponente(ItemComposicionFormulaComponente ci) {
 
         try {
-            if (composicionFormula.getItemsComposicion() == null) {
+            if (composicionFormula.getItemsComponente() == null) {
                 return;
             }
 
-            composicionFormula.getItemsComposicion().remove(ci);
+            composicionFormula.getItemsComponente().remove(ci);
 
             if (!esNuevo) {
-                composicionFormulaRN.eliminarItem(ci);
+                composicionFormulaRN.eliminarItemComponente(ci);
             }   
             
             buscar();            
             //composicionFormula = composicionFormulaRN.getComprosicionFormula(composicionFormula.getArtcod(), composicionFormula.getCodfor());
 
-            if (ci.getProducto() == null) {
+            if (ci.getProductoComponente() == null) {
                 JsfUtil.addWarningMessage("Se ha elininado el item");
             } else {
-                JsfUtil.addWarningMessage("Se ha elininado el producto " + ci.getProducto().getDescripcion());
+                JsfUtil.addWarningMessage("Se ha elininado el producto " + ci.getProductoComponente().getDescripcion());
             }
 
         } catch (Exception exception) {
 
             JsfUtil.addErrorMessage("No es posible eliminar el item");
-            composicionFormula.getItemsComposicion().add(ci);
+            composicionFormula.getItemsComponente().add(ci);
         }
 
     }
@@ -256,11 +279,23 @@ public class ComposicionFormulaBean extends GenericBean implements Serializable 
         this.productoBean = productoBean;
     }
 
-    public ComposicionFormulaItem getComposicionFormulaItem() {
-        return composicionFormulaItem;
+    public ItemComposicionFormulaComponente getItemComponente() {
+        return itemComponente;
     }
 
-    public void setComposicionFormulaItem(ComposicionFormulaItem composicionFormulaItem) {
-        this.composicionFormulaItem = composicionFormulaItem;
+    public void setItemComponente(ItemComposicionFormulaComponente itemComponente) {
+        this.itemComponente = itemComponente;
     }
+
+    public ItemComposicionFormulaProceso getItemProceso() {
+        return itemProceso;
+    }
+
+    public void setItemProceso(ItemComposicionFormulaProceso itemProceso) {
+        this.itemProceso = itemProceso;
+    }
+    
+    
+
+    
 }

@@ -6,16 +6,22 @@
 package bs.stock.modelo;
 
 import bs.global.modelo.Auditoria;
+import bs.global.modelo.Moneda;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -99,6 +105,52 @@ public class Producto implements Serializable {
     
     @Column(name = "codref", length = 20)
     private String codigoReferencia;
+    
+    //Precio de referencia
+    @Column(name = "PREREF", precision = 15, scale = 4)
+    private BigDecimal precioReferencia;
+    //GR_Moneda de referencia
+    @JoinColumn(name = "MONREF", referencedColumnName = "codigo")
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Moneda monedaDeReferencia;
+    //Fecha de precio de referencia
+    @Column(name = "FECREF", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fechaReferencia;   
+    
+    //Precio de reposición
+    @Column(name = "PREREP", precision = 15, scale = 4)
+    private BigDecimal precioReposicion;    
+    @JoinColumn(name = "MONREP", referencedColumnName = "codigo")
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Moneda monedaReposicion;
+    @Column(name = "FECREP")
+    @Temporal(TemporalType.DATE)
+    private Date fechaReposicion;
+    
+    //Precio ultima compra
+    @Column(name = "PREUCO", precision = 15, scale = 4)
+    private BigDecimal precioUltimaCompra;
+    //GR_Moneda ultima compra    
+    @JoinColumn(name = "MONUCO", referencedColumnName = "codigo")
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Moneda monedaUltimaCompra;
+    //Fecha ultima compra
+    @Column(name = "FECUCO")
+    @Temporal(TemporalType.DATE)
+    private Date fechaUltimaCompra;
+
+    //Precio de produccion
+    @Column(name = "PREPRD", precision = 15, scale = 4)
+    private BigDecimal precioProduccion;
+    //Modeda de produccion)    
+    @JoinColumn(name = "MONPRD", referencedColumnName = "codigo")
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Moneda monedaDeProduccion;
+    //Fecha de produccion)
+    @Column(name = "FECPRD")
+    @Temporal(TemporalType.DATE)
+    private Date fechaProduccion;
     
     @Embedded
     private Auditoria auditoria;
@@ -282,10 +334,103 @@ public class Producto implements Serializable {
     public void setCodigoReferencia(String codigoReferencia) {
         this.codigoReferencia = codigoReferencia;
     }
-    
 
-    
-    
+    public BigDecimal getPrecioReferencia() {
+        return precioReferencia;
+    }
+
+    public void setPrecioReferencia(BigDecimal precioReferencia) {
+        this.precioReferencia = precioReferencia;
+    }
+
+    public Moneda getMonedaDeReferencia() {
+        return monedaDeReferencia;
+    }
+
+    public void setMonedaDeReferencia(Moneda monedaDeReferencia) {
+        this.monedaDeReferencia = monedaDeReferencia;
+    }
+
+    public Date getFechaReferencia() {
+        return fechaReferencia;
+    }
+
+    public void setFechaReferencia(Date fechaReferencia) {
+        this.fechaReferencia = fechaReferencia;
+    }
+
+    public BigDecimal getPrecioReposicion() {
+        return precioReposicion;
+    }
+
+    public void setPrecioReposicion(BigDecimal precioReposicion) {
+        this.precioReposicion = precioReposicion;
+    }
+
+    public Moneda getMonedaReposicion() {
+        return monedaReposicion;
+    }
+
+    public void setMonedaReposicion(Moneda monedaReposicion) {
+        this.monedaReposicion = monedaReposicion;
+    }
+
+    public Date getFechaReposicion() {
+        return fechaReposicion;
+    }
+
+    public void setFechaReposicion(Date fechaReposicion) {
+        this.fechaReposicion = fechaReposicion;
+    }
+
+    public BigDecimal getPrecioUltimaCompra() {
+        return precioUltimaCompra;
+    }
+
+    public void setPrecioUltimaCompra(BigDecimal precioUltimaCompra) {
+        this.precioUltimaCompra = precioUltimaCompra;
+    }
+
+    public Moneda getMonedaUltimaCompra() {
+        return monedaUltimaCompra;
+    }
+
+    public void setMonedaUltimaCompra(Moneda monedaUltimaCompra) {
+        this.monedaUltimaCompra = monedaUltimaCompra;
+    }
+
+    public Date getFechaUltimaCompra() {
+        return fechaUltimaCompra;
+    }
+
+    public void setFechaUltimaCompra(Date fechaUltimaCompra) {
+        this.fechaUltimaCompra = fechaUltimaCompra;
+    }
+
+    public BigDecimal getPrecioProduccion() {
+        return precioProduccion;
+    }
+
+    public void setPrecioProduccion(BigDecimal precioProduccion) {
+        this.precioProduccion = precioProduccion;
+    }
+
+    public Moneda getMonedaDeProduccion() {
+        return monedaDeProduccion;
+    }
+
+    public void setMonedaDeProduccion(Moneda monedaDeProduccion) {
+        this.monedaDeProduccion = monedaDeProduccion;
+    }
+
+    public Date getFechaProduccion() {
+        return fechaProduccion;
+    }
+
+    public void setFechaProduccion(Date fechaProduccion) {
+        this.fechaProduccion = fechaProduccion;
+    }
+        
     @Override
     public int hashCode() {
         int hash = 0;

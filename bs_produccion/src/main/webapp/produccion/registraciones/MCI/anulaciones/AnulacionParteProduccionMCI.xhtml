@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+
+    <ui:define name="titulo">
+        #{anulacionParteProduccionBeanMCI.titulo}
+    </ui:define>
+
+    <ui:define name="panelPrincipal">
+
+        <p:panel header="#{anulacionParteProduccionBeanMCI.titulo}" style="width:100%">
+
+                <p:wizard widgetVar="wiz"
+                          flowListener="#{anulacionParteProduccionBeanMCI.procesoSeleccionPendientes}"
+                      showNavBar="true" showStepStatus="false"
+                      backLabel="Atrás" nextLabel="Siguiente" >
+
+                    <p:tab id="filtro" title="Aplicar filtros">
+
+                        <p:messages showDetail="true" />
+
+                        <h:panelGrid columns="2" >
+
+                            <h:outputText value="Nro comprobante" />
+                            <p:inputText value="#{anulacionParteProduccionBeanMCI.nrofor}" >
+
+                                <f:convertNumber pattern="0" />
+
+                            </p:inputText>
+
+                        </h:panelGrid>
+
+                    </p:tab>
+
+
+                    <p:tab id="seleccion" title="Seleccionar Movimientos Pendientes">
+
+                        <ui:include src="AnulacionParteProduccionMCIS.xhtml" />
+
+                    </p:tab>
+
+                    <p:tab id="movimiento" title="Seleccionar Movimientos Pendientes">
+
+                        <ui:include src="AnulacionParteProduccionMCIM.xhtml" />
+                        <p:spacer height="3" />
+                        <ui:include src="AnulacionParteProduccionMCIH.xhtml" />
+                        <p:spacer height="3" />
+                        <ui:include src="AnulacionParteProduccionMCII.xhtml" />
+
+                    </p:tab>
+
+                </p:wizard>
+
+            </p:panel>
+
+        <ui:include src="../../../../inventario/consultaStockByProductoDeposito.xhtml" />
+
+    </ui:define>
+
+</ui:composition>
+</html>

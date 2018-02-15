@@ -7,8 +7,10 @@ package bs.stock.modelo;
 
 import bs.global.modelo.Auditoria;
 import bs.global.modelo.Formulario;
+import bs.global.modelo.Moneda;
 import bs.global.modelo.Sucursal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -109,6 +111,18 @@ public class MovimientoStock implements Serializable {
     @JoinColumn(name = "deptra", referencedColumnName = "CODIGO")
     @ManyToOne(fetch = FetchType.LAZY)
     private Deposito depositoTransferencia;
+    
+    //Moneda de registracion
+    @JoinColumn(name = "MONREG", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Moneda monedaRegistracion;
+    
+    @JoinColumn(name = "COFSEC", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Moneda monedaSecundaria;
+        
+    @Column(name = "COTIZA", precision = 15, scale = 4)
+    private BigDecimal cotizacion;
 
     @Column(name = "isanul", length = 1)
     private String esAnulacion;
@@ -398,6 +412,30 @@ public class MovimientoStock implements Serializable {
 
     public void setGestionTanque(GestionTanque gestionTanque) {
         this.gestionTanque = gestionTanque;
+    }
+
+    public Moneda getMonedaRegistracion() {
+        return monedaRegistracion;
+    }
+
+    public void setMonedaRegistracion(Moneda monedaRegistracion) {
+        this.monedaRegistracion = monedaRegistracion;
+    }
+
+    public Moneda getMonedaSecundaria() {
+        return monedaSecundaria;
+    }
+
+    public void setMonedaSecundaria(Moneda monedaSecundaria) {
+        this.monedaSecundaria = monedaSecundaria;
+    }
+
+    public BigDecimal getCotizacion() {
+        return cotizacion;
+    }
+
+    public void setCotizacion(BigDecimal cotizacion) {
+        this.cotizacion = cotizacion;
     }
         
     @Override

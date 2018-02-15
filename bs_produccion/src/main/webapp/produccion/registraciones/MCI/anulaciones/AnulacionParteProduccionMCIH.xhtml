@@ -1,0 +1,50 @@
+<ui:composition
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui" >
+
+    <p:messages showDetail="true" />
+
+    <p:tabView rendered="#{not anulacionParteProduccionBeanMCI.m.persistido}" >
+
+        <p:tab title="Datos Generales"  rendered="#{not empty anulacionParteProduccionBeanMCI.m}">
+
+            <h:panelGrid columns="4" cellspacing="2" columnClasses="colLabel,colDato,colLabel,colDato" width="700" >
+
+               <h:outputLabel value="Circuito a generar" for="circuito1" />
+               <h:outputText id="circuito1" value="#{anulacionParteProduccionBeanMCI.circuito.descrp}"  />
+
+               <h:outputText value="Comprobante" />
+               <h:outputText value="#{anulacionParteProduccionBeanMCI.m.comprobante.idPK.codcom} -
+                                     #{anulacionParteProduccionBeanMCI.m.comprobante.descrp}" />
+
+               <h:outputLabel value="Número" for="numero" />
+               <h:outputText id="numero" value="#{anulacionParteProduccionBeanMCI.m.nrofor}" >
+                   <f:convertNumber pattern="0000000" />
+               </h:outputText>
+
+                <h:outputText value="#{msgs.pcc_fechaDocumento}: " />
+                <p:calendar value="#{anulacionParteProduccionBeanMCI.m.fchmov}" pattern="dd/MM/yyyy" size="12" locale="es"
+                            navigator="true"
+                            required="true"
+                            requiredMessage="#{msgs.pcc_msgfechaRequeridaObligatoria}"
+                            mindate="#{anulacionParteProduccionBeanMCI.fechaMinina}"   />
+
+                <h:outputLabel value="Deposito egreso:" for="deping" />
+                <h:outputText id="deping" value="#{anulacionParteProduccionBeanMCI.m.depositoTransferencia.deposi} - #{anulacionParteProduccionBeanMCI.m.depositoTransferencia.descrp}" />
+
+                <h:outputText value="" />
+                <h:outputText value="" />
+
+                <h:outputText value="#{msgs.pcc_observaciones}: " />
+                <p:inputTextarea value="#{anulacionParteProduccionBeanMCI.m.textos}" rows="3" cols="50" />
+
+            </h:panelGrid>
+
+        </p:tab>
+
+    </p:tabView>
+
+</ui:composition>

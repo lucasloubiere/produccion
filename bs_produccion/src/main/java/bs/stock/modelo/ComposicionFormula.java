@@ -14,6 +14,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -25,7 +26,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -62,15 +62,21 @@ public class ComposicionFormula implements Serializable {
     @ManyToOne(optional = false)
     private Producto producto;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "composicionFormula")
-    private List<ComposicionFormulaItem> itemsComposicion;    
+        
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "composicionFormula", fetch=FetchType.LAZY)    
+    private List<ItemComposicionFormulaComponente> itemsComponente;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "composicionFormula", fetch=FetchType.LAZY)    
+    private List<ItemComposicionFormulaProceso> itemsProceso;
+   
     
     @Embedded
     private Auditoria auditoria;
 
     public ComposicionFormula() {
         this.auditoria = new Auditoria();
-        this.itemsComposicion = new ArrayList<ComposicionFormulaItem>();
+        this.itemsComponente = new ArrayList<ItemComposicionFormulaComponente>();
+        this.itemsProceso = new ArrayList<ItemComposicionFormulaProceso>();
     }
 
     public String getArtcod() {
@@ -113,15 +119,6 @@ public class ComposicionFormula implements Serializable {
         this.auditoria = auditoria;
     }
 
-    @XmlTransient
-    public List<ComposicionFormulaItem> getItemsComposicion() {
-        return itemsComposicion;
-    }
-
-    public void setItemsComposicion(List<ComposicionFormulaItem> itemsComposicion) {
-        this.itemsComposicion = itemsComposicion;
-    }
-
     public Formula getFormula() {
         return formula;
     }
@@ -130,6 +127,22 @@ public class ComposicionFormula implements Serializable {
         this.formula = formula;
     }
 
+    public List<ItemComposicionFormulaComponente> getItemsComponente() {
+        return itemsComponente;
+    }
+
+    public void setItemsComponente(List<ItemComposicionFormulaComponente> itemsComponente) {
+        this.itemsComponente = itemsComponente;
+    }
+
+    public List<ItemComposicionFormulaProceso> getItemsProceso() {
+        return itemsProceso;
+    }
+
+    public void setItemsProceso(List<ItemComposicionFormulaProceso> itemsProceso) {
+        this.itemsProceso = itemsProceso;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;

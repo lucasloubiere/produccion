@@ -1,22 +1,22 @@
+package bs.produccion.modelo;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bs.produccion.modelo;
 
 import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 /**
  *
- * @author lloubiere
+ * @author Claudio
  */
 @Embeddable
 public class CircuitoProduccionPK implements Serializable {
-
     
-    private String circom;
+    private String circom;    
     private String cirapl;
 
     public CircuitoProduccionPK() {
@@ -69,7 +69,7 @@ public class CircuitoProduccionPK implements Serializable {
 
     @Override
     public String toString() {
-        return "bs.produccion.modelo.CircuitoPK[ circom=" + circom + ", cirapl=" + cirapl + " ]";
+        return "CircuitoProduccionPK[ circom=" + circom + ", cirapl=" + cirapl + " ]";
     }
     
 }

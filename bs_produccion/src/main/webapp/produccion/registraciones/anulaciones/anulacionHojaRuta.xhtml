@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+
+    <ui:define name="titulo">
+        #{anulacionHojaRutaBean.titulo}
+    </ui:define>
+
+    <ui:define name="panelPrincipal">
+
+        <p:panel header="#{anulacionHojaRutaBean.titulo}" style="width:100%">
+
+            <p:wizard widgetVar="wiz"  flowListener="#{anulacionHojaRutaBean.procesoSeleccionPendientes}"
+                  showNavBar="true" showStepStatus="false"
+                  backLabel="Atrás" nextLabel="Siguiente" >
+
+                <p:tab id="filtro" title="Aplicar filtros">
+
+                    <p:messages showDetail="true" />
+
+                    <h:panelGrid columns="2" >
+
+                        <h:outputText value="Nro comprobante" />
+                        <p:inputText value="#{anulacionHojaRutaBean.nrofor}" >
+
+                            <f:convertNumber pattern="0" />
+
+                        </p:inputText>
+
+                    </h:panelGrid>
+
+                </p:tab>
+
+                <p:tab id="seleccion" title="Seleccionar Movimientos Pendientes">
+
+                    <ui:include src="anulacionHojaRutaS.xhtml" />
+
+                </p:tab>
+
+                <p:tab id="movimiento" title="Seleccionar Movimientos Pendientes">
+
+                    <ui:include src="anulacionHojaRutaM.xhtml" />
+                    <p:spacer height="3" />
+                    <ui:include src="anulacionHojaRutaH.xhtml" />
+                    <p:spacer height="3" />
+                    <ui:include src="anulacionHojaRutaI.xhtml" />
+
+                </p:tab>
+
+            </p:wizard>
+
+        </p:panel>
+
+    </ui:define>
+
+</ui:composition>
+</html>

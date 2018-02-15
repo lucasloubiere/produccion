@@ -7,11 +7,15 @@ package bs.produccion.rn;
  */
 
 import bs.global.excepciones.ExcepcionGeneralSistema;
+import bs.global.modelo.Comprobante;
 import bs.produccion.dao.CircuitoProduccionDAO;
 import bs.produccion.modelo.CircuitoProduccion;
 import bs.produccion.modelo.CircuitoProduccionPK;
 import bs.produccion.modelo.ComprobanteProduccion;
+import bs.produccion.modelo.ItemCircuitoProduccionProduccion;
+import bs.produccion.modelo.ItemCircuitoProduccionStock;
 import bs.stock.modelo.ComprobanteStock;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -21,7 +25,7 @@ import javax.ejb.TransactionAttributeType;
 
 /**
  *
- * @author Claudio
+ * @author Agustin
  */
 @Stateless
 public class CircuitoProduccionRN {
@@ -82,14 +86,14 @@ public class CircuitoProduccionRN {
 //        System.out.println(circuitoDAO.getComprobanteProduccion(circom, cirapl ,modcom,codcom));
 
         ComprobanteProduccion cf = circuitoDAO.getComprobanteProduccion(circom, cirapl ,modcom,codcom);
-        if(cf==null) throw new ExcepcionGeneralSistema("El comprobante de producción ("+codcom+") no está configurado para el circuito (" +circom+" - "+cirapl+")");
+        if(cf==null) throw new ExcepcionGeneralSistema("El comprobante de producción ("+codcom+") no está configurado para este circuito" );
         return cf;
     }
 
     public ComprobanteStock getComprobanteStock(String circom, String cirapl, String modcom, String codcom) throws ExcepcionGeneralSistema {
 
         ComprobanteStock cs = circuitoDAO.getComprobanteStock(circom, cirapl ,modcom,codcom);
-        if(cs==null) throw new ExcepcionGeneralSistema("El comprobante de stock ("+codcom+") no está configurado para el circuito (" +circom+" - "+cirapl+")");
+        if(cs==null) throw new ExcepcionGeneralSistema("El comprobante de stock ("+codcom+") no está configurado para este circuito" );
         return cs;
     }
    
@@ -102,5 +106,99 @@ public class CircuitoProduccionRN {
         getListaByBusqueda(filtro, "", true);
         circuito.setCircuitosRelacionados(getListaByBusqueda(filtro, "", true));
     }
+    
+    /**
+     * Se utiliza para generar movimientos no predeterminados
+     *
+     * @param circuito
+     * @return
+     * @throws ExcepcionGeneralSistema
+     */
+    public List<Comprobante> getComprobantesCircuito(CircuitoProduccion circuito) throws ExcepcionGeneralSistema {
+
+        List<Comprobante> listaComprobante = new ArrayList<Comprobante>();
+
+        if (circuito != null) {
+
+            if (circuito.getActualizaProduccion().equals("S")) {
+                //Cargamos la lista de comprobantes de produccion disponibles
+                for (ItemCircuitoProduccionProduccion i : circuito.getItemCircuitoProduccion()) {
+                    //System.out.println("Comprobante produccion: " + i.getComprobante());
+                    listaComprobante.add(i.getComprobante());
+                }
+            }
+
+            if (circuito.getActualizaStock().equals("S")) {
+                //Cargamos la lista de comprobantes de stock disponibles
+                for (ItemCircuitoProduccionStock i : circuito.getItemCircuitoStock()) {
+                    //System.out.println("Comprobante stock: " + i.getComprobante());
+                    listaComprobante.add(i.getComprobante());
+                }
+            }
+
+            if (listaComprobante.isEmpty()) {
+                throw new ExcepcionGeneralSistema("No existen comprobantes para el circuito seleccionado");
+            }
+
+        } else {
+            throw new ExcepcionGeneralSistema("El circuito no puede ser nulo");
+        }
+
+        return listaComprobante;
+    }
+
+    public CircuitoProduccion iniciarCircuito(
+            String circom, String cirapl,
+            String modPD, String codPD, String sucPD) throws ExcepcionGeneralSistema {
+
+        return iniciarCircuito(circom, cirapl, modPD, codPD, sucPD, null, null, null, null, null, null, null, null, null);
+    }
+
+    public CircuitoProduccion iniciarCircuito(
+            String circom, String cirapl,
+            String modPD, String codPD, String sucPD,
+            String modST, String codST, String sucST) throws ExcepcionGeneralSistema {
+
+        return iniciarCircuito(circom, cirapl, modPD, codPD, sucPD, modST, codST, sucST, null, null, null, null, null, null);
+
+    }
+
+    public CircuitoProduccion iniciarCircuito(
+            String circom, String cirapl,
+            String modPD, String codPD, String sucPD,
+            String modST, String codST, String sucST,
+            String modPR, String codPR, String sucPR,
+            String modVC, String codVC, String sucVC) throws ExcepcionGeneralSistema {
+
+        CircuitoProduccion circuito = null;
+
+        if (circom != null && cirapl != null) {
+            circuito = getCircuito(circom, cirapl);
+        }
+
+        if (circuito == null) {
+            throw new ExcepcionGeneralSistema("No se encontró circuito");
+        }
+
+        cargarCircuitosRelacionados(circuito);
+
+        if (circuito.getActualizaProduccion().equals("S") && modPD != null && codPD != null) {
+
+            circuito.setComprobanteProduccion(getComprobanteProduccion(circom, cirapl, modPD, codPD));
+
+        } else if (circuito.getActualizaStock().equals("S") && modST != null && codST != null) {
+
+            circuito.setComprobanteStock(getComprobanteStock(circom, cirapl, modST, codST));
+        }
+
+        if (circuito.getAutomatizaParteProduccion().equals("S")) {
+
+            circuito.setComprobanteParteProceso(getComprobanteProduccion(circom, cirapl, modPR, codPR));
+            circuito.setComprobanteValeConsumo(getComprobanteStock(circom, cirapl, modVC, codVC));
+        }
+
+        return circuito;
+    }
+
     
 }

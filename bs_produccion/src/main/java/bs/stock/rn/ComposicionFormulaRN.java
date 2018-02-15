@@ -9,9 +9,10 @@ package bs.stock.rn;
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.stock.dao.ComposicionFormulaDAO;
 import bs.stock.modelo.ComposicionFormula;
-import bs.stock.modelo.ComposicionFormulaItem;
-import bs.stock.modelo.ComposicionFormulaItemPK;
 import bs.stock.modelo.ComposicionFormulaPK;
+import bs.stock.modelo.ItemComposicionFormulaComponente;
+import bs.stock.modelo.ItemComposicionFormulaPK;
+import bs.stock.modelo.ItemComposicionFormulaProceso;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -45,34 +46,34 @@ public class ComposicionFormulaRN {
     private void borrarItemNoValidos(ComposicionFormula c){
         
         
-        if(c.getItemsComposicion()== null || c.getItemsComposicion().isEmpty()){
-            return;            
-        }
-        
-        String indiceBorrar[] = new String[c.getItemsComposicion().size()];
-        
-        //Seteamos los valores en -1
-        for(int i=0;i<indiceBorrar.length;i++){
-            indiceBorrar[i] = "N";
-        }
-              
-        for(int i = 0 ; i < c.getItemsComposicion().size(); i++ ){ 
-                
-            ComposicionFormulaItem ic = c.getItemsComposicion().get(i);
-            
-            if(ic.getProducto()==null){
-                indiceBorrar[i] = "S" ;                
-                continue;
-            }            
-        }
-        
-        for(int i=0;i<indiceBorrar.length;i++){
-            
-            if(indiceBorrar[i].equals("S")){
-                System.err.println("borra item");
-                ComposicionFormulaItem remove = c.getItemsComposicion().remove(i);                
-            }            
-        }    
+//        if(c.getItemsComponentes()== null || c.getItemsComponentes().isEmpty()){
+//            return;            
+//        }
+//        
+//        String indiceBorrar[] = new String[c.getItemsComponentes().size()];
+//        
+//        //Seteamos los valores en -1
+//        for(int i=0;i<indiceBorrar.length;i++){
+//            indiceBorrar[i] = "N";
+//        }
+//              
+//        for(int i = 0 ; i < c.getItemsComponentes().size(); i++ ){ 
+//                
+//            ComposicionFormulaItem ic = c.getItemsComponentes().get(i);
+//            
+//            if(ic.getProducto()==null){
+//                indiceBorrar[i] = "S" ;                
+//                continue;
+//            }            
+//        }
+//        
+//        for(int i=0;i<indiceBorrar.length;i++){
+//            
+//            if(indiceBorrar[i].equals("S")){
+//                System.err.println("borra item");
+//                ComposicionFormulaItem remove = c.getItemsComponentes().remove(i);                
+//            }            
+//        }    
     }
 
     public ComposicionFormula getComposicionFormula(ComposicionFormulaPK idPK){
@@ -94,7 +95,7 @@ public class ComposicionFormulaRN {
         return composicionFormulaDAO.getListaByBusqueda(artcod,codfor,txtBusqueda, mostrarDebaja, cantidadRegistros);
     }
 
-    public void eliminarItem(ComposicionFormulaItem ci) throws Exception {
+    public void eliminarItemComponente(ItemComposicionFormulaComponente ci) throws Exception {
         
         if(ci==null){
             return;
@@ -104,17 +105,31 @@ public class ComposicionFormulaRN {
             return;
         }
         
-        if(ci.getCodfor()==null || ci.getCodfor().isEmpty()){
+        if(ci.getCodigo()==null || ci.getCodigo().isEmpty()){
             return;
         }
         
-        if(ci.getProducto()==null){
+        ItemComposicionFormulaPK idPk = new ItemComposicionFormulaPK(ci.getArtcod(), ci.getCodigo(), ci.getNroitm());
+        composicionFormulaDAO.eliminar(composicionFormulaDAO.getObjeto(ItemComposicionFormulaComponente.class, idPk));
+        
+    }
+    
+    public void eliminarItemProceso(ItemComposicionFormulaProceso ci) throws Exception {
+        
+        if(ci==null){
             return;
         }
         
+        if(ci.getArtcod()==null || ci.getArtcod().isEmpty()){
+            return;
+        }
         
-        ComposicionFormulaItemPK idPk = new ComposicionFormulaItemPK(ci.getNroitem(), ci.getArtcod(), ci.getCodfor());
-        composicionFormulaDAO.eliminar(composicionFormulaDAO.getObjeto(ComposicionFormulaItem.class, idPk));
+        if(ci.getCodigo()==null || ci.getCodigo().isEmpty()){
+            return;
+        }
+        
+        ItemComposicionFormulaPK idPk = new ItemComposicionFormulaPK(ci.getArtcod(), ci.getCodigo(), ci.getNroitm());
+        composicionFormulaDAO.eliminar(composicionFormulaDAO.getObjeto(ItemComposicionFormulaProceso.class, idPk));
         
     }
  

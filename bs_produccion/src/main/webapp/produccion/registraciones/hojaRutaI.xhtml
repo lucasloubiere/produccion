@@ -1,0 +1,124 @@
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui" >
+    
+    <h:panelGroup rendered="#{not hojaRutaBean.m.persistido}" style="width: 100%;">
+
+            <p:tabView style="min-height: 200px;">
+
+                <p:tab title="Items">
+                    <p:dataTable id="detalle" value="#{hojaRutaBean.m.itemProducto}"
+                                 var="p" scrollable="true" scrollHeight="200"
+                                 emptyMessage="#{msgs.pcc_msgNoEncontraronProductos}">
+
+                        <p:column headerText="Buscar" width="50" style="text-align: center;">
+                            <p:commandButton icon="find16" rendered="#{empty p.producto}" oncomplete="dlg_producto.show()"  />
+                        </p:column>
+
+                        <p:column headerText="#{msgs.pcc_codigo}" width="120" >
+                            <h:outputText value="#{p.producto.artcod}" rendered="#{not empty p.producto}"/>
+                            <h:outputText value="#{buscadorProductoBean.producto.artcod}" rendered="#{empty p.producto}"  />
+                        </p:column>
+
+                        <p:column headerText="#{msgs.pcc_descripcion}" width="380">
+                            <h:outputText value="#{p.producto.descrp}"  rendered="#{not empty p.producto}"/>
+                            <h:outputText value="#{buscadorProductoBean.producto.descrp}" rendered="#{empty p.producto}"  />                                                        
+                        </p:column>
+                        
+                        <p:column headerText="#{msgs.pcc_cantidad}" width="60">
+                            <p:inputText value="#{p.cantid}" size="8" id="cantidad" style="text-align: right;"
+                                         rendered="#{not empty p.producto}" >
+                                <f:convertNumber pattern="0"  />
+                                <p:ajax listener="#{hojaRutaBean.actualizarCantidades(p)}" update="@form"/>
+                            </p:inputText>
+                            <p:inputText value="#{p.cantid}" size="8" id="cantidadIV" style="text-align: right;"
+                                         rendered="#{empty p.producto}" >
+                                <f:convertNumber pattern="0"  />
+
+                            </p:inputText>
+                        </p:column>
+
+                        <p:column headerText="#{msgs.pcc_UM}" width="25" style="text-align: center;" >
+                            <h:outputText value="#{p.producto.unidadMedida.unidad}" rendered="#{not empty p.producto}" />
+                            <h:outputText value="#{buscadorProductoBean.producto.unidadMedida.unidad}" rendered="#{empty p.producto}"  />
+                        </p:column>
+
+                        <p:column headerText="Composición" style="width:100px; text-align: center;">
+                            <p:rowToggler />
+                        </p:column>
+
+                        <p:rowExpansion>
+                            
+                            <p:dataTable value="#{p.composicionFormula.itemComposicion}" 
+                                         var="c" style="margin: 5px; float: right;" >
+                                <p:column headerText="#{msgs.codigo}" width="120">
+                                    <h:outputText value="#{c.productoComponente.artcod}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msgs.descripcion}" width="350">
+                                    <h:outputText value="#{c.productoComponente.descrp}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msgs.cantidad}" width="50" style="text-align: right;">
+                                    <h:outputText value="#{c.cntnom}"  >
+                                        <f:convertNumber pattern="0.00"  />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{msgs.pcc_UM}" width="25" style="text-align: center;">
+                                    <h:outputText value="#{c.unidadMedidaItem.unidad}"/>
+                                </p:column>
+                            </p:dataTable>
+                            <p:spacer height="5" />
+                        </p:rowExpansion>
+                       
+                        <p:column headerText="#{msgs.accion}" style="width: 60px; text-align: center;">
+                            
+                            <p:commandButton rendered="#{empty p.producto}"
+                                             actionListener="#{hojaRutaBean.agregarItem(p)}" icon="add16"
+                                             update="@form"  />
+
+                            <p:commandButton immediate="true" rendered="#{not empty p.producto}"
+                                             actionListener="#{hojaRutaBean.eliminarItemProducto(p)}" icon="delete16"
+                                             process="@this"
+                                             update="@form"  />
+                        </p:column>
+
+                    </p:dataTable>
+                </p:tab>
+
+                <p:tab title="Componentes necesarios">
+
+                    <p:dataTable id="detalleMateriales" value="#{hojaRutaBean.m.itemComponente}"
+                                 var="m" scrollable="true" scrollHeight="250"
+                                 emptyMessage="#{msgs.no_encontro_materiales}">
+
+                        <p:column headerText="#{msgs.pcc_codigo}" width="120" style="width: 150px;">
+                            <h:outputText value="#{m.producto.artcod}" />
+                        </p:column>
+                        <p:column headerText="#{msgs.pcc_descripcion}" style="width: 500px;">
+                            <h:outputText value="#{m.producto.descrp}" />
+                        </p:column>
+                        
+                        <p:column headerText="#{msgs.pcc_cantidad}" style="width: 80px; text-align: right;">
+                            <h:outputText value="#{m.cantid}" >
+                                <f:convertNumber pattern=" 0.00" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{msgs.pcc_UM}" width="25" style="text-align: center;">
+                            <h:outputText value="#{m.unidadMedida.unidad}" />
+                        </p:column>
+
+                    </p:dataTable>
+                    
+                </p:tab>
+
+            </p:tabView>
+
+    </h:panelGroup>
+
+</ui:composition>

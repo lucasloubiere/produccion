@@ -1,0 +1,98 @@
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui" >
+
+    <p:messages showDetail="true" />
+
+    <p:tabView rendered="#{not valeConsumoBeanMP.m.persistido}" >
+
+        <p:tab title="Datos Generales"  rendered="#{not empty valeConsumoBeanMP.m}">
+
+            <h:panelGrid columns="4" cellspacing="2" columnClasses="colLabel,colDato,colLabel,colDato" width="700" >
+
+               <h:outputLabel value="Circuito a generar" for="circuito1" />
+               <h:outputText id="circuito1" value="#{valeConsumoBeanMP.circuito.descrp}"  />
+
+               <h:outputText value="Comprobante" />
+               <h:outputText value="#{valeConsumoBeanMP.m.comprobante.idPK.codcom} -
+                                     #{valeConsumoBeanMP.m.comprobante.descrp}" />
+
+               <h:outputLabel value="Número" for="numero" />
+               <h:outputText id="numero" value="#{valeConsumoBeanMP.m.nrofor}" >
+                   <f:convertNumber pattern="0000000" />
+               </h:outputText>
+
+                <h:outputText value="#{msgs.pcc_fechaDocumento}: " />
+                <p:calendar value="#{valeConsumoBeanMP.m.fchmov}" pattern="dd/MM/yyyy" size="12" locale="es"
+                            navigator="true"
+                            required="true"
+                            requiredMessage="#{msgs.pcc_msgfechaRequeridaObligatoria}"
+                            mindate="#{valeConsumoBeanMP.fechaMinina}"   />
+
+                <h:outputLabel value="Deposito egreso:" for="depegr" />
+                <h:outputLabel id="depegr" value="#{valeConsumoBeanMP.m.depositoTransferencia.deposi} - #{valeConsumoBeanMP.m.depositoTransferencia.descrp}" />
+
+                <h:outputText value="" />
+                <h:outputText value="" />
+
+                <h:outputText value="#{msgs.pcc_observaciones}: " />
+                <p:inputTextarea value="#{valeConsumoBeanMP.m.textos}" rows="3" cols="50" />
+
+            </h:panelGrid>
+
+        </p:tab>
+
+        <p:tab title="Comprobantes Adicionales"  rendered="#{not empty valeConsumoBeanMP.m}">
+
+                <!--
+                <h:outputLabel value="Virt_afecha:" for="virt_afecha" />
+                <p:inputText id="virt_afecha" value="#{valeConsumoBeanMP.m.virt_afecha}" title="Virt_afecha" />
+                <h:outputLabel value="Virt_codppp:" for="virt_codppp" />
+                <p:inputText id="virt_codppp" value="#{valeConsumoBeanMP.m.virt_codppp}" title="Virt_codppp" />
+                <h:outputLabel value="Virt_codprp:" for="virt_codprp" />
+                <p:inputText id="virt_codprp" value="#{valeConsumoBeanMP.m.virt_codprp}" title="Virt_codprp" />
+                <h:outputLabel value="Virt_codvcp:" for="virt_codvcp" />
+                <p:inputText id="virt_codvcp" value="#{valeConsumoBeanMP.m.virt_codvcp}" title="Virt_codvcp" />
+                <h:outputLabel value="Virt_envase:" for="virt_envase" />
+                <p:inputText id="virt_envase" value="#{valeConsumoBeanMP.m.virt_envase}" title="Virt_envase" />
+                <h:outputLabel value="Virt_modppp:" for="virt_modppp" />
+                <p:inputText id="virt_modppp" value="#{valeConsumoBeanMP.m.virt_modppp}" title="Virt_modppp" />
+                <h:outputLabel value="Virt_modprp:" for="virt_modprp" />
+                <p:inputText id="virt_modprp" value="#{valeConsumoBeanMP.m.virt_modprp}" title="Virt_modprp" />
+                <h:outputLabel value="Virt_modvcp:" for="virt_modvcp" />
+                <p:inputText id="virt_modvcp" value="#{valeConsumoBeanMP.m.virt_modvcp}" title="Virt_modvcp" />
+                <h:outputLabel value="Virt_natrib:" for="virt_natrib" />
+                <p:inputText id="virt_natrib" value="#{valeConsumoBeanMP.m.virt_natrib}" title="Virt_natrib" />
+                <h:outputLabel value="Virt_ndespa:" for="virt_ndespa" />
+                <p:inputText id="virt_ndespa" value="#{valeConsumoBeanMP.m.virt_ndespa}" title="Virt_ndespa" />
+                <h:outputLabel value="Virt_nestan:" for="virt_nestan" />
+                <p:inputText id="virt_nestan" value="#{valeConsumoBeanMP.m.virt_nestan}" title="Virt_nestan" />
+                <h:outputLabel value="Virt_notros:" for="virt_notros" />
+                <p:inputText id="virt_notros" value="#{valeConsumoBeanMP.m.virt_notros}" title="Virt_notros" />
+                <h:outputLabel value="Virt_nroppp:" for="virt_nroppp" />
+                <p:inputText id="virt_nroppp" value="#{valeConsumoBeanMP.m.virt_nroppp}" title="Virt_nroppp" />
+                <h:outputLabel value="Virt_nroprp:" for="virt_nroprp" />
+                <p:inputText id="virt_nroprp" value="#{valeConsumoBeanMP.m.virt_nroprp}" title="Virt_nroprp" />
+                <h:outputLabel value="Virt_nrovcp:" for="virt_nrovcp" />
+                <p:inputText id="virt_nrovcp" value="#{valeConsumoBeanMP.m.virt_nrovcp}" title="Virt_nrovcp" />
+                <h:outputLabel value="Virt_nserie:" for="virt_nserie" />
+                <p:inputText id="virt_nserie" value="#{valeConsumoBeanMP.m.virt_nserie}" title="Virt_nserie" />
+                <h:outputLabel value="Virt_nubica:" for="virt_nubica" />
+                <p:inputText id="virt_nubica" value="#{valeConsumoBeanMP.m.virt_nubica}" title="Virt_nubica" />
+                <h:outputLabel value="Virt_stcodfor:" for="virt_stcodfor" />
+                <p:inputText id="virt_stcodfor" value="#{valeConsumoBeanMP.m.virt_stcodfor}" title="Virt_stcodfor" />
+                <h:outputLabel value="Virt_stmodfor:" for="virt_stmodfor" />
+                <p:inputText id="virt_stmodfor" value="#{valeConsumoBeanMP.m.virt_stmodfor}" title="Virt_stmodfor" />
+                <h:outputLabel value="Virt_stnrofor:" for="virt_stnrofor" />
+                <p:inputText id="virt_stnrofor" value="#{valeConsumoBeanMP.m.virt_stnrofor}" title="Virt_stnrofor" />
+
+                -->
+
+        </p:tab>
+
+    </p:tabView>
+
+</ui:composition>

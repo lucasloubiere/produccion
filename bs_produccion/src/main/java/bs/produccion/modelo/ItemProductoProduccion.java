@@ -18,6 +18,11 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("P")
 public class ItemProductoProduccion extends ItemMovimientoProduccion {
+   
     
-    
+    @Override
+    public String toString() {
+        return "ItemProductoProduccion{" + "id=" + getId() + '}';
+    }
+
 }

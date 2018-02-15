@@ -1,0 +1,54 @@
+<ui:composition
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui" >
+
+    <p:messages showDetail="true" />
+
+    <p:tabView rendered="#{not cierreProduccionAutBeanMCI.m.persistido}" >
+
+        <p:tab title="Datos Generales"  rendered="#{not empty cierreProduccionAutBeanMCI.m}">
+
+            <h:panelGrid columns="4" cellspacing="2" columnClasses="colLabel,colDato,colLabel,colDato" width="700" >
+
+               <h:outputLabel value="Circuito a generar" for="circuito1" />
+               <h:outputText id="circuito1" value="#{cierreProduccionAutBeanMCI.circuito.descrp}"  />
+
+               <h:outputText value="Comprobante" />
+               <h:outputText value="#{cierreProduccionAutBeanMCI.m.comprobante.idPK.codcom} -
+                                     #{cierreProduccionAutBeanMCI.m.comprobante.descrp}" />
+
+               <h:outputLabel value="Número" for="numero" />
+               <h:outputText id="numero" value="#{cierreProduccionAutBeanMCI.m.nrofor}" >
+                   <f:convertNumber pattern="0000000" />
+               </h:outputText>
+
+                <h:outputText value="#{msgs.pcc_fechaDocumento}: " />
+                <p:calendar value="#{cierreProduccionAutBeanMCI.m.fchmov}" pattern="dd/MM/yyyy" size="12" locale="es"
+                            navigator="true"
+                            required="true"
+                            requiredMessage="#{msgs.pcc_msgfechaRequeridaObligatoria}"
+                            mindate="#{cierreProduccionAutBeanMCI.fechaMinina}"   />
+
+                <h:outputLabel value="Deposito egreso:" for="depegr" />
+                <h:outputLabel id="depegr" value="#{cierreProduccionAutBeanMCI.m.depositoTransferencia.deposi} - #{cierreProduccionAutBeanMCI.m.depositoTransferencia.descrp}" />
+
+                <h:outputLabel value="Deposito ingreso:" for="deping" />
+                <h:outputLabel id="deping" value="#{cierreProduccionAutBeanMCI.m.deposito.deposi} - #{cierreProduccionAutBeanMCI.m.deposito.descrp}" />
+
+
+                <h:outputText value="" />
+                <h:outputText value="" />
+
+                <h:outputText value="#{msgs.pcc_observaciones}: " />
+                <p:inputTextarea value="#{cierreProduccionAutBeanMCI.m.textos}" rows="3" cols="50" />
+
+            </h:panelGrid>
+
+        </p:tab>
+
+    </p:tabView>
+
+</ui:composition>

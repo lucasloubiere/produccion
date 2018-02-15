@@ -1,0 +1,88 @@
+<ui:composition 
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui" >
+    
+    <h:panelGroup rendered="#{not anulacionParteProduccionBeanMP.m.persistido}" style="width: 100%;">
+
+        <p:tabView style="min-height: 200px;">
+
+            <p:tab title="Items">
+
+                <p:dataTable id="detalle" value="#{anulacionParteProduccionBeanMP.m.itemProducto}"
+                             var="p" scrollable="true" scrollHeight="200"
+                             emptyMessage="#{msgs.pcc_msgNoEncontraronProductos}">
+
+                    <p:column headerText="#{msgs.pcc_codigo}" width="120">
+                        <h:outputText value="#{p.producto.artcod}" rendered="#{not empty p.producto}"/>                        
+                    </p:column>
+
+                    <p:column headerText="#{msgs.pcc_descripcion}" width="380" >
+                        <h:outputText value="#{p.producto.descrp}"  rendered="#{not empty p.producto}"/>                        
+                    </p:column>
+
+                    <p:column headerText="#{msgs.pcc_cantidad}" width="60" style="text-align: center;">
+                        <p:inputText value="#{p.cantid}" size="8" id="cantidad" style="text-align: right;"  >
+                            <f:convertNumber pattern="0" />
+                            <p:ajax listener="#{anulacionParteProduccionBeanMP.actualizarCantidades(p)}"
+                                    update="cantidad"/>
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column headerText="#{msgs.pcc_UM}" width="25" style="text-align: center;" >
+                        <h:outputText value="#{p.producto.unidadMedida.unidad}" rendered="#{not empty p.producto}" />                        
+                    </p:column>
+
+                    <p:column headerText="Serie/Lote" width="70">
+                        <p:inputText value="#{p.nserie}" size="10" style="text-align: right;" >
+                            <p:ajax listener="#{anulacionParteProduccionBeanMP.actualizarAtributos(p)}"  />
+                        </p:inputText>
+                    </p:column>
+
+                    <p:column headerText="Aplicación" width="80">
+                        <h:outputText value="#{p.itemAplicacion.codapl}" />
+                        -
+                        <h:outputText value="#{p.itemAplicacion.nroapl}" >
+                            <f:convertNumber pattern="00000000" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Comp. Original" width="80">
+                        <h:outputText value="#{p.itemAplicacion.codori}" />
+                        -
+                        <h:outputText value="#{p.itemAplicacion.nroori}" >
+                            <f:convertNumber pattern="00000000" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Ver stock" width="60" style="text-align: center;">
+
+                        <p:commandButton icon="find16"
+                                         actionListener="#{sT_ConsultaStockByProductoDeposito.verStockByProductoDeposito(p.producto,anulacionParteProduccionBeanMP.m.sectorTransferencia)}"
+                                         update=":formulario:consultaStockByProductoDeposito"
+                                         oncomplete="dlg_stockByProductoDeposito.show()"  />
+
+                    </p:column>
+
+
+                    <p:column headerText="#{msgs.accion}" width="60" style="text-align: center;">
+                        <p:commandButton rendered="#{empty p.producto}"
+                                         actionListener="#{anulacionParteProduccionBeanMP.agregarItem(p)}" icon="add16"
+                                         update="@form"  />
+
+                        <p:commandButton immediate="true" rendered="#{not empty p.producto}"
+                                         actionListener="#{anulacionParteProduccionBeanMP.eliminarItemProducto(p)}" icon="delete16"
+                                         process="@this"
+                                         update="@form"  />
+                    </p:column>
+
+                </p:dataTable>
+            </p:tab>
+
+        </p:tabView>
+
+    </h:panelGroup>
+
+</ui:composition>

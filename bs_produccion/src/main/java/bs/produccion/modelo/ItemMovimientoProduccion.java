@@ -1,22 +1,29 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package bs.produccion.modelo;
+
 
 import bs.global.modelo.Auditoria;
 import bs.stock.modelo.ComposicionFormula;
+import bs.stock.modelo.Deposito;
 import bs.stock.modelo.Producto;
 import bs.stock.modelo.UnidadMedida;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,95 +31,157 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
- * @author lloubiere
+ * @author ctrosch
  */
 @Entity
 @Table(name = "pd_movimiento_item")
-@XmlRootElement
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipitm", discriminatorType = DiscriminatorType.STRING, length = 10)
-public abstract class ItemMovimientoProduccion implements Serializable {
-
+@DiscriminatorColumn(name = "tipitm", discriminatorType = DiscriminatorType.STRING, length = 1)
+public abstract class ItemMovimientoProduccion implements Serializable{
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cantid", nullable = false, precision = 10, scale = 2)
-    private BigDecimal cantid;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "precio", nullable = false, precision = 10, scale = 2)
-    private BigDecimal precio;
-    @Size(max = 50)
-    @Column(name = "natri1", length = 50)
-    private String atributo1;
-    @Size(max = 50)
-    @Column(name = "natri2", length = 50)
-    private String atributo2;
-    @Size(max = 50)
-    @Column(name = "natri3", length = 50)
-    private String atributo3;
-    @Size(max = 50)
-    @Column(name = "natri4", length = 50)
-    private String atributo4;
-    @Size(max = 50)
-    @Column(name = "natri5", length = 50)
-    private String atributo5;
-    @Size(max = 50)
-    @Column(name = "natri6", length = 50)
-    private String atributo6;
-    @Size(max = 50)
-    @Column(name = "natri7", length = 50)
-    private String atributo7;
+        
+    @Column(name = "nroitm")
+    private int nroitm;
     
-    @JoinColumn(name = "unimed", referencedColumnName = "codigo", nullable = false)
-    @ManyToOne(optional = false)
-    private UnidadMedida unidadMedida;
-    @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false)
-    @ManyToOne(optional = false)
-    private Producto producto;
-    @JoinColumns({
-        @JoinColumn(name = "artcod", referencedColumnName = "artcod", nullable = false, insertable = false, updatable = false),
-        @JoinColumn(name = "codfor", referencedColumnName = "codfor", nullable = false)})
-    @ManyToOne(optional = false)
-    private ComposicionFormula composicionFormula;
-    @JoinColumn(name = "codoper", referencedColumnName = "codigo", nullable = false)
-    @ManyToOne(optional = false)
-    private Operario operario;
-    @JoinColumn(name = "idcab", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @Column(name = "id_iapl")
+    private Integer idItemAplicacion;
+        
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_mcab", referencedColumnName = "id", nullable = false)        
     private MovimientoProduccion movimiento;
+       
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_mapl", referencedColumnName = "id", nullable = false)        
+    private MovimientoProduccion movimientoAplicacion;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_mori", referencedColumnName = "id", nullable = false)        
+    private MovimientoProduccion movimientoOriginal;
+       
+    @Column(name = "itmori")
+    private Integer idItemOriginal;
+    
+    @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false)    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Producto producto;
+
+    @JoinColumn(name = "artori", referencedColumnName = "codigo", nullable = false)    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Producto productoOriginal; 
+    
+    @JoinColumn(name = "artsus", referencedColumnName = "codigo", nullable = false)    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Producto productoSustituto; 
+
+    @JoinColumn(name = "deposi", referencedColumnName = "codigo", nullable = true, insertable=false, updatable=false)
+    @ManyToOne(optional=false)
+    private Deposito deposito;
+    
+    @JoinColumn(name = "operar", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne
+    private Operario operario;
+
+    @Column(name = "cantid", precision=10, scale = 2)
+    private BigDecimal cantidad;
+    
+    @Column(name = "cantst", precision=10, scale = 2)
+    private BigDecimal cantidadStock;
+    
+    @Column(name = "cntori", precision=2)
+    private BigDecimal cantidadOriginal;
+    
+    @Column(name = "cntpen", precision=2)
+    private BigDecimal cntpen;
+    
+    @ManyToOne
+    @JoinColumn(name = "unimed", referencedColumnName = "codigo", nullable = false)
+    private UnidadMedida unidadMedida;
+        
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+        @JoinColumn(name = "artcod", referencedColumnName = "artcod", nullable = false, insertable=false, updatable=false),
+        @JoinColumn(name = "codfor", referencedColumnName = "codigo", nullable = false, insertable=true, updatable=true)
+    })    
+    private ComposicionFormula composicionFormula;
+    
+    @Column(name = "precio", precision = 4, scale = 6)
+    private BigDecimal precio;
+    
+    @Column(name = "fchent")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaEntrega;
+    
+    @Column(name = "fchhas")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaHasta;
+   
+    @Lob
+    @Column(name = "observ", length = 2147483647)
+    private String observaciones;
+    
+    @Column(name = "stocks", length = 1)
+    private String actualizaStock;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemProducto", fetch=FetchType.LAZY)
+    private List<ItemDetalleItemMovimientoProduccion> itemDetalle;
 
     @Embedded
     private Auditoria auditoria;
     
-    public ItemMovimientoProduccion() {
-    this.auditoria = new Auditoria();
-    }
+    @Transient
+    private BigDecimal pendiente;
+    
+    @Transient
+    private BigDecimal produccion;
+   
+    @Transient
+    private boolean conError;
+    
+    @Transient
+    private boolean todoOk;
 
-    public ItemMovimientoProduccion(Integer id) {
-        this.id = id;
-        this.auditoria = new Auditoria();
-    }
+    @Transient
+    private String atributo1;
+    @Transient
+    private String atributo2;
+    @Transient
+    private String atributo3;
+    @Transient
+    private String atributo4;
+    @Transient
+    private String atributo5;
+    @Transient
+    private String atributo6;
+    @Transient
+    private String atributo7;
 
-    public ItemMovimientoProduccion(Integer id, String tipitm, BigDecimal cantid, BigDecimal precio, String debaja) {
-        this.id = id;        
-        this.cantid = cantid;
-        this.precio = precio;
-        this.auditoria = new Auditoria();
+
+    public ItemMovimientoProduccion(){
+
+        cantidad = BigDecimal.ZERO;
+        cantidadStock = BigDecimal.ZERO;
+        cantidadOriginal = BigDecimal.ZERO;       
+        pendiente = BigDecimal.ZERO;
+        produccion = BigDecimal.ZERO;
+        precio = BigDecimal.ZERO;          
+        auditoria = new Auditoria(); 
+        this.itemDetalle = new ArrayList<ItemDetalleItemMovimientoProduccion>();
     }
 
     public Integer getId() {
@@ -123,12 +192,140 @@ public abstract class ItemMovimientoProduccion implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getCantid() {
-        return cantid;
+    public int getNroitm() {
+        return nroitm;
     }
 
-    public void setCantid(BigDecimal cantid) {
-        this.cantid = cantid;
+    public void setNroitm(int nroitm) {
+        this.nroitm = nroitm;
+    }
+
+    public Integer getIdItemAplicacion() {
+        return idItemAplicacion;
+    }
+
+    public void setIdItemAplicacion(Integer idItemAplicacion) {
+        this.idItemAplicacion = idItemAplicacion;
+    }
+
+    public MovimientoProduccion getMovimiento() {
+        return movimiento;
+    }
+
+    public void setMovimiento(MovimientoProduccion movimiento) {
+        this.movimiento = movimiento;
+    }
+
+    public MovimientoProduccion getMovimientoAplicacion() {
+        return movimientoAplicacion;
+    }
+
+    public void setMovimientoAplicacion(MovimientoProduccion movimientoAplicacion) {
+        this.movimientoAplicacion = movimientoAplicacion;
+    }
+
+    public MovimientoProduccion getMovimientoOriginal() {
+        return movimientoOriginal;
+    }
+
+    public void setMovimientoOriginal(MovimientoProduccion movimientoOriginal) {
+        this.movimientoOriginal = movimientoOriginal;
+    }
+
+    public Integer getIdItemOriginal() {
+        return idItemOriginal;
+    }
+
+    public void setIdItemOriginal(Integer idItemOriginal) {
+        this.idItemOriginal = idItemOriginal;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public Producto getProductoOriginal() {
+        return productoOriginal;
+    }
+
+    public void setProductoOriginal(Producto productoOriginal) {
+        this.productoOriginal = productoOriginal;
+    }
+
+    public Producto getProductoSustituto() {
+        return productoSustituto;
+    }
+
+    public void setProductoSustituto(Producto productoSustituto) {
+        this.productoSustituto = productoSustituto;
+    }
+
+    public Deposito getDeposito() {
+        return deposito;
+    }
+
+    public void setDeposito(Deposito deposito) {
+        this.deposito = deposito;
+    }
+
+    public Operario getOperario() {
+        return operario;
+    }
+
+    public void setOperario(Operario operario) {
+        this.operario = operario;
+    }
+
+    public BigDecimal getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(BigDecimal cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public BigDecimal getCantidadStock() {
+        return cantidadStock;
+    }
+
+    public void setCantidadStock(BigDecimal cantidadStock) {
+        this.cantidadStock = cantidadStock;
+    }
+
+    public BigDecimal getCantidadOriginal() {
+        return cantidadOriginal;
+    }
+
+    public void setCantidadOriginal(BigDecimal cantidadOriginal) {
+        this.cantidadOriginal = cantidadOriginal;
+    }
+
+    public BigDecimal getCntpen() {
+        return cntpen;
+    }
+
+    public void setCntpen(BigDecimal cntpen) {
+        this.cntpen = cntpen;
+    }
+
+    public UnidadMedida getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(UnidadMedida unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public ComposicionFormula getComposicionFormula() {
+        return composicionFormula;
+    }
+
+    public void setComposicionFormula(ComposicionFormula composicionFormula) {
+        this.composicionFormula = composicionFormula;
     }
 
     public BigDecimal getPrecio() {
@@ -139,13 +336,52 @@ public abstract class ItemMovimientoProduccion implements Serializable {
         this.precio = precio;
     }
 
-   
+    public Date getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(Date fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
+
+    public Date getFechaHasta() {
+        return fechaHasta;
+    }
+
+    public void setFechaHasta(Date fechaHasta) {
+        this.fechaHasta = fechaHasta;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public String getActualizaStock() {
+        return actualizaStock;
+    }
+
+    public void setActualizaStock(String actualizaStock) {
+        this.actualizaStock = actualizaStock;
+    }
+
     public Auditoria getAuditoria() {
         return auditoria;
     }
 
     public void setAuditoria(Auditoria auditoria) {
         this.auditoria = auditoria;
+    }
+
+    public boolean isConError() {
+        return conError;
+    }
+
+    public void setConError(boolean conError) {
+        this.conError = conError;
     }
 
     public String getAtributo1() {
@@ -204,61 +440,58 @@ public abstract class ItemMovimientoProduccion implements Serializable {
         this.atributo7 = atributo7;
     }
 
-    public UnidadMedida getUnidadMedida() {
-        return unidadMedida;
+    public boolean isTodoOk() {
+        return todoOk;
     }
 
-    public void setUnidadMedida(UnidadMedida unidadMedida) {
-        this.unidadMedida = unidadMedida;
+    public void setTodoOk(boolean todoOk) {
+        this.todoOk = todoOk;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public BigDecimal getPendiente() {
+        return pendiente;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setPendiente(BigDecimal pendiente) {
+        this.pendiente = pendiente;
     }
 
-    public Operario getOperario() {
-        return operario;
+    public BigDecimal getProduccion() {
+        return produccion;
     }
 
-    public void setOperario(Operario operario) {
-        this.operario = operario;
-    }    
-
-    public MovimientoProduccion getMovimiento() {
-        return movimiento;
+    public void setProduccion(BigDecimal produccion) {
+        this.produccion = produccion;
+    }
+    
+    public List<ItemDetalleItemMovimientoProduccion> getItemDetalle() {
+        return itemDetalle;
     }
 
-    public void setMovimiento(MovimientoProduccion movimiento) {
-        this.movimiento = movimiento;
+    public void setItemDetalle(List<ItemDetalleItemMovimientoProduccion> itemDetalle) {
+        this.itemDetalle = itemDetalle;
     }
- 
-    public ComposicionFormula getComposicionFormula() {
-        return composicionFormula;
-    }
-
-    public void setComposicionFormula(ComposicionFormula composicionFormula) {
-        this.composicionFormula = composicionFormula;
-    }
-
+    
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 5;
+        hash = 79 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ItemMovimientoProduccion)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        ItemMovimientoProduccion other = (ItemMovimientoProduccion) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ItemMovimientoProduccion other = (ItemMovimientoProduccion) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -266,7 +499,7 @@ public abstract class ItemMovimientoProduccion implements Serializable {
 
     @Override
     public String toString() {
-        return "bs.produccion.modelo.ItemMovimientoProduccion[ id=" + id + " ]";
+        return "ItemMovimientoProduccion{" + "id=" + id + '}';
     }
     
 }

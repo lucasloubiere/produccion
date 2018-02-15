@@ -6,31 +6,30 @@
 package bs.produccion.dao;
 
 import bs.global.dao.BaseDAO;
-import bs.produccion.modelo.OperarioPuesto;
+import bs.produccion.modelo.Planta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
-
-
 /**
  *
  * @author Claudio
  */
 @Stateless
-public class OperarioPuestoDAO extends BaseDAO {
+public class PlantaDAO extends BaseDAO {
 
-    public OperarioPuesto getOperarioPuesto(String cod) {
-        return getObjeto(OperarioPuesto.class, cod);
+    
+    public Planta getPlanta(String codigo) {
+        return getObjeto(Planta.class, codigo);
     }
-    
-    
-    public List<OperarioPuesto> getListaByBusqueda(String txtBusqueda, boolean mostrarDebaja, int cantMax) {
+ 
+
+    public List<Planta> getListaByBusqueda(String txtBusqueda, boolean mostrarDebaja, int cantMax) {
             
         try {
-            String sQuery = "SELECT e FROM OperarioPuesto e "
+            String sQuery = "SELECT e FROM Planta e "
                     + "WHERE 1=1 "
                     + " AND ((e.codigo LIKE :codigo) "
                     + "  OR  (e.descripcion LIKE :descripcion) "                                      
@@ -49,10 +48,9 @@ public class OperarioPuestoDAO extends BaseDAO {
             
             return q.getResultList();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.log(Level.SEVERE, "getOperarioPuestoByBusqueda", e.getMessage());
-            return new ArrayList<OperarioPuesto>();
+        } catch (Exception e) {            
+            log.log(Level.SEVERE, "getListaByBusqueda", e.getMessage());
+            return new ArrayList<Planta>();
         }        
     
     }

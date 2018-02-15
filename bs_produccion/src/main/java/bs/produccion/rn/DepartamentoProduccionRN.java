@@ -13,45 +13,51 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-
 /**
  *
- * @author lloubiere
- *
+ * @author Claudio
  */
 @Stateless
-
 public class DepartamentoProduccionRN {
 
     @EJB
-    private DepartamentoProduccionDAO departamentoProduccionDAO;
+    private DepartamentoProduccionDAO departamentoDAO;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void guardar(DepartamentoProduccion departamentoProduccion, boolean esNuevo) throws Exception {
+    public void guardar(DepartamentoProduccion d, boolean esNuevo) throws Exception {
 
         if (esNuevo) {
 
-            if (departamentoProduccionDAO.getObjeto(DepartamentoProduccion.class, departamentoProduccion.getCodigo()) != null) {
-                throw new ExcepcionGeneralSistema("Ya existe un operario con ese código " + departamentoProduccion.getCodigo());
+            if (departamentoDAO.getObjeto(DepartamentoProduccion.class, d.getCodigo()) != null) {
+                throw new ExcepcionGeneralSistema("Ya existe una entidad con el código" + d.getCodigo());
             }
-            departamentoProduccionDAO.crear(departamentoProduccion);
+            departamentoDAO.crear(d);
+
         } else {
-            departamentoProduccionDAO.editar(departamentoProduccion);
+            departamentoDAO.editar(d);
         }
     }
 
-    public void eliminar(DepartamentoProduccion departamentoProduccion) throws Exception {
+    public void eliminar(DepartamentoProduccion deposito) throws Exception {
 
-        departamentoProduccionDAO.eliminar(departamentoProduccion);
-
+        departamentoDAO.eliminar(deposito);
     }
 
-    public DepartamentoProduccion getDepartamentoProduccion(String cod) {
-        return departamentoProduccionDAO.getDepartamentoProduccion(cod);
+    public List<DepartamentoProduccion> getLista(boolean mostrarDebaja) {
+
+        return departamentoDAO.getListaByBusqueda("", mostrarDebaja, 0);
     }
 
-    public List<DepartamentoProduccion> getListaByBusqueda(String txtBusqueda, boolean mostrarDebaja, int cantidadRegistros) {
+    public DepartamentoProduccion getDepartamentoProduccion(String codigo) {
+        return departamentoDAO.getDepartamentoProduccion(codigo);
+    }
 
-        return departamentoProduccionDAO.getListaByBusqueda(txtBusqueda, mostrarDebaja, cantidadRegistros);
+    public List<DepartamentoProduccion> getLista() {
+        return departamentoDAO.getListaByBusqueda("", false, 0);
+    }
+
+    public List<DepartamentoProduccion> getListaByBusqueda(String txtBusqueda, boolean mostrarDeBaja, int cantMax) {
+
+        return departamentoDAO.getListaByBusqueda(txtBusqueda, mostrarDeBaja, cantMax);
     }
 }

@@ -1,0 +1,254 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" >
+
+    <!-- DETALLE -->
+    <p:tabView id="tb" rendered="#{not empty movimientoProduccionBean.m and not movimientoProduccionBean.buscaMovimiento}">
+
+        <p:tab title="Items" >  
+
+            <p:dataTable id="detalle" value="#{movimientoProduccionBean.m.itemsProducto}"
+                         var="i" resizeMode="expand" liveResize="true"
+                         emptyMessage="No se encontraron datos" >
+
+                <p:column headerText="Código" width="70" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','ARTCOD')}"  >  
+
+                    <h:outputText value="#{i.producto.codigo}" rendered="#{not empty i.producto}" />
+                </p:column>
+
+                <p:column headerText="Producto" width="300" >                            
+                    <p:commandButton icon="fa fa-search" process="@this"                                                                                          
+                                     oncomplete="PF('dlg_producto').show()"                                              
+                                     rendered="#{not i.todoOk}" />                            
+
+                    <h:outputText value="#{i.producto.descripcion}"                                   
+                                  rendered="#{not empty i.producto}"/>
+                </p:column>
+
+                <p:column headerText="Observaciones/Detalle" width="200" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','OBSERVA')}" >    
+                    <p:inputTextarea value="#{i.observaciones}" rows="2"
+                                     rendered="#{i.todoOk or not empty i.producto}" /> 
+                </p:column>
+
+                <p:column headerText="Cantidad" width="70" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
+
+                    <!-- Item sin agregar -->
+                    <p:inputText value="#{i.cantidad}" 
+                                 rendered="#{not empty i.producto and not i.todoOk }" style="text-align: right;" 
+                                 >
+                        <f:convertNumber pattern="###,###,##0.00"  />
+                        <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades(i)}" event="keyup"  />                                
+                    </p:inputText>
+
+                    <!-- Item agregado -->
+                    <p:inputText  value="#{i.cantidad}" 
+                                  rendered="#{not empty i.producto and i.todoOk }" style="text-align: right;" >
+                        <f:convertNumber pattern="###,###,##0.00"  />
+                        <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades(i)}" event="keyup" />
+                    </p:inputText>                            
+                </p:column>
+
+                <p:column headerText="U.M." width="50" style="text-align: center;" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','UNIMED')}">                            
+                    <h:outputText  value="#{i.unidadMedida.codigo}" rendered="#{not empty i.producto}" />
+                </p:column>
+
+                <p:column headerText="Composición" width="60" styleClass="TexAlCenter" >
+                    <p:rowToggler />
+                </p:column>
+
+                <p:rowExpansion>
+
+                    <div class="Wid90 Fleft MarAuto WidAutoOnMobile">
+
+                        <p:dataTable value="#{i.composicionFormula.itemsComponente}"  var="c" reflow="true"
+                                     emptyMessage="No se encontraron datos">
+
+                            <p:column headerText="Código" width="70">
+                                <h:outputText value="#{c.productoComponente.codigo}"/>
+                            </p:column>
+
+                            <p:column headerText="Descripción" >
+                                <h:outputText value="#{c.productoComponente.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Cantidad" width="70" >
+                                <h:outputText value="#{c.cantidadNominal}" styleClass="Fright"  >                                    
+                                    <f:convertNumber pattern="###,###,##0.00"  />                                    
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="U.M." width="50" style="text-align: center;">
+                                <h:outputText value="#{c.unidadMedidaItem.codigo}"/>                                
+                            </p:column>
+                        </p:dataTable>                        
+
+                    </div>
+
+                </p:rowExpansion>
+
+                <p:column headerText="" width="50" style="text-align: center;" >
+
+                    <p:commandButton icon="fa fa-plus" process="detalle" update="@form"
+                                     actionListener="#{movimientoProduccionBean.agregarItem(i)}" 
+                                     rendered="#{not i.todoOk and empty i.id}" />
+
+                    <p:commandButton icon="fa fa-close" process="detalle" update="@form"
+                                     actionListener="#{movimientoProduccionBean.eliminarItemProducto(i)}" 
+                                     rendered="#{i.todoOk}" >
+                        <p:confirm header="Confirmación" message="Está seguro que desea borrar #{i.producto.descripcion}?" icon="ui-icon-alert" />
+                    </p:commandButton>
+
+                </p:column>
+
+            </p:dataTable>
+
+        </p:tab>
+        
+        <p:tab title="Procesos" >  
+
+            <p:dataTable id="detProcesos" value="#{movimientoProduccionBean.m.itemsProceso}"
+                         var="i" resizeMode="expand" liveResize="true"
+                         emptyMessage="No se encontraron datos" >
+
+                <p:column headerText="Código" width="70" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','ARTCOD')}"  >  
+
+                    <h:outputText value="#{i.producto.codigo}" rendered="#{not empty i.producto}" />
+                </p:column>
+
+                <p:column headerText="Producto" width="300" >                            
+                    <p:commandButton icon="fa fa-search" process="@this"                                                                                          
+                                     oncomplete="PF('dlg_producto').show()"                                              
+                                     rendered="#{not i.todoOk}" />                            
+
+                    <h:outputText value="#{i.producto.descripcion}"                                   
+                                  rendered="#{not empty i.producto}"/>
+                </p:column>
+
+                <p:column headerText="Observaciones/Detalle" width="200" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','OBSERVA')}" >    
+                    <p:inputTextarea value="#{i.observaciones}" rows="2"
+                                     rendered="#{i.todoOk or not empty i.producto}" /> 
+                </p:column>
+
+                <p:column headerText="Cantidad" width="70" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
+
+                    <!-- Item sin agregar -->
+                    <p:inputText value="#{i.cantidad}" 
+                                 rendered="#{not empty i.producto and not i.todoOk }" style="text-align: right;" 
+                                 >
+                        <f:convertNumber pattern="###,###,##0.00"  />
+                        <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades(i)}" event="keyup"  />                                
+                    </p:inputText>
+
+                    <!-- Item agregado -->
+                    <p:inputText  value="#{i.cantidad}" 
+                                  rendered="#{not empty i.producto and i.todoOk }" style="text-align: right;" >
+                        <f:convertNumber pattern="###,###,##0.00"  />
+                        <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades(i)}" event="keyup" />
+                    </p:inputText>                            
+                </p:column>
+
+                <p:column headerText="U.M." width="50" style="text-align: center;" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','UNIMED')}">                            
+                    <h:outputText  value="#{i.unidadMedida.codigo}" rendered="#{not empty i.producto}" />
+                </p:column>
+               
+                <p:column headerText="" width="50" style="text-align: center;" >
+
+                    <p:commandButton icon="fa fa-plus" process="detalle" update="@form"
+                                     actionListener="#{movimientoProduccionBean.agregarItem(i)}" 
+                                     rendered="#{not i.todoOk and empty i.id}" />
+
+                    <p:commandButton icon="fa fa-close" process="detalle" update="@form"
+                                     actionListener="#{movimientoProduccionBean.eliminarItemProducto(i)}" 
+                                     rendered="#{i.todoOk}" >
+                        <p:confirm header="Confirmación" message="Está seguro que desea borrar #{i.producto.descripcion}?" icon="ui-icon-alert" />
+                    </p:commandButton>
+
+                </p:column>
+
+            </p:dataTable>
+
+        </p:tab>
+
+        <p:tab title="Componentes" rendered="#{not empty movimientoProduccionBean.m.itemsComponente}">
+
+            <p:dataTable id="detalleMateriales" value="#{movimientoProduccionBean.m.itemsComponente}"
+                         var="i" resizeMode="expand" liveResize="true"
+                         emptyMessage="No se encontraron datos" >
+
+                <p:column headerText="Código" width="70" >
+                    <h:outputText value="#{i.producto.codigo}" />
+                </p:column>
+                <p:column headerText="Descripción" >
+                    <h:outputText value="#{i.producto.descripcion}" />
+                </p:column>
+
+                <p:column headerText="Cantidad" width="70" >
+                    <h:outputText value="#{i.cantidad}" styleClass="Fright" >
+                        <f:convertNumber pattern="###,###,##0.00"  />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="U.M." width="50" style="text-align: center;">
+                    <h:outputText value="#{i.unidadMedida.codigo}" />
+                </p:column>
+
+            </p:dataTable>
+
+        </p:tab>
+
+        <p:tab title="Aplicaciones" rendered="#{not empty movimientoProduccionBean.m.itemsAplicacion}" >  
+
+            <p:dataTable id="detalleApl" value="#{movimientoProduccionBean.m.itemsAplicacion}"
+                         var="i" resizeMode="expand" liveResize="true"
+                         emptyMessage="No se encontraron datos" >
+
+                <p:column headerText="Código" width="70" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','ARTCOD')}"  >  
+
+                    <h:outputText value="#{i.producto.codigo}" rendered="#{not empty i.producto}" />
+                </p:column>
+
+                <p:column headerText="Producto" width="300" >                            
+                    <p:commandButton icon="fa fa-search" process="@this"                                                                                          
+                                     oncomplete="PF('dlg_producto').show()"                                              
+                                     rendered="#{not i.todoOk}" />                            
+
+                    <h:outputText value="#{i.producto.descripcion}"                                   
+                                  rendered="#{not empty i.producto}"/>
+                </p:column>
+
+                <p:column headerText="Cantidad" width="70" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" > 
+                    <h:outputText value="#{i.cantidad}"  styleClass="Fright"  >
+                        <f:convertNumber pattern="###,###,##0.00"  />
+                    </h:outputText>                           
+                </p:column>
+
+                <p:column headerText="U.M." width="50" style="text-align: center;" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','UNIMED')}">                            
+                    <h:outputText  value="#{i.unidadMedida.codigo}" rendered="#{not empty i.producto}" />
+                </p:column>
+
+                <p:column headerText="Aplicación" width="70">                    
+                    <h:outputText value="#{i.movimientoOriginal.formulario.codigo} - #{i.movimientoOriginal.numeroFormulario}"
+                                  rendered="#{i.todoOk}"/>                    
+                </p:column>
+
+
+            </p:dataTable>
+
+        </p:tab>
+
+    </p:tabView>   
+
+
+</ui:composition>
+

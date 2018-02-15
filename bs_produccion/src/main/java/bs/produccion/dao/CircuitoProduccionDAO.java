@@ -47,8 +47,6 @@ public class CircuitoProduccionDAO extends BaseDAO {
        
     }
 
-  
-
     public ComprobanteStock getComprobanteStock(String circom, String cirapl, String modcom, String codcom) {
         try{
 
