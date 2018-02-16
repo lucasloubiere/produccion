@@ -217,7 +217,6 @@ public class ComposicionFormulaBean extends GenericBean implements Serializable 
         itemProceso.setCodigo(composicionFormula.getCodfor());
         itemProceso.setComposicionFormula(composicionFormula);
         composicionFormula.getItemsProceso().add(itemProceso);
-
     }
 
     public void eliminarItemComponente(ItemComposicionFormulaComponente ci) {

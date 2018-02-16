@@ -23,8 +23,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,27 +38,27 @@ public class ComposicionFormula implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "artcod", nullable = false, length = 20)
+    @Column(name = "ARTCOD", nullable = false, length = 30)
     private String artcod;
+    
     @Id
-    @NotNull
-    @Size(min = 1, max = 6)
-    @Column(name = "codfor", nullable = false, length = 6)
+    @Column(name = "codigo", nullable = false, length = 8)
     private String codfor;
+        
+    @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Producto producto;
+
+    /**
+     *  Formula
+     */
+    @JoinColumn(name = "codigo", referencedColumnName = "codigo", nullable = false, insertable=false, updatable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Formula formula;
     
     @Column(name = "fechainicio")
     @Temporal(TemporalType.DATE)
     private Date fechainicio;
-    
-    @JoinColumn(name = "codfor", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Formula formula;
-    
-    @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Producto producto;
     
         
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "composicionFormula", fetch=FetchType.LAZY)    
