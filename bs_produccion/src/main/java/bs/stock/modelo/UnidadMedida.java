@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author ide
  */
 @Entity
-@Table(name = "st_unidaddemedida")
+@Table(name = "st_unidad_medida")
 @XmlRootElement
 
 public class UnidadMedida implements Serializable {

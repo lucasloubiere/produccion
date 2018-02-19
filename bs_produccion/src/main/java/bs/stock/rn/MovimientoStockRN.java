@@ -7,8 +7,10 @@ package bs.stock.rn;
 import bs.administracion.rn.ModuloRN;
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.modelo.Formulario;
+import bs.global.modelo.Moneda;
 import bs.global.modelo.Sucursal;
 import bs.global.rn.FormularioRN;
+import bs.global.rn.MonedaRN;
 import bs.global.rn.SucursalRN;
 import bs.produccion.modelo.ItemDetalleItemMovimientoProduccion;
 import bs.produccion.modelo.ItemProductoProduccion;
@@ -54,6 +56,8 @@ public class MovimientoStockRN {
     private SucursalRN sucursalRN;
     @EJB
     private ModuloRN moduloRN;
+    @EJB
+    private MonedaRN monedaRN;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public synchronized void guardar(MovimientoStock movimiento) throws Exception {
@@ -158,8 +162,8 @@ public class MovimientoStockRN {
         }
 
         MovimientoStock m = new MovimientoStock();
-//        Moneda moneda = monedaRN.getMoneda("USD");
-//        BigDecimal cotizacion  = monedaRN.getCotizacionDia("USD");
+        Moneda moneda = monedaRN.getMoneda("USD");
+        BigDecimal cotizacion  = monedaRN.getCotizacionDia("USD");
 
         m.setPersistido(false);
         m.setFormulario(formulario);
@@ -168,9 +172,9 @@ public class MovimientoStockRN {
         m.setFechaMovimiento(new Date());
         m.setSucursal(sucursal);
         m.setTipoMovimiento(comprobante.getTipoMovimiento());
-//        m.setMonedaSecundaria(moneda);
-//        m.setMonedaRegistracion(monedaRN.getMoneda("ARS"));
-//        m.setCotizacion(cotizacion);
+        m.setMonedaSecundaria(moneda);
+        m.setMonedaRegistracion(monedaRN.getMoneda("ARS"));
+        m.setCotizacion(cotizacion);
 
         if (comprobante.getDeposito() != null) {
             m.setDeposito(comprobante.getDeposito());
