@@ -66,14 +66,14 @@ public class MovimientoStockRN {
         generarItemTransferencia(movimiento);
         asignarDepositoItems(movimiento);
         asignarCantidadStock(movimiento);
-        
+
         //Validamos que se pueda guardar el comprobante
         controlComprobante(movimiento, false);
 
         if (movimiento.getId() == null) {
 
             generarStock(movimiento);
-            
+
             if (!movimiento.isNoSincronizaNumeroFormulario() && movimiento.getNumeroFormulario() > 0) {
 
                 Integer ultimoNumero = formularioRN.tomarProximoNumero(movimiento.getFormulario());
@@ -82,9 +82,9 @@ public class MovimientoStockRN {
             }
             inventarioDAO.crear(movimiento);
         } else {
-            inventarioDAO.editar(movimiento);            
+            inventarioDAO.editar(movimiento);
             recalcularStock();
-            
+
         }
 
         movimiento.setPersistido(true);
@@ -163,7 +163,7 @@ public class MovimientoStockRN {
 
         MovimientoStock m = new MovimientoStock();
         Moneda moneda = monedaRN.getMoneda("USD");
-        BigDecimal cotizacion  = monedaRN.getCotizacionDia("USD");
+        BigDecimal cotizacion = monedaRN.getCotizacionDia("USD");
 
         m.setPersistido(false);
         m.setFormulario(formulario);
@@ -243,7 +243,6 @@ public class MovimientoStockRN {
 //        if (m.getId() != null) {
 //            throw new ExcepcionGeneralSistema("No es posible modificar un comprobante de stock");
 //        }
-
 //        Modulo modulo  = null;
 //        
 //        if (!m.getFechaMovimiento().after(modulo.getfechahabilitacionDesde) & !m.getFechaMovimiento().before(modulo.getfechahabilitacionHasta)){
@@ -401,10 +400,10 @@ public class MovimientoStockRN {
                 throw new ExcepcionGeneralSistema("El producto " + nItem.getProducto().getDescripcion() + " no gestiona stock");
             }
 
-            if (m.getTipoMovimiento().equals("E") 
-                    && !m.isNoValidaStockDisponible() 
+            if (m.getTipoMovimiento().equals("E")
+                    && !m.isNoValidaStockDisponible()
                     && m.getDeposito().getSigno().equals("+")) {
-                
+
                 nItem.setStocks(nItem.getCantidad().negate());
                 Stock s = new Stock(nItem);
 
@@ -424,10 +423,10 @@ public class MovimientoStockRN {
                 }
             }
 
-            if (m.getTipoMovimiento().equals("T") 
-                && m.getDepositoTransferencia() != null
-                && !m.isNoValidaStockDisponible() 
-                &&  m.getDepositoTransferencia().getSigno().equals("+")) {
+            if (m.getTipoMovimiento().equals("T")
+                    && m.getDepositoTransferencia() != null
+                    && !m.isNoValidaStockDisponible()
+                    && m.getDepositoTransferencia().getSigno().equals("+")) {
 
                 nItem.setStocks(nItem.getCantidad().negate());
                 Stock s = new Stock(nItem);
@@ -512,8 +511,8 @@ public class MovimientoStockRN {
                 throw new ExcepcionGeneralSistema("Ingrese el atributo 7 para el producto " + i.getProducto().getDescripcion());
             }
 
-            if (m.getTipoMovimiento().equals("E") 
-                    && !m.isNoValidaStockDisponible() 
+            if (m.getTipoMovimiento().equals("E")
+                    && !m.isNoValidaStockDisponible()
                     && m.getDeposito().getSigno().equals("+")) {
 
                 Stock s = new Stock(i);
@@ -537,9 +536,9 @@ public class MovimientoStockRN {
             }
         }
 
-        if (m.getItemTransferencia() != null 
+        if (m.getItemTransferencia() != null
                 && m.getDepositoTransferencia() != null
-                && !m.isNoValidaStockDisponible() 
+                && !m.isNoValidaStockDisponible()
                 && m.getDepositoTransferencia().getSigno().equals("+")) {
 
             for (ItemTransferenciaStock i : m.getItemTransferencia()) {
@@ -765,6 +764,17 @@ public class MovimientoStockRN {
         return inventarioDAO.getListaByBusqueda(filtro, cantidadRegistros);
     }
 
+    public MovimientoStock getMovimiento(String codfor, String sucurs, Integer nrofor) {
+
+        Map<String, String> filtro = inventarioDAO.getFiltro();
+
+        filtro.put(" numeroFormulario = ", "'" + nrofor + "'");
+        filtro.put(" formulario.codigo = ", "'" + codfor + "'");
+        filtro.put(" sucursal.codigo = ", "'" + sucurs + "'");
+
+        return inventarioDAO.getObjeto(MovimientoStock.class, filtro);
+    }
+
     public boolean existeComprobante(MovimientoStock ms) {
 
         Map<String, String> filtro = inventarioDAO.getFiltro();
@@ -793,16 +803,16 @@ public class MovimientoStockRN {
     }
 
     public void recalcularStock() {
-        
+
         inventarioDAO.recalcularStock();
-        
+
     }
 
     public void eliminarMovimiento(Integer id) {
-        
+
         inventarioDAO.eliminar(MovimientoStock.class, id);
         recalcularStock();
-        
+
     }
 
     public MovimientoStock generarComprobante(MovimientoProduccion movimientoProduccion) throws ExcepcionGeneralSistema, Exception {
@@ -936,6 +946,44 @@ public class MovimientoStockRN {
 //            generarDatosAdicionales(ms);
 //            puedoGuardarMovimiento(ms);
 //        }
+    }
+
+    /**
+     * Comparamos los cambios e igualamanos los comprobantes de stock de modo
+     * tal que si se recibe un comprobante que ha sido modificado, la
+     * modificación se replicará
+     *
+     * @param movExistente Movimiento stock persistido
+     * @param ms Movimientos de stock nuevo
+     */
+    public void igualarComprobantes(MovimientoStock movExistente, MovimientoStock ms) {
+
+        if (movExistente.getDeposito() != null && !movExistente.getDeposito().equals(ms.getDeposito())) {
+            movExistente.setDeposito(ms.getDeposito());
+        }
+
+        if (movExistente.getDepositoTransferencia() != null && !movExistente.getDepositoTransferencia().equals(ms.getDepositoTransferencia())) {
+            movExistente.setDepositoTransferencia(ms.getDepositoTransferencia());
+        }
+
+        for (ItemProductoStock ipnuevo : movExistente.getItemsProducto()) {
+
+            for (ItemProductoStock ipexistente : movExistente.getItemsProducto()) {
+
+                ipexistente.setProducto(ipnuevo.getProducto());
+                ipexistente.setDeposito(ipnuevo.getDeposito());
+                ipexistente.setCantidad(ipnuevo.getCantidad());
+                ipexistente.setUnidadMedida(ipnuevo.getUnidadMedida());
+                
+                ipexistente.setAtributo1(ipnuevo.getAtributo1());
+                ipexistente.setAtributo2(ipnuevo.getAtributo2());
+                ipexistente.setAtributo3(ipnuevo.getAtributo3());
+                ipexistente.setAtributo4(ipnuevo.getAtributo4());
+                ipexistente.setAtributo5(ipnuevo.getAtributo5());                
+
+            }
+        }
+
     }
 
 }

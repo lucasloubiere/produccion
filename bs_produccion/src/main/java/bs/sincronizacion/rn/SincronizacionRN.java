@@ -82,7 +82,7 @@ public class SincronizacionRN implements Serializable {
         return sincronizacionDAO.getListaByBusqueda(txtBusqueda, mostrarDebaja, cantidadRegistros);
     }
 
-    public String sincronizarMovimientosBalanza(Date fecha, String empresa){
+    public String sincronizarMovimientosBalanza(Date fecha, String empresa) {
 
         LogSincronizacion logSincronizacion = new LogSincronizacion();
         String log = null;
@@ -169,7 +169,7 @@ public class SincronizacionRN implements Serializable {
 
                         ms.setFechaMovimiento(JeeUtil.getFechaYHora(fecha, mb.getHoraSalida()));
                         ms.setNumeroFormulario(Integer.valueOf(mb.getNroComprobante()));
-                        ms.setNoSincronizaNumeroFormulario(true);                        
+                        ms.setNoSincronizaNumeroFormulario(true);
                         ms.setNoValidaStockDisponible(true);
                         ms.setDeposito(deposito);
 
@@ -204,11 +204,16 @@ public class SincronizacionRN implements Serializable {
 
                         try {
 
-                            if (!movimientoStockRN.existeComprobante(ms)) {
+                            MovimientoStock movExistente = movimientoStockRN.getMovimiento(ms.getFormulario().getCodigo(), ms.getSucursal().getCodigo(), ms.getNumeroFormulario());
 
-                                movimientoStockRN.guardar(ms);
-                                cantMovimientosProcesados++;
+                            if (movExistente != null) {
+                                movimientoStockRN.igualarComprobantes(movExistente, ms);
+                                movimientoStockRN.guardar(movExistente);                                
+                            }else{
+                                movimientoStockRN.guardar(ms);                                
                             }
+
+                            cantMovimientosProcesados++;
 
                         } catch (Exception ex) {
                             log += JeeUtil.getFechaWS(fecha) + " - No es posible guardar el movimiento comprobante " + mb.getNroComprobante() + " - " + ex + " \n";
@@ -219,7 +224,7 @@ public class SincronizacionRN implements Serializable {
             }
 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            sResultado = "Proceso finalizado. Se procesaron " + cantMovimientosProcesados + " movimientos del día " + format.format(fecha)+" \n";
+            sResultado = "Proceso finalizado. Se procesaron " + cantMovimientosProcesados + " movimientos del día " + format.format(fecha) + " \n";
 
             if (log.isEmpty()) {
                 log = "Sin errores";
@@ -243,10 +248,10 @@ public class SincronizacionRN implements Serializable {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         return sResultado;
     }
-     
+
     @Schedule(hour = "5,17", minute = "0", second = "0")
     public void tareaProgramada() {
 
