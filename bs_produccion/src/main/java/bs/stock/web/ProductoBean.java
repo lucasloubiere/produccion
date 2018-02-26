@@ -5,6 +5,8 @@
  */
 package bs.stock.web;
 
+import bs.global.modelo.Moneda;
+import bs.global.rn.MonedaRN;
 import bs.global.util.JsfUtil;
 import bs.global.web.GenericBean;
 import bs.stock.modelo.Producto;
@@ -32,6 +34,7 @@ import org.primefaces.event.SelectEvent;
 public class ProductoBean extends GenericBean implements Serializable{
 
     @EJB private ProductoRN productoRN;
+    @EJB private MonedaRN monedaRN;
     @EJB private TipoProductoRN tipoProductoRN;
 
     private Producto producto;
@@ -79,6 +82,14 @@ public class ProductoBean extends GenericBean implements Serializable{
     public void nuevo() {
 
         producto = new Producto();        
+        
+        Moneda moneda = monedaRN.getMoneda("ARS");
+        
+        producto.setMonedaDeProduccion(moneda);
+        producto.setMonedaDeReferencia(moneda);
+        producto.setMonedaReposicion(moneda);
+        producto.setMonedaUltimaCompra(moneda);
+        
         esNuevo = true;  
         buscaMovimiento = false;
     }
@@ -296,6 +307,5 @@ public class ProductoBean extends GenericBean implements Serializable{
     public void setMostrarEquivalenciaDebaja(boolean mostrarEquivalenciaDebaja) {
         this.mostrarEquivalenciaDebaja = mostrarEquivalenciaDebaja;
     }
-    
     
 }

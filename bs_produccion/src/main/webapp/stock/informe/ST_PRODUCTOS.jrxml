@@ -120,7 +120,7 @@
   EMPRESA.*
  
 From
-  st_tipoproducto st_tipo_producto Inner Join
+  st_tipo_producto st_tipo_producto Inner Join
   st_producto st_producto On st_tipo_producto.CODIGO= st_producto.TIPOPRODUCTO
   Inner Join
   st_rubro1 st_rubro01_A On st_producto.TIPOPRODUCTO = st_rubro01_A.TIPOPRODUCTO And

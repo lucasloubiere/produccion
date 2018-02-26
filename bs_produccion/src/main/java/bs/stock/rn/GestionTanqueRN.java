@@ -308,6 +308,13 @@ public class GestionTanqueRN {
                 movIngreso.setNumeroFormulario(ultimoNumero);
 
                 movIngreso.setGestionTanque(gestionTanque);
+                
+                movimientoStockRN.borrarItemsNoValidos(movIngreso);
+                movimientoStockRN.generarItemTransferencia(movIngreso);
+                movimientoStockRN.asignarDepositoItems(movIngreso);
+                movimientoStockRN.asignarCantidadStock(movIngreso);
+                
+                
                 gestionTanque.getMovimientosStock().add(movIngreso);
 
             }
@@ -340,6 +347,12 @@ public class GestionTanqueRN {
                 movEgreso.setNumeroFormulario(ultimoNumero);
 
                 movEgreso.setGestionTanque(gestionTanque);
+                
+                movimientoStockRN.borrarItemsNoValidos(movEgreso);
+                movimientoStockRN.generarItemTransferencia(movEgreso);
+                movimientoStockRN.asignarDepositoItems(movEgreso);
+                movimientoStockRN.asignarCantidadStock(movEgreso);
+                
                 gestionTanque.getMovimientosStock().add(movEgreso);
             }
         }
