@@ -298,41 +298,55 @@ GROUP BY
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="17" splitType="Stretch">
+		<band height="32" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="555" height="15" backcolor="#99CCFF" uuid="dafaaeae-b392-406f-a23b-9d756a773c41"/>
+				<reportElement x="0" y="16" width="555" height="15" backcolor="#99CCFF" uuid="dafaaeae-b392-406f-a23b-9d756a773c41"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="65" height="15" uuid="20566d22-f647-482d-b49e-ab828fe4802f"/>
+				<reportElement x="0" y="16" width="65" height="15" uuid="20566d22-f647-482d-b49e-ab828fe4802f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="65" y="0" width="390" height="15" uuid="b61af709-5833-4a4b-95c4-8cd8bc463aef"/>
+				<reportElement x="65" y="16" width="390" height="15" uuid="b61af709-5833-4a4b-95c4-8cd8bc463aef"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="455" y="0" width="73" height="15" uuid="a24bce5c-1745-4d7c-b435-8590c908bdb5"/>
+				<reportElement x="455" y="16" width="73" height="15" uuid="a24bce5c-1745-4d7c-b435-8590c908bdb5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Stock]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="528" y="0" width="27" height="15" uuid="90702d5f-b09e-4e0e-a8e9-f924e65dda9b"/>
+				<reportElement x="528" y="16" width="27" height="15" uuid="90702d5f-b09e-4e0e-a8e9-f924e65dda9b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[U.M.]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="1" width="45" height="15" uuid="43a1e325-518f-4462-bb70-59040c6f942c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="45" y="3" width="69" height="12" uuid="8540c89a-b686-4c3c-be0f-55d377a69dc2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FCHHAS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
