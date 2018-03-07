@@ -498,8 +498,8 @@ public class GestionTanqueRN {
                 ItemGestionTanque item1 = (ItemGestionTanque) o1;
                 ItemGestionTanque item2 = (ItemGestionTanque) o2;
 
-                String cod1 = (item1.getProducto() == null ? "99999" : item1.getProducto().getCodigo());
-                String cod2 = (item2.getProducto() == null ? "99999" : item2.getProducto().getCodigo());
+                String cod1 = (item1.getProducto() == null ? "9999999" : item1.getProducto().getCodigo());
+                String cod2 = (item2.getProducto() == null ? "9999999" : item2.getProducto().getCodigo());
 
                 return (new Integer(cod1)).compareTo(new Integer(cod2));
 

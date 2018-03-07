@@ -202,8 +202,8 @@
 
                     <div class="EmptyBox10" />
 
-                    <p:dataTable id="tablaGestionTanque" value="#{gestionTanquesBean.gestionTanque.items}"  reflow="true" var="i"
-                                 emptyMessage="No se encontraron datos"                         
+                    <p:dataTable id="tablaGestionTanque" value="#{gestionTanquesBean.gestionTanque.items}"  var="i"
+                                 emptyMessage="No se encontraron datos"  resizeMode="expand" resizableColumns="true" liveResize="true"
                                  rows="50" paginator="true" >
 
                         <p:column headerText="Código" sortBy="#{i.deposito.codigo}"  width="100"   
@@ -357,9 +357,7 @@
                 </p:tab>
 
             </p:wizard>
-
-
-
+            
         </ui:define>
 
         <ui:define name="dialogos" >  
