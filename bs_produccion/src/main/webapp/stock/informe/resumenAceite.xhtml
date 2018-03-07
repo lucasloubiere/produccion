@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:bs="http://java.sun.com/jsf/composite/components/beansoft">
+
+    <ui:composition template="/template.xhtml" >
+
+        <f:metadata>                
+            <f:viewParam name="TITULO" value="#{resumenAceiteBean.titulo}"/>
+            <f:viewParam name="CODREP" value="#{resumenAceiteBean.codigoReporte}"/>
+            <f:viewParam name="NOMARC" value="#{resumenAceiteBean.nombreArchivo}"/>
+        </f:metadata>
+
+        <ui:define name="titulo" >
+            #{resumenAceiteBean.titulo}
+        </ui:define>
+
+
+        <ui:define name="contenido" >
+
+            <p:panel header="#{resumenAceiteBean.titulo}"  >
+
+                <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+                <p:spacer width="100%" height="1em" />    
+
+                <p:panelGrid columns="2" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container40, Container60 ui-datafield" >
+
+                    <h:outputText value="Fecha hasta" />
+                    <p:calendar value="#{resumenAceiteBean.fechaHasta}" pattern="dd/MM/yyyy HH:mm" timeControlObject="" 
+                                required="true" requiredMessage="La fecha hasta es obligatoria" />                 
+
+                </p:panelGrid>
+
+                <p:spacer width="100%" height="1em" />
+
+                <!-- ACCIONES -->
+                <p:panelGrid columns="3" layout="grid" 
+                             styleClass="ui-panelgrid-blank" >
+
+                    <p:commandButton value="Ver reporte" icon="fa fa-print"
+                                     actionListener="#{resumenAceiteBean.reporteToPdf}"
+                                     update="@form" />
+
+                    <p:commandButton value="A Excel" icon="fa fa-file-excel-o"
+                                     actionListener="#{resumenAceiteBean.reporteToXls}"
+                                     update="@form"
+                                     ajax="false" />
+
+                    <p:commandButton value="Limpiar Filtros" icon="fa fa-trash" process="@this"
+                                     actionListener="#{resumenAceiteBean.resetParametros}"
+                                     update="@form" />
+
+                </p:panelGrid>
+
+            </p:panel>  
+
+            <p:spacer width="100%" height="1em" />
+
+            <!-- REPORTE -->
+            <bs:dialogoReporte muestraReporte="#{resumenAceiteBean.muestraReporte}" 
+                               nombreArchivo="#{resumenAceiteBean.nombreArchivo}" />
+
+        </ui:define>
+
+        <ui:define name="dialogos" >        
+            <ui:include src="/stock/busqueda/buscadorProducto.xhtml" />        
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+
