@@ -39,9 +39,6 @@ import bs.stock.rn.ComposicionFormulaRN;
 import bs.stock.rn.ComprobanteStockRN;
 import bs.stock.rn.MovimientoStockRN;
 import bs.stock.rn.ProductoRN;
-import com.flexxus.modelo.FX_ItemComponenteProduccion;
-import com.flexxus.modelo.FX_ItemProcesoProduccion;
-import com.flexxus.modelo.FX_ItemProductoProduccion;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -292,8 +289,7 @@ public class ProduccionRN {
         m.setComprobante(comprobante);
         m.setSucursal(sucursal);
         m.setSucursalStock(sucursalStock);
-        m.setTipoMovimiento(tm);
-        m.setMonedaRegistracion(comprobante.getMonedaRegistracion());
+        m.setTipoMovimiento(tm);        
         m.setMonedaSecundaria(moneda);
 
         asignarFormulario(m);
@@ -1318,167 +1314,6 @@ public class ProduccionRN {
             }
         }
         return false;
-    }
-
-    public void agregarItemProducto(MovimientoProduccion movimiento, List<FX_ItemProductoProduccion> itemsProducto) throws ExcepcionGeneralSistema {
-        try {
-
-            movimiento.getItemsProducto().clear();
-
-            for (FX_ItemProductoProduccion ip : itemsProducto) {
-
-                Producto producto = productoRN.getProducto(ip.getArticulo().getCodigoparticular());
-                BigDecimal cantidad = new BigDecimal(ip.getCantidad());
-
-                String sError = puedoAgregarItem(movimiento, producto, cantidad);
-
-                if (!sError.isEmpty()) {
-                    throw new ExcepcionGeneralSistema(sError);
-                }
-
-                ItemProductoProduccion item = itemMovimientoRN.nuevoItemProducto(movimiento);
-
-                item.setProducto(producto);
-                item.setProductoOriginal(producto);
-                item.setUnidadMedida(producto.getUnidadDeMedida());
-                item.setActualizaStock(producto.getGestionaStock());
-                item.setCantidad(cantidad);
-                item.setCantidadStock(cantidad);
-                item.setCantidadOriginal(cantidad);
-
-                ComposicionFormula composicionFormula = composicionFormulaRN.getComprosicionFormula(item.getProducto().getCodigo(), "STD");
-                item.setComposicionFormula(composicionFormula);
-
-                movimiento.getItemsProducto().add(item);
-                item.setTodoOk(true);
-
-            }
-        } catch (Exception ex) {
-            throw new ExcepcionGeneralSistema("No es posible agregar item producto " + ex);
-        }
-    }
-
-    public void agregarItemComponente(MovimientoProduccion movimiento, List<FX_ItemComponenteProduccion> itemsComponentes) throws ExcepcionGeneralSistema {
-        try {
-
-            movimiento.getItemsComponente().clear();
-
-            if (itemsComponentes != null) {
-
-                for (FX_ItemComponenteProduccion ip : itemsComponentes) {
-
-                    Producto producto = productoRN.getProducto(ip.getArticulo().getCodigoparticular());
-                    BigDecimal cantidad = new BigDecimal(ip.getCantidad());
-
-                    String sError = puedoAgregarItem(movimiento, producto, cantidad);
-
-                    if (!sError.isEmpty()) {
-                        throw new ExcepcionGeneralSistema(sError);
-                    }
-
-                    ItemComponenteProduccion item = itemMovimientoRN.nuevoItemComponente(movimiento);
-
-                    item.setProducto(producto);
-                    item.setProductoOriginal(producto);
-                    item.setUnidadMedida(producto.getUnidadDeMedida());
-                    item.setActualizaStock(producto.getGestionaStock());
-                    item.setCantidad(cantidad);
-                    item.setCantidadStock(cantidad);
-                    item.setCantidadOriginal(cantidad);
-
-                    movimiento.getItemsComponente().add(item);
-                    item.setTodoOk(true);
-                }
-            }
-        } catch (Exception ex) {
-            throw new ExcepcionGeneralSistema("No es posible agregar item componente " + ex);
-        }
-    }
-
-    public void agregarItemProceso(MovimientoProduccion movimiento, List<FX_ItemProcesoProduccion> itemsProceso) throws ExcepcionGeneralSistema {
-        try {
-
-            movimiento.getItemsProceso().clear();
-
-            if (itemsProceso != null) {
-
-                for (FX_ItemProcesoProduccion ip : itemsProceso) {
-
-                    Producto producto = productoRN.getProducto(ip.getArticulo().getCodigoparticular());
-                    BigDecimal cantidad = new BigDecimal(ip.getCantidad());
-
-                    String sError = puedoAgregarItem(movimiento, producto, cantidad);
-
-                    if (!sError.isEmpty()) {
-                        throw new ExcepcionGeneralSistema(sError);
-                    }
-
-                    ItemProcesoProduccion item = itemMovimientoRN.nuevoItemProceso(movimiento);
-
-                    item.setProducto(producto);
-                    item.setProductoOriginal(producto);
-                    item.setUnidadMedida(producto.getUnidadDeMedida());
-                    item.setActualizaStock(producto.getGestionaStock());
-                    item.setCantidad(cantidad);
-                    item.setCantidadStock(cantidad);
-                    item.setCantidadOriginal(cantidad);
-
-                    movimiento.getItemsProceso().add(item);
-                    item.setTodoOk(true);
-                }
-            }
-
-            if (movimiento.getItemsProceso().isEmpty()) {
-
-                ItemProductoProduccion nItem = movimiento.getItemsProducto().get(0);
-
-                if (nItem == null) {
-                    throw new ExcepcionGeneralSistema("El movimiento " + movimiento.getFormulario().getCodigo() + " - " + movimiento.getNumeroFormulario()
-                            + "No tiene definido el producto a producir, no es posible agregar los procesos ");
-                }
-
-                ComposicionFormula composicionFormula = nItem.getComposicionFormula();
-
-                if (composicionFormula == null) {
-                    composicionFormula = composicionFormulaRN.getComprosicionFormula(movimiento.getItemsProducto().get(0).getProducto().getCodigo(), "STD");
-                }
-
-                if (composicionFormula != null) {
-
-                    if (composicionFormula.getItemsProceso() == null) {
-
-                        throw new ExcepcionGeneralSistema("La formula del producto seleccionado no contiene procesos ");
-
-                    } else if (composicionFormula.getItemsProceso() != null) {
-
-                        movimiento.getItemsProceso().clear();
-
-                        for (ItemComposicionFormulaProceso i : composicionFormula.getItemsProceso()) {
-
-                            ItemProcesoProduccion itmComp = itemMovimientoRN.nuevoItemProceso(movimiento);
-                            BigDecimal cntNominal = i.getCantidadNominal();
-
-                            itmComp.setProducto(i.getProductoComponente());
-                            itmComp.setProductoOriginal(i.getProductoComponente());
-                            itmComp.setUnidadMedida(i.getUnidadMedidaItem());
-                            itmComp.setCantidad(nItem.getCantidad().multiply(cntNominal));
-                            itmComp.setCantidadStock(nItem.getCantidad().multiply(cntNominal));
-                            itmComp.setCantidadOriginal(nItem.getCantidad().multiply(cntNominal));
-                            itmComp.setUnidadMedida(i.getProductoComponente().getUnidadDeMedida());
-                            itmComp.setActualizaStock(i.getProductoComponente().getGestionaStock());
-
-                            movimiento.getItemsProceso().add(itmComp);
-                        }
-                    }
-
-                } else {
-                    throw new ExcepcionGeneralSistema("El producto (" + nItem.getProducto().getCodigo() + "-" + nItem.getProducto().getCodigo() + ") seleccionado no tiene una fórmula de producción definida");
-                }
-            }
-
-        } catch (Exception ex) {
-            throw new ExcepcionGeneralSistema("No es posible agregar item proceso " + ex);
-        }
     }
 
     public void calcularPendientes(MovimientoProduccion m) {

@@ -14,7 +14,6 @@ import bs.global.modelo.Sucursal;
 import bs.stock.modelo.ComprobanteStock;
 import bs.stock.modelo.Deposito;
 import bs.stock.modelo.MovimientoStock;
-import bs.tarea.modelo.Tarea;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -161,10 +160,6 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_mst", referencedColumnName = "id")
     private MovimientoStock movimientoStock;
-
-    @JoinColumn(name = "id_tar", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Tarea tarea;
 
     @Lob
     @Column(name = "observ", length = 2147483647)
@@ -569,14 +564,6 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
 
     public void setNoSincronizaNumeroFormulario(boolean noSincronizaNumeroFormulario) {
         this.noSincronizaNumeroFormulario = noSincronizaNumeroFormulario;
-    }
-
-    public Tarea getTarea() {
-        return tarea;
-    }
-
-    public void setTarea(Tarea tarea) {
-        this.tarea = tarea;
     }
 
     public String getEstado() {

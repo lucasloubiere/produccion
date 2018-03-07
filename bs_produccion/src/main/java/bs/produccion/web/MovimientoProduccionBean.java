@@ -4,7 +4,6 @@
  */
 package bs.produccion.web;
 
-import bs.compra.web.MovimientoCompraBean;
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.modelo.Formulario;
 import bs.global.modelo.Sucursal;
@@ -200,11 +199,11 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
         } catch (ExcepcionGeneralSistema ex) {
 
-            Logger.getLogger(MovimientoCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage("iniciarMovimiento: " + ex);
 
         } catch (Exception ex) {
-            Logger.getLogger(MovimientoCompraBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
         }
     }
 
