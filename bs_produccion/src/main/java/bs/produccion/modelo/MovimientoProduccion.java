@@ -1,10 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package bs.produccion.modelo;
 
+import bs.global.auditoria.AuditoriaListener;
+import bs.global.auditoria.IAuditableEntity;
 import bs.global.modelo.Auditoria;
 import bs.global.modelo.Comprobante;
 import bs.global.modelo.Formulario;
@@ -13,6 +14,7 @@ import bs.global.modelo.Sucursal;
 import bs.stock.modelo.ComprobanteStock;
 import bs.stock.modelo.Deposito;
 import bs.stock.modelo.MovimientoStock;
+import bs.tarea.modelo.Tarea;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -42,11 +45,12 @@ import javax.persistence.Transient;
 
 /**
  *
- * @author lloubiere
+ * @author ctrosch
  */
 @Entity
 @Table(name = "pd_movimiento")
-public class MovimientoProduccion implements Serializable{
+@EntityListeners(AuditoriaListener.class)
+public class MovimientoProduccion implements Serializable, IAuditableEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -157,6 +161,10 @@ public class MovimientoProduccion implements Serializable{
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_mst", referencedColumnName = "id")
     private MovimientoStock movimientoStock;
+
+    @JoinColumn(name = "id_tar", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Tarea tarea;
 
     @Lob
     @Column(name = "observ", length = 2147483647)
@@ -561,6 +569,14 @@ public class MovimientoProduccion implements Serializable{
 
     public void setNoSincronizaNumeroFormulario(boolean noSincronizaNumeroFormulario) {
         this.noSincronizaNumeroFormulario = noSincronizaNumeroFormulario;
+    }
+
+    public Tarea getTarea() {
+        return tarea;
+    }
+
+    public void setTarea(Tarea tarea) {
+        this.tarea = tarea;
     }
 
     public String getEstado() {

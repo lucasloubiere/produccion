@@ -13,12 +13,17 @@ import bs.stock.modelo.UnidadMedida;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -29,7 +34,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "pd_movimiento_item_detalle")
-public class ItemDetalleItemMovimientoProduccion implements Serializable {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipitm", discriminatorType = DiscriminatorType.STRING, length = 1)
+@EntityListeners(AuditoriaListener.class)
+public abstract class ItemDetalleItemMovimientoProduccion implements Serializable, IAuditableEntity  {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -40,16 +48,8 @@ public class ItemDetalleItemMovimientoProduccion implements Serializable {
     @Column(name = "nroitm", nullable = false)
     private int nroitm;    
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_idet", referencedColumnName = "id", nullable = false, insertable = false, updatable = false) 
-    private ItemProductoProduccion itemProducto;
-    
     @Column(name = "id_iapl", nullable = true)
     private Integer idItemAplicacion;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_iapl", referencedColumnName = "id", nullable = false, insertable = false, updatable = false) 
-    private ItemProductoProduccion itemAplicado;
     
     @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false)    
     @ManyToOne(fetch = FetchType.LAZY)
@@ -135,22 +135,6 @@ public class ItemDetalleItemMovimientoProduccion implements Serializable {
 
     public void setIdItemAplicacion(Integer idItemAplicacion) {
         this.idItemAplicacion = idItemAplicacion;
-    }
-
-    public ItemProductoProduccion getItemProducto() {
-        return itemProducto;
-    }
-
-    public void setItemProducto(ItemProductoProduccion itemProducto) {
-        this.itemProducto = itemProducto;
-    }
-
-    public ItemProductoProduccion getItemAplicado() {
-        return itemAplicado;
-    }
-
-    public void setItemAplicado(ItemProductoProduccion itemAplicado) {
-        this.itemAplicado = itemAplicado;
     }
     
     public Producto getProducto() {

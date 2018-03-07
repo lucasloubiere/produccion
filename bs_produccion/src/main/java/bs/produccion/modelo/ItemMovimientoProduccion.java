@@ -6,6 +6,8 @@
 package bs.produccion.modelo;
 
 
+import bs.global.auditoria.AuditoriaListener;
+import bs.global.auditoria.IAuditableEntity;
 import bs.global.modelo.Auditoria;
 import bs.stock.modelo.ComposicionFormula;
 import bs.stock.modelo.Deposito;
@@ -13,16 +15,14 @@ import bs.stock.modelo.Producto;
 import bs.stock.modelo.UnidadMedida;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,7 +33,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -47,7 +46,8 @@ import javax.persistence.Transient;
 @Table(name = "pd_movimiento_item")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipitm", discriminatorType = DiscriminatorType.STRING, length = 1)
-public abstract class ItemMovimientoProduccion implements Serializable{
+@EntityListeners(AuditoriaListener.class)
+public abstract class ItemMovimientoProduccion implements Serializable, IAuditableEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -137,9 +137,6 @@ public abstract class ItemMovimientoProduccion implements Serializable{
     
     @Column(name = "stocks", length = 1)
     private String actualizaStock;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemProducto", fetch=FetchType.LAZY)
-    private List<ItemDetalleItemMovimientoProduccion> itemDetalle;
 
     @Embedded
     private Auditoria auditoria;
@@ -180,8 +177,7 @@ public abstract class ItemMovimientoProduccion implements Serializable{
         pendiente = BigDecimal.ZERO;
         produccion = BigDecimal.ZERO;
         precio = BigDecimal.ZERO;          
-        auditoria = new Auditoria(); 
-        this.itemDetalle = new ArrayList<ItemDetalleItemMovimientoProduccion>();
+        auditoria = new Auditoria();         
     }
 
     public Integer getId() {
@@ -463,15 +459,7 @@ public abstract class ItemMovimientoProduccion implements Serializable{
     public void setProduccion(BigDecimal produccion) {
         this.produccion = produccion;
     }
-    
-    public List<ItemDetalleItemMovimientoProduccion> getItemDetalle() {
-        return itemDetalle;
-    }
-
-    public void setItemDetalle(List<ItemDetalleItemMovimientoProduccion> itemDetalle) {
-        this.itemDetalle = itemDetalle;
-    }
-    
+        
     @Override
     public int hashCode() {
         int hash = 5;

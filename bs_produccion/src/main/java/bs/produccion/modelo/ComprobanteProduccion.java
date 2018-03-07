@@ -5,7 +5,6 @@
 
 package bs.produccion.modelo;
 
-
 import bs.global.modelo.Comprobante;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -14,12 +13,12 @@ import javax.persistence.Entity;
  *
  * @author Claudio
  *
- * Entidad que registra los componentes a producir
+ * Entidad que registra los comprobantes de proudccion
  *
  */
 @Entity
 @DiscriminatorValue("PD")
 public class ComprobanteProduccion extends Comprobante {
-
+    
     
 }

@@ -1,9 +1,10 @@
+package bs.produccion.modelo;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bs.produccion.modelo;
 
 import bs.global.modelo.Auditoria;
 import java.io.Serializable;
@@ -13,46 +14,48 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author lloubiere
+ * @author Claudio
  */
 @Entity
-@Table(name = "pd_codigo_circuito")
-@XmlRootElement
+@Table(name = "pd_circuito_codigo")
 public class CodigoCircuitoProduccion implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
     @Column(name = "codigo", nullable = false, length = 6)
     private String codigo;
-    @Size(max = 100)
-    @Column(name = "descripcion", length = 100)
+    @Basic(optional = false)
+    @Column(name = "descrp", nullable = false, length = 60)
     private String descripcion;
-    
+
     @Embedded
     private Auditoria auditoria;
-    
+
     public CodigoCircuitoProduccion() {
-    this.auditoria = new Auditoria();
-    }
-
-    public CodigoCircuitoProduccion(String codigo) {
-        this.auditoria = new Auditoria();
-        this.codigo = codigo;
-    }
-
-    public CodigoCircuitoProduccion(String codigo, String debaja) {
-        this.codigo = codigo;
-        this.auditoria = new Auditoria();
         
+        this.auditoria = new Auditoria();
+    }
+
+    public CodigoCircuitoProduccion(String Circom) {
+        this.codigo = Circom;
+        this.auditoria = new Auditoria();
+    }
+
+    public CodigoCircuitoProduccion(String Circom, String Descrp) {
+        this.codigo = Circom;
+        this.descripcion = Descrp;
+        this.auditoria = new Auditoria();
+    }
+
+    public Auditoria getAuditoria() {
+        return auditoria;
+    }
+
+    public void setAuditoria(Auditoria auditoria) {
+        this.auditoria = auditoria;
     }
 
     public String getCodigo() {
@@ -71,15 +74,6 @@ public class CodigoCircuitoProduccion implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Auditoria getAuditoria() {
-        return auditoria;
-    }
-
-    public void setAuditoria(Auditoria auditoria) {
-        this.auditoria = auditoria;
-    }
-
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -88,21 +82,26 @@ public class CodigoCircuitoProduccion implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CodigoCircuitoProduccion)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        CodigoCircuitoProduccion other = (CodigoCircuitoProduccion) object;
-        if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CodigoCircuitoProduccion other = (CodigoCircuitoProduccion) obj;
+        if ((this.codigo == null) ? (other.codigo != null) : !this.codigo.equals(other.codigo)) {
             return false;
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
-        return "bs.produccion.modelo.CodigoCircuitoProduccion[ codigo=" + codigo + " ]";
+        return "isd.facturacion.modelo.CodigoCircuitoProduccion[Circom=" + codigo + "]";
     }
-    
+
 }

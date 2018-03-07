@@ -1,6 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package bs.produccion.modelo;
@@ -15,56 +14,38 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author lloubiere
+ * @author Claudio
  */
 @Entity
-@Table(name = "pd_operario")
-@XmlRootElement
+@Table(name = "pd_operario", schema = "")
 public class Operario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
     @Column(name = "codigo", nullable = false, length = 6)
     private String codigo;
-    @Size(max = 8)
-    @Column(name = "legajo", length = 8)
-    private String legajo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "nombre", nullable = false, length = 100)
-    private String nombre;   
-    @JoinColumn(name = "codpues", referencedColumnName = "codigo", nullable = false)
-    @ManyToOne(optional = false)
-    private OperarioPuesto puesto;
+    @Column(name = "nombre", length = 60)
+    private String nombre;
+
+    @JoinColumn(name = "codtip", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne
+    private TipoOperario tipo;
+
+    @JoinColumn(name = "codpla", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne
+    private Planta planta;
 
     @Embedded
     private Auditoria auditoria;
-    
-    
+
     public Operario() {
-    this.auditoria = new Auditoria();
-    }
 
-    public Operario(String codigo) {
-        this.auditoria = new Auditoria();
-        this.codigo = codigo;
-    }
+        auditoria = new Auditoria();
 
-    public Operario(String codigo, String nombre, String debaja) {
-        this.auditoria = new Auditoria();
-        this.codigo = codigo;
-        this.nombre = nombre;
-        
     }
 
     public String getCodigo() {
@@ -75,14 +56,6 @@ public class Operario implements Serializable {
         this.codigo = codigo;
     }
 
-    public String getLegajo() {
-        return legajo;
-    }
-
-    public void setLegajo(String legajo) {
-        this.legajo = legajo;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -91,14 +64,22 @@ public class Operario implements Serializable {
         this.nombre = nombre;
     }
 
-    public OperarioPuesto getPuesto() {
-        return puesto;
+    public TipoOperario getTipo() {
+        return tipo;
     }
 
-    public void setPuesto(OperarioPuesto puesto) {
-        this.puesto = puesto;
+    public void setTipo(TipoOperario tipo) {
+        this.tipo = tipo;
     }
 
+    public Planta getPlanta() {
+        return planta;
+    }
+
+    public void setPlanta(Planta planta) {
+        this.planta = planta;
+    }
+    
     public Auditoria getAuditoria() {
         return auditoria;
     }
@@ -107,9 +88,6 @@ public class Operario implements Serializable {
         this.auditoria = auditoria;
     }
 
-   
-  
-  
     @Override
     public int hashCode() {
         int hash = 0;
@@ -132,7 +110,7 @@ public class Operario implements Serializable {
 
     @Override
     public String toString() {
-        return "bs.produccion.modelo.Operario[ codigo=" + codigo + " ]";
+        return "isd.produccion.modelo.Operario[codigo=" + codigo + "]";
     }
-    
+
 }
