@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml" >
+
+        <f:metadata>        
+            <f:viewParam name="TITULO" value="#{formularioProduccionBean.titulo}"/>
+        </f:metadata>
+
+        <ui:define name="titulo" >
+            #{formularioProduccionBean.titulo}
+        </ui:define>
+
+        <ui:define name="menu">
+            <!-- MENU -->        
+            <p:menubar id="menuBar">               
+                <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                            action="#{formularioProduccionBean.nuevo()}"
+                            process="@this"
+                            update="@form"
+                            immediate="true" >
+                    <p:confirm header="Confirmacion" message="¿Está seguro? Perderá todos los cambios no guardados" icon="ui-icon-alert" />
+                </p:menuitem>
+
+                <p:menuitem value="Guardar" icon="fa fa-save"
+                            action="#{formularioProduccionBean.guardar(false)}"                            
+                            rendered="#{not formularioProduccionBean.buscaMovimiento}"
+                            update="@form" />
+
+                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                            action="#{formularioProduccionBean.guardar(true)}"                            
+                            rendered="#{not formularioProduccionBean.buscaMovimiento}"
+                            oncomplete="btnNew.click()"
+                            update="@form" />
+
+                <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                            actionListener="#{formularioProduccionBean.habilitaDeshabilita('S')}"
+                            rendered="#{not empty formularioProduccionBean.formulario and not formularioProduccionBean.esNuevo and formularioProduccionBean.formulario.auditoria.debaja eq 'N' and not formularioProduccionBean.buscaMovimiento}"
+                            process="@this"
+                            update="@form" />
+
+                <p:menuitem value="Habilitar" icon="fa fa-check"
+                            actionListener="#{formularioProduccionBean.habilitaDeshabilita('N')}"
+                            rendered="#{not empty formularioProduccionBean.formulario and not formularioProduccionBean.esNuevo and formularioProduccionBean.formulario.auditoria.debaja eq 'S' and not formularioProduccionBean.buscaMovimiento}"
+                            process="@this"
+                            update="@form" />
+
+                <p:menuitem value="Buscar" icon="fa fa-search" 
+                            actionListener="#{formularioProduccionBean.buscar()}"
+                            process="@this" 
+                            oncomplete="PF('dlgFormularioProduccion').show()" 
+                            update="buscadorFormularioProduccion"
+                            immediate="true" /> 
+
+            </p:menubar>
+        </ui:define>
+
+        <ui:define name="contenido" >
+
+            <p:remoteCommand name="procesarFormularioProduccion" process="@this" update="@form" />
+            <p:remoteCommand name="procesarReporte"  process="@this" update="txtreporte" actionListener="#{formularioProduccionBean.procesarReporte()}" />                        
+
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+            <!-- DATOS -->
+            <p:panel header="Datos" >
+
+                <p:panelGrid columns="4" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container20, Container40 ui-datafield,Container20, Container40 ui-datafield" >
+
+                    <h:outputText value="Código" />                
+                    <p:inputText value="#{formularioProduccionBean.formulario.codigo}" 
+                                 readonly="#{not formularioProduccionBean.esNuevo}" 
+                                 required="true"
+                                 requiredMessage="El código es necesario" />
+
+                    <h:outputText value="Descripción" />                                                  
+                    <p:inputText value="#{formularioProduccionBean.formulario.descripcion}" 
+                                 required="true"
+                                 requiredMessage="La descripción es necesaria" />
+
+                    <h:outputText value="Sucursal" />
+                    <p:selectOneMenu value="#{formularioProduccionBean.formulario.sucursal}" 
+                                     required="true" requiredMessage="Seleccione la sucursal"
+                                     converter="#{conversoresGeneral.sucursal}" 
+
+                                     effect="fade" style="min-width:160px" filter="true" >  
+                        <p:ajax process="@this" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{sucursalBean.lista}" var="s" itemLabel="#{s.descripcion}" itemValue="#{s}" />
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Letra" />                                                  
+                    <p:inputText value="#{formularioProduccionBean.formulario.letra}"  
+                                 required="true"
+                                 requiredMessage="La letra es necesaria"/>
+
+                    <h:outputText value="Codigo AFIP" />                                                  
+                    <p:inputText value="#{formularioProduccionBean.formulario.codigoDGI}"   />
+
+                    <h:panelGroup layout="block">
+                        <h:outputText value="Nombre del reporte" />                         
+                        <p:commandButton icon="fa fa-search" styleClass="pull-right"                                         
+                                         update="buscadorReporte"
+                                         oncomplete="PF('dlgReporte').show()"                                          
+                                         process="@this"  />
+                    </h:panelGroup>   
+                    <p:inputText id="txtreporte" value="#{formularioProduccionBean.formulario.reporte.nombre}"   />
+
+                    <h:outputText value="Último número" />                                                  
+                    <p:inputText value="#{formularioProduccionBean.formulario.ultimoNumero}"   />
+
+                    <h:outputText value="Última fecha" />                                                  
+                    <p:calendar value="#{formularioProduccionBean.formulario.ultimaFecha}" pattern="dd/MM/yyyy"  
+                                required="true"
+                                requiredMessage="última fecha es obligatoria"/>
+
+                    <h:outputText value="Tipo Numeración" /> 
+                    <p:selectOneMenu value="#{formularioProduccionBean.formulario.tipoNumeracion}"
+                                     required="true" requiredMessage="Seleccione el tipo de numeración"  >
+                        <p:ajax process="@this" />
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Automático" itemValue="A" />
+                        <f:selectItem itemLabel="Renumeración Mensual" itemValue="R" />                                    
+                        <f:selectItem itemLabel="Semiautomática" itemValue="S" />                                    
+                        <f:selectItem itemLabel="Irrestricta" itemValue="I" />                                    
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Modo Recuperación de fecha" /> 
+                    <p:selectOneMenu value="#{formularioProduccionBean.formulario.tipoNumeracion}"
+                                     required="true" requiredMessage="Seleccione el tipo de numeración"  >
+                        <p:ajax process="@this" />
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Fecha actual" itemValue="A" />
+                        <f:selectItem itemLabel="Última fecha" itemValue="U" />                                                                
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Modifica fecha" /> 
+                    <p:selectOneMenu value="#{formularioProduccionBean.formulario.modificaFecha}"
+                                     required="true" requiredMessage="Seleccione si se modifica la fecha"  >
+                        <p:ajax process="@this" />
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Si" itemValue="S" />
+                        <f:selectItem itemLabel="No" itemValue="N" />                                                                
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Modifica numeración" /> 
+                    <p:selectOneMenu value="#{formularioProduccionBean.formulario.modificaNumeracion}"
+                                     required="true" requiredMessage="Seleccione si se modifica la numeración"  >
+                        <p:ajax process="@this" />
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Si" itemValue="S" />
+                        <f:selectItem itemLabel="No" itemValue="N" />                                                                
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Cant. Max items" /> 
+                    <p:inputText value="#{formularioProduccionBean.formulario.cantidadMaximaItems}"   />
+
+                    <h:outputText value="Observaciones" />
+                    <p:inputTextarea style="width: 100%" rows="3" value="#{formularioProduccionBean.formulario.textos}" />
+
+                </p:panelGrid>
+
+            </p:panel>              
+
+        </ui:define>
+
+        <ui:define name="dialogos" > 
+            <ui:include src="/produccion/busqueda/buscadorFormulario.xhtml" />
+            <ui:include src="/administracion/busqueda/buscadorReporte.xhtml" />         
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+

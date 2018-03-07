@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:bs="http://java.sun.com/jsf/composite/components/beansoft">
+
+    <ui:composition template="/template.xhtml" >
+
+        <f:metadata>        
+            <f:viewParam name="TITULO" value="#{comprobanteProduccionBean.titulo}"/>
+        </f:metadata>
+
+        <ui:define name="titulo" >
+            #{comprobanteProduccionBean.titulo}
+        </ui:define>
+
+        <ui:define name="menu">
+            <!-- MENU -->
+            <p:menubar id="menuBar">               
+                <p:menuitem value="Nuevo" icon="fa fa-plus" id="btnNew"
+                            actionListener="#{comprobanteProduccionBean.nuevo}"
+                            process="@this"
+                            update="@form" 
+                            immediate="true" >
+                    <p:confirm header="Confirmacion" message="¿Está seguro? Perderá todos los cambios no guardados" icon="ui-icon-alert" />
+                </p:menuitem>
+
+                <p:menuitem value="Guardar" icon="fa fa-save"
+                            actionListener="#{comprobanteProduccionBean.guardar(false)}"       
+                            rendered="#{not comprobanteProduccionBean.buscaMovimiento}"
+                            update="@form" />
+                <p:menuitem value="Guardar y Nuevo" icon="fa fa-clipboard"
+                            actionListener="#{comprobanteProduccionBean.guardar(true)}"                            
+                            rendered="#{not comprobanteProduccionBean.buscaMovimiento}"
+                            oncomplete="btnNew.click()"
+                            update="@form" />
+
+                <p:menuitem value="Deshabilitar" icon="fa fa-ban"
+                            actionListener="#{comprobanteProduccionBean.habilitaDeshabilita('S')}"
+                            rendered="#{not empty comprobanteProduccionBean.comprobante and not comprobanteProduccionBean.esNuevo and comprobanteProduccionBean.comprobante.auditoria.debaja eq 'N'}"
+                            process="@this"
+                            update="@form" />
+
+                <p:menuitem value="Habilitar" icon="fa fa-check"
+                            actionListener="#{comprobanteProduccionBean.habilitaDeshabilita('N')}"
+                            rendered="#{not empty comprobanteProduccionBean.comprobante and not comprobanteProduccionBean.esNuevo and comprobanteProduccionBean.comprobante.auditoria.debaja eq 'S'}"
+                            process="@this"
+                            update="@form" />
+
+                <p:menuitem value="Buscar" icon="fa fa-search" 
+                            actionListener="#{comprobanteProduccionBean.buscar()}"
+                            process="@this" 
+                            oncomplete="PF('dlgComprobanteProduccion').show()" 
+                            update="buscadorComprobanteProduccion"
+                            immediate="true" /> 
+            </p:menubar>
+        </ui:define>
+
+        <ui:define name="contenido" >
+
+            <p:remoteCommand name="procesarComprobanteProduccion" process="@this" update="@form" />
+
+            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+ 
+
+            <!-- DATOS -->
+            <p:panel header="Datos" >
+
+                <p:panelGrid columns="2" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container40, Container60 ui-datafield" >
+
+                    <h:outputText value="Código" />                        
+                    <p:inputText value="#{comprobanteProduccionBean.comprobante.codigo}" 
+                                 readonly="#{not comprobanteProduccionBean.esNuevo}"                                     
+                                 required="true" 
+                                 requiredMessage="El código es necesario" />
+
+                    <h:outputText value="Descripción" />                                                  
+                    <p:inputText value="#{comprobanteProduccionBean.comprobante.descripcion}" 
+                                 required="true" 
+                                 requiredMessage="La descripción es necesaria" />
+
+                    <h:outputText value="Título" />                                                  
+                    <p:inputText value="#{comprobanteProduccionBean.comprobante.titulo}" 
+                                 required="true" 
+                                 requiredMessage="El título es necesario" />
+
+                    <h:outputText value="Deposito egreso" />
+                    <p:selectOneMenu value="#{comprobanteProduccionBean.comprobante.depositoTransferencia}" 
+                                     required="false" requiredMessage="Seleccione el depósito de egreso"
+                                     converter="#{conversoresStock.deposito}" 
+                                     effect="fade"  filter="true" >  
+                        <p:ajax process="@this" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Deposito ingreso" />
+                    <p:selectOneMenu value="#{comprobanteProduccionBean.comprobante.deposito}" 
+                                     required="false" requiredMessage="Seleccione el depósito de ingreso"
+                                     converter="#{conversoresStock.deposito}" 
+                                     effect="fade"  filter="true" >  
+                        <p:ajax process="@this" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                    </p:selectOneMenu>
+
+                    <h:outputText value="Es Comprobante de Reversión *" />
+                    <p:selectOneMenu value="#{comprobanteProduccionBean.comprobante.esComprobanteReversion}" 
+                                     required="true" requiredMessage="Seleccione si es comprobante de reversión"  >
+                        <p:ajax process="@this" />
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Si" itemValue="S" />
+                        <f:selectItem itemLabel="No" itemValue="N" />                                    
+                    </p:selectOneMenu>
+                    
+                    <h:outputText value="Cant. Copias" />                        
+                    <p:inputText value="#{comprobanteProduccionBean.comprobante.copias}" 
+                                 required="true" 
+                                 requiredMessage="La cantidad de copias es necesario" />
+
+                    <h:outputText value="Recuperacion de Fecha*" />
+                    <p:selectOneMenu value="#{comprobanteProduccionBean.comprobante.recuperacionFecha}" 
+                                     required="true" requiredMessage="Seleccione recuperación de fecha"  >
+                        <p:ajax process="@this" />
+                        <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                        <f:selectItem itemLabel="Fecha Actual" itemValue="A" />
+                        <f:selectItem itemLabel="Ultima Fecha" itemValue="U" />                                    
+                    </p:selectOneMenu>
+                    
+                    <h:outputText value="Observaciones" />
+                    <p:inputTextarea style="width: 100%" rows="3" value="#{comprobanteProduccionBean.comprobante.textos}" />
+
+                </p:panelGrid>
+
+
+                <p:tabView>
+
+                    <p:tab title="Formulario por Condición de IVA">
+
+                        <p:dataTable id="tablaFSI" var="f"  reflow="true"
+                                     value="#{comprobanteProduccionBean.comprobante.formulariosPorSituacionIVA}" 
+                                     emptyMessage="No se encontraron resultados"                                             
+                                     rows="10" paginator="true" >
+
+                            <f:facet name="footer" >                                            
+
+                                <p:commandButton icon="fa fa-plus"
+                                                 actionListener="#{comprobanteProduccionBean.nuevoFormularioSituacionIva()}"
+                                                 value="Agregar formulario"
+                                                 process="@this"                                                                 
+                                                 oncomplete="PF('dlgFormularioSituacionIva').show()"
+                                                 rendered="#{not comprobanteProduccionBean.esNuevo}"/>
+
+                            </f:facet>
+
+                            <p:column headerText="" style="text-align: center;" >
+                                <p:commandButton icon="fa fa-edit"
+                                                 title="Modificar item"
+                                                 actionListener="#{comprobanteProduccionBean.seleccionarFormulario(f)}"  
+                                                 process="@this"
+                                                 oncomplete="PF('dlgFormularioSituacionIva').show()"/>
+
+                            </p:column>
+
+                            <p:column headerText="Sucursal" sortBy="#{f.sucursal.codigo}" >                    
+                                <h:outputText value="#{f.sucursal.codigo}" />                                        
+                            </p:column>
+
+                            <p:column headerText="Condición de IVA" >                         
+                                <h:outputText value="#{f.condicionDeIva.codigo}" /> 
+                                -
+                                <h:outputText value="#{f.condicionDeIva.descripcion}" />                             
+                            </p:column>
+
+                            <p:column headerText="Formulario" >                         
+                                <h:outputText value="#{f.formulario.codigo}" /> 
+                                -
+                                <h:outputText value="#{f.formulario.descripcion}" />                             
+                            </p:column>
+
+                        </p:dataTable> 
+
+                        <p:panelGrid layout="grid" columns="1"  >
+                            <h:panelGroup layout="block" >
+                                <p:selectBooleanCheckbox value="#{comprobanteProduccionBean.mostrarFormularioSituacionIvaDebaja}" >
+                                    <p:ajax process="@this" update="tablaFSI" 
+                                            listener="#{comprobanteProduccionBean.sincronizarFormulario()}" />
+                                </p:selectBooleanCheckbox>
+                                Mostrar registros deshabilitados                                        
+                            </h:panelGroup>  
+                        </p:panelGrid>
+
+                    </p:tab>
+
+                </p:tabView>
+
+            </p:panel>
+
+        </ui:define>
+
+        <ui:define name="dialogos" >  
+
+            <ui:include src="/produccion/busqueda/buscadorComprobante.xhtml" />
+
+            <bs:agregarFormularioSituacionIva accionFinalizar="#{comprobanteProduccionBean.sincronizarFormulario()}" />     
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+

@@ -1,0 +1,81 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"    
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" >
+
+    <p:dialog id="buscadorFormularioProduccion" header="Formulario de Produccion" modal="true"
+              widgetVar="dlgFormularioProduccion"
+              resizable="false"
+              draggable="false"
+              position="top"
+              minHeight="400" 
+              style="max-width: 650px;" responsive="true"
+              showEffect="fade" hideEffect="fade"> 
+        
+        <h:form prependId="false" >
+            
+            <p:focus for="txtBusquedaFST"/>
+            
+            <p:panelGrid columns="1" layout="grid"
+                         style="max-width: 400px;"
+                         styleClass="ui-panelgrid-blank" >
+                               
+                <p:inputText id="txtBusquedaFST" value="#{formularioProduccionBean.txtBusqueda}" placeholder="Ingrese busqueda" >
+                    <p:ajax event="keyup" process="@this" update="tablaFormularioProduccion" listener="#{formularioProduccionBean.buscar}"/>
+                </p:inputText>
+            </p:panelGrid>
+            
+            <p:dataTable id="tablaFormularioProduccion" value="#{formularioProduccionBean.lista}"  reflow="true" var="i"
+                         emptyMessage="No se encontraron datos"                         
+                         rows="10" paginator="true"
+                         selectionMode="single" 
+                         selection="#{formularioProduccionBean.formulario}" rowKey="#{i}">
+            
+                <p:ajax event="rowSelect" listener="#{formularioProduccionBean.onSelect}" update="@form" 
+                        oncomplete="PF('dlgFormularioProduccion').hide(), procesarFormularioProduccion()" />
+
+                <p:column headerText="Código" sortBy="#{i.codigo}" style="text-align: center;"  >
+                    <h:outputText value="#{i.codigo}" />
+                </p:column>
+
+                <p:column headerText="Descripción" sortBy="#{i.descripcion}" width="50%" >
+                    <h:outputText value="#{i.descripcion}" />
+                </p:column>
+                
+                <p:column headerText="Sucursal" sortBy="#{i.sucursal.codigo}" style="text-align: center;"  >
+                    <h:outputText value="#{i.sucursal.codigo}" />
+                </p:column>
+                
+                 <p:column headerText="Letra" style="text-align: center;"  >
+                    <h:outputText value="#{i.letra}" />
+                </p:column>
+                
+            </p:dataTable>
+            
+            <div class="EmptyBox10" />            
+            <p:panelGrid columns="2" layout="grid"                               
+                         styleClass="ui-panelgrid-blank"
+                         columnClasses="Container40, Container60" >
+
+                <h:panelGroup layout="block" >                       
+                    <p:selectBooleanCheckbox value="#{formularioProduccionBean.mostrarDebaja}" >
+                        <p:ajax process="@this" update="tablaFormularioProduccion" listener="#{formularioProduccionBean.buscar}" />
+                    </p:selectBooleanCheckbox>                    
+                    <h:outputText value="Mostrar registros deshabilitados" />                    
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" >                                                        
+                    <h:outputText value="Cantidad de Registros: " />                    
+                    <p:inputText id="cantRegistroFormularioProduccion" value="#{formularioProduccionBean.cantidadRegistros}" style="max-width: 80px;"/>                    
+                    <p:commandButton value="Aplicar" icon="fa fa-check"
+                                     style="max-width: 100px; margin-left: 1px;"
+                                     actionListener="#{formularioProduccionBean.buscar}"
+                                     process="@this,cantRegistroFormularioProduccion" update="tablaFormularioProduccion" />
+                </h:panelGroup>
+            </p:panelGrid>
+        </h:form> 
+
+    </p:dialog>
+
+</ui:composition>

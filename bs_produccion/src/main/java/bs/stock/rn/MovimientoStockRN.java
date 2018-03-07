@@ -568,7 +568,7 @@ public class MovimientoStockRN {
      *
      * @param m Movimiento de stock
      */
-    private void generarItemTransferencia(MovimientoStock m) throws ExcepcionGeneralSistema {
+    public void generarItemTransferencia(MovimientoStock m) throws ExcepcionGeneralSistema {
 
         //Verificamos que se un movimiento de tipo transferencia
         if (m.getTipoMovimiento().equals("T")) {
@@ -632,7 +632,7 @@ public class MovimientoStockRN {
         }
     }
 
-    private void asignarDepositoItems(MovimientoStock m) {
+    public void asignarDepositoItems(MovimientoStock m) {
 
         if (m.getItemsProducto() != null) {
 
@@ -685,7 +685,7 @@ public class MovimientoStockRN {
      *
      * @param m Movimiento de Stock
      */
-    private void borrarItemsNoValidos(MovimientoStock m) {
+    public void borrarItemsNoValidos(MovimientoStock m) {
 
         if (m.getItemsProducto() == null) {
             return;
@@ -965,22 +965,32 @@ public class MovimientoStockRN {
         if (movExistente.getDepositoTransferencia() != null && !movExistente.getDepositoTransferencia().equals(ms.getDepositoTransferencia())) {
             movExistente.setDepositoTransferencia(ms.getDepositoTransferencia());
         }
+        
+        int itmNuevo = 0;
+        int itmExiste = 0;
 
         for (ItemProductoStock ipnuevo : movExistente.getItemsProducto()) {
+            
+            itmNuevo++;
+            itmExiste = 0;
 
             for (ItemProductoStock ipexistente : movExistente.getItemsProducto()) {
-
-                ipexistente.setProducto(ipnuevo.getProducto());
-                ipexistente.setDeposito(ipnuevo.getDeposito());
-                ipexistente.setCantidad(ipnuevo.getCantidad());
-                ipexistente.setUnidadMedida(ipnuevo.getUnidadMedida());
                 
-                ipexistente.setAtributo1(ipnuevo.getAtributo1());
-                ipexistente.setAtributo2(ipnuevo.getAtributo2());
-                ipexistente.setAtributo3(ipnuevo.getAtributo3());
-                ipexistente.setAtributo4(ipnuevo.getAtributo4());
-                ipexistente.setAtributo5(ipnuevo.getAtributo5());                
+                itmExiste++;
+                
+                if(itmExiste == itmNuevo){
+                    
+                    ipexistente.setProducto(ipnuevo.getProducto());
+                    ipexistente.setDeposito(ipnuevo.getDeposito());
+                    ipexistente.setCantidad(ipnuevo.getCantidad());
+                    ipexistente.setUnidadMedida(ipnuevo.getUnidadMedida());
 
+                    ipexistente.setAtributo1(ipnuevo.getAtributo1());
+                    ipexistente.setAtributo2(ipnuevo.getAtributo2());
+                    ipexistente.setAtributo3(ipnuevo.getAtributo3());
+                    ipexistente.setAtributo4(ipnuevo.getAtributo4());
+                    ipexistente.setAtributo5(ipnuevo.getAtributo5());
+                }
             }
         }
 

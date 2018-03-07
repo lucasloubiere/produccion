@@ -156,6 +156,7 @@ public class Producto implements Serializable {
     private Auditoria auditoria;
 
     public Producto() {
+        
         this.auditoria = new Auditoria();
         administraAtributo1= "N";
         administraAtributo2= "N";
@@ -164,6 +165,17 @@ public class Producto implements Serializable {
         administraAtributo5= "N";
         administraAtributo6= "N";
         administraAtributo7= "N"; 
+        
+        this.fechaProduccion = new Date();
+        this.fechaReferencia = new Date();
+        this.fechaReposicion = new Date();
+        this.fechaUltimaCompra = new Date();
+        
+        this.precioProduccion = BigDecimal.ZERO;
+        this.precioReferencia = BigDecimal.ZERO;
+        this.precioReposicion = BigDecimal.ZERO;
+        this.precioUltimaCompra = BigDecimal.ZERO;
+        
     }
 
     public Producto(String codigo) {
@@ -176,6 +188,17 @@ public class Producto implements Serializable {
         administraAtributo5= "N";
         administraAtributo6= "N";
         administraAtributo7= "N"; 
+        
+        this.fechaProduccion = new Date();
+        this.fechaReferencia = new Date();
+        this.fechaReposicion = new Date();
+        this.fechaUltimaCompra = new Date();
+        
+        this.precioProduccion = BigDecimal.ZERO;
+        this.precioReferencia = BigDecimal.ZERO;
+        this.precioReposicion = BigDecimal.ZERO;
+        this.precioUltimaCompra = BigDecimal.ZERO;
+        
     }
 
     public Producto(String codigo, String descripcion, String gestionaStock) {
