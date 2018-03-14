@@ -29,7 +29,7 @@
                          selection="#{tipoProductoBean.tipoProducto}" rowKey="#{e}" >
 
                 <p:ajax event="rowSelect" listener="#{tipoProductoBean.onSelect}" update="@form" 
-                        oncomplete="PF('dlg_tipo_producto').hide(), procesarTipoProducto()" />
+                        oncomplete="PF('dlgTipoProducto').hide(), procesarTipoProducto()" />
 
                 <p:column headerText="Código" width="10%" style="text-align: center;"
                           sortBy="#{e.codigo}"   >                         

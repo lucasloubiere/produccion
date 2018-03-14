@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bs.stock.web.informe;
 
 import bs.global.excepciones.ExcepcionGeneralSistema;
@@ -12,6 +11,7 @@ import bs.stock.modelo.Deposito;
 import bs.stock.rn.ProductoRN;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -23,72 +23,98 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class StockDepositoFechaBean extends InformeBase implements Serializable{
-    
-    @EJB ProductoRN productoRN;
-    
-    private Date fechaHasta;    
-    private Deposito deposito;
+public class StockDepositoFechaBean extends InformeBase implements Serializable {
 
-            
+    @EJB
+    ProductoRN productoRN;
+
+    private Date fechaHasta;
+    private Deposito deposito;
+    private List<Deposito> lista;
+
     /**
      * Creates a new instance of ImpresionComprobanteFacturacionBean
      */
     public StockDepositoFechaBean() {
     }
-    
+
     @PostConstruct
-    public void init(){
-    
+    public void init() {
+
         fechaHasta = new Date();
-        
+
     }
 
     @Override
     public void validarDatos() throws ExcepcionGeneralSistema {
-        
+
         String mensaje = "";
         todoOk = true;
-        
-        if(fechaHasta==null){
-            mensaje ="Fecha hasta no puede estar en blanco";
+
+        if (fechaHasta == null) {
+            mensaje = "Fecha hasta no puede estar en blanco";
         }
-                
-        if(!mensaje.isEmpty()){
+
+        if (!mensaje.isEmpty()) {
             todoOk = false;
             throw new ExcepcionGeneralSistema(mensaje);
-        }        
+        }
     }
 
     @Override
     public void cargarParametros() throws ExcepcionGeneralSistema {
-        
+
         parameters.put("FCHHAS", fechaHasta);
-        
-        if(deposito!=null){
-            parameters.put("DEPOSI", deposito.getCodigo());           
+
+        if (deposito != null) {
+            parameters.put("DEPOSI", deposito.getCodigo());
+        } else {
+            parameters.put("DEPOSI", "");
+        }
+
+        if (lista == null || lista.isEmpty()) {
+            parameters.put("DEPLIS", "");
         }else{
-            parameters.put("DEPOSI", "");           
+            parameters.put("DEPLIS", getFiltroIn(lista));
         }
         
+        System.err.println("getFiltroIn(lista)" + getFiltroIn(lista));
         
+        System.err.println("parametros" + parameters);
+            
+
         nombreArchivo = "ST_STOCK_DEPOSITO_FECHA";
         reporte = reporteRN.getReporte(codigoReporte);
         //pathReporte = "stock/informe/ST_STOCK_DEPOSITO_FECHA.jasper";
-               
     }
-           
+    
+    public String getFiltroIn(List<Deposito> lista){
+        
+        String sIn = "";
+        
+        for(Deposito d:lista){
+            
+            if(sIn.isEmpty()){
+                sIn += "'"+d.getCodigo()+"'";
+            }else{
+                sIn += ",'"+d.getCodigo()+"'";
+            }            
+        }
+        
+        return sIn;
+    }
+    
+
     @Override
-    public void resetParametros(){
-        
-        
-        fechaHasta = new Date();        
-        deposito = null; 
+    public void resetParametros() {
+
+        fechaHasta = new Date();
+        deposito = null;
         todoOk = false;
         muestraReporte = false;
-        
+
     }
-  
+
     public Date getFechaHasta() {
         return fechaHasta;
     }
@@ -104,9 +130,13 @@ public class StockDepositoFechaBean extends InformeBase implements Serializable{
     public void setDeposito(Deposito deposito) {
         this.deposito = deposito;
     }
-    
-    
-       
 
-    
+    public List<Deposito> getLista() {
+        return lista;
+    }
+
+    public void setLista(List<Deposito> lista) {
+        this.lista = lista;
+    }
+
 }

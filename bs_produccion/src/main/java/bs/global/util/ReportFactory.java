@@ -172,7 +172,7 @@ public class ReportFactory implements Serializable {
         query = query.replaceAll("EMPRESA.\\*", "' '");
         query = query.replaceAll("ad_empresa.\\*", "' '");
 
-//        System.err.println("query" + query);
+        System.err.println("query" + query);
 
         PreparedStatement stmt = conexion.prepareStatement(query);
 

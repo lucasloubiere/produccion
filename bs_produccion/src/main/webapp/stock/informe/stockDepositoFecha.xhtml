@@ -6,82 +6,86 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:bs="http://java.sun.com/jsf/composite/components/beansoft">
 
-<ui:composition template="/template.xhtml" >
-    
-    <f:metadata>                
-        <f:viewParam name="TITULO" value="#{stockDepositoFechaBean.titulo}"/> 
-        <f:viewParam name="CODREP" value="#{stockDepositoFechaBean.codigoReporte}"/>
-        <f:viewParam name="NOMARC" value="#{stockDepositoFechaBean.nombreArchivo}"/>
-    </f:metadata>
+    <ui:composition template="/template.xhtml" >
 
-    <ui:define name="titulo" >
-        #{stockDepositoFechaBean.titulo}
-    </ui:define>
+        <f:metadata>                
+            <f:viewParam name="TITULO" value="#{stockDepositoFechaBean.titulo}"/> 
+            <f:viewParam name="CODREP" value="#{stockDepositoFechaBean.codigoReporte}"/>
+            <f:viewParam name="NOMARC" value="#{stockDepositoFechaBean.nombreArchivo}"/>
+        </f:metadata>
 
-    <ui:define name="contenido" >
+        <ui:define name="titulo" >
+            #{stockDepositoFechaBean.titulo}
+        </ui:define>
 
-        <p:panel header="#{stockDepositoFechaBean.titulo}"  >
+        <ui:define name="contenido" >
 
-            <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+            <p:panel header="#{stockDepositoFechaBean.titulo}"  >
 
-            <p:spacer width="100%" height="1em" />    
+                <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
 
-            <p:panelGrid columns="2" layout="grid"                               
-                         styleClass="ui-panelgrid-blank"
-                         columnClasses="Container40, Container60 ui-datafield" >
+                <p:spacer width="100%" height="1em" />    
 
-                <h:outputText value="Deposito:" />
-                <p:selectOneMenu value="#{stockDepositoFechaBean.deposito}" 
-                                 converter="#{conversoresStock.deposito}"                                                                                                                                                  
-                                 effect="fade" filter="true" >  
-                    <p:ajax process="@this" />
-                    <f:selectItem itemValue="" itemLabel="Todos" />
-                    <f:selectItems value="#{depositoBean.lista}" var="c" itemLabel="#{c.descripcion}" itemValue="#{c}" />                                    
-                </p:selectOneMenu>
+                <p:panelGrid columns="2" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container40, Container60 ui-datafield" >
 
-                <h:outputText value="Fecha hasta" />
-                <p:calendar value="#{stockDepositoFechaBean.fechaHasta}" pattern="dd/MM/yyyy HH:mm" timeControlObject=""  
-                            required="true" requiredMessage="La fecha hasta es obligatoria" />
-                
+                    <h:outputText value="Fecha hasta" />
+                    <p:calendar value="#{stockDepositoFechaBean.fechaHasta}" pattern="dd/MM/yyyy HH:mm" timeControlObject=""  
+                                required="true" requiredMessage="La fecha hasta es obligatoria" />
 
-            </p:panelGrid>
+                    <h:outputText value="Deposito:" />
+                    <p:selectManyMenu value="#{stockDepositoFechaBean.lista}" 
+                                      converter="#{conversoresStock.deposito}"
+                                      var="d" filter="true" filterMatchMode="contains" showCheckbox="true" >
+
+                        <p:ajax process="@this" />
+                        <f:selectItems  value="#{depositoBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}" /> 
+
+                        <p:column>
+                            <h:outputText value="#{d.descripcion}" />
+                        </p:column>
+
+                    </p:selectManyMenu>
+
+                </p:panelGrid>
+
+                <p:spacer width="100%" height="1em" />
+
+                <!-- ACCIONES -->
+                <p:panelGrid columns="3" layout="grid" 
+                             styleClass="ui-panelgrid-blank" >
+
+                    <p:commandButton value="Ver reporte" icon="fa fa-print"
+                                     actionListener="#{stockDepositoFechaBean.reporteToPdf}"
+                                     update="@form" />
+
+                    <p:commandButton value="A Excel" icon="fa fa-file-excel-o"
+                                     actionListener="#{stockDepositoFechaBean.reporteToXls}"
+                                     update="@form"
+                                     ajax="false" />
+
+                    <p:commandButton value="Limpiar Filtros" icon="fa fa-trash" process="@this"
+                                     actionListener="#{stockDepositoFechaBean.resetParametros}"
+                                     update="@form" />
+
+                </p:panelGrid>
+
+            </p:panel>  
 
             <p:spacer width="100%" height="1em" />
 
-            <!-- ACCIONES -->
-            <p:panelGrid columns="3" layout="grid" 
-                             styleClass="ui-panelgrid-blank" >
+            <!-- REPORTE -->
+            <bs:dialogoReporte muestraReporte="#{stockDepositoFechaBean.muestraReporte}" 
+                               nombreArchivo="#{stockDepositoFechaBean.nombreArchivo}" />
 
-                <p:commandButton value="Ver reporte" icon="fa fa-print"
-                             actionListener="#{stockDepositoFechaBean.reporteToPdf}"
-                             update="@form" />
+        </ui:define>
 
-                <p:commandButton value="A Excel" icon="fa fa-file-excel-o"
-                                 actionListener="#{stockDepositoFechaBean.reporteToXls}"
-                                 update="@form"
-                                 ajax="false" />
+        <ui:define name="dialogos" >
 
-                <p:commandButton value="Limpiar Filtros" icon="fa fa-trash" process="@this"
-                                 actionListener="#{stockDepositoFechaBean.resetParametros}"
-                                 update="@form" />
+        </ui:define>
 
-            </p:panelGrid>
-
-        </p:panel>  
-
-        <p:spacer width="100%" height="1em" />
-
-        <!-- REPORTE -->
-        <bs:dialogoReporte muestraReporte="#{stockDepositoFechaBean.muestraReporte}" 
-                           nombreArchivo="#{stockDepositoFechaBean.nombreArchivo}" />
-      
-    </ui:define>
-    
-    <ui:define name="dialogos" >
-        
-    </ui:define>
-    
-</ui:composition>
+    </ui:composition>
 
 </html>
 
