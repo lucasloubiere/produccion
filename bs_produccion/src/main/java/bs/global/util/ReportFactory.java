@@ -143,7 +143,7 @@ public class ReportFactory implements Serializable {
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(sourceFile);
 
         String query = jasperReport.getQuery().getText();
-
+       
         Iterator<Map.Entry<String, Object>> entries;
         entries = parameters.entrySet().iterator();
         while (entries.hasNext()) {

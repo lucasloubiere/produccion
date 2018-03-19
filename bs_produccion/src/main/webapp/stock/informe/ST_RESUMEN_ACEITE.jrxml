@@ -281,8 +281,8 @@ GROUP BY
 				</textElement>
 				<text><![CDATA[Stock a fecha]]></text>
 			</staticText>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement x="65" y="2" width="63" height="15" uuid="70a10277-4475-43d5-8aeb-4236481bc1b2"/>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="65" y="2" width="116" height="15" uuid="70a10277-4475-43d5-8aeb-4236481bc1b2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>

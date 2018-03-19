@@ -120,12 +120,14 @@
 FROM 	st_movimiento_item,
 		st_producto,
 		st_deposito,
+zz_temporal,
 		ad_empresa
 
 WHERE	st_movimiento_item.ARTCOD = st_producto.CODIGO
+and st_deposito.codigo = zz_temporal.codigo
 and st_movimiento_item.DEPOSI = st_deposito.CODIGO
 And (st_movimiento_item.FCHMOV <= $P{FCHHAS} )
-and if(LENGTH($P{DEPLIS})>0, st_movimiento_item.DEPOSI in($P{DEPLIS}) , '1=1')
+
 
 GROUP BY
 		st_movimiento_item.DEPOSI,
@@ -341,8 +343,8 @@ GROUP BY
 				</textElement>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement x="45" y="3" width="69" height="12" uuid="8540c89a-b686-4c3c-be0f-55d377a69dc2"/>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="45" y="3" width="100" height="12" uuid="8540c89a-b686-4c3c-be0f-55d377a69dc2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>

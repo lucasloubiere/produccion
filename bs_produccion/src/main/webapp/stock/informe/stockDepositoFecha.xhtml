@@ -38,8 +38,7 @@
                     <p:selectManyMenu value="#{stockDepositoFechaBean.lista}" 
                                       converter="#{conversoresStock.deposito}"
                                       var="d" filter="true" filterMatchMode="contains" showCheckbox="true" >
-
-                        <p:ajax process="@this" />
+                        
                         <f:selectItems  value="#{depositoBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}" /> 
 
                         <p:column>
