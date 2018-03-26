@@ -103,7 +103,7 @@
 	</style>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
-	<parameter name="FCHHAS" class="java.util.Date"/>
+	<parameter name="FCHHHAS" class="java.sql.Timestamp"/>
 	<parameter name="DEPOSI" class="java.lang.String"/>
 	<parameter name="DEPLIS" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -126,7 +126,7 @@ zz_temporal,
 WHERE	st_movimiento_item.ARTCOD = st_producto.CODIGO
 and st_deposito.codigo = zz_temporal.codigo
 and st_movimiento_item.DEPOSI = st_deposito.CODIGO
-And (st_movimiento_item.FCHMOV <= $P{FCHHAS} )
+And (st_movimiento_item.FCHMOV <= $P{FCHHHAS} )
 
 
 GROUP BY

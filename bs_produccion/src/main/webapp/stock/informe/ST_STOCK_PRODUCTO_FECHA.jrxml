@@ -103,7 +103,7 @@
 	</style>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
-	<parameter name="FCHHAS" class="java.util.Date"/>
+	<parameter name="FCHHHAS" class="java.sql.Timestamp"/>
 	<parameter name="ARTCOD" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -119,11 +119,13 @@
 FROM 	st_movimiento_item,
 		st_producto,
 		st_deposito,
+zz_temporal,
 		ad_empresa
 
 WHERE	st_movimiento_item.ARTCOD = st_producto.CODIGO
 and st_movimiento_item.DEPOSI = st_deposito.CODIGO
-And (st_movimiento_item.FCHMOV <= $P{FCHHAS})
+and zz_temporal.codigo = st_producto.codigo
+And (st_movimiento_item.FCHMOV <= $P{FCHHHAS})
 
 
 GROUP BY
@@ -133,19 +135,17 @@ GROUP BY
 		st_producto.UNIMED]]>
 	</queryString>
 	<field name="DEPOSI" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[Depósito]]></fieldDescription>
 	</field>
 	<field name="st_deposito_DESCRP" class="java.lang.String"/>
 	<field name="ARTCOD" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[Producto]]></fieldDescription>
 	</field>
 	<field name="st_producto_DESCRP" class="java.lang.String"/>
 	<field name="UNIMED" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="CANTIDAD" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="CANTIDAD" class="java.math.BigDecimal"/>
 	<field name="CODIGO" class="java.lang.String">
 		<fieldDescription><![CDATA[Código]]></fieldDescription>
 	</field>

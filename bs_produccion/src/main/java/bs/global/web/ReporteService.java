@@ -8,6 +8,7 @@ package bs.global.web;
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.rn.MonedaRN;
 import bs.global.util.InformeBase;
+import bs.global.util.JsfUtil;
 import bs.stock.modelo.Deposito;
 import bs.stock.modelo.Producto;
 import bs.stock.modelo.Rubro01;
@@ -49,6 +50,10 @@ public class ReporteService extends InformeBase implements Serializable {
     public Date fecha;
     public Date fechaDesde;
     public Date fechaHasta;
+    
+    public Date fechaHora;
+    public Date fechaHoraDesde;
+    public Date fechaHoraHasta;
 
     BigDecimal cotizacion;
 
@@ -160,6 +165,20 @@ public class ReporteService extends InformeBase implements Serializable {
         if (fechaHasta != null) {
             parameters.put("FCHHAS", fechaHasta);
         }
+        
+        //Fecha y hora
+        if (fechaHora != null) {
+            parameters.put("FECHAH", JsfUtil.getTimeStampSQL(fechaHora));
+        }
+
+        if (fechaHoraDesde != null) {
+            parameters.put("FCHHDES", JsfUtil.getTimeStampSQL(fechaHoraDesde));
+        }
+
+        if (fechaHoraHasta != null) {
+            parameters.put("FCHHHAS", JsfUtil.getTimeStampSQL(fechaHoraHasta));
+        }
+
 
         if (cotizacion != null) {
             parameters.put("COTIZ", cotizacion);
@@ -292,6 +311,30 @@ public class ReporteService extends InformeBase implements Serializable {
 
     public void setIncluyeImpuesto(String incluyeImpuesto) {
         this.incluyeImpuesto = incluyeImpuesto;
+    }
+
+    public Date getFechaHora() {
+        return fechaHora;
+    }
+
+    public void setFechaHora(Date fechaHora) {
+        this.fechaHora = fechaHora;
+    }
+
+    public Date getFechaHoraDesde() {
+        return fechaHoraDesde;
+    }
+
+    public void setFechaHoraDesde(Date fechaHoraDesde) {
+        this.fechaHoraDesde = fechaHoraDesde;
+    }
+
+    public Date getFechaHoraHasta() {
+        return fechaHoraHasta;
+    }
+
+    public void setFechaHoraHasta(Date fechaHoraHasta) {
+        this.fechaHoraHasta = fechaHoraHasta;
     }
     
 }

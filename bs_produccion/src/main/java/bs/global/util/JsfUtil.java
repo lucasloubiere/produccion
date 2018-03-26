@@ -1,13 +1,13 @@
 package bs.global.util;
 
-
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,11 +17,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
-public class JsfUtil implements Serializable{
-    
+public class JsfUtil implements Serializable {
+
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    
+
     public static SelectItem[] getSelectItems(List<?> entities, boolean selectOne) {
         int size = selectOne ? entities.size() + 1 : entities.size();
         SelectItem[] items = new SelectItem[size];
@@ -30,13 +30,13 @@ public class JsfUtil implements Serializable{
             items[0] = new SelectItem("", "Seleccionar");
             i++;
         }
-        
+
         for (Object x : entities) {
             items[i++] = new SelectItem(x, x.toString());
         }
         return items;
     }
-    
+
     public static void ensureAddErrorMessage(Exception ex, String defaultMsg) {
         String msg = ex.getLocalizedMessage();
         if (msg != null && msg.length() > 0) {
@@ -45,7 +45,7 @@ public class JsfUtil implements Serializable{
             addErrorMessage(defaultMsg);
         }
     }
-    
+
     public static void addErrorMessages(List<String> messages) {
         for (String message : messages) {
             addErrorMessage(message);
@@ -57,10 +57,10 @@ public class JsfUtil implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
-    public static void addErrorMessage(String tit,String msg) {
+    public static void addErrorMessage(String tit, String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, tit, msg);
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-        
+
     }
 
     public static void addInfoMessage(String msg) {
@@ -68,13 +68,13 @@ public class JsfUtil implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
-    public static void addInfoMessage(String tit,String msg) {
-        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, tit , msg);
+    public static void addInfoMessage(String tit, String msg) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, tit, msg);
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
-    
-    public static void addInfoMessage(String clienteId,String tit,String msg) {
-        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, tit , msg);
+
+    public static void addInfoMessage(String clienteId, String tit, String msg) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, tit, msg);
         FacesContext.getCurrentInstance().addMessage(clienteId, facesMsg);
     }
 
@@ -83,12 +83,12 @@ public class JsfUtil implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
-    public static void addWarningMessage(String tit,String msg) {
+    public static void addWarningMessage(String tit, String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, tit, msg);
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
-    
-    public static void addWarningMessage(String clienteId, String tit,String msg) {
+
+    public static void addWarningMessage(String clienteId, String tit, String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, tit, msg);
         FacesContext.getCurrentInstance().addMessage(clienteId, facesMsg);
     }
@@ -98,20 +98,20 @@ public class JsfUtil implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
-    public static void addFatalMessage(String tit,String msg) {
+    public static void addFatalMessage(String tit, String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_FATAL, tit, msg);
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
-    
+
     public static String getRequestParameter(String key) {
         return FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(key);
     }
-    
+
     public static Object getObjectFromRequestParameter(String requestParameterName, Converter converter, UIComponent component) {
         String theId = JsfUtil.getRequestParameter(requestParameterName);
         return converter.getAsObject(FacesContext.getCurrentInstance(), component, theId);
     }
-    
+
     public static <T> List<T> arrayToList(T[] arr) {
         if (arr == null) {
             return new ArrayList<T>();
@@ -125,7 +125,7 @@ public class JsfUtil implements Serializable{
         }
         return new HashSet(Arrays.asList(arr));
     }
-    
+
     public static Object[] collectionToArray(Collection<?> c) {
         if (c == null) {
             return new Object[0];
@@ -136,11 +136,11 @@ public class JsfUtil implements Serializable{
     public static <T> List<T> setToList(Set<T> set) {
         return new ArrayList<T>(set);
     }
-    
+
     public static String getAsConvertedString(Object object, Converter converter) {
         return converter.getAsString(FacesContext.getCurrentInstance(), null, object);
     }
-    
+
     public static String getCollectionAsString(Collection<?> collection) {
         if (collection == null || collection.size() == 0) {
             return "(No Items)";
@@ -157,24 +157,32 @@ public class JsfUtil implements Serializable{
         return sb.toString();
     }
 
-    public static Object getManagedBean(String bean){
+    public static Object getManagedBean(String bean) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return facesContext.getApplication().getELResolver().getValue(facesContext.getELContext(), null, bean);
     }
 
-    public static Object getObjeto(String sBean,Class objeto){
+    public static Object getObjeto(String sBean, Class objeto) {
 
-       sBean = "#{"+sBean+"}";
-       FacesContext context = FacesContext.getCurrentInstance();
-       return context.getApplication().evaluateExpressionGet(context,sBean , objeto);
-    }    
-        
-     public static String getFechaSQL(Date fechaMovimientoDesde) {
+        sBean = "#{" + sBean + "}";
+        FacesContext context = FacesContext.getCurrentInstance();
+        return context.getApplication().evaluateExpressionGet(context, sBean, objeto);
+    }
+
+    public static String getFechaSQL(Date fechaMovimientoDesde) {
 
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
         return "'" + sdf.format(fechaMovimientoDesde) + "'";
 
     }
 
-    
+    public static java.sql.Timestamp getTimeStampSQL(Date fecha) {
+        
+        java.sql.Timestamp newDate = new java.sql.Timestamp(0);
+        
+        newDate.setTime(fecha.getTime());        
+        return newDate;
+        
+    }
+
 }

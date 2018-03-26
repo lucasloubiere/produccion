@@ -30,21 +30,26 @@
                 <p:panelGrid columns="2" layout="grid"                               
                              styleClass="ui-panelgrid-blank"
                              columnClasses="Container40, Container60 ui-datafield" >
+                    
+                    <h:outputText value="Fecha hasta" />
+                    <p:calendar value="#{stockProductoFechaBean.fechaHoraHasta}" pattern="dd/MM/yyyy HH:mm" timeControlObject=""  
+                                required="true" requiredMessage="La fecha hasta es obligatoria" />
 
                     <h:outputText value="Producto" />
-                    <h:panelGroup id="pgProducto" layout="block">
+                    <p:selectManyMenu value="#{stockProductoFechaBean.lista}" 
+                                      converter="#{conversoresStock.producto}"
+                                      var="d" filter="true" filterMatchMode="contains" showCheckbox="true" >
 
-                        <p:remoteCommand name="procesarProducto" process="@this" update="pgProducto" actionListener="#{stockProductoFechaBean.procesarProducto}" />
-                        <p:commandButton icon="fa fa-search" process="@this" oncomplete="PF('dlgProducto').show()"  />                                                        
-                        <h:outputText value="#{stockProductoFechaBean.producto.codigo} - #{stockProductoFechaBean.producto.descripcion}" 
-                                      rendered="#{not empty stockProductoFechaBean.producto}"/>                        
-                    </h:panelGroup>
+                        <f:selectItems  value="#{productoBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}" /> 
 
-                    <h:outputText value="Fecha hasta" />
-                    <p:calendar value="#{stockProductoFechaBean.fechaHasta}" pattern="dd/MM/yyyy HH:mm" timeControlObject="" 
-                                required="true" requiredMessage="La fecha hasta es obligatoria" />                 
+                        <p:column>
+                            <h:outputText value="#{d.descripcion}" />
+                        </p:column>
+
+                    </p:selectManyMenu>
 
                 </p:panelGrid>
+
 
                 <p:spacer width="100%" height="1em" />
 
@@ -77,9 +82,12 @@
 
         </ui:define>
 
+        <!--
         <ui:define name="dialogos" >        
             <ui:include src="/stock/busqueda/buscadorProducto.xhtml" />        
         </ui:define>
+        -->
+
 
     </ui:composition>
 

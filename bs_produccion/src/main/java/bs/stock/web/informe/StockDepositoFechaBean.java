@@ -9,6 +9,7 @@ import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.modelo.Temporal;
 import bs.global.rn.TemporalRN;
 import bs.global.util.InformeBase;
+import bs.global.util.JsfUtil;
 import bs.stock.modelo.Deposito;
 import bs.stock.rn.DepositoRN;
 import bs.stock.rn.ProductoRN;
@@ -37,7 +38,7 @@ public class StockDepositoFechaBean extends InformeBase implements Serializable 
     @EJB
     TemporalRN temporalRN;
 
-    private Date fechaHasta;
+    private Date fechaHoraHasta;
     private Deposito deposito;
     private List<Deposito> lista;
 
@@ -50,7 +51,7 @@ public class StockDepositoFechaBean extends InformeBase implements Serializable 
     @PostConstruct
     public void init() {
 
-        fechaHasta = new Date();
+        fechaHoraHasta = new Date();
 
     }
 
@@ -60,7 +61,7 @@ public class StockDepositoFechaBean extends InformeBase implements Serializable 
         String mensaje = "";
         todoOk = true;
 
-        if (fechaHasta == null) {
+        if (fechaHoraHasta == null) {
             mensaje = "Fecha hasta no puede estar en blanco";
         }
 
@@ -73,7 +74,7 @@ public class StockDepositoFechaBean extends InformeBase implements Serializable 
     @Override
     public void cargarParametros() throws ExcepcionGeneralSistema {
 
-        parameters.put("FCHHAS", fechaHasta);
+        parameters.put("FCHHAS", JsfUtil.getTimeStampSQL(fechaHoraHasta));
 
         if (deposito != null) {
             parameters.put("DEPOSI", deposito.getCodigo());
@@ -115,7 +116,7 @@ public class StockDepositoFechaBean extends InformeBase implements Serializable 
     @Override
     public void resetParametros() {
 
-        fechaHasta = new Date();
+        fechaHoraHasta = new Date();
         deposito = null;
         todoOk = false;
         muestraReporte = false;
@@ -138,14 +139,14 @@ public class StockDepositoFechaBean extends InformeBase implements Serializable 
         }
     }
 
-    public Date getFechaHasta() {
-        return fechaHasta;
+    public Date getFechaHoraHasta() {
+        return fechaHoraHasta;
     }
 
-    public void setFechaHasta(Date fechaHasta) {
-        this.fechaHasta = fechaHasta;
+    public void setFechaHoraHasta(Date fechaHoraHasta) {
+        this.fechaHoraHasta = fechaHoraHasta;
     }
-
+    
     public Deposito getDeposito() {
         return deposito;
     }

@@ -103,8 +103,8 @@
 	</style>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
-	<parameter name="FCHDES" class="java.util.Date"/>
-	<parameter name="FCHHAS" class="java.util.Date"/>
+	<parameter name="FCHHDES" class="java.sql.Timestamp"/>
+	<parameter name="FCHHHAS" class="java.sql.Timestamp"/>
 	<parameter name="ARTDES" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -125,8 +125,8 @@
   st_deposito.DESCRIPCION As st_deposito_DESCRP,
   st_producto.CODIGO As st_producto_CODIGO,
   st_producto.DESCRIPCION As st_producto_DESCRP,
-  st_tipoproducto.CODIGO As st_tipo_producto_TIPPRO,
-  st_tipoproducto.DESCRIPCION As st_tipo_producto_DESCRP,
+  st_tipo_producto.CODIGO As st_tipo_producto_TIPPRO,
+  st_tipo_producto.DESCRIPCION As st_tipo_producto_DESCRP,
   st_movimiento.MODFOR as st_movimiento_MODFOR,
   st_movimiento.CODFOR as st_movimiento_CODFOR,
   st_movimiento.NROFOR as st_movimiento_NROFOR,
@@ -137,11 +137,11 @@
   st_movimiento_item.UNIMED as st_movimiento_item_UNIMED,
   st_movimiento_item.NATRI1 as st_movimiento_item_NATRI1,
   st_movimiento_item.NATRI2 as st_movimiento_item_NATRI2,
-  st_movimiento_item.NATRI3 as st_movimiento_item_NATRI3, 
+  st_movimiento_item.NATRI3 as st_movimiento_item_NATRI3,
   st_movimiento_item.NATRI4 as st_movimiento_item_NATRI4,
   st_movimiento_item.NATRI5 as st_movimiento_item_NATRI5,
   st_movimiento_item.NATRI6 as st_movimiento_item_NATRI6,
-  st_movimiento_item.NATRI7 as st_movimiento_item_NATRI7, 
+  st_movimiento_item.NATRI7 as st_movimiento_item_NATRI7,
   st_movimiento_item.ARTCOD as st_movimiento_item_ARTCOD,
   st_movimiento_item.DEPOSI as st_movimiento_item_DEPOSI,
   st_deposito.CODIGO as st_deposito_CODIGO,
@@ -157,12 +157,12 @@ From
   st_movimiento Inner Join
   st_movimiento_item On st_movimiento.ID = st_movimiento_item.IDCAB Inner Join
   st_producto On st_movimiento_item.ARTCOD = st_producto.CODIGO Inner Join
-  st_tipoproducto On st_producto.TIPOPRODUCTO= st_tipoproducto.CODIGO Inner Join
+  st_tipo_producto On st_producto.TIPOPRODUCTO= st_tipo_producto.CODIGO Inner Join
   st_deposito On st_deposito.CODIGO = st_movimiento_item.DEPOSI, ad_empresa, st_parametro
 Where st_producto.CODIGO BETWEEN $P{ARTDES} AND $P{ARTHAS}
-AND st_movimiento.FCHMOV BETWEEN  $P{FCHDES} AND $P{FCHHAS}
-ORDER BY 
-  st_tipoproducto.CODIGO,
+AND st_movimiento.FCHMOV BETWEEN  $P{FCHHDES} AND $P{FCHHHAS}
+ORDER BY
+  st_tipo_producto.CODIGO,
   st_producto.CODIGO,
   st_deposito.CODIGO,
   st_movimiento.FCHMOV,

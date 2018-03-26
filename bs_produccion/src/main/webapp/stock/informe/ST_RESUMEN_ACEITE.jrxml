@@ -103,7 +103,7 @@
 	</style>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
-	<parameter name="FCHHAS" class="java.util.Date"/>
+	<parameter name="FCHHHAS" class="java.sql.Timestamp"/>
 	<parameter name="ARTCOD" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -120,7 +120,7 @@ FROM 	st_movimiento_item,
 		ad_empresa
 
 WHERE	st_movimiento_item.ARTCOD = st_producto.CODIGO
-And (st_movimiento_item.FCHMOV <= $P{FCHHAS})
+And (st_movimiento_item.FCHMOV <= $P{FCHHHAS})
 AND st_movimiento_item.ARTCOD IN ('0230','0234','0235','0335','0875','0925','2990998')
 GROUP BY
 		st_movimiento_item.ARTCOD,
@@ -286,7 +286,7 @@ GROUP BY
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{FCHHAS}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{FCHHHAS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

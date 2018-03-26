@@ -8,6 +8,7 @@ package bs.stock.web.informe;
 
 import bs.global.excepciones.ExcepcionGeneralSistema;
 import bs.global.util.InformeBase;
+import bs.global.util.JsfUtil;
 import bs.stock.modelo.Producto;
 import bs.stock.rn.ProductoRN;
 import bs.stock.web.ProductoBean;
@@ -30,7 +31,7 @@ public class ResumenAceiteBean extends InformeBase implements Serializable{
     
     @EJB ProductoRN productoRN;
     
-    private Date fechaHasta;    
+    private Date fechaHoraHasta;    
     private Producto producto;
     
     @ManagedProperty(value = "#{productoBean}")
@@ -45,7 +46,7 @@ public class ResumenAceiteBean extends InformeBase implements Serializable{
     @PostConstruct
     public void init(){
     
-        fechaHasta = new Date();
+        fechaHoraHasta = new Date();
         
     }
 
@@ -55,7 +56,7 @@ public class ResumenAceiteBean extends InformeBase implements Serializable{
         String mensaje = "";
         todoOk = true;
         
-        if(fechaHasta==null){
+        if(fechaHoraHasta==null){
             mensaje ="Fecha hasta no puede estar en blanco";
         }
                 
@@ -68,7 +69,7 @@ public class ResumenAceiteBean extends InformeBase implements Serializable{
     @Override
     public void cargarParametros() throws ExcepcionGeneralSistema {
         
-        parameters.put("FCHHAS", fechaHasta);
+        parameters.put("FCHHHAS", JsfUtil.getTimeStampSQL(fechaHoraHasta));
         
         if(producto!=null){
             parameters.put("ARTCOD", producto.getCodigo());           
@@ -87,8 +88,7 @@ public class ResumenAceiteBean extends InformeBase implements Serializable{
         if(productoBean.getProducto()!=null){            
             
             producto = productoBean.getProducto();
-            todoOk = false;
-                        
+            todoOk = false;                        
         }
     }
     
@@ -96,7 +96,7 @@ public class ResumenAceiteBean extends InformeBase implements Serializable{
     public void resetParametros(){
         
         
-        fechaHasta = new Date();        
+        fechaHoraHasta = new Date();        
         producto = null; 
         todoOk = false;
         muestraReporte = false;
@@ -107,14 +107,14 @@ public class ResumenAceiteBean extends InformeBase implements Serializable{
         producto = (Producto) event.getObject();  
     }
 
-    public Date getFechaHasta() {
-        return fechaHasta;
+    public Date getFechaHoraHasta() {
+        return fechaHoraHasta;
     }
 
-    public void setFechaHasta(Date fechaHasta) {
-        this.fechaHasta = fechaHasta;
+    public void setFechaHoraHasta(Date fechaHoraHasta) {
+        this.fechaHoraHasta = fechaHoraHasta;
     }
-
+    
     public Producto getProducto() {
         return producto;
     }
