@@ -82,14 +82,8 @@ public class StockProductoFechaBean extends InformeBase implements Serializable{
     @Override
     public void cargarParametros() throws ExcepcionGeneralSistema {
         
-        parameters.put("FCHHAS", JsfUtil.getTimeStampSQL(fechaHoraHasta));
-        
-        if(producto!=null){
-            parameters.put("ARTCOD", producto.getCodigo());           
-        }else{
-            parameters.put("ARTCOD", "");           
-        }
-        
+        parameters.put("FCHHHAS", JsfUtil.getTimeStampSQL(fechaHoraHasta));
+               
         if (lista == null || lista.isEmpty()) {
             
         }else{

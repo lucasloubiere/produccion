@@ -104,9 +104,6 @@
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<parameter name="LOGO" class="java.io.InputStream"/>
 	<parameter name="FCHHHAS" class="java.sql.Timestamp"/>
-	<parameter name="ARTCOD" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<queryString>
 		<![CDATA[SELECT
 		st_movimiento_item.DEPOSI,
@@ -119,12 +116,12 @@
 FROM 	st_movimiento_item,
 		st_producto,
 		st_deposito,
-zz_temporal,
+                     zz_temporal,
 		ad_empresa
 
 WHERE	st_movimiento_item.ARTCOD = st_producto.CODIGO
 and st_movimiento_item.DEPOSI = st_deposito.CODIGO
-and zz_temporal.codigo = st_producto.codigo
+and zz_temporal.codigo = st_movimiento_item.artcod
 And (st_movimiento_item.FCHMOV <= $P{FCHHHAS})
 
 
@@ -201,7 +198,6 @@ GROUP BY
 		<variableExpression><![CDATA[$F{CANTIDAD}]]></variableExpression>
 		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>
 	</variable>
-	<filterExpression><![CDATA[( $P{ARTCOD}.equals("")? !$F{ARTCOD}.equals("") : $F{ARTCOD}.equals($P{ARTCOD}))]]></filterExpression>
 	<group name="GRUPO_1">
 		<groupExpression><![CDATA[$F{ARTCOD}]]></groupExpression>
 		<groupHeader>
