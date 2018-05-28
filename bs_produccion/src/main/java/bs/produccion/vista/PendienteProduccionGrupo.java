@@ -2,6 +2,7 @@ package bs.produccion.vista;
 
 import bs.global.modelo.Formulario;
 import bs.produccion.modelo.MovimientoProduccion;
+import bs.produccion.modelo.Planta;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class PendienteProduccionGrupo implements Serializable {
     @NotNull
     @Size(min = 1, max = 6)
     @Column(nullable = false, length = 6)
-    private String circom;    
+    private String circom;
     @Id
     @NotNull
     @Column(name = "id_mapl", nullable = false)
@@ -66,6 +67,16 @@ public class PendienteProduccionGrupo implements Serializable {
     @Size(min = 1, max = 1)
     @Column(nullable = false, length = 1)
     private String stocks;
+    @Id
+    @NotNull
+    @Size(min = 1, max = 1)
+    @Column(nullable = false, length = 1)    
+    private String tipitm;
+    
+    @Id
+    @NotNull
+    @Column(nullable = false)
+    private String grupo;
 
     @Size(max = 50)
     @Column(length = 50)
@@ -84,7 +95,11 @@ public class PendienteProduccionGrupo implements Serializable {
     })
     @ManyToOne(fetch = FetchType.LAZY)
     private Formulario formulario;
-    
+
+    @JoinColumn(name = "codpla", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
+    @ManyToOne
+    private Planta planta;
+
     @Column(name = "descrp", length = 60)
     private String descripcion;
 
@@ -195,18 +210,44 @@ public class PendienteProduccionGrupo implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
+    public Planta getPlanta() {
+        return planta;
+    }
+
+    public void setPlanta(Planta planta) {
+        this.planta = planta;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
+    public String getTipitm() {
+        return tipitm;
+    }
+
+    public void setTipitm(String tipitm) {
+        this.tipitm = tipitm;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + (this.circom != null ? this.circom.hashCode() : 0);
-        hash = 67 * hash + this.idMapl;
-        hash = 67 * hash + (this.modfor != null ? this.modfor.hashCode() : 0);
-        hash = 67 * hash + (this.codfor != null ? this.codfor.hashCode() : 0);
-        hash = 67 * hash + this.nrofor;
-        hash = 67 * hash + (this.fchmov != null ? this.fchmov.hashCode() : 0);
-        hash = 67 * hash + (this.formul != null ? this.formul.hashCode() : 0);
-        hash = 67 * hash + (this.stocks != null ? this.stocks.hashCode() : 0);
+        hash = 73 * hash + (this.circom != null ? this.circom.hashCode() : 0);
+        hash = 73 * hash + this.idMapl;
+        hash = 73 * hash + (this.modfor != null ? this.modfor.hashCode() : 0);
+        hash = 73 * hash + (this.codfor != null ? this.codfor.hashCode() : 0);
+        hash = 73 * hash + this.nrofor;
+        hash = 73 * hash + (this.fchmov != null ? this.fchmov.hashCode() : 0);
+        hash = 73 * hash + (this.formul != null ? this.formul.hashCode() : 0);
+        hash = 73 * hash + (this.stocks != null ? this.stocks.hashCode() : 0);
+        hash = 73 * hash + (this.tipitm != null ? this.tipitm.hashCode() : 0);
+        hash = 73 * hash + (this.grupo != null ? this.grupo.hashCode() : 0);
         return hash;
     }
 
@@ -243,7 +284,10 @@ public class PendienteProduccionGrupo implements Serializable {
         if ((this.stocks == null) ? (other.stocks != null) : !this.stocks.equals(other.stocks)) {
             return false;
         }
-        if (this.fchmov != other.fchmov && (this.fchmov == null || !this.fchmov.equals(other.fchmov))) {
+        if ((this.grupo == null) ? (other.grupo != null) : !this.grupo.equals(other.grupo)) {
+            return false;
+        }
+        if (this.tipitm != other.tipitm && (this.tipitm == null || !this.tipitm.equals(other.tipitm))) {
             return false;
         }
         return true;
@@ -251,7 +295,7 @@ public class PendienteProduccionGrupo implements Serializable {
 
     @Override
     public String toString() {
-        return "PendienteProduccionGrupo{" + "circom=" + circom + ", idMapl=" + idMapl + ", modfor=" + modfor + ", codfor=" + codfor + ", nrofor=" + nrofor + ", fchmov=" + fchmov + ", formul=" + formul + ", stocks=" + stocks + '}';
+        return "PendienteProduccionGrupo{" + "circom=" + circom + ", idMapl=" + idMapl + ", modfor=" + modfor + ", codfor=" + codfor + ", nrofor=" + nrofor + ", fchmov=" + fchmov + ", formul=" + formul + ", stocks=" + stocks + ", tipitm=" + tipitm + ", grupo=" + grupo + '}';
     }
-
+    
 }

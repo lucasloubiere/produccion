@@ -105,30 +105,29 @@
 
                 </p:panelGrid>  
 
-
-                <p:dataTable value="#{composicionFormulaBean.composicionFormula.itemsComponentes}" var="i"
+                <p:dataTable value="#{composicionFormulaBean.composicionFormula.itemsComponente}" var="i"
                              emptyMessage="No se encontraron items para esta composición">
                     
                     <f:facet name="footer">
-                        <p:commandButton icon="fa fa-plus" value="Agegar item" actionListener="#{composicionFormulaBean.agregarItem()}" 
+                        <p:commandButton icon="fa fa-plus" value="Agegar item" actionListener="#{composicionFormulaBean.agregarItemComponente()}" 
                                          update="@form" process="@form"/>
                     </f:facet>
 
                     <p:column headerText="Produccto">                        
-                        <p:autoComplete value="#{i.producto}" completeMethod="#{productoBean.complete}"
+                        <p:autoComplete value="#{i.productoComponente}" completeMethod="#{productoBean.complete}"
                                         var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" converter="#{conversoresStock.producto}" forceSelection="true" />                        
                     </p:column>
 
                     <p:column headerText="Cantidad" width="200">
-                        <p:inputText value="#{i.cantidad}" />
+                        <p:inputText value="#{i.cantidadNominal}" />
                     </p:column>
                     
                     <p:column headerText="U.M." width="100">
-                        <h:outputText value="#{i.producto.unidadDeMedida.codigo}" />
+                        <h:outputText value="#{i.productoComponente.unidadDeMedida.codigo}" />
                     </p:column>                    
                     
                     <p:column headerText="Eliminar" width="100">
-                        <p:commandButton icon="fa fa-trash" actionListener="#{composicionFormulaBean.eliminarItem(i)}" 
+                        <p:commandButton icon="fa fa-trash" actionListener="#{composicionFormulaBean.eliminarItemComponente(i)}" 
                                          update="@form" process="@form" >
                             <p:confirm header="Confirmación" message="¿Está seguro que desea eliminar el item?" icon="ui-icon-alert" />
                         </p:commandButton>

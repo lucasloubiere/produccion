@@ -19,7 +19,7 @@ import javax.ejb.TransactionAttributeType;
 
 /**
  *
- * @author Agustin
+ * @author Claudio
  */
 @Stateless
 public class CodigoCircuitoProduccionRN {

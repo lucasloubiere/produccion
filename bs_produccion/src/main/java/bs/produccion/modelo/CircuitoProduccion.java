@@ -170,11 +170,6 @@ public class CircuitoProduccion implements Serializable {
     private String tomaNumeroSerieDesdeParteProduccion;
 
     /**
-     * Posibilidad de agregar nuevo items
-     */
-    @Column(name = "agrega")
-    private String agregaItems;
-    /**
      * Genera orden de produccón automática
      */
     @Column(name = "genopa")
@@ -205,6 +200,9 @@ public class CircuitoProduccion implements Serializable {
      */
     @Column(name = "sinfor", length = 1)
     private String permiteIngresoProduccionSinFormula;
+    
+    @Column(name = "AGREGA", length = 1)
+    private String permiteAgregarItems;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "circuito", fetch = FetchType.LAZY)
     private List<ItemCircuitoProduccionProduccion> itemCircuitoProduccion;
@@ -388,14 +386,6 @@ public class CircuitoProduccion implements Serializable {
 
     public void setTomaNumeroSerieDesdeParteProduccion(String tomaNumeroSerieDesdeParteProduccion) {
         this.tomaNumeroSerieDesdeParteProduccion = tomaNumeroSerieDesdeParteProduccion;
-    }
-
-    public String getAgregaItems() {
-        return agregaItems;
-    }
-
-    public void setAgregaItems(String agregaItems) {
-        this.agregaItems = agregaItems;
     }
 
     public String getGeneraOrdenProduccionAutomatica() {
@@ -588,6 +578,14 @@ public class CircuitoProduccion implements Serializable {
 
     public void setNoControlaPendiente(String noControlaPendiente) {
         this.noControlaPendiente = noControlaPendiente;
+    }
+
+    public String getPermiteAgregarItems() {
+        return permiteAgregarItems;
+    }
+
+    public void setPermiteAgregarItems(String permiteAgregarItems) {
+        this.permiteAgregarItems = permiteAgregarItems;
     }
     
     @Override

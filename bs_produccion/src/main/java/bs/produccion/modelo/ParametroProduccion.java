@@ -4,11 +4,15 @@
  */
 package bs.produccion.modelo;
 
+import bs.stock.modelo.Producto;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,6 +38,10 @@ public class ParametroProduccion implements Serializable {
     @Column(name = "fchrep", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaHastaDefectoReporte;
+    
+    @JoinColumn(name = "prdhor", referencedColumnName = "codigo", nullable = false)    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Producto productoHorario;
 
     public ParametroProduccion() {
     }
@@ -74,6 +82,15 @@ public class ParametroProduccion implements Serializable {
         this.fechaHastaDefectoReporte = fechaHastaDefectoReporte;
     }
 
+    public Producto getProductoHorario() {
+        return productoHorario;
+    }
+
+    public void setProductoHorario(Producto productoHorario) {
+        this.productoHorario = productoHorario;
+    }
+    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -89,6 +106,8 @@ public class ParametroProduccion implements Serializable {
 
         return true;
     }
+
+   
 
     @Override
     public int hashCode() {

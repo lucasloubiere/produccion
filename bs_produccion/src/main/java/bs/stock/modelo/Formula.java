@@ -37,7 +37,7 @@ public class Formula implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
-    @Column(name = "descripcion", nullable = false, length = 100)
+    @Column(name = "DESCRP", nullable = false, length = 100)
     private String descripcion;
     
     @Embedded

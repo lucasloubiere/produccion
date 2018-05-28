@@ -56,7 +56,8 @@ public class ComposicionFormula implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Formula formula;
     
-    @Column(name = "fechainicio")
+    
+    @Column(name = "FCHINI")
     @Temporal(TemporalType.DATE)
     private Date fechainicio;
     

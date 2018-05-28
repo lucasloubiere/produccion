@@ -198,7 +198,7 @@ public class ComposicionFormulaBean extends GenericBean implements Serializable 
         composicionFormula.getItemsComponente().add(itemComponente);
 
     }
-    
+
     public void agregarItemProceso() {
 
         if (composicionFormula.getFormula() == null) {
@@ -219,32 +219,37 @@ public class ComposicionFormulaBean extends GenericBean implements Serializable 
         composicionFormula.getItemsProceso().add(itemProceso);
     }
 
-    public void eliminarItemComponente(ItemComposicionFormulaComponente ci) {
+    public void eliminarItemComponente(ItemComposicionFormulaComponente ic) {
 
         try {
+
+            if (ic == null) {
+                return;
+            }
+
             if (composicionFormula.getItemsComponente() == null) {
                 return;
             }
 
-            composicionFormula.getItemsComponente().remove(ci);
+            composicionFormula.getItemsComponente().remove(ic);
 
             if (!esNuevo) {
-                composicionFormulaRN.eliminarItemComponente(ci);
-            }   
-            
-            buscar();            
+                composicionFormulaRN.eliminarItemComponente(ic);
+            }
+
+            buscar();
             //composicionFormula = composicionFormulaRN.getComprosicionFormula(composicionFormula.getArtcod(), composicionFormula.getCodfor());
 
-            if (ci.getProductoComponente() == null) {
-                JsfUtil.addWarningMessage("Se ha elininado el item");
+            if (ic.getProductoComponente() == null) {
+                JsfUtil.addWarningMessage("Se ha eliminado el item");
             } else {
-                JsfUtil.addWarningMessage("Se ha elininado el producto " + ci.getProductoComponente().getDescripcion());
+                JsfUtil.addWarningMessage("Se ha elininado el producto " + ic.getProductoComponente().getDescripcion());
             }
 
         } catch (Exception exception) {
 
             JsfUtil.addErrorMessage("No es posible eliminar el item");
-            composicionFormula.getItemsComponente().add(ci);
+            composicionFormula.getItemsComponente().add(ic);
         }
 
     }
@@ -293,8 +298,5 @@ public class ComposicionFormulaBean extends GenericBean implements Serializable 
     public void setItemProceso(ItemComposicionFormulaProceso itemProceso) {
         this.itemProceso = itemProceso;
     }
-    
-    
 
-    
 }

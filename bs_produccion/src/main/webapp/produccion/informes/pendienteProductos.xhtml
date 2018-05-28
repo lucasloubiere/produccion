@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+
+    <ui:define name="titulo">
+        #{pendientePorProductoBean.titulo}
+    </ui:define>
+
+    <ui:define name="panelPrincipal">
+
+        <p:panel header="#{pendientePorProductoBean.titulo}" style="width:100%">
+
+            <p:messages showDetail="true" />
+
+            <p:tabView style="min-height: 300px;">
+
+                <p:tab title="Filtros">
+                    <h:panelGrid columns="2" columnClasses="colLabel,colDato" >
+
+                        <h:outputText value="Producto: " />
+                        <h:panelGroup>
+                            <p:inputText value="#{buscadorProductoBean.producto.artcod}" readonly="true" size="20" />
+                            <p:spacer width="5" />
+                            <p:inputText value="#{buscadorProductoBean.producto.descrp}" readonly="true" size="60" />
+                            <p:spacer width="5" />
+                            <p:commandButton icon="find16" value="Buscar" oncomplete="dlgProducto.show()" />
+                            <p:spacer width="5" />
+                            <p:commandButton icon="clean16" value="Limpiar"
+                                             action="#{buscadorProductoBean.limpiarProducto}"
+                                             update="@form" />
+
+
+
+                        </h:panelGroup>
+
+                    </h:panelGrid>
+
+                </p:tab>
+
+            </p:tabView>
+
+            <p:commandButton value="Ver informe" icon="ok16" style="margin: 5px;"
+                                 action="#{pendientePorProductoBean.imprimir}"
+                                 update="@form"
+                                 ajax="false" />
+        </p:panel>
+
+        <ui:include src="../../inventario/buscadorProducto.xhtml" />
+
+    </ui:define>
+
+</ui:composition>
+
+</html>

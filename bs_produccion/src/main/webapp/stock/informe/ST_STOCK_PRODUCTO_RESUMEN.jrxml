@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockProductoFecha" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="86fa7a8a-9e1b-4494-9289-7091d25b277c">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockProductoFechaResumen" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="86fa7a8a-9e1b-4494-9289-7091d25b277c">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -106,8 +106,6 @@
 	<parameter name="FCHHHAS" class="java.sql.Timestamp"/>
 	<queryString>
 		<![CDATA[SELECT
-		st_movimiento_item.DEPOSI,
-		st_deposito.DESCRIPCION as st_deposito_DESCRP,
 		st_movimiento_item.ARTCOD,
 		st_producto.DESCRIPCION AS st_producto_DESCRP ,
 		st_producto.UNIMED,
@@ -116,7 +114,7 @@
 FROM 	st_movimiento_item,
 		st_producto,
 		st_deposito,
-                     zz_temporal,
+		zz_temporal,
 		ad_empresa
 
 WHERE	st_movimiento_item.ARTCOD = st_producto.CODIGO
@@ -125,15 +123,10 @@ and zz_temporal.codigo = st_movimiento_item.artcod
 And (st_movimiento_item.FCHMOV <= $P{FCHHHAS})
 
 GROUP BY st_movimiento_item.ARTCOD,
-         st_movimiento_item.DEPOSI,
          st_producto.DESCRIPCION,
          st_producto.UNIMED
 ORDER BY st_movimiento_item.ARTCOD, st_movimiento_item.DEPOSI]]>
 	</queryString>
-	<field name="DEPOSI" class="java.lang.String">
-		<fieldDescription><![CDATA[Depósito]]></fieldDescription>
-	</field>
-	<field name="st_deposito_DESCRP" class="java.lang.String"/>
 	<field name="ARTCOD" class="java.lang.String">
 		<fieldDescription><![CDATA[Producto]]></fieldDescription>
 	</field>
@@ -193,62 +186,6 @@ ORDER BY st_movimiento_item.ARTCOD, st_movimiento_item.DEPOSI]]>
 	<field name="LOGO" class="java.lang.String">
 		<fieldDescription><![CDATA[Path Logo]]></fieldDescription>
 	</field>
-	<variable name="SUM_CANTID" class="java.math.BigDecimal" resetType="Group" resetGroup="GRUPO_1" calculation="Sum">
-		<variableExpression><![CDATA[$F{CANTIDAD}]]></variableExpression>
-		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>
-	</variable>
-	<group name="GRUPO_1">
-		<groupExpression><![CDATA[$F{ARTCOD}]]></groupExpression>
-		<groupHeader>
-			<band height="13">
-				<rectangle>
-					<reportElement x="0" y="0" width="555" height="13" backcolor="#CCCCCC" uuid="ca009090-0c54-4f7e-807c-599c9d3f3d39"/>
-					<graphicElement>
-						<pen lineWidth="0.0"/>
-					</graphicElement>
-				</rectangle>
-				<textField>
-					<reportElement x="0" y="0" width="65" height="12" uuid="093551fb-1d83-4bd6-af50-f05246b72c45"/>
-					<textElement textAlignment="Center">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{ARTCOD}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="65" y="0" width="412" height="12" uuid="d77c9ce7-638f-401d-b9e9-be46bfa32ccd"/>
-					<textElement>
-						<font size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{st_producto_DESCRP}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="12">
-				<textField pattern="#,##0.00">
-					<reportElement x="455" y="0" width="73" height="12" uuid="82df26dd-bb24-4745-ba75-96cc0b493c6c"/>
-					<textElement textAlignment="Right">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{SUM_CANTID}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="355" y="0" width="100" height="12" uuid="91a997a3-5db0-481e-9ff7-b67b2091d766"/>
-					<textElement textAlignment="Right">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Total]]></text>
-				</staticText>
-				<textField pattern="###0.00">
-					<reportElement x="528" y="0" width="27" height="12" uuid="6cbe4381-9eec-45ee-8c6c-c0019e648e97"/>
-					<textElement textAlignment="Center">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{UNIMED}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -295,58 +232,66 @@ ORDER BY st_movimiento_item.ARTCOD, st_movimiento_item.DEPOSI]]>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="17" splitType="Stretch">
+		<band height="42" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="555" height="15" backcolor="#99CCFF" uuid="dafaaeae-b392-406f-a23b-9d756a773c41"/>
+				<reportElement x="0" y="20" width="555" height="15" backcolor="#99CCFF" uuid="dafaaeae-b392-406f-a23b-9d756a773c41"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="65" height="15" uuid="20566d22-f647-482d-b49e-ab828fe4802f"/>
+				<reportElement x="0" y="20" width="65" height="15" uuid="20566d22-f647-482d-b49e-ab828fe4802f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="65" y="0" width="390" height="15" uuid="b61af709-5833-4a4b-95c4-8cd8bc463aef"/>
+				<reportElement x="65" y="20" width="390" height="15" uuid="b61af709-5833-4a4b-95c4-8cd8bc463aef"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="455" y="0" width="73" height="15" uuid="a24bce5c-1745-4d7c-b435-8590c908bdb5"/>
+				<reportElement x="455" y="20" width="73" height="15" uuid="a24bce5c-1745-4d7c-b435-8590c908bdb5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Stock]]></text>
+				<text><![CDATA[Stock Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="528" y="0" width="27" height="15" uuid="90702d5f-b09e-4e0e-a8e9-f924e65dda9b"/>
+				<reportElement x="528" y="20" width="27" height="15" uuid="90702d5f-b09e-4e0e-a8e9-f924e65dda9b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[U.M.]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="3" y="3" width="45" height="15" uuid="482f8770-8763-4933-a622-3013df7c0baa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="48" y="5" width="100" height="12" uuid="becbb69f-acef-4612-a946-988fa67257dc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FCHHHAS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="16">
+		<band height="17">
 			<textField pattern="#,##0.00">
-				<reportElement x="455" y="0" width="73" height="12" uuid="8a4172d3-84a1-4bff-ace7-d030baf05352"/>
+				<reportElement x="441" y="1" width="87" height="12" uuid="8a4172d3-84a1-4bff-ace7-d030baf05352"/>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
+					<paragraph rightIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="128" y="0" width="327" height="12" uuid="9bed7816-d6c6-470e-b87e-d55f9bf98e75"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{st_deposito_DESCRP}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="12" width="555" height="1" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="5437c4b2-f1c4-47cb-af78-8f09cfa47773"/>
@@ -354,9 +299,23 @@ ORDER BY st_movimiento_item.ARTCOD, st_movimiento_item.DEPOSI]]>
 			<textField pattern="###0.00">
 				<reportElement x="528" y="0" width="27" height="12" uuid="7d1814da-57d7-4951-9a94-3ec121edb8c7"/>
 				<textElement textAlignment="Center">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{UNIMED}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="1" width="376" height="12" uuid="d77c9ce7-638f-401d-b9e9-be46bfa32ccd"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{st_producto_DESCRP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="65" height="12" uuid="093551fb-1d83-4bd6-af50-f05246b72c45"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ARTCOD}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

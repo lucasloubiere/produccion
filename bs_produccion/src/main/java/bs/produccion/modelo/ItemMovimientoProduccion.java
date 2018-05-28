@@ -103,11 +103,17 @@ public abstract class ItemMovimientoProduccion implements Serializable, IAuditab
     @Column(name = "cantst", precision=10, scale = 2)
     private BigDecimal cantidadStock;
     
-    @Column(name = "cntori", precision=2)
+    @Column(name = "cntori", precision=10, scale = 2)
     private BigDecimal cantidadOriginal;
     
-    @Column(name = "cntpen", precision=2)
+    @Column(name = "cntpen", precision=10, scale = 2)
     private BigDecimal cntpen;
+    
+    @Column(name = "cntnom", precision=10, scale = 2)
+    private BigDecimal cantidadNominal;
+            
+    @Column(name = "grupo", length = 20)
+    private String grupo;
     
     @ManyToOne
     @JoinColumn(name = "unimed", referencedColumnName = "codigo", nullable = false)
@@ -458,6 +464,22 @@ public abstract class ItemMovimientoProduccion implements Serializable, IAuditab
 
     public void setProduccion(BigDecimal produccion) {
         this.produccion = produccion;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
+    public BigDecimal getCantidadNominal() {
+        return cantidadNominal;
+    }
+
+    public void setCantidadNominal(BigDecimal cantidadNominal) {
+        this.cantidadNominal = cantidadNominal;
     }
         
     @Override

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template.xhtml" >
+
+    <f:metadata>
+        <f:viewParam name="nroComprobante" value="#{pendientePorComprobanteBean.nrofor}"/>
+        <!--<f:event type="preRenderView" listener="#{pendientePorComprobanteBean.preCargaDatos()}" />-->
+    </f:metadata>
+
+    <ui:define name="titulo">
+        #{pendientePorComprobanteBean.titulo}
+    </ui:define>
+
+    <ui:define name="panelPrincipal">
+
+            <p:panel header="#{pendientePorComprobanteBean.titulo}" style="width:100%">
+
+                <p:messages showDetail="true" />
+
+                <p:tabView style="min-height: 300px;">
+
+                    <p:tab title="Filtros">
+                        <h:panelGrid columns="2" columnClasses="colLabel,colDato" width="400" >
+                            
+                            <h:outputText value="Nro comprobante" />
+                            <p:inputText value="#{pendientePorComprobanteBean.nrofor}"
+                                         required="false"
+                                         requiredMessage="El número de comprobante es obligatorio">
+
+                                <f:convertNumber pattern="0" />
+
+                            </p:inputText>                           
+
+                        </h:panelGrid>                      
+                    </p:tab>
+                    
+                </p:tabView>
+
+                <p:commandButton value="Ver informe" icon="ok16" style="margin: 5px;"
+                             action="#{pendientePorComprobanteBean.imprimir}"
+                             update="@form"
+                             ajax="false"  />
+
+            </p:panel>
+    
+    </ui:define>
+
+</ui:composition>
+
+</html>

@@ -5,7 +5,6 @@
 
 package bs.produccion.modelo;
 
-
 import bs.global.auditoria.AuditoriaListener;
 import bs.global.auditoria.IAuditableEntity;
 import bs.global.modelo.Auditoria;

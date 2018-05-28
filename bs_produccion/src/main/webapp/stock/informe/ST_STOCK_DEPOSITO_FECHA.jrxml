@@ -348,7 +348,7 @@ GROUP BY
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{FCHHAS}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{FCHHHAS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

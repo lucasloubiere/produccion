@@ -6,6 +6,7 @@ package bs.produccion.dao;
 
 import bs.global.dao.BaseDAO;
 import bs.produccion.modelo.ItemAplicacionProduccion;
+import bs.produccion.modelo.ItemComponenteProduccion;
 import bs.produccion.modelo.ItemProductoProduccion;
 import bs.produccion.modelo.MovimientoProduccion;
 import bs.produccion.vista.PendienteProduccionDetalle;
@@ -108,6 +109,7 @@ public class ProduccionDAO extends BaseDAO {
         
         String sQuery = "SELECT p FROM PendienteProduccionGrupo p ";
                sQuery += generarStringFiltro(filtroGrupo,"p", true);
+               sQuery += " order by p.nrofor DESC ";
 
         sincronizacionTemporal("pd_pendiente_grupo");
         return queryList(PendienteProduccionGrupo.class, sQuery);
@@ -209,7 +211,18 @@ public class ProduccionDAO extends BaseDAO {
             e.printStackTrace();
             System.err.println("Error al obtener ItemAplicacionProduccion de compra");
             return null;
-        }       
-        
+        }               
+    }
+    
+    public ItemProductoProduccion getItemProducto(Integer id) {
+       return getObjeto(ItemProductoProduccion.class, id);
+    }
+
+    public ItemAplicacionProduccion getItemProductoAplicacion(Integer id) {
+       return getObjeto(ItemAplicacionProduccion.class, id);
+    }
+
+    public ItemComponenteProduccion getItemComponente(Integer id) {
+       return getObjeto(ItemComponenteProduccion.class, id);
     }
 }

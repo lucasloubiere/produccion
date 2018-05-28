@@ -59,9 +59,6 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "estado", length = 1)
-    private String estado;
-
     @JoinColumns({
         @JoinColumn(name = "circom", referencedColumnName = "circom", nullable = false),
         @JoinColumn(name = "cirapl", referencedColumnName = "cirapl", nullable = false)
@@ -161,6 +158,10 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
     @JoinColumn(name = "id_mst", referencedColumnName = "id")
     private MovimientoStock movimientoStock;
 
+//    @JoinColumn(name = "id_tar", referencedColumnName = "id")
+//    @ManyToOne(optional = false)
+//    private Tarea tarea;
+
     @Lob
     @Column(name = "observ", length = 2147483647)
     private String observaciones;
@@ -173,6 +174,9 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch = FetchType.LAZY)
     private List<ItemProcesoProduccion> itemsProceso;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch = FetchType.LAZY)
+    private List<ItemHorarioProduccion> itemsHorario;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch = FetchType.LAZY)
     private List<ItemAplicacionProduccion> itemsAplicacion;
@@ -215,26 +219,20 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
 
     public MovimientoProduccion() {
         
-        estado = "1";
-
         fechaMovimiento = new Date();
         fechaRequerida = new Date();
 
         itemsProducto = new ArrayList<ItemProductoProduccion>();
         itemsComponente = new ArrayList<ItemComponenteProduccion>();
         itemsProceso = new ArrayList<ItemProcesoProduccion>();
+        itemsHorario = new ArrayList<ItemHorarioProduccion>();
         itemsAplicacion = new ArrayList<ItemAplicacionProduccion>();
 
-//        itemsProductoAplicacion = new ArrayList<ItemAplicacionProduccion>();
-//        itemsEstructuraAplicacion = new ArrayList<ItemEstructuraProduccionAplicacion>();
-//        itemsComponenteAplicacion = new ArrayList<ItemMateriaPrimaAplicacionProduccion>();
         this.auditoria = new Auditoria();
     }
 
     public MovimientoProduccion(Formulario formulario) {
         
-        estado = "1";
-
         fechaMovimiento = new Date();
         fechaRequerida = new Date();
 
@@ -243,6 +241,7 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
         itemsProducto = new ArrayList<ItemProductoProduccion>();
         itemsComponente = new ArrayList<ItemComponenteProduccion>();
         itemsProceso = new ArrayList<ItemProcesoProduccion>();
+        itemsHorario = new ArrayList<ItemHorarioProduccion>();
         itemsAplicacion = new ArrayList<ItemAplicacionProduccion>();
     }
 
@@ -566,13 +565,13 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
         this.noSincronizaNumeroFormulario = noSincronizaNumeroFormulario;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+//    public Tarea getTarea() {
+//        return tarea;
+//    }
+//
+//    public void setTarea(Tarea tarea) {
+//        this.tarea = tarea;
+//    }
 
     public Planta getPlanta() {
         return planta;
@@ -580,6 +579,14 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
 
     public void setPlanta(Planta planta) {
         this.planta = planta;
+    }
+
+    public List<ItemHorarioProduccion> getItemsHorario() {
+        return itemsHorario;
+    }
+
+    public void setItemsHorario(List<ItemHorarioProduccion> itemsHorario) {
+        this.itemsHorario = itemsHorario;
     }
     
     @Override

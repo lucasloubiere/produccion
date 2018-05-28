@@ -6,6 +6,7 @@
 package bs.produccion.vista;
 
 import bs.produccion.modelo.MovimientoProduccion;
+import bs.produccion.modelo.Operario;
 import bs.stock.modelo.Producto;
 import bs.stock.modelo.UnidadMedida;
 import java.io.Serializable;
@@ -91,10 +92,17 @@ public class PendienteProduccionDetalle implements Serializable {
     private BigDecimal precio;
     @Column(precision = 10, scale = 2)
     private BigDecimal presec;
+    
+    @Column(nullable = false, length = 20)
+    private String grupo;
 
     @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Producto producto;
+    
+    @JoinColumn(name = "operar", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne
+    private Operario operario;
 
     //Unidad de medida
     @JoinColumn(name = "unimed", referencedColumnName = "codigo")
@@ -258,6 +266,22 @@ public class PendienteProduccionDetalle implements Serializable {
 
     public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
+    public Operario getOperario() {
+        return operario;
+    }
+
+    public void setOperario(Operario operario) {
+        this.operario = operario;
     }
     
     @Override

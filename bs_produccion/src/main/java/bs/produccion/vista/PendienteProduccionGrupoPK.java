@@ -21,6 +21,10 @@ public class PendienteProduccionGrupoPK implements Serializable {
     private Date fchmov;
     private String formul;
     private String stocks;
+    private String tipitm;
+    private String grupo;
+            
+            
 
     public PendienteProduccionGrupoPK() {
     }
@@ -89,21 +93,38 @@ public class PendienteProduccionGrupoPK implements Serializable {
         this.formul = formul;
     }
 
+    public String getTipitm() {
+        return tipitm;
+    }
+
+    public void setTipitm(String tipitm) {
+        this.tipitm = tipitm;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 19 * hash + (this.circom != null ? this.circom.hashCode() : 0);
-        hash = 19 * hash + this.idMapl;
-        hash = 19 * hash + (this.modfor != null ? this.modfor.hashCode() : 0);
-        hash = 19 * hash + (this.codfor != null ? this.codfor.hashCode() : 0);
-        hash = 19 * hash + this.nrofor;
-        hash = 19 * hash + (this.fchmov != null ? this.fchmov.hashCode() : 0);
-        hash = 19 * hash + (this.formul != null ? this.formul.hashCode() : 0);
-        hash = 19 * hash + (this.stocks != null ? this.stocks.hashCode() : 0);
+        int hash = 5;
+        hash = 13 * hash + (this.circom != null ? this.circom.hashCode() : 0);
+        hash = 13 * hash + this.idMapl;
+        hash = 13 * hash + (this.modfor != null ? this.modfor.hashCode() : 0);
+        hash = 13 * hash + (this.codfor != null ? this.codfor.hashCode() : 0);
+        hash = 13 * hash + this.nrofor;
+        hash = 13 * hash + (this.fchmov != null ? this.fchmov.hashCode() : 0);
+        hash = 13 * hash + (this.formul != null ? this.formul.hashCode() : 0);
+        hash = 13 * hash + (this.stocks != null ? this.stocks.hashCode() : 0);
+        hash = 13 * hash + (this.tipitm != null ? this.tipitm.hashCode() : 0);
+        hash = 13 * hash + (this.grupo != null ? this.grupo.hashCode() : 0);
         return hash;
     }
-   
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -137,6 +158,12 @@ public class PendienteProduccionGrupoPK implements Serializable {
         if ((this.stocks == null) ? (other.stocks != null) : !this.stocks.equals(other.stocks)) {
             return false;
         }
+        if ((this.tipitm == null) ? (other.tipitm != null) : !this.tipitm.equals(other.tipitm)) {
+            return false;
+        }
+        if ((this.grupo == null) ? (other.grupo != null) : !this.grupo.equals(other.grupo)) {
+            return false;
+        }
         if (this.fchmov != other.fchmov && (this.fchmov == null || !this.fchmov.equals(other.fchmov))) {
             return false;
         }
@@ -145,7 +172,7 @@ public class PendienteProduccionGrupoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "PendienteProduccionGrupoPK{" + "circom=" + circom + ", idMapl=" + idMapl + ", modfor=" + modfor + ", codfor=" + codfor + ", nrofor=" + nrofor + ", fchmov=" + fchmov + ", formul=" + formul + ", stocks=" + stocks + '}';
+        return "PendienteProduccionGrupoPK{" + "circom=" + circom + ", idMapl=" + idMapl + ", modfor=" + modfor + ", codfor=" + codfor + ", nrofor=" + nrofor + ", fchmov=" + fchmov + ", formul=" + formul + ", stocks=" + stocks + ", tipitm=" + tipitm + ", grupo=" + grupo + '}';
     }
     
 }
