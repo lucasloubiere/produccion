@@ -74,7 +74,7 @@ public class StockDepositoFechaBean extends InformeBase implements Serializable 
     @Override
     public void cargarParametros() throws ExcepcionGeneralSistema {
 
-        parameters.put("FCHHAS", JsfUtil.getTimeStampSQL(fechaHoraHasta));
+        parameters.put("FCHHHAS", JsfUtil.getTimeStampSQL(fechaHoraHasta));
 
         if (deposito != null) {
             parameters.put("DEPOSI", deposito.getCodigo());

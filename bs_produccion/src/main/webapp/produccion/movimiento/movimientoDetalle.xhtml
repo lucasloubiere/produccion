@@ -30,7 +30,12 @@
                     <h:outputText value="#{i.producto.codigo}" rendered="#{not empty i.producto}" />
                 </p:column>
 
-                <p:column headerText="Producto" width="300" >                            
+                <p:column headerText="Producto" width="300" >            
+                    
+                    <p:autoComplete value="#{i.producto}" completeMethod="#{productoBean.complete}"
+                                        var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" converter="#{conversoresStock.producto}" forceSelection="true" />  
+                    
+                    <!--
                     <p:commandButton icon="fa fa-search" process="@this"                                                                                          
                                      oncomplete="PF('dlgProducto').show()"  >
                         <f:setPropertyActionListener value="#{i}" target="#{movimientoProduccionBean.itemProducto}" />
@@ -38,6 +43,14 @@
 
                     <h:outputText value="#{i.producto.descripcion}"                                   
                                   rendered="#{not empty i.producto}"/>
+                    -->
+                </p:column>
+                
+                <p:column headerText="Formula" width="100" >            
+                    
+                    <p:autoComplete value="#{i.cod}" completeMethod="#{formulaBean.complete}"
+                                    var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" converter="#{conversoresStock.formula}" forceSelection="true" />                      
+                    
                 </p:column>
 
                 <p:column headerText="Observaciones/Detalle" width="200" 
