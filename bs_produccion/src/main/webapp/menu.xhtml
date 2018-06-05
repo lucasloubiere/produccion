@@ -5,18 +5,18 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     xmlns:pa="http://primefaces.org/barcelona">
-    
+
     <div class="layout-sidebar">
         <pa:tabMenu>
             <pa:tab icon="home" title="Menú Principal">
                 <h:form id="menu-form">
                     <pa:menu widgetVar="me" model="#{principalBean.modelo}">
-                        
-                        
+
+
                     </pa:menu>
                 </h:form>
             </pa:tab>
-            
+            <!--
             <pa:tab icon="inbox" title="Mensajes">
                 <div class="inbox-tab">
                     <ul>
@@ -70,7 +70,9 @@
                     </div>
                 </div>
             </pa:tab>
+            -->
             
+            <!--
             <pa:tab icon="event" title="Calendario">
                 <div class="calendar-tab">
                     <ul>
@@ -120,9 +122,10 @@
                         </li>
                     </ul>
                 </div>
-            </pa:tab>                        
-             
+            </pa:tab>    
+            -->
+
         </pa:tabMenu>        
     </div>
-    
+
 </ui:composition>

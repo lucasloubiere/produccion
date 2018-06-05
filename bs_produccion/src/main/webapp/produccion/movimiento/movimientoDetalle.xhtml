@@ -32,13 +32,15 @@
 
                 <p:column headerText="Producto" width="300" >            
                     
-                    <p:autoComplete value="#{i.producto}" completeMethod="#{productoBean.complete}"
-                                        var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" converter="#{conversoresStock.producto}" forceSelection="true" />  
+                    <p:autoComplete value="#{i.producto}" completeMethod="#{productoBean.complete}" dropdown="true"
+                                        var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" converter="#{conversoresStock.producto}" forceSelection="true" >  
+                        <p:ajax event="itemSelect" listener="#{movimientoProduccionBean.procesarProducto(i)}" update="detalle" />                             
+                    </p:autoComplete>
                     
                     <!--
                     <p:commandButton icon="fa fa-search" process="@this"                                                                                          
                                      oncomplete="PF('dlgProducto').show()"  >
-                        <f:setPropertyActionListener value="#{i}" target="#{movimientoProduccionBean.itemProducto}" />
+                        
                     </p:commandButton>
 
                     <h:outputText value="#{i.producto.descripcion}"                                   
@@ -48,15 +50,17 @@
                 
                 <p:column headerText="Formula" width="100" >            
                     
-                    <p:autoComplete value="#{i.cod}" completeMethod="#{formulaBean.complete}"
-                                    var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" converter="#{conversoresStock.formula}" forceSelection="true" />                      
+                    <p:autoComplete value="#{i.formula}" completeMethod="#{formulaBean.complete}" dropdown="true"
+                                    var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" converter="#{conversoresStock.formula}" forceSelection="true" >                      
+                        <p:ajax event="itemSelect" listener="#{movimientoProduccionBean.procesarComponentesYProcesos(i)}" update="tb" />                             
+                    </p:autoComplete>
                     
                 </p:column>
 
                 <p:column headerText="Observaciones/Detalle" width="200" 
                           rendered="#{movimientoProduccionBean.muestroCampo('D','OBSERVA')}" >    
                     <p:inputTextarea value="#{i.observaciones}" rows="1"
-                                     rendered="#{i.todoOk or not empty i.producto}" /> 
+                                     rendered="#{not empty i.producto}" /> 
                 </p:column>
 
                 <p:column headerText="Cantidad" width="70" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
@@ -75,14 +79,14 @@
                     <h:outputText  value="#{i.unidadMedida.codigo}" rendered="#{not empty i.producto}" />
                 </p:column>
 
+                <!--
+                
                 <p:column headerText="Composición" width="60" styleClass="TexAlCenter" >
                     <p:rowToggler />
                 </p:column>
 
                 <p:rowExpansion>
-
                     <div class="Wid90 Fleft MarAuto WidAutoOnMobile">
-
                         <p:dataTable value="#{i.composicionFormula.itemsComponente}"  var="c" reflow="true"
                                      emptyMessage="No se encontraron datos">
 
@@ -108,6 +112,7 @@
                     </div>
 
                 </p:rowExpansion>
+                -->
 
                 <p:column headerText="" width="50" style="text-align: center;" >
 

@@ -9,8 +9,8 @@ package bs.produccion.modelo;
 import bs.global.auditoria.AuditoriaListener;
 import bs.global.auditoria.IAuditableEntity;
 import bs.global.modelo.Auditoria;
-import bs.stock.modelo.ComposicionFormula;
 import bs.stock.modelo.Deposito;
+import bs.stock.modelo.Formula;
 import bs.stock.modelo.Producto;
 import bs.stock.modelo.UnidadMedida;
 import java.io.Serializable;
@@ -30,7 +30,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -119,12 +118,9 @@ public abstract class ItemMovimientoProduccion implements Serializable, IAuditab
     @JoinColumn(name = "unimed", referencedColumnName = "codigo", nullable = false)
     private UnidadMedida unidadMedida;
         
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name = "artcod", referencedColumnName = "artcod", nullable = false, insertable=false, updatable=false),
-        @JoinColumn(name = "codfor", referencedColumnName = "codigo", nullable = false, insertable=true, updatable=true)
-    })    
-    private ComposicionFormula composicionFormula;
+    @ManyToOne
+    @JoinColumn(name = "formula", referencedColumnName = "codigo", nullable = false)
+    private Formula formula;
     
     @Column(name = "precio", precision = 4, scale = 6)
     private BigDecimal precio;
@@ -322,14 +318,14 @@ public abstract class ItemMovimientoProduccion implements Serializable, IAuditab
         this.unidadMedida = unidadMedida;
     }
 
-    public ComposicionFormula getComposicionFormula() {
-        return composicionFormula;
+    public Formula getFormula() {
+        return formula;
     }
 
-    public void setComposicionFormula(ComposicionFormula composicionFormula) {
-        this.composicionFormula = composicionFormula;
+    public void setFormula(Formula formula) {
+        this.formula = formula;
     }
-
+    
     public BigDecimal getPrecio() {
         return precio;
     }

@@ -574,6 +574,10 @@ public class MovimientoStockRN {
         if (m.getTipoMovimiento().equals("T")) {
             //Generamos la lista vacía
             m.setItemTransferencia(new ArrayList<ItemTransferenciaStock>());
+
+            if (m.getId() != null) {
+                inventarioDAO.borraItemsTransferencia(m.getId());
+            }
         } else {
             return;
         }
@@ -965,21 +969,21 @@ public class MovimientoStockRN {
         if (movExistente.getDepositoTransferencia() != null && !movExistente.getDepositoTransferencia().equals(ms.getDepositoTransferencia())) {
             movExistente.setDepositoTransferencia(ms.getDepositoTransferencia());
         }
-        
+
         int itmNuevo = 0;
         int itmExiste = 0;
 
         for (ItemProductoStock ipnuevo : movExistente.getItemsProducto()) {
-            
+
             itmNuevo++;
             itmExiste = 0;
 
             for (ItemProductoStock ipexistente : movExistente.getItemsProducto()) {
-                
+
                 itmExiste++;
-                
-                if(itmExiste == itmNuevo){
-                    
+
+                if (itmExiste == itmNuevo) {
+
                     ipexistente.setProducto(ipnuevo.getProducto());
                     ipexistente.setDeposito(ipnuevo.getDeposito());
                     ipexistente.setCantidad(ipnuevo.getCantidad());

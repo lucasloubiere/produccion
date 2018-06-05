@@ -56,7 +56,7 @@ import org.primefaces.event.FlowEvent;
 public class MovimientoProduccionBean extends GenericBean implements Serializable {
 
     @EJB
-    private ProduccionRN produccionRN;    
+    private ProduccionRN produccionRN;
     @EJB
     private ComposicionFormulaRN composicionFormulaRN;
     @EJB
@@ -239,7 +239,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
         if (circom == null) {
             circom = "";
         }
-        
+
         seleccionaPendiente = (!circom.equals(cirapl));
     }
 
@@ -261,8 +261,8 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
         try {
             m = produccionRN.guardar(m);
-            
-            JsfUtil.addInfoMessage("El documento " + m.getFormulario().getDescripcion() + "-" + m.getNumeroFormulario() + " se guardó correctamente", "");            
+
+            JsfUtil.addInfoMessage("El documento " + m.getFormulario().getDescripcion() + "-" + m.getNumeroFormulario() + " se guardó correctamente", "");
 
             if (m.getValeConsumo() != null && m.getValeConsumo().isPersistido()) {
                 JsfUtil.addInfoMessage("El documento " + m.getValeConsumo().getComprobante().getDescripcion() + "-" + m.getValeConsumo().getNumeroFormulario() + " se guardó correctamente", "");
@@ -280,10 +280,10 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage("No es posible guardar comprobante: " + ex);
         }
     }
-    
+
     public void nuevoItemProducto() {
 
-        try {            
+        try {
             productoBean.setProducto(null);
             //Cargarmos un nuevo item en blanco
             m.getItemsProducto().add((ItemProductoProduccion) produccionRN.nuevoItemProducto(m));
@@ -293,10 +293,10 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage("No es posible agregar un nuevo item " + ex);
         }
     }
-    
+
     public void nuevoItemComponente() {
 
-        try {            
+        try {
             productoBean.setProducto(null);
             //Cargarmos un nuevo item en blanco
             m.getItemsComponente().add((ItemComponenteProduccion) produccionRN.nuevoItemComponente(m));
@@ -306,10 +306,10 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage("No es posible agregar un nuevo item " + ex);
         }
     }
-    
+
     public void nuevoItemProceso() {
 
-        try {            
+        try {
             productoBean.setProducto(null);
             //Cargarmos un nuevo item en blanco
             m.getItemsProceso().add((ItemProcesoProduccion) produccionRN.nuevoItemProceso(m));
@@ -319,11 +319,11 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage("No es posible agregar un nuevo item " + ex);
         }
     }
-    
+
     public void nuevoItemHorario() {
 
-        try {            
-            
+        try {
+
             //Cargarmos un nuevo item en blanco
             m.getItemsHorario().add((ItemHorarioProduccion) produccionRN.nuevoItemHorario(m));
 
@@ -332,8 +332,8 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage("No es posible agregar un nuevo item " + ex);
         }
     }
-    
-    public void procesarProducto() {
+
+    public void procesarProducto(ItemProductoProduccion itemProducto) {
 
         if (productoBean.getProducto() != null && m != null && itemProducto != null) {
 
@@ -348,7 +348,26 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             }
         }
     }
-    
+
+    public void procesarComponentesYProcesos(ItemProductoProduccion itemProducto) {
+                
+        System.err.println("Tu hermana ");
+
+        if (m != null && itemProducto != null && itemProducto.getFormula()!=null) {
+
+            try {
+                
+                System.err.println("en bolas...");
+                
+                produccionRN.agregarComponentesYProcesos(m, itemProducto);
+
+            } catch (ExcepcionGeneralSistema ex) {
+
+                JsfUtil.addErrorMessage("No es posible agregar componentes y procesos " + ex);
+            }
+        }
+    }
+
     public void agregarItem(ItemProductoProduccion item) {
         try {
 
@@ -373,8 +392,6 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
                 id.setAtributo7(item.getAtributo7());
             }
 
-            
-
             //Cargarmos un nuevo item en blanco            
             m.getItemsProducto().add((ItemProductoProduccion) produccionRN.nuevoItemProducto(m));
             productoBean.setProducto(null);
@@ -395,7 +412,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
-    
+
     public void agregarItemDetalleComponente(ItemComponenteProduccion nItem) {
         try {
 
@@ -406,7 +423,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
-   
+
     public boolean puedoAgregarItem(ItemProductoProduccion nItem) {
 
         if ((circuito.getItemUnico().equals("S")) && (m.getItemsProducto().size() > 1)) {
@@ -426,7 +443,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
         return true;
     }
-    
+
     public void eliminarItemProducto(ItemProductoProduccion nItem) {
 
         if (produccionRN.eliminarItemProducto(m, nItem)) {
@@ -435,7 +452,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addWarningMessage("No se ha borrado el item " + nItem.getProducto().getDescripcion() + "");
         }
     }
-    
+
     public void eliminarItemComponente(ItemComponenteProduccion nItem) {
 
         if (produccionRN.eliminarItemComponente(m, nItem)) {
@@ -444,7 +461,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addWarningMessage("No se ha borrado el item " + nItem.getProducto().getDescripcion() + "");
         }
     }
-    
+
     public void eliminarItemProceso(ItemProcesoProduccion nItem) {
 
         if (produccionRN.eliminarItemProceso(m, nItem)) {
@@ -453,7 +470,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addWarningMessage("No se ha borrado el item " + nItem.getProducto().getDescripcion() + "");
         }
     }
-    
+
     public void eliminarItemHorario(ItemHorarioProduccion nItem) {
 
         if (produccionRN.eliminarItemHorario(m, nItem)) {
@@ -462,8 +479,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addWarningMessage("No se ha borrado el item " + nItem.getProducto().getDescripcion() + "");
         }
     }
-    
-    
+
     /**
      * Se utiliza para el parte de producción, para elimimar items de los vales
      * de consumo y pr
@@ -494,7 +510,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage(e.getMessage());
         }
     }
-    
+
     public void eliminarItemDetalleComponente(ItemComponenteProduccion ip, ItemDetalleItemMovimientoProduccion nItem) {
 
         try {
@@ -509,7 +525,6 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage(e.getMessage());
         }
     }
-
 
     public void actualizarCantidades(ItemMovimientoProduccion nItem) {
 
@@ -686,7 +701,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
         try {
             if (!produccionRN.tengoItemsSeleccionados(itemsPendiente)) {
-                JsfUtil.addErrorMessage("No existen items pendientes seleccionados para generar el movimiento");                
+                JsfUtil.addErrorMessage("No existen items pendientes seleccionados para generar el movimiento");
                 context.addCallbackParam("todoOk", false);
                 return;
             }
@@ -727,19 +742,19 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.VC)) {
 
-            filtroGrupo.put("tipitm = ", "'C'");            
+            filtroGrupo.put("tipitm = ", "'C'");
         }
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PP)) {
-            filtroGrupo.put("tipitm = ", "'P'");            
+            filtroGrupo.put("tipitm = ", "'P'");
         }
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PR)) {
-            filtroGrupo.put("tipitm = ", "'R'");            
+            filtroGrupo.put("tipitm = ", "'R'");
         }
-        
+
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PH)) {
-            filtroGrupo.put("tipitm = ", "'H'");            
+            filtroGrupo.put("tipitm = ", "'H'");
         }
     }
 
@@ -769,7 +784,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             filtroDetalle.put("formul = ", "''");
             filtroDetalle.put("stocks = ", "'N'");
         }
-        
+
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PH)) {
             filtroDetalle.put("formul = ", "''");
             filtroDetalle.put("stocks = ", "'N'");
@@ -1220,5 +1235,5 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
     public void setItemProducto(ItemProductoProduccion itemProducto) {
         this.itemProducto = itemProducto;
     }
-    
+
 }

@@ -81,7 +81,7 @@ public class MovimientoStockDAO extends BaseDAO {
     public BigDecimal getStockAFecha(Producto p, Deposito d, Date fecha) {
 
         try {
-            
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 
             Query q = em.createNativeQuery(" SELECT ifnull(sum(st_movimiento_item.STOCK) ,0) "
@@ -90,7 +90,7 @@ public class MovimientoStockDAO extends BaseDAO {
                     + " WHERE st_movimiento_item.ARTCOD = ?1 "
                     + " AND st_movimiento_item.DEPOSI = ?2 "
                     + " AND st_movimiento.FCHMOV < ?3 ");
-            
+
             q.setParameter("1", p.getCodigo());
             q.setParameter("2", d.getCodigo());
             q.setParameter("3", sdf.format(fecha));
@@ -162,12 +162,12 @@ public class MovimientoStockDAO extends BaseDAO {
     }
 
     public void recalcularStock() {
-        
+
         try {
             Query q1 = em.createNativeQuery("DELETE FROM st_stock");
-            
+
             q1.executeUpdate();
-            
+
             Query q2 = em.createNativeQuery("INSERT INTO `st_stock` (`artcod`, `deposi`, `natri1`, `natri2`, `natri3`, `natri4`, `natri5`, `natri6`, `natri7`, "
                     + " `stocks`, `DEBAJA`, `FECALT`, `FECMOD`, `ULTOPR`) "
                     + " SELECT i.artcod, i.deposi,i.natri1,i.natri2,i.natri3,i.natri4,i.natri5,i.natri6,i.natri7, SUM(i.stock) as stocks,'N' as DEBAJA,CURDATE() AS FECALT, "
@@ -175,12 +175,19 @@ public class MovimientoStockDAO extends BaseDAO {
                     + " FROM st_movimiento_item i inner JOIN st_movimiento m on m.id = i.idcab"
                     + " GROUP BY i.artcod, i.deposi,"
                     + " i.natri1,i.natri2,i.natri3,i.natri4,i.natri5,i.natri6,i.natri7");
-            
+
             q2.executeUpdate();
-        } catch (Exception e) {            
-            
+        } catch (Exception e) {
+
             System.err.println("recalcularStock " + e);
         }
-        
+
+    }
+
+    public void borraItemsTransferencia(Integer id) {
+
+        Query q1 = em.createNativeQuery("DELETE FROM st_movimiento_item WHERE idcab = " + id + " and TIPITM = 'T'");
+        q1.executeUpdate();
+
     }
 }

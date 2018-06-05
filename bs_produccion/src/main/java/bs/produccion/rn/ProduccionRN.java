@@ -400,10 +400,21 @@ public class ProduccionRN {
     }
 
     public void agregarComponentesYProcesos(MovimientoProduccion movimiento, ItemProductoProduccion itemProducto) throws ExcepcionGeneralSistema {
-
-        ComposicionFormula composicionFormula = composicionFormulaRN.getComprosicionFormula(itemProducto.getProducto().getCodigo(), "STD");
-        itemProducto.setComposicionFormula(composicionFormula);
-
+        
+        if(itemProducto.getFormula()!=null){
+            System.err.println("le falta la formula...");
+            return;
+        }
+        
+        if(itemProducto.getProducto()!=null){
+            System.err.println("le falta el producto...");
+            return;
+        }
+        
+        System.err.println("me muestra...");
+               
+        ComposicionFormula composicionFormula = composicionFormulaRN.getComprosicionFormula(itemProducto.getProducto().getCodigo(), itemProducto.getFormula().getCodigo());
+        
         if (composicionFormula != null) {
 
             if (composicionFormula.getItemsComponente() == null && composicionFormula.getItemsProceso() == null) {
@@ -417,6 +428,8 @@ public class ProduccionRN {
                     movimiento.getItemsComponente().clear();
 
                     for (ItemComposicionFormulaComponente i : composicionFormula.getItemsComponente()) {
+                        
+                        System.err.println("su argolla...");
 
                         ItemComponenteProduccion itemComponente = nuevoItemComponente(movimiento);
 
@@ -1744,8 +1757,8 @@ public class ProduccionRN {
         itemNuevo.setActualizaStock(itemCopiar.getActualizaStock());
         itemNuevo.setGrupo(itemCopiar.getGrupo());
 
-        if (itemCopiar.getComposicionFormula() != null) {
-            itemNuevo.setComposicionFormula(itemCopiar.getComposicionFormula());
+        if (itemCopiar.getFormula()!= null) {
+            itemNuevo.setFormula(itemCopiar.getFormula());
         }
 
         //Si tiene asignado la toma de numero de serie se lo asignamos
@@ -1800,8 +1813,8 @@ public class ProduccionRN {
             iApl.setOperario(itemCopiar.getOperario());
             iApl.setPrecio(itemCopiar.getPrecio());
 
-            if (itemCopiar.getComposicionFormula() != null) {
-                iApl.setComposicionFormula(itemCopiar.getComposicionFormula());
+            if (itemCopiar.getFormula()!= null) {
+                iApl.setFormula(itemCopiar.getFormula());
             }
 
             iApl.setTodoOk(true);
@@ -1832,7 +1845,7 @@ public class ProduccionRN {
 
         if (itemPendiente.getFormul() != null && !itemPendiente.getFormul().isEmpty()) {
             ComposicionFormula composicionFormula = composicionFormulaRN.getComprosicionFormula(itemPendiente.getArtcod(), itemPendiente.getFormul());
-            itemNuevo.setComposicionFormula(composicionFormula);
+//            itemNuevo.setFormula(composicionFormula);
         }
 
         itemNuevo.setTodoOk(true);
@@ -1882,7 +1895,7 @@ public class ProduccionRN {
 
             if (itemPendiente.getFormul() != null && !itemPendiente.getFormul().isEmpty()) {
                 ComposicionFormula composicionFormula = composicionFormulaRN.getComprosicionFormula(itemPendiente.getArtcod(), itemPendiente.getFormul());
-                iApl.setComposicionFormula(composicionFormula);
+//                iApl.setFormula(composicionFormula);
             }
 
             iApl.setTodoOk(true);
