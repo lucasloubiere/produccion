@@ -120,6 +120,9 @@
 
             <p:remoteCommand name="procesarProducto" process="@this" update="@form" 
                              actionListener="#{movimientoProduccionBean.procesarProducto}" />
+            
+            <p:remoteCommand name="procesarFormula" process="@this" update="@form" 
+                             actionListener="#{movimientoProduccionBean.procesarFormula()}" />
 
             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="7000" />
 
@@ -237,6 +240,7 @@
 
         <ui:define name="dialogos" >
 
+            <ui:include src="/stock/busqueda/buscadorFormula.xhtml" />        
             <ui:include src="/stock/busqueda/buscadorProducto.xhtml" />        
             <ui:include src="/stock/busqueda/buscadorStock.xhtml" />
             <ui:include src="/produccion/busqueda/buscadorPendiente.xhtml" />            

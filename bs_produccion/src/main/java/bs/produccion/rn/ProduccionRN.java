@@ -31,6 +31,7 @@ import bs.produccion.vista.PendienteProduccionDetalle;
 import bs.produccion.vista.PendienteProduccionGrupo;
 import bs.stock.modelo.ComposicionFormula;
 import bs.stock.modelo.ComprobanteStock;
+import bs.stock.modelo.Formula;
 import bs.stock.modelo.ItemComposicionFormulaComponente;
 import bs.stock.modelo.ItemComposicionFormulaProceso;
 import bs.stock.modelo.MovimientoStock;
@@ -398,21 +399,18 @@ public class ProduccionRN {
             throw new ExcepcionGeneralSistema("No es posible agregar item " + ex);
         }
     }
+        
 
     public void agregarComponentesYProcesos(MovimientoProduccion movimiento, ItemProductoProduccion itemProducto) throws ExcepcionGeneralSistema {
         
-        if(itemProducto.getFormula()!=null){
-            System.err.println("le falta la formula...");
+        if(itemProducto.getFormula()==null){            
             return;
         }
         
-        if(itemProducto.getProducto()!=null){
-            System.err.println("le falta el producto...");
+        if(itemProducto.getProducto()==null){            
             return;
         }
-        
-        System.err.println("me muestra...");
-               
+              
         ComposicionFormula composicionFormula = composicionFormulaRN.getComprosicionFormula(itemProducto.getProducto().getCodigo(), itemProducto.getFormula().getCodigo());
         
         if (composicionFormula != null) {
@@ -429,8 +427,6 @@ public class ProduccionRN {
 
                     for (ItemComposicionFormulaComponente i : composicionFormula.getItemsComponente()) {
                         
-                        System.err.println("su argolla...");
-
                         ItemComponenteProduccion itemComponente = nuevoItemComponente(movimiento);
 
                         itemComponente.setProducto(i.getProductoComponente());
@@ -2420,8 +2416,8 @@ public class ProduccionRN {
             agregarComponentesYProcesos(itemProducto.getMovimiento(), itemProducto);
         }
     }
-
-    public void asignarComponente(ItemComponenteProduccion itemComponente, Producto producto) throws ExcepcionGeneralSistema {
+    
+    public void asignarComponente(ItemComponenteProduccion itemComponente, String grupo, Producto producto) throws ExcepcionGeneralSistema {
 
         if (itemComponente.getMovimiento().getMonedaSecundaria() == null) {
             JsfUtil.addWarningMessage("El comprobante no tiene una moneda secundaria asignada");
@@ -2430,7 +2426,7 @@ public class ProduccionRN {
 
         itemComponente.setProducto(producto);
         itemComponente.setProductoOriginal(producto);
-        itemComponente.setGrupo(producto.getCodigo());
+        itemComponente.setGrupo(grupo);
         itemComponente.setUnidadMedida(producto.getUnidadDeMedida());
         itemComponente.setActualizaStock(producto.getGestionaStock());
 
@@ -2483,6 +2479,17 @@ public class ProduccionRN {
 
         if (itemComponente.getCantidad() != null) {
             itemDetalle.setCantidad(itemComponente.getCantidad());
+        }
+    }
+    
+    public void asignarFormula(ItemProductoProduccion itemProducto, Formula formula) throws ExcepcionGeneralSistema {
+
+        itemProducto.setFormula(formula);
+        
+        //Si es comprobante de Orden de producción, agregamos los componentes
+        if (itemProducto.getMovimiento().getCircuito().getTipoMovimiento() == TipoMovimientoProduccion.OP) {
+
+            agregarComponentesYProcesos(itemProducto.getMovimiento(), itemProducto);
         }
     }
 

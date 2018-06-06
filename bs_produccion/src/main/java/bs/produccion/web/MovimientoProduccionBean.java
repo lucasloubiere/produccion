@@ -27,8 +27,10 @@ import bs.produccion.rn.ProduccionRN;
 import bs.produccion.vista.PendienteProduccionDetalle;
 import bs.produccion.vista.PendienteProduccionGrupo;
 import bs.seguridad.web.UsuarioSessionBean;
+import bs.stock.modelo.Formula;
 import bs.stock.modelo.Producto;
 import bs.stock.rn.ComposicionFormulaRN;
+import bs.stock.web.FormulaBean;
 import bs.stock.web.ProductoBean;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -98,6 +100,9 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
     @ManagedProperty(value = "#{productoBean}")
     protected ProductoBean productoBean;
+    
+    @ManagedProperty(value = "#{formulaBean}")
+    protected FormulaBean formulaBean;
 
     @ManagedProperty(value = "#{formularioProduccionBean}")
     protected FormularioProduccionBean formularioProduccionBean;
@@ -333,7 +338,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
         }
     }
 
-    public void procesarProducto(ItemProductoProduccion itemProducto) {
+    public void procesarProducto() {
 
         if (productoBean.getProducto() != null && m != null && itemProducto != null) {
 
@@ -349,17 +354,13 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
         }
     }
 
-    public void procesarComponentesYProcesos(ItemProductoProduccion itemProducto) {
-                
-        System.err.println("Tu hermana ");
-
-        if (m != null && itemProducto != null && itemProducto.getFormula()!=null) {
+    public void procesarFormula() {
+          
+        if (formulaBean.getFormula() != null && m != null && itemProducto != null) {
 
             try {
-                
-                System.err.println("en bolas...");
-                
-                produccionRN.agregarComponentesYProcesos(m, itemProducto);
+                Formula formula = formulaBean.getFormula();                
+                produccionRN.asignarFormula(itemProducto, formula);
 
             } catch (ExcepcionGeneralSistema ex) {
 
@@ -1236,4 +1237,12 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
         this.itemProducto = itemProducto;
     }
 
+    public FormulaBean getFormulaBean() {
+        return formulaBean;
+    }
+
+    public void setFormulaBean(FormulaBean formulaBean) {
+        this.formulaBean = formulaBean;
+    }
+    
 }
