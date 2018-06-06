@@ -250,8 +250,28 @@ public class StockDAO extends BaseDAO {
             System.out.println("getSumStockByProductoRefineria" + e );
             return new ArrayList<Stock>();
         }
-
+    }
+    
+    public void recalcularStock() {
         
+        try {
+            Query q1 = em.createNativeQuery("DELETE FROM st_stock");
+            
+            q1.executeUpdate();
+            
+            Query q2 = em.createNativeQuery("INSERT INTO `st_stock` (`artcod`, `deposi`, `natri1`, `natri2`, `natri3`, `natri4`, `natri5`, `natri6`, `natri7`, "
+                    + " `stocks`, `DEBAJA`, `FECALT`, `FECMOD`, `ULTOPR`) "
+                    + " SELECT i.artcod, i.deposi,i.natri1,i.natri2,i.natri3,i.natri4,i.natri5,i.natri6,i.natri7, SUM(i.stocks) as stocks,'N' as DEBAJA,CURDATE() AS FECALT, "
+                    + " CURDATE() AS FECMOD,'A' AS ULTOPR"
+                    + " FROM st_movimiento_item i inner JOIN st_movimiento m on m.id = i.ID_MCAB"
+                    + " GROUP BY i.artcod, i.deposi,"
+                    + " i.natri1,i.natri2,i.natri3,i.natri4,i.natri5,i.natri6,i.natri7");
+            
+            q2.executeUpdate();
+        } catch (Exception e) {            
+            
+            System.err.println("recalcularStock " + e);
+        }        
     }
 
     

@@ -83,7 +83,7 @@ public class MovimientoStockRN {
             inventarioDAO.crear(movimiento);
         } else {
             inventarioDAO.editar(movimiento);
-            recalcularStock();
+            stockRN.recalcularStock();
 
         }
 
@@ -806,16 +806,10 @@ public class MovimientoStockRN {
 
     }
 
-    public void recalcularStock() {
-
-        inventarioDAO.recalcularStock();
-
-    }
-
     public void eliminarMovimiento(Integer id) {
 
         inventarioDAO.eliminar(MovimientoStock.class, id);
-        recalcularStock();
+        stockRN.recalcularStock();
 
     }
 

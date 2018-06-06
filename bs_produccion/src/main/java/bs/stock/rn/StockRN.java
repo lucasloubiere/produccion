@@ -156,7 +156,12 @@ public class StockRN implements Serializable {
         
         return stockDAO.getSumStockByProductoRefineria();
     }
+    
+    public void recalcularStock(){
 
+        stockDAO.recalcularStock();
+
+    }
    
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
