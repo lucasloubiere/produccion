@@ -39,6 +39,10 @@ public class Operario implements Serializable {
     @ManyToOne
     private Planta planta;
 
+    @JoinColumn(name = "codsec", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne
+    private Sector sector;
+
     @Embedded
     private Auditoria auditoria;
 
@@ -78,6 +82,14 @@ public class Operario implements Serializable {
 
     public void setPlanta(Planta planta) {
         this.planta = planta;
+    }
+
+    public Sector getSector() {
+        return sector;
+    }
+
+    public void setSector(Sector sector) {
+        this.sector = sector;
     }
     
     public Auditoria getAuditoria() {

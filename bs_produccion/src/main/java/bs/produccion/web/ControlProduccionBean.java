@@ -211,9 +211,14 @@ public class ControlProduccionBean extends GenericBean implements Serializable {
             detalleProduccion.add(d08);
             detalleProduccion.add(d09);
             detalleProduccion.add(d10);
-            detalleProduccion.add(d11);            
+            detalleProduccion.add(d11);
+            
             
             produccionAnulada = new ArrayList<String[]>();
+            
+            
+            
+            
             
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);

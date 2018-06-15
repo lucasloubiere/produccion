@@ -12,7 +12,7 @@ import bs.global.modelo.Sucursal;
 import bs.global.rn.FormularioRN;
 import bs.global.rn.MonedaRN;
 import bs.global.rn.SucursalRN;
-import bs.produccion.modelo.ItemDetalleItemMovimientoProduccion;
+import bs.produccion.modelo.ItemDetalleMovimientoProduccion;
 import bs.produccion.modelo.ItemProductoProduccion;
 import bs.produccion.modelo.MovimientoProduccion;
 import bs.stock.dao.ComprobanteStockDAO;
@@ -835,8 +835,8 @@ public class MovimientoStockRN {
                     && itemProductoProduccion.getProducto().getTipoProducto().getGestionaStock().equals("S")
                     && itemProductoProduccion.getProducto().getGestionaStock().equals("S")) {
 
-                for (ItemDetalleItemMovimientoProduccion itemDetalleProduccion : itemProductoProduccion.getItemDetalle()) {
-
+                for (ItemDetalleMovimientoProduccion itemDetalleProduccion : itemProductoProduccion.getItemDetalle()) {
+                    
                     ItemProductoStock itemProductoStock = nuevoItemProducto(movimientoStock);
                     itemProductoStock.setProducto(itemDetalleProduccion.getProducto());
                     itemProductoStock.setObservaciones(itemProductoProduccion.getObservaciones());
