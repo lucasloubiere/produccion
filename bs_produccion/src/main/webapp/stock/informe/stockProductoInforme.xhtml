@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:bs="http://java.sun.com/jsf/composite/components/beansoft">
+
+    <ui:composition template="/template.xhtml" >
+
+        <f:metadata>                
+            <f:viewParam name="TITULO" value="#{stockProductoResumenBean.titulo}"/>
+            <f:viewParam name="CODREP" value="#{stockProductoResumenBean.codigoReporte}"/>
+            <f:viewParam name="NOMARC" value="#{stockProductoResumenBean.nombreArchivo}"/>
+        </f:metadata>
+
+        <ui:define name="titulo" >
+            #{stockProductoResumenBean.titulo}
+        </ui:define>
+
+
+        <ui:define name="contenido" >
+
+            <p:panel header="#{stockProductoResumenBean.titulo}"  >
+
+                <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="4000" />
+
+                <p:spacer width="100%" height="1em" />    
+
+                <p:panelGrid columns="2" layout="grid"                               
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="Container40, Container60 ui-datafield" >
+                    
+                    <h:outputText value="Fecha hasta" />
+                    <p:calendar value="#{stockProductoResumenBean.fechaHoraHasta}" pattern="dd/MM/yyyy HH:mm" timeControlObject=""  
+                                required="true" requiredMessage="La fecha hasta es obligatoria" />
+
+                    <h:outputText value="Producto" />
+                    <p:selectManyMenu value="#{stockProductoResumenBean.lista}" 
+                                      converter="#{conversoresStock.producto}"
+                                      var="d" filter="true" filterMatchMode="contains" showCheckbox="true" >
+
+                        <f:selectItems  value="#{productoBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}" /> 
+
+                        <p:column>
+                            <h:outputText value="#{d.descripcion}" />
+                        </p:column>
+
+                    </p:selectManyMenu>
+
+                </p:panelGrid>
+
+
+                <p:spacer width="100%" height="1em" />
+
+                <!-- ACCIONES -->
+                <p:panelGrid columns="3" layout="grid" 
+                             styleClass="ui-panelgrid-blank" >
+
+                    <p:commandButton value="Ver reporte" icon="fa fa-print"
+                                     actionListener="#{stockProductoResumenBean.reporteToPdf}"
+                                     update="@form" />
+
+                    <p:commandButton value="A Excel" icon="fa fa-file-excel-o"
+                                     actionListener="#{stockProductoResumenBean.reporteToXls}"
+                                     update="@form"
+                                     ajax="false" />
+
+                    <p:commandButton value="Limpiar Filtros" icon="fa fa-trash" process="@this"
+                                     actionListener="#{stockProductoResumenBean.resetParametros}"
+                                     update="@form" />
+
+                </p:panelGrid>
+
+            </p:panel>  
+
+            <p:spacer width="100%" height="1em" />
+
+            <!-- REPORTE -->
+            <bs:dialogoReporte muestraReporte="#{stockProductoResumenBean.muestraReporte}" 
+                               nombreArchivo="#{stockProductoResumenBean.nombreArchivo}" />
+
+        </ui:define>
+
+        <!--
+        <ui:define name="dialogos" >        
+            <ui:include src="/stock/busqueda/buscadorProducto.xhtml" />        
+        </ui:define>
+        -->
+
+
+    </ui:composition>
+
+</html>
+

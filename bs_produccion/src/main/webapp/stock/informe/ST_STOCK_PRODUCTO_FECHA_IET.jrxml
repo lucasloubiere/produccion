@@ -119,7 +119,7 @@
 		 AND i1.artcod = i.artcod
 		 And i1.FCHMOV > DATE_ADD($P{FCHHHAS}, INTERVAL -1 DAY) And i1.FCHMOV < $P{FCHHHAS}) as INGRESOS,
 
-		(SELECT IFNULL(Sum(i1.STOCK),0) FROM st_movimiento_item i1
+		(SELECT IFNULL(Sum(i1.STOCK),0)*-1 FROM st_movimiento_item i1
 		 WHERE i1.stock < 0
 		 AND i1.artcod = i.artcod
 		 And i1.FCHMOV > DATE_ADD($P{FCHHHAS}, INTERVAL -1 DAY) And i1.FCHMOV < $P{FCHHHAS}) as EGRESOS,
