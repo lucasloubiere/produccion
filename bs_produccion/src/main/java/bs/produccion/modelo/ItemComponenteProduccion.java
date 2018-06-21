@@ -11,7 +11,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  *
@@ -25,21 +28,56 @@ import javax.persistence.OneToMany;
 public class ItemComponenteProduccion extends ItemMovimientoProduccion {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemComponente", fetch = FetchType.LAZY)
-    private List<ItemDetalleItemComponenteProduccion> itemDetalle;
+    private List<ItemDetalleComponenteProduccion> itemDetalle;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_IAPL", referencedColumnName = "id")
+    private ItemComponenteProduccion itemAplicado;
+
+    @OneToMany(mappedBy = "itemAplicado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ItemComponenteProduccion> itemsAplicacion;
+    
+    @Transient
+    private List<ItemDetalleComponenteProduccion> itemDetalleTemporal;
     
     
     public ItemComponenteProduccion() {
         super();
-        this.itemDetalle = new ArrayList<ItemDetalleItemComponenteProduccion>();
+        this.itemDetalle = new ArrayList<ItemDetalleComponenteProduccion>();
     }
 
-    public List<ItemDetalleItemComponenteProduccion> getItemDetalle() {
+    public List<ItemDetalleComponenteProduccion> getItemDetalle() {
         return itemDetalle;
     }
 
-    public void setItemDetalle(List<ItemDetalleItemComponenteProduccion> itemDetalle) {
+    public void setItemDetalle(List<ItemDetalleComponenteProduccion> itemDetalle) {
         this.itemDetalle = itemDetalle;
     }
+
+    public ItemComponenteProduccion getItemAplicado() {
+        return itemAplicado;
+    }
+
+    public void setItemAplicado(ItemComponenteProduccion itemAplicado) {
+        this.itemAplicado = itemAplicado;
+    }
+
+    public List<ItemComponenteProduccion> getItemsAplicacion() {
+        return itemsAplicacion;
+    }
+
+    public void setItemsAplicacion(List<ItemComponenteProduccion> itemsAplicacion) {
+        this.itemsAplicacion = itemsAplicacion;
+    }
+
+    public List<ItemDetalleComponenteProduccion> getItemDetalleTemporal() {
+        return itemDetalleTemporal;
+    }
+
+    public void setItemDetalleTemporal(List<ItemDetalleComponenteProduccion> itemDetalleTemporal) {
+        this.itemDetalleTemporal = itemDetalleTemporal;
+    }
+       
     
     @Override
     public String toString() {

@@ -5,12 +5,13 @@
 package bs.produccion.dao;
 
 import bs.global.dao.BaseDAO;
-import bs.produccion.modelo.ItemAplicacionProduccion;
 import bs.produccion.modelo.ItemComponenteProduccion;
+import bs.produccion.modelo.ItemProcesoProduccion;
 import bs.produccion.modelo.ItemProductoProduccion;
 import bs.produccion.modelo.MovimientoProduccion;
 import bs.produccion.vista.PendienteProduccionDetalle;
 import bs.produccion.vista.PendienteProduccionGrupo;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -159,31 +160,27 @@ public class ProduccionDAO extends BaseDAO {
         }
         
     }
-
-    public ItemAplicacionProduccion getItemAplicacion(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
         
-    public List<ItemAplicacionProduccion> getAplicacionesByItem(Integer idItem){
-        
-        try {
-            String sQuery = "SELECT i FROM ItemAplicacionProduccion i "
-                    + "WHERE i.idItemAplicacion = :idItem "
-                    + "AND i.id <> i.idItemAplicacion "
-                    + "AND i.auditoria.debaja = 'N' "
-                    + "ORDER BY i.producto.codigo ";
-          
-            Query q = em.createQuery(sQuery);            
-            q.setParameter("idItem", idItem);
-            
-            return q.getResultList();
-            
-            
-        } catch (Exception e) {            
-            System.err.println("Error al obtener ItemAplicacionProduccion");
-            return null;
-        }
-    }
+//    public List<ItemAplicacionProduccion> getAplicacionesByItem(Integer idItem){
+//        
+//        try {
+//            String sQuery = "SELECT i FROM ItemAplicacionProduccion i "
+//                    + "WHERE i.idItemAplicacion = :idItem "
+//                    + "AND i.id <> i.idItemAplicacion "
+//                    + "AND i.auditoria.debaja = 'N' "
+//                    + "ORDER BY i.producto.codigo ";
+//          
+//            Query q = em.createQuery(sQuery);            
+//            q.setParameter("idItem", idItem);
+//            
+//            return q.getResultList();
+//            
+//            
+//        } catch (Exception e) {            
+//            System.err.println("Error al obtener ItemAplicacionProduccion");
+//            return null;
+//        }
+//    }
 
     public ItemProductoProduccion getItemProductoByItemAplicacion(Integer idMovimiento, Integer nroItem, String artcod) {
         
@@ -211,18 +208,48 @@ public class ProduccionDAO extends BaseDAO {
             e.printStackTrace();
             System.err.println("Error al obtener ItemAplicacionProduccion de compra");
             return null;
-        }               
+        }       
+        
+    }
+
+    public BigDecimal getCantidadAplicadaItem(Integer id) {
+        
+        try {
+            //String sQuery = "SELECT SUM(i.cantidad) FROM "+Clase+" i WHERE i.itemAplicado.id = :id ";                    
+            
+            String sQuery = "select ifnull(sum(i.cantid),0) from pd_movimiento_item i where i.id_iapl = "+String.valueOf(id);  
+            
+            Query q = em.createNativeQuery(sQuery);
+
+            BigDecimal cantidad = (BigDecimal) q.getSingleResult();
+            
+            if(cantidad==null){
+                cantidad = BigDecimal.ZERO;
+            }
+            
+            return cantidad;
+
+        } catch (NoResultException e) {
+
+            return BigDecimal.ZERO;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error al obtener getCantidadAplicadaItem");
+            return BigDecimal.ZERO;
+        }        
     }
     
     public ItemProductoProduccion getItemProducto(Integer id) {
        return getObjeto(ItemProductoProduccion.class, id);
     }
-
-    public ItemAplicacionProduccion getItemProductoAplicacion(Integer id) {
-       return getObjeto(ItemAplicacionProduccion.class, id);
-    }
-
+    
     public ItemComponenteProduccion getItemComponente(Integer id) {
        return getObjeto(ItemComponenteProduccion.class, id);
     }
+    
+    public ItemProcesoProduccion getItemProceso(Integer id) {
+       return getObjeto(ItemProcesoProduccion.class, id);
+    }
+
 }

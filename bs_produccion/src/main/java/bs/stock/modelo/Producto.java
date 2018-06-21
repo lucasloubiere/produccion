@@ -152,6 +152,10 @@ public class Producto implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaProduccion;
     
+    @JoinColumn(name = "codsec", referencedColumnName = "codigo", nullable = false)
+    @ManyToOne
+    private Sector sector;
+    
     @Embedded
     private Auditoria auditoria;
 
@@ -453,7 +457,15 @@ public class Producto implements Serializable {
     public void setFechaProduccion(Date fechaProduccion) {
         this.fechaProduccion = fechaProduccion;
     }
-        
+
+    public Sector getSector() {
+        return sector;
+    }
+
+    public void setSector(Sector sector) {
+        this.sector = sector;
+    }
+            
     @Override
     public int hashCode() {
         int hash = 0;

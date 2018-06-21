@@ -14,6 +14,7 @@ import bs.global.modelo.Sucursal;
 import bs.stock.modelo.ComprobanteStock;
 import bs.stock.modelo.Deposito;
 import bs.stock.modelo.MovimientoStock;
+import bs.tarea.modelo.Tarea;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -58,6 +59,9 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+
+    @Column(name = "estado", length = 1)
+    private String estado;
 
     @JoinColumns({
         @JoinColumn(name = "circom", referencedColumnName = "circom", nullable = false),
@@ -158,9 +162,9 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
     @JoinColumn(name = "id_mst", referencedColumnName = "id")
     private MovimientoStock movimientoStock;
 
-//    @JoinColumn(name = "id_tar", referencedColumnName = "id")
-//    @ManyToOne(optional = false)
-//    private Tarea tarea;
+    @JoinColumn(name = "id_tar", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Tarea tarea;
 
     @Lob
     @Column(name = "observ", length = 2147483647)
@@ -177,9 +181,6 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch = FetchType.LAZY)
     private List<ItemHorarioProduccion> itemsHorario;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movimiento", fetch = FetchType.LAZY)
-    private List<ItemAplicacionProduccion> itemsAplicacion;
 
     @Embedded
     private Auditoria auditoria;
@@ -219,6 +220,8 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
 
     public MovimientoProduccion() {
         
+        estado = "1";
+
         fechaMovimiento = new Date();
         fechaRequerida = new Date();
 
@@ -226,13 +229,17 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
         itemsComponente = new ArrayList<ItemComponenteProduccion>();
         itemsProceso = new ArrayList<ItemProcesoProduccion>();
         itemsHorario = new ArrayList<ItemHorarioProduccion>();
-        itemsAplicacion = new ArrayList<ItemAplicacionProduccion>();
-
+        
+//        itemsProductoAplicacion = new ArrayList<ItemAplicacionProduccion>();
+//        itemsEstructuraAplicacion = new ArrayList<ItemEstructuraProduccionAplicacion>();
+//        itemsComponenteAplicacion = new ArrayList<ItemMateriaPrimaAplicacionProduccion>();
         this.auditoria = new Auditoria();
     }
 
     public MovimientoProduccion(Formulario formulario) {
         
+        estado = "1";
+
         fechaMovimiento = new Date();
         fechaRequerida = new Date();
 
@@ -240,9 +247,7 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
 
         itemsProducto = new ArrayList<ItemProductoProduccion>();
         itemsComponente = new ArrayList<ItemComponenteProduccion>();
-        itemsProceso = new ArrayList<ItemProcesoProduccion>();
-        itemsHorario = new ArrayList<ItemHorarioProduccion>();
-        itemsAplicacion = new ArrayList<ItemAplicacionProduccion>();
+        itemsProceso = new ArrayList<ItemProcesoProduccion>();        
     }
 
     public Integer getId() {
@@ -549,14 +554,6 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
         this.itemsProceso = itemsProceso;
     }
 
-    public List<ItemAplicacionProduccion> getItemsAplicacion() {
-        return itemsAplicacion;
-    }
-
-    public void setItemsAplicacion(List<ItemAplicacionProduccion> itemsAplicacion) {
-        this.itemsAplicacion = itemsAplicacion;
-    }
-
     public boolean isNoSincronizaNumeroFormulario() {
         return noSincronizaNumeroFormulario;
     }
@@ -565,13 +562,21 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
         this.noSincronizaNumeroFormulario = noSincronizaNumeroFormulario;
     }
 
-//    public Tarea getTarea() {
-//        return tarea;
-//    }
-//
-//    public void setTarea(Tarea tarea) {
-//        this.tarea = tarea;
-//    }
+    public Tarea getTarea() {
+        return tarea;
+    }
+
+    public void setTarea(Tarea tarea) {
+        this.tarea = tarea;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     public Planta getPlanta() {
         return planta;
