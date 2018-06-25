@@ -23,29 +23,23 @@
                                      update="detalle,message,messageg"                                     
                                      rendered="#{movimientoProduccionBean.circuito.permiteAgregarItems eq 'S'}"/>
                 </f:facet>
-              
+
                 <p:column headerText="Código" width="70" 
                           rendered="#{movimientoProduccionBean.muestroCampo('D','ARTCOD')}"  >  
 
                     <h:outputText value="#{i.producto.codigo}" rendered="#{not empty i.producto}" />
                 </p:column>
 
-                <p:column headerText="Producto" width="300" >            
+                <p:column headerText="Producto" width="300" >                            
                     
-                    <p:autoComplete value="#{i.producto}" completeMethod="#{productoBean.complete}" dropdown="true"
-                                        var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" converter="#{conversoresStock.producto}" forceSelection="true" >  
-                        <p:ajax event="itemSelect" listener="#{movimientoProduccionBean.procesarProducto}" update="detalle" />                             
-                    </p:autoComplete>
-                    
-                    <!--
                     <p:commandButton icon="fa fa-search" process="@this"                                                                                          
                                      oncomplete="PF('dlgProducto').show()"  >
-                        
+                        <f:setPropertyActionListener value="#{i}" target="#{movimientoProduccionBean.itemProducto}" />
                     </p:commandButton>
 
                     <h:outputText value="#{i.producto.descripcion}"                                   
                                   rendered="#{not empty i.producto}"/>
-                    -->
+                    
                 </p:column>
                 
                 <p:column headerText="Formula" width="100" >            
@@ -57,17 +51,17 @@
                         <f:setPropertyActionListener value="#{i}" target="#{movimientoProduccionBean.itemProducto}" />
                     </p:commandButton>
 
-                    <h:outputText value="#{i.formula.descripcion}"
+                    <h:outputText value="#{i.formula.codigo}"
                                   rendered="#{not empty i.formula}"/>
                 </p:column>
 
                 <p:column headerText="Observaciones/Detalle" width="200" 
                           rendered="#{movimientoProduccionBean.muestroCampo('D','OBSERVA')}" >    
                     <p:inputTextarea value="#{i.observaciones}" rows="1"
-                                     rendered="#{not empty i.producto}" /> 
+                                     rendered="#{i.todoOk or not empty i.producto}" /> 
                 </p:column>
 
-                <p:column headerText="Cantidad" width="100" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
+                <p:column headerText="Cantidad" width="70" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
 
                     <p:inputText value="#{i.cantidad}" 
                                  rendered="#{not empty i.producto}" style="text-align: right;" >
@@ -82,6 +76,40 @@
                           rendered="#{movimientoProduccionBean.muestroCampo('D','UNIMED')}">                            
                     <h:outputText  value="#{i.unidadMedida.codigo}" rendered="#{not empty i.producto}" />
                 </p:column>
+
+                <p:column headerText="Composición" width="60" styleClass="TexAlCenter" >
+                    <p:rowToggler />
+                </p:column>
+
+                <p:rowExpansion>
+
+                    <div class="Wid90 Fleft MarAuto WidAutoOnMobile">
+
+                        <p:dataTable value="#{i.composicionFormula.itemsComponente}"  var="c" reflow="true"
+                                     emptyMessage="No se encontraron datos">
+
+                            <p:column headerText="Código" width="70">
+                                <h:outputText value="#{c.productoComponente.codigo}"/>
+                            </p:column>
+
+                            <p:column headerText="Descripción" >
+                                <h:outputText value="#{c.productoComponente.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Cantidad" width="70" >
+                                <h:outputText value="#{c.cantidadNominal}" styleClass="Fright"  >                                    
+                                    <f:convertNumber pattern="###,###,##0.00"  />                                    
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="U.M." width="50" style="text-align: center;">
+                                <h:outputText value="#{c.unidadMedidaItem.codigo}"/>                                
+                            </p:column>
+                        </p:dataTable>                        
+
+                    </div>
+
+                </p:rowExpansion>
 
                 <p:column headerText="" width="50" style="text-align: center;" >
 
@@ -118,17 +146,8 @@
                 <p:column headerText="Descripción" >
                     <h:outputText value="#{i.producto.descripcion}" />
                 </p:column>
-                
-                <p:column headerText="Cant. Unitaria" width="100" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
 
-                    <p:inputText value="#{i.cantidadNominal}" readonly="true"
-                                 rendered="#{not empty i.producto}" style="text-align: right;" >
-                        <f:convertNumber pattern="###,###,##0.00"  />                        
-                    </p:inputText>
-                    
-                </p:column>
-
-                <p:column headerText="Cantidad" width="100" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
+                <p:column headerText="Cantidad" width="70" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
 
                     <p:inputText value="#{i.cantidad}" 
                                  rendered="#{not empty i.producto}" style="text-align: right;" >
@@ -193,15 +212,10 @@
                     </p:column>
 
                 </p:autoComplete>
-                
-                <p:column headerText="Cant. Unitaria" width="100"  >                                                
-                    <p:inputText value="#{i.cantidadNominal}" 
-                                 rendered="#{not empty i.producto}" style="text-align: right;" >
-                        <f:convertNumber pattern="###,###,##0.00"  />                        
-                    </p:inputText>
-                </p:column>
 
-                <p:column headerText="Cantidad" width="100"  >                                                
+                <p:column headerText="Cantidad" width="70"  >                            
+
+                    <!-- Item sin agregar -->
                     <p:inputText value="#{i.cantidad}" 
                                  rendered="#{not empty i.producto and not empty i.operario }" style="text-align: right;" >
                         <f:convertNumber pattern="###,###,##0.00"  />                        
@@ -296,44 +310,6 @@
                     </p:commandButton>
 
                 </p:column>
-
-            </p:dataTable>
-
-        </p:tab>
-
-        <p:tab title="Aplicaciones" rendered="#{not empty movimientoProduccionBean.m.itemsAplicacion}" >  
-
-            <p:dataTable id="detalleApl" value="#{movimientoProduccionBean.m.itemsAplicacion}"
-                         var="i" resizeMode="expand" liveResize="true"
-                         emptyMessage="No se encontraron datos" >
-
-                <p:column headerText="Código" width="70" 
-                          rendered="#{movimientoProduccionBean.muestroCampo('D','ARTCOD')}"  >  
-
-                    <h:outputText value="#{i.producto.codigo}" rendered="#{not empty i.producto}" />
-                </p:column>
-
-                <p:column headerText="Producto" width="300" >                            
-                    <h:outputText value="#{i.producto.descripcion}"                                   
-                                  rendered="#{not empty i.producto}"/>
-                </p:column>
-
-                <p:column headerText="Cantidad" width="70" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" > 
-                    <h:outputText value="#{i.cantidad}"  styleClass="Fright"  >
-                        <f:convertNumber pattern="###,###,##0.00"  />
-                    </h:outputText>                           
-                </p:column>
-
-                <p:column headerText="U.M." width="50" style="text-align: center;" 
-                          rendered="#{movimientoProduccionBean.muestroCampo('D','UNIMED')}">                            
-                    <h:outputText  value="#{i.unidadMedida.codigo}" rendered="#{not empty i.producto}" />
-                </p:column>
-
-                <p:column headerText="Aplicación" width="70">                    
-                    <h:outputText value="#{i.movimientoOriginal.formulario.codigo} - #{i.movimientoOriginal.numeroFormulario}"
-                                  rendered="#{i.todoOk}"/>                    
-                </p:column>
-
 
             </p:dataTable>
 

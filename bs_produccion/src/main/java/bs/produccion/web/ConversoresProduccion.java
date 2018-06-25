@@ -11,14 +11,12 @@ import bs.produccion.modelo.ComprobanteProduccion;
 import bs.produccion.modelo.DepartamentoProduccion;
 import bs.produccion.modelo.Operario;
 import bs.produccion.modelo.Planta;
-import bs.produccion.modelo.Sector;
 import bs.produccion.modelo.TipoOperario;
 import bs.produccion.rn.CodigoCircuitoProduccionRN;
 import bs.produccion.rn.ComprobanteProduccionRN;
 import bs.produccion.rn.DepartamentoProduccionRN;
 import bs.produccion.rn.OperarioRN;
 import bs.produccion.rn.PlantaRN;
-import bs.produccion.rn.SectorRN;
 import bs.produccion.rn.TipoOperarioRN;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -40,8 +38,7 @@ public class ConversoresProduccion implements Serializable{
 
     @EJB private CodigoCircuitoProduccionRN codigoCircuitoRN;
     @EJB private DepartamentoProduccionRN departamentoRN;
-    @EJB private PlantaRN plantaRN;
-    @EJB private SectorRN sectorRN;
+    @EJB private PlantaRN plantaRN;    
     @EJB private OperarioRN operarioRN;
     @EJB private TipoOperarioRN tipoOperarioRN;
     @EJB private ComprobanteProduccionRN comprobanteRN;
@@ -201,28 +198,5 @@ public class ConversoresProduccion implements Serializable{
             }
         };
     }   
-    
-    public Converter getSector() {
-        return new Converter() {
-
-            @Override
-            public Object getAsObject(FacesContext context, UIComponent component, String value) {
-                if (value.trim().equals("") || value == null) {
-                    return null;
-                }
-
-                Sector d = sectorRN.getSector(value);
-                return d;
-            }
-
-            @Override
-            public String getAsString(FacesContext context, UIComponent component, Object value) {
-                if (value == null || value.equals("")) {
-                    return "";
-                } else {
-                    return ((Sector) value).getCodigo()+ "";
-                }
-            }
-        };
-    }   
+  
 }

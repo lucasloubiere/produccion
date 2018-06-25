@@ -5,6 +5,7 @@
 package bs.produccion.modelo;
 
 import bs.global.modelo.Auditoria;
+import bs.stock.modelo.Sector;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
