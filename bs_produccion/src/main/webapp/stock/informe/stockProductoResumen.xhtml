@@ -40,10 +40,10 @@
                                       converter="#{conversoresStock.producto}"
                                       var="d" filter="true" filterMatchMode="contains" showCheckbox="true" >
 
-                        <f:selectItems  value="#{productoBean.lista}" var="t" itemLabel="#{t.descripcion}" itemValue="#{t}" /> 
+                        <f:selectItems  value="#{productoBean.lista}" var="t" itemLabel="#{t.codigo} - #{t.descripcion}" itemValue="#{t}" /> 
 
                         <p:column>
-                            <h:outputText value="#{d.descripcion}" />
+                            <h:outputText value="#{d.codigo} - #{d.descripcion}" />
                         </p:column>
 
                     </p:selectManyMenu>
