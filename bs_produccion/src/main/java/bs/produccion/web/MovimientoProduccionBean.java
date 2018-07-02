@@ -728,6 +728,8 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PR)) {
             filtroDetalle.put("tipitm = ", "'P'");            
         }
+        
+        System.err.println(filtroDetalle);
     }
 
     public void imprimir() {

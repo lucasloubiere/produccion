@@ -156,7 +156,7 @@
                         <h:outputText value="Prioridad " />
                         <p:selectOneMenu id="priori" value="#{movimientoProduccionBean.m.prioridad}"
                                          rendered="#{movimientoProduccionBean.muestroCampo('C','PRIORI')}"
-                                         required="Seleccione la prioridad" >
+                                         required="true" requiredMessage="Seleccione la prioridad" >
                             <f:selectItem itemLabel="Seleccionar" itemValue="" />
                             <f:selectItem itemLabel="Alta" itemValue="Alta" />
                             <f:selectItem itemLabel="Normal" itemValue="Normal" />
@@ -169,6 +169,7 @@
                         <p:autoComplete value="#{movimientoProduccionBean.m.planta}" dropdown="true"                                        
                                         completeMethod="#{plantaBean.complete}"
                                         var="p" itemLabel="#{p.descripcion}" itemValue="#{p}" 
+                                        required="true" requiredMessage="Seleccione la planta"
                                         converter="#{conversoresProduccion.planta}" forceSelection="true" >
 
                             <p:ajax event="itemSelect" process="@this" />
