@@ -41,41 +41,46 @@ public class PendienteProduccionDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "ID_IAPL")
+    @Column(name = "id_iapl")
     private Integer idIapl;
     @Id
     @NotNull
-    @Column(name = "ID_MAPL", nullable = false)
+    @Column(name = "id_mcab", nullable = false)
     private Integer idMapl;
-    
+
+    @NotNull
+    @Size(min = 1, max = 1)
+    @Column(nullable = false, length = 1)
+    private String tipitm;
+
     @NotNull
     @Column(nullable = false)
     private String modfor;
-    
+
     @NotNull
     @Size(min = 1, max = 6)
     @Column(nullable = false, length = 6)
     private String codfor;
-    
+
     @NotNull
     @Column(nullable = false)
     private int nrofor;
-    
+
     @NotNull
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fchmov;
-    
+
     @NotNull
     @Size(min = 1, max = 30)
     @Column(nullable = false, length = 30)
     private String artcod;
-    
+
     @NotNull
     @Size(min = 1, max = 6)
     @Column(nullable = false, length = 6)
     private String formul;
-    
+
     @NotNull
     @Size(min = 1, max = 1)
     @Column(nullable = false, length = 1)
@@ -92,14 +97,14 @@ public class PendienteProduccionDetalle implements Serializable {
     private BigDecimal precio;
     @Column(precision = 10, scale = 2)
     private BigDecimal presec;
-    
+
     @Column(nullable = false, length = 20)
     private String grupo;
 
     @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Producto producto;
-    
+
     @JoinColumn(name = "operar", referencedColumnName = "codigo", nullable = false)
     @ManyToOne
     private Operario operario;
@@ -110,17 +115,17 @@ public class PendienteProduccionDetalle implements Serializable {
     private UnidadMedida unidadMedida;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_mapl", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "id_mcab", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     MovimientoProduccion movimientoAplicacion;
-    
+
     @Transient
     private BigDecimal cantidad;
-    
+
     @Transient
     private boolean seleccionado;
 
     public PendienteProduccionDetalle() {
-        
+
         cantidad = BigDecimal.ZERO;
     }
 
@@ -283,7 +288,17 @@ public class PendienteProduccionDetalle implements Serializable {
     public void setOperario(Operario operario) {
         this.operario = operario;
     }
+
+    public String getTipitm() {
+        return tipitm;
+    }
+
+    public void setTipitm(String tipitm) {
+        this.tipitm = tipitm;
+    }
     
+    
+
     @Override
     public int hashCode() {
         int hash = 3;

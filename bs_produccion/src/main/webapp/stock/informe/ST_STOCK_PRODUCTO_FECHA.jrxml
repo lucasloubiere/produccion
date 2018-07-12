@@ -107,7 +107,7 @@
 	<queryString>
 		<![CDATA[SELECT
 		st_movimiento_item.DEPOSI,
-		st_deposito.DESCRIPCION as st_deposito_DESCRP,
+		st_deposito.descrp as st_deposito_DESCRP,
 		st_movimiento_item.ARTCOD,
 		st_producto.DESCRIPCION AS st_producto_DESCRP ,
 		st_producto.UNIMED,
@@ -126,7 +126,7 @@ And (st_movimiento_item.FCHMOV <= $P{FCHHHAS})
 
 GROUP BY st_movimiento_item.ARTCOD,
          st_movimiento_item.DEPOSI,
-         st_producto.DESCRIPCION,
+         st_producto.descrp,
          st_producto.UNIMED
 ORDER BY st_movimiento_item.ARTCOD, st_movimiento_item.DEPOSI]]>
 	</queryString>

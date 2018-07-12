@@ -541,9 +541,9 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
         itemsPendiente = new ArrayList<PendienteProduccionDetalle>();
         seleccionaTodo = false;
-
+        
         if (movimientosPendientes != null && !movimientosPendientes.isEmpty()) {
-            JsfUtil.addInfoMessage("Seleccione un comprobante para ver los pendientes");
+            JsfUtil.addWarningMessage("Seleccione un comprobante para ver los pendientes");
         }
     }
 
@@ -565,84 +565,6 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
     }
 
-//        try {
-//                if (itemsPendiente == null) {
-//            JsfUtil.addErrorMessage("No existen items pendientes");
-//            return event.getOldStep();
-//        }
-//
-//        if (itemsPendiente.isEmpty()) {
-//            JsfUtil.addErrorMessage("No existen items pendientes");
-//            return event.getOldStep();
-//        }
-//
-//        m = produccionRN.nuevoMovimiento(circuito, sucursal, sucursalStock);
-//        aplicarDatosPorDefecto();
-//        produccionRN.generarItems(m, itemsPendiente);
-//
-//        //Generamos automaticamente el comprobante
-//        if (m.getValeConsumo() != null) {
-//
-//            //Genera y carga filtro para seleccionar pendientes de vale de consumo
-//            Map<String, String> filtroDetalleVC = new HashMap<String, String>();
-//            //filtroDetalleVC.put("modapl=", "'" + movimientoPendiente.getModapl() + "'");
-//            //filtroDetalleVC.put("codapl=", "'" + movimientoPendiente.getCodapl() + "'");
-//            //filtroDetalleVC.put("nroapl=", "" + movimientoPendiente.getNroapl());
-//            filtroDetalleVC.put("circom = ", "'" + CIRAPL + "'");
-//            filtroDetalleVC.put("expapl > ", "0");
-//            filtroDetalleVC.put("producto.tippro=", "'MAT'");
-//
-//            //Seleccionamos los items pendientes
-//            List<PendienteProduccionDetalle> itemsPendienteVC = produccionRN.getItemPendiente(filtroDetalleVC);
-//            //Marca todos los items como seleccionados
-//            produccionRN.seleccionarTodo(itemsPendienteVC, true);
-//            //Genera los items para el comprobante
-//            if (itemsPendienteVC != null) {
-//
-//                if (itemsPendienteVC.isEmpty()) {
-//                    m.setValeConsumo(null);
-//                } else {
-//                    produccionRN.generarItems(m.getValeConsumo(), itemsPendienteVC);
-//                }
-//            }
-//        }
-//
-//        //Generamos automaticamente el comprobante parte proceso
-//        if (m.getParteProceso() != null) {
-//
-//            //Genera y carga filtro para seleccionar pendientes de parte proceso
-//            Map<String, String> filtroDetallePR = new HashMap<String, String>();
-////                    filtroDetallePR.put("modapl=", "'" + movimientoPendiente.getModapl() + "'");
-////                    filtroDetallePR.put("codapl=", "'" + movimientoPendiente.getCodapl() + "'");
-////                    filtroDetallePR.put("nroapl=", "" + movimientoPendiente.getNroapl());
-//            filtroDetallePR.put("circom = ", "'" + CIRAPL + "'");
-//            filtroDetallePR.put("expapl > ", "0");
-//            filtroDetallePR.put("producto.tippro=", "'PRC'");
-//
-//            //Seleccionamos los items pendientes
-//            List<PendienteProduccionDetalle> itemsPendientePR = produccionRN.getItemPendiente(filtroDetallePR);
-//            //Marca todos los items como seleccionados
-//            produccionRN.seleccionarTodo(itemsPendientePR, true);
-//            //Genera los items para el comprobante
-//            if (itemsPendientePR != null) {
-//
-//                if (itemsPendientePR.isEmpty()) {
-//                    m.setParteProceso(null);
-//                } else {
-//                    produccionRN.generarItems(m.getParteProceso(), itemsPendientePR);
-//                }
-//            }
-//        }
-//
-//    }
-//    catch (Exception e
-//
-//    
-//        ) {
-//                e.printStackTrace();
-//        JsfUtil.addErrorMessage("Error al generar comprobante", e.getMessage());
-//        return event.getOldStep();
-//    }
     public void finalizarProcesoSeleccionPendiente() {
 
         RequestContext context = RequestContext.getCurrentInstance();
@@ -689,18 +611,15 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
         filtroGrupo.put("circom = ", "'" + circuito.getCirapl() + "'");
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.VC)) {
-
-            filtroGrupo.put("formul = ", "''");
-            filtroGrupo.put("stocks =", "'S'");
+            filtroGrupo.put("tipitm = ", "'C'");            
         }
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PP)) {
-            filtroGrupo.put("formul <> ", "''");
+            filtroGrupo.put("tipitm = ", "'P'");            
         }
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PR)) {
-            filtroGrupo.put("formul = ", "''");
-            filtroGrupo.put("stocks = ", "'N'");
+            filtroGrupo.put("tipitm = ", "'R'");            
         }
     }
 
@@ -726,7 +645,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
         }
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PR)) {
-            filtroDetalle.put("tipitm = ", "'P'");            
+            filtroDetalle.put("tipitm = ", "'R'");            
         }
         
         System.err.println(filtroDetalle);

@@ -124,7 +124,7 @@
 		<![CDATA[Select
   st_deposito.DESCRIPCION As st_deposito_DESCRP,
   st_producto.CODIGO As st_producto_CODIGO,
-  st_producto.DESCRIPCION As st_producto_DESCRP,
+  st_producto.descrp As st_producto_DESCRP,
   st_tipo_producto.CODIGO As st_tipo_producto_TIPPRO,
   st_tipo_producto.DESCRIPCION As st_tipo_producto_DESCRP,
   st_movimiento.MODFOR as st_movimiento_MODFOR,

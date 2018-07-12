@@ -107,7 +107,7 @@
 	<queryString>
 		<![CDATA[SELECT
 		i.ARTCOD,
-		st_producto.DESCRIPCION AS st_producto_DESCRP ,
+		st_producto.descrp AS st_producto_DESCRP ,
 		st_producto.UNIMED,
 		DATE_ADD($P{FCHHHAS}, INTERVAL -1 DAY) AS FECHA,
 
@@ -137,7 +137,7 @@ WHERE	i.ARTCOD = st_producto.CODIGO
 and i.DEPOSI = st_deposito.CODIGO
 and zz_temporal.codigo = i.artcod
 And (i.FCHMOV <= $P{FCHHHAS})
-GROUP BY i.ARTCOD, st_producto.DESCRIPCION, st_producto.UNIMED
+GROUP BY i.ARTCOD, st_producto.descrp, st_producto.UNIMED
 ORDER BY i.ARTCOD, i.DEPOSI]]>
 	</queryString>
 	<field name="ARTCOD" class="java.lang.String">

@@ -107,7 +107,7 @@
 	<queryString>
 		<![CDATA[SELECT
 		st_movimiento_item.ARTCOD,
-		st_producto.DESCRIPCION AS st_producto_DESCRP ,
+		st_producto.descrp AS st_producto_DESCRP ,
 		st_producto.UNIMED,
 		Sum(st_movimiento_item.STOCK) AS CANTIDAD,
 		ad_empresa.*
@@ -123,7 +123,7 @@ and zz_temporal.codigo = st_movimiento_item.artcod
 And (st_movimiento_item.FCHMOV <= $P{FCHHHAS})
 
 GROUP BY st_movimiento_item.ARTCOD,
-         st_producto.DESCRIPCION,
+         st_producto.descrp,
          st_producto.UNIMED
 ORDER BY st_movimiento_item.ARTCOD, st_movimiento_item.DEPOSI]]>
 	</queryString>

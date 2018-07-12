@@ -36,7 +36,7 @@
      st_movimiento_item.`UNIMED` AS st_movimiento_item_UNIMED,
      st_producto.`CODIGO` AS st_producto_CODIGO,
      st_producto.`TIPOPRODUCTO` AS st_producto_TIPPRO,
-     st_producto.`DESCRIPCION` AS st_producto_DESCRP
+     st_producto.`descrp` AS st_producto_DESCRP
 FROM
      `st_producto` st_producto INNER JOIN `st_movimiento_item` st_movimiento_item ON st_producto.`CODIGO` = st_movimiento_item.`ARTCOD`
 

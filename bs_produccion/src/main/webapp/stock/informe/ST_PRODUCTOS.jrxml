@@ -106,7 +106,7 @@
 	<queryString>
 		<![CDATA[Select
   st_producto.CODIGO As st_producto_CODIGO,
-  st_producto.DESCRIPCION As st_producto_DESCRP,
+  st_producto.descrp As st_producto_DESCRP,
   st_producto.UNIMED As st_producto_UNIMED,
   st_producto.TIPOPRODUCTO As st_producto_TIPPRO,
   st_tipo_producto.DESCRIPCION As st_tipo_producto_DESCRP,
@@ -114,7 +114,7 @@
   st_rubro01_A.DESCRIPCION As st_rubro01_A_DESCRP,
   st_producto.RUBRO2 As st_producto_RUBR02,
   st_rubro02.DESCRIPCION As st_rubro02_DESCRP,
-  st_producto.GESTIONASTOCK As st_producto_STOCKS,
+  st_producto.stocks As st_producto_STOCKS,
   st_producto.CODIGODEBARRA As st_producto_CODBAR,
  
   EMPRESA.*

@@ -32,51 +32,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PendienteProduccionGrupo implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @NotNull
-    @Size(min = 1, max = 6)
-    @Column(nullable = false, length = 6)
-    private String circom;
-    @Id
-    @NotNull
-    @Column(name = "id_mapl", nullable = false)
-    private int idMapl;
-    @Id
-    @Size(max = 8)
-    @Column(length = 8)
-    private String modfor;
-    @Id
-    @Size(max = 8)
-    @Column(length = 8)
-    private String codfor;
-    @Id
-    @NotNull
-    @Column(nullable = false)
-    private int nrofor;
-    @Id
-    @NotNull
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fchmov;
-    @Id
-    @NotNull
-    @Column(nullable = false)
-    private String formul;
+    @Column(name = "id_mcab", nullable = false)
+    private int id;
     @Id
     @NotNull
     @Size(min = 1, max = 1)
     @Column(nullable = false, length = 1)
-    private String stocks;
-    @Id
-    @NotNull
-    @Size(min = 1, max = 1)
-    @Column(nullable = false, length = 1)    
     private String tipitm;
-    
     @Id
     @NotNull
     @Column(nullable = false)
     private String grupo;
+
+    @NotNull
+    @Size(min = 1, max = 6)
+    @Column(nullable = false, length = 6)
+    private String circom;
+
+    @Size(max = 8)
+    @Column(length = 8)
+    private String modfor;
+
+    @Size(max = 8)
+    @Column(length = 8)
+    private String codfor;
+
+    @NotNull
+    @Column(nullable = false)
+    private int nrofor;
+
+    @NotNull
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fchmov;
 
     @Size(max = 50)
     @Column(length = 50)
@@ -86,7 +77,7 @@ public class PendienteProduccionGrupo implements Serializable {
     private BigDecimal pendiente;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_mapl", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "id_mcab", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private MovimientoProduccion movimientoAplicacion;
 
     @JoinColumns({
@@ -115,14 +106,6 @@ public class PendienteProduccionGrupo implements Serializable {
         this.circom = circom;
     }
 
-    public int getIdMapl() {
-        return idMapl;
-    }
-
-    public void setIdMapl(int idMapl) {
-        this.idMapl = idMapl;
-    }
-
     public String getCodfor() {
         return codfor;
     }
@@ -145,14 +128,6 @@ public class PendienteProduccionGrupo implements Serializable {
 
     public void setFchmov(Date fchmov) {
         this.fchmov = fchmov;
-    }
-
-    public String getStocks() {
-        return stocks;
-    }
-
-    public void setStocks(String stocks) {
-        this.stocks = stocks;
     }
 
     public String getObserv() {
@@ -185,14 +160,6 @@ public class PendienteProduccionGrupo implements Serializable {
 
     public void setModfor(String modfor) {
         this.modfor = modfor;
-    }
-
-    public String getFormul() {
-        return formul;
-    }
-
-    public void setFormul(String formul) {
-        this.formul = formul;
     }
 
     public Formulario getFormulario() {
@@ -235,19 +202,20 @@ public class PendienteProduccionGrupo implements Serializable {
         this.tipitm = tipitm;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 73 * hash + (this.circom != null ? this.circom.hashCode() : 0);
-        hash = 73 * hash + this.idMapl;
-        hash = 73 * hash + (this.modfor != null ? this.modfor.hashCode() : 0);
-        hash = 73 * hash + (this.codfor != null ? this.codfor.hashCode() : 0);
-        hash = 73 * hash + this.nrofor;
-        hash = 73 * hash + (this.fchmov != null ? this.fchmov.hashCode() : 0);
-        hash = 73 * hash + (this.formul != null ? this.formul.hashCode() : 0);
-        hash = 73 * hash + (this.stocks != null ? this.stocks.hashCode() : 0);
-        hash = 73 * hash + (this.tipitm != null ? this.tipitm.hashCode() : 0);
-        hash = 73 * hash + (this.grupo != null ? this.grupo.hashCode() : 0);
+        int hash = 5;
+        hash = 17 * hash + this.id;
+        hash = 17 * hash + (this.tipitm != null ? this.tipitm.hashCode() : 0);
+        hash = 17 * hash + (this.grupo != null ? this.grupo.hashCode() : 0);
         return hash;
     }
 
@@ -263,31 +231,13 @@ public class PendienteProduccionGrupo implements Serializable {
             return false;
         }
         final PendienteProduccionGrupo other = (PendienteProduccionGrupo) obj;
-        if (this.idMapl != other.idMapl) {
+        if (this.id != other.id) {
             return false;
         }
-        if (this.nrofor != other.nrofor) {
-            return false;
-        }
-        if ((this.circom == null) ? (other.circom != null) : !this.circom.equals(other.circom)) {
-            return false;
-        }
-        if ((this.modfor == null) ? (other.modfor != null) : !this.modfor.equals(other.modfor)) {
-            return false;
-        }
-        if ((this.codfor == null) ? (other.codfor != null) : !this.codfor.equals(other.codfor)) {
-            return false;
-        }
-        if ((this.formul == null) ? (other.formul != null) : !this.formul.equals(other.formul)) {
-            return false;
-        }
-        if ((this.stocks == null) ? (other.stocks != null) : !this.stocks.equals(other.stocks)) {
+        if ((this.tipitm == null) ? (other.tipitm != null) : !this.tipitm.equals(other.tipitm)) {
             return false;
         }
         if ((this.grupo == null) ? (other.grupo != null) : !this.grupo.equals(other.grupo)) {
-            return false;
-        }
-        if (this.tipitm != other.tipitm && (this.tipitm == null || !this.tipitm.equals(other.tipitm))) {
             return false;
         }
         return true;
@@ -295,7 +245,7 @@ public class PendienteProduccionGrupo implements Serializable {
 
     @Override
     public String toString() {
-        return "PendienteProduccionGrupo{" + "circom=" + circom + ", idMapl=" + idMapl + ", modfor=" + modfor + ", codfor=" + codfor + ", nrofor=" + nrofor + ", fchmov=" + fchmov + ", formul=" + formul + ", stocks=" + stocks + ", tipitm=" + tipitm + ", grupo=" + grupo + '}';
+        return "PendienteProduccionGrupo{" + "id=" + id + ", tipitm=" + tipitm + ", grupo=" + grupo + '}';
     }
     
 }

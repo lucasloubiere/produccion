@@ -111,7 +111,7 @@
 		<![CDATA[SELECT
 
 		st_movimiento_item.ARTCOD,
-		st_producto.DESCRIPCION AS st_producto_DESCRP ,
+		st_producto.descrp AS st_producto_DESCRP ,
 		st_producto.UNIMED,
 		Sum(st_movimiento_item.STOCK) AS CANTIDAD,
 		ad_empresa.*
@@ -124,7 +124,7 @@ And (st_movimiento_item.FCHMOV <= $P{FCHHHAS})
 AND st_movimiento_item.ARTCOD IN ('0230','0234','0235','0335','0875','0925','2990998')
 GROUP BY
 		st_movimiento_item.ARTCOD,
-		st_producto.DESCRIPCION,
+		st_producto.descrp,
 		st_producto.UNIMED]]>
 	</queryString>
 	<field name="ARTCOD" class="java.lang.String">
