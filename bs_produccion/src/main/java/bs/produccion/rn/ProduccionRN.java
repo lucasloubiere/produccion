@@ -374,6 +374,7 @@ public class ProduccionRN {
             nItem.setProducto(producto);
             nItem.setProductoOriginal(producto);
             nItem.setUnidadMedida(producto.getUnidadDeMedida());                        
+            nItem.setActualizaStock(producto.getGestionaStock());
             return nItem;
             
         } catch (Exception ex) {
@@ -1102,11 +1103,13 @@ public class ProduccionRN {
                         itmComp.setProducto(i.getProductoComponente());
                         itmComp.setProductoOriginal(i.getProductoComponente());
                         itmComp.setUnidadMedida(i.getUnidadMedidaItem());
+                        itmComp.setCantidadNominal(cntNominal);
                         itmComp.setCantidad(itemProducto.getCantidad().multiply(cntNominal));
                         itmComp.setCantidadStock(itemProducto.getCantidad().multiply(cntNominal));
                         itmComp.setCantidadOriginal(itemProducto.getCantidad().multiply(cntNominal));
                         itmComp.setUnidadMedida(i.getProductoComponente().getUnidadDeMedida());
                         itmComp.setActualizaStock(i.getProductoComponente().getGestionaStock());
+                        itmComp.setGrupo(itemProducto.getGrupo());
 
                         movimiento.getItemsComponente().add(itmComp);
                     }
@@ -1124,11 +1127,13 @@ public class ProduccionRN {
                         itmComp.setProducto(i.getProductoComponente());
                         itmComp.setProductoOriginal(i.getProductoComponente());
                         itmComp.setUnidadMedida(i.getUnidadMedidaItem());
+                        itmComp.setCantidadNominal(cntNominal);
                         itmComp.setCantidad(itemProducto.getCantidad().multiply(cntNominal));
                         itmComp.setCantidadStock(itemProducto.getCantidad().multiply(cntNominal));
                         itmComp.setCantidadOriginal(itemProducto.getCantidad().multiply(cntNominal));
                         itmComp.setUnidadMedida(i.getProductoComponente().getUnidadDeMedida());
                         itmComp.setActualizaStock(i.getProductoComponente().getGestionaStock());
+                        itmComp.setGrupo(itemProducto.getGrupo());
 
                         movimiento.getItemsProceso().add(itmComp);
                     }

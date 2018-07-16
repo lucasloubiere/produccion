@@ -621,6 +621,10 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PR)) {
             filtroGrupo.put("tipitm = ", "'R'");            
         }
+        
+        if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PH)) {
+            filtroGrupo.put("tipitm = ", "'H'");            
+        }
     }
 
     public void cargarFiltroDetalle() {
@@ -636,19 +640,25 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
         filtroDetalle.put("nrofor=", "" + movimientoPendiente.getNrofor());
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.VC)) {
-
+            
             filtroDetalle.put("tipitm = ", "'C'");            
         }
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PP)) {
+            
             filtroDetalle.put("tipitm = ", "'P'");            
         }
 
         if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PR)) {
+            
             filtroDetalle.put("tipitm = ", "'R'");            
         }
         
-        System.err.println(filtroDetalle);
+        if (circuito.getTipoMovimiento().equals(TipoMovimientoProduccion.PH)) {
+            filtroDetalle.put("tipitm = ", "'H'");            
+        }
+        
+//        System.err.println(filtroDetalle);
     }
 
     public void imprimir() {
