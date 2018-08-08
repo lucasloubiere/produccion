@@ -241,6 +241,7 @@ public class ProduccionRN {
     }
 
     public MovimientoProduccion nuevoMovimientoFromPendiente(CircuitoProduccion circuito, Sucursal sucursal, Sucursal sucursalStock,
+            PendienteProduccionGrupo pendienteGrupo,
             List<PendienteProduccionDetalle> itemsPendientes) throws ExcepcionGeneralSistema, Exception {
 
         if (!tengoItemsSeleccionados(itemsPendientes)) {
@@ -248,7 +249,10 @@ public class ProduccionRN {
         }
 
         MovimientoProduccion m = nuevoMovimiento(circuito, sucursal, sucursalStock);
-
+        
+        m.setPlanta(pendienteGrupo.getPlanta());
+        
+        
         if (m.getTipoMovimiento().equals(TipoMovimientoProduccion.PP)) {
             generarItemsProductoFromPendiente(m, itemsPendientes);
         }
@@ -263,10 +267,6 @@ public class ProduccionRN {
 
         asignarFormulario(m);
 
-        if (circuito.getPermiteAgregarItems().equals("S")) {
-            //Cargarmos un nuevo item en blanco en caso de que quieran guardar sin agregar un items
-            m.getItemsProducto().add((ItemProductoProduccion) nuevoItemProducto(m));
-        }
         return m;
     }
 

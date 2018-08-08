@@ -200,7 +200,7 @@ public class UsuarioSessionBean extends GenericBean implements Serializable {
     }
 
     //----------------------------------------------------------------------
-    public String login() {
+    public void login() throws IOException {
 
         Usuario usuAux = null;
         try {
@@ -213,12 +213,12 @@ public class UsuarioSessionBean extends GenericBean implements Serializable {
         //Valida que exista el usuario
         if (usuAux == null) {
             JsfUtil.addErrorMessage("El usuario '" + nombreUsuario + "' no se encuentra registrado");
-            return "";
+            return;
         }
 
         cantIntentos++;
 
-        if (cantIntentos == 3) {
+        if (cantIntentos == 9) {
 
             recuperarClave();
 
@@ -232,26 +232,26 @@ public class UsuarioSessionBean extends GenericBean implements Serializable {
             JsfUtil.addErrorMessage("Se ha enviado información de acceso a la cuenta de correo asociada al usario.");
             JsfUtil.addErrorMessage("Verifique su bandeja de entrada y vuelva a intentar");
             cantIntentos = 0;
-            return "";
+            return;
         }
 
         //Valida que no se encuentre inactivo
         if (usuAux.getEstado().getDescripcion().equals("Inactivo")) {
             JsfUtil.addErrorMessage("El usuario '" + usuAux.getUsuario() + "' se encuentra " + usuAux.getEstado().getDescripcion());
             System.out.println("Usuario inactivo");
-            return "";
+            return;
         }
 
         //Valida que no se encuentre bloqueado
         if (usuAux.getEstado().getDescripcion().equals("Bloqueado")) {
             JsfUtil.addErrorMessage("El usuario '" + usuAux.getUsuario() + "' se encuentra " + usuAux.getEstado().getDescripcion());
-            return "";
+            return;
         }
 
         //Valida que no se encuentre desabilitado
         if (usuAux.getAuditoria().getDebaja().equals("S")) {
             JsfUtil.addErrorMessage("El usuario '" + usuAux.getUsuario() + "' se encuentra desabilitado");
-            return "";
+            return;
         }
 
 //        //Valida que no se encuentre logueado
@@ -263,26 +263,16 @@ public class UsuarioSessionBean extends GenericBean implements Serializable {
         if (!claveUsuario.equals(usuAux.getPassword())) {
             JsfUtil.addErrorMessage("Password incorrecto");
             getUsuario().setPassword("");
-            return "";
+            return;
         }
 
         usuario = usuAux;
         estaRegistrado = true;
         principalBean.cargarMenu(usuario);
-        aplicacionBean.getUsuarioLogueados().add(usuAux);
-
-        switch (usuario.getTipo().getId()) {
-
-            //Administrador
-            case 1:
-                return "../global/principal.xhtml?faces-redirect=true";
-            //Usuario 
-            case 2:
-                return "../global/principal.xhtml?faces-redirect=true";
-
-            default:
-                return "../global/principal.xhtml?faces-redirect=true";
-        }
+        
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        context.redirect(context.getRequestContextPath() + "/principal");
+       
     }
 
     public String logout() {

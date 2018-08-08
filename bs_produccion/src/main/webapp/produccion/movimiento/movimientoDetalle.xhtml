@@ -15,7 +15,7 @@
                          resizeMode="expand" liveResize="true"
                          emptyMessage="No se encontraron items. Haga clic en agregar items"
                          rowStyleClass="#{i.conError  ? 'conError' : null}" >
-                
+
                 <f:facet name="footer">
                     <p:commandButton icon="fa fa-plus" value="Agregar item" 
                                      actionListener="#{movimientoProduccionBean.nuevoItemProducto()}"
@@ -31,7 +31,7 @@
                 </p:column>
 
                 <p:column headerText="Producto" width="300" >                            
-                    
+
                     <p:commandButton icon="fa fa-search" process="@this"                                                                                          
                                      oncomplete="PF('dlgProducto').show()"  >
                         <f:setPropertyActionListener value="#{i}" target="#{movimientoProduccionBean.itemProducto}" />
@@ -39,11 +39,11 @@
 
                     <h:outputText value="#{i.producto.descripcion}"                                   
                                   rendered="#{not empty i.producto}"/>
-                    
+
                 </p:column>
-                
+
                 <p:column headerText="Formula" width="100" >            
-                    
+
                     <p:commandButton icon="fa fa-search"                                                                                   
                                      process="@this"                                                                                          
                                      oncomplete="PF('dlgFormula').show()"                                              
@@ -61,7 +61,7 @@
                                      rendered="#{i.todoOk or not empty i.producto}" /> 
                 </p:column>
 
-                <p:column headerText="Cantidad" width="70" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
+                <p:column headerText="Cantidad" width="80" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
 
                     <p:inputText value="#{i.cantidad}" 
                                  rendered="#{not empty i.producto}" style="text-align: right;" >
@@ -69,7 +69,7 @@
                         <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades(i)}" event="keyup" 
                                 update="tb:detalleComponente"/>                                
                     </p:inputText>
-                    
+
                 </p:column>
 
                 <p:column headerText="U.M." width="50" style="text-align: center;" 
@@ -131,7 +131,7 @@
                          resizeMode="expand" liveResize="true"
                          emptyMessage="No se encontraron items. Haga clic en agregar items"
                          rowStyleClass="#{i.conError  ? 'conError' : null}" >
-                
+
                 <f:facet name="footer">
                     <p:commandButton icon="fa fa-plus" value="Agregar item" 
                                      actionListener="#{movimientoProduccionBean.nuevoItemComponente()}"
@@ -155,12 +155,66 @@
                         <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades(i)}" event="keyup" 
                                 update="tb:detalleComponente"/>                                
                     </p:inputText>
-                    
+
                 </p:column>
 
                 <p:column headerText="U.M." width="50" style="text-align: center;">
                     <h:outputText value="#{i.unidadMedida.codigo}" />
                 </p:column>
+
+                <p:column headerText="Detalle" style="width: 50px; text-align: center;" 
+                          rendered="#{tareaBean.muestroCampo('D','DETALL')}"   >
+                    <p:rowToggler  />
+                </p:column>
+
+                <p:rowExpansion>
+
+                    <div class="Wid60 Fright MarAuto WidAutoOnMobile">
+
+                        <p:dataTable id="detalleItem" value="#{i.itemDetalleTemporal}" var="d" reflow="true"  >                                        
+
+                            <f:facet name="footer">                        
+                                <p:commandButton icon="fa fa-plus" value="Agregar item" 
+                                                 process="detalleItem" 
+                                                 update="detalleItem,message,messageg"
+                                                 actionListener="#{tareaBean.agregarItemDetalleTemporalComponente(i)}" />
+
+                            </f:facet>
+
+                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" width="80" > 
+                                <p:inputText value="#{d.atributo1}" readonly="#{empty d.producto}" />
+                            </p:column>
+
+                            <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo2}" width="80" >  
+
+                                <p:inputText  value="#{d.atributo2}" readonly="#{empty d.producto}" />                            
+                            </p:column>
+
+                            <p:column headerText="Cantidad" width="70" >
+                                <p:inputText value="#{d.cantidad}" required="true" styleClass="TexAlRight"
+                                             rendered="#{not empty d.producto}"  >
+                                    <f:convertNumber pattern="#{d.producto.unidadDeMedida.formato}" />                                    
+                                </p:inputText>
+                            </p:column>
+
+                            <p:column headerText="U.M" width="50"  >        
+                                <h:outputText  value="#{d.unidadMedida.codigo}" />
+                            </p:column>
+
+                            <p:column headerText="Eliminar" width="50" style="text-align: center;" >
+
+                                <p:commandButton icon="fa fa-close" process="detalleItem" update="detalleItem,message,messageg"
+                                                 actionListener="#{tareaBean.eliminarItemDetalleTemporalComponente(i,d)}"  >
+                                    <p:confirm header="Confirmación" message="Está seguro que desea borrar el item #{d.producto.descripcion}?" icon="ui-icon-alert" />
+                                </p:commandButton>
+
+                            </p:column> 
+
+                        </p:dataTable>
+                    </div>
+
+                </p:rowExpansion>
+
 
                 <p:commandButton icon="fa fa-close" process="detalleComponente" update="@form"
                                  actionListener="#{movimientoProduccionBean.eliminarItemComponente(i)}" 
@@ -179,7 +233,7 @@
                          resizeMode="expand" liveResize="true"
                          emptyMessage="No se encontraron items. Haga clic en agregar items"
                          rowStyleClass="#{i.conError  ? 'conError' : null}" >
-                
+
                 <f:facet name="footer">
                     <p:commandButton icon="fa fa-plus" value="Agregar item" 
                                      actionListener="#{movimientoProduccionBean.nuevoItemProceso()}"
@@ -253,7 +307,7 @@
                          resizeMode="expand" liveResize="true"
                          emptyMessage="No se encontraron items. Haga clic en agregar items"
                          rowStyleClass="#{i.conError  ? 'conError' : null}" >
-                
+
                 <f:facet name="footer">
                     <p:commandButton icon="fa fa-plus" value="Agregar item" 
                                      actionListener="#{movimientoProduccionBean.nuevoItemHorario()}"
@@ -263,12 +317,12 @@
                 </f:facet>
 
                 <p:column headerText="Operario" width="200"  >                       
-                    
+
                     <p:autoComplete value="#{i.operario}" dropdown="true"                                        
                                     completeMethod="#{operarioBean.complete}"
                                     var="p" itemLabel="#{p.nombre}" itemValue="#{p}" 
                                     converter="#{conversoresProduccion.operario}" forceSelection="true" >
-                        
+
                         <p:ajax event="itemSelect" update="detalleHorario" />
 
                         <p:column>
@@ -280,7 +334,7 @@
                         </p:column>
 
                     </p:autoComplete> 
-                    
+
                 </p:column>
 
                 <p:column headerText="Cantidad" width="70"  >                            

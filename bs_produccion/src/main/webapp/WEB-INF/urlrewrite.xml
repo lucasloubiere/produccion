@@ -7,35 +7,25 @@
     http://www.tuckey.org/urlrewrite/
 -->
 <urlrewrite> 
-    
-    <rule>  
-      <from>^/home/</from>        
-      <to>/global/index.jsf</to>  
-    </rule>
-    
-    <outbound-rule>        
-        <from>/global/index.jsf</from>
-        <to type="redirect" >/home/</to>
-    </outbound-rule>
         
     <rule>  
-      <from>^/principal/</from>        
+      <from>^/principal</from>        
       <to>/global/principal.jsf</to>  
     </rule>
     
     <outbound-rule>        
-        <from>/global/principal.jsf</from>
-        <to type="redirect" >/principal/</to>
+        <from>^/global/principal.jsf</from>
+        <to type="redirect" >/principal</to>
     </outbound-rule>
     
     <rule>  
-      <from>^/inicio/</from>        
+      <from>^/inicio</from>        
       <to>/global/inicio.jsf</to>  
     </rule>
     
     <outbound-rule>        
-        <from>/global/inicio.jsf</from>
-        <to type="redirect" >/inicio/</to>
+        <from>^/global/inicio.jsf</from>
+        <to type="redirect" >/inicio</to>
     </outbound-rule>
     
     <rule>  
@@ -44,30 +34,36 @@
     </rule>
     
     <outbound-rule>        
-        <from>/administracion/correosElectronicos.jsf</from>
+        <from>^/administracion/correosElectronicos.jsf</from>
         <to type="redirect" >/administracion/</to>
     </outbound-rule>
-    
-    
+      
     
       
     <!-- COMPRAS -->
     <rule>  
       <from>^/compra/seguimiento-comprobante/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)</from>        
-      <to>/compra/informe/seguimientoComprobante.jsf?MODFOR=$1&amp;CODFOR=$2&amp;NROFOR=$3</to>  
+      <to>/compra/informes/seguimientoComprobante.jsf?MODFOR=$1&amp;CODFOR=$2&amp;NROFOR=$3</to>  
     </rule>
     
     <rule>  
       <from>^/compra/seguimiento-comprobante</from>        
-      <to>/compra/informe/seguimientoComprobante.jsf?MODFOR=$1&amp;CODFOR=$2&amp;NROFOR=$3</to>  
+      <to>/compra/informes/seguimientoComprobante.jsf</to>  
     </rule>
     
     
     <!-- FACTURACION -->
     <rule>  
       <from>^/facturacion/seguimiento-comprobante/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)</from>        
-      <to>/facturacion/informe/seguimientoComprobante.jsf?MODFOR=$1&amp;CODFOR=$2&amp;NROFOR=$3</to>  
+      <to>/facturacion/informes/seguimientoComprobante.jsf?MODFOR=$1&amp;CODFOR=$2&amp;NROFOR=$3</to>  
     </rule>
+    
+    <rule>  
+      <from>^/compra/seguimiento-comprobante</from>        
+      <to>/facturacion/informes/seguimientoComprobante.jsf</to>  
+    </rule>
+    
+    
        
     <!-- stock -->    
     <rule>        
@@ -94,6 +90,18 @@
       <from>^/mi-perfil</from>        
       <to>/seguridad/tablas/misDatos.jsf</to>  
     </rule>
+    
+    <rule>  
+      <from>^/recupero-clave</from>        
+      <to>/seguridad/recuperarClave.jsf</to>  
+    </rule>
+    
+    
+    <!-- BAR Y RESTAURANT -->
+    <rule>  
+      <from>^/bar/reserva</from>        
+      <to>/bar/tablas/reserva.jsf</to>  
+    </rule>
         
     <!--
     <rule>
@@ -109,6 +117,18 @@
        <condition name="user-agent">googlebot</condition>
        <from>^(.*?)(?:\;jsessionid=[^\?#]*)?(\?[^#]*)?(#.*)?$</from>
        <to>$1$2$3</to>
+    </outbound-rule>
+    
+    <outbound-rule encodefirst="true">
+        <note>Remove jsessionid from embedded urls - for urls WITH query parameters</note>
+        <from>^/(.*);jsessionid=.*[?](.*)$</from>
+        <to encode="false">$1?$2</to>
+    </outbound-rule>
+
+    <outbound-rule encodefirst="true">
+        <note>Remove jsessionid from embedded urls - for urls WITHOUT query parameters</note>
+        <from>^/(.*);jsessionid=.*[^?]$</from>
+        <to encode="false">$1</to>
     </outbound-rule>
 
     <rule>

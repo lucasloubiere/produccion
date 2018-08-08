@@ -109,30 +109,35 @@
                 Movimientos encontrados
             </f:facet>
 
-            <p:column headerText="Formulario" >
+            <p:column headerText="Formulario" width="70" >
                 <h:outputText value="#{i.formulario.codigo}" />                            
             </p:column>
 
-            <p:column headerText="Número" >                            
+            <p:column headerText="Número" width="70" >                            
                 <h:outputText value="#{i.numeroFormulario}" >    
                     <f:convertNumber pattern="00000000" />
                 </h:outputText>
             </p:column>
 
-            <p:column headerText="Fecha" >    
+            <p:column headerText="Fecha" width="70" >    
                 <h:outputText value="#{i.fechaMovimiento}"  >    
                     <f:convertDateTime pattern="dd/MM/yyyy"/>
                 </h:outputText>                                               
             </p:column>
+            
+            <p:column headerText="Producto" >    
+                <h:outputText value="#{i.itemsProducto[0].producto.descripcion}"  />   
+            </p:column>
 
-            <p:column headerText="" width="10%" style="text-align: center;">
+            <p:column headerText="" width="200" style="text-align: center;">
                 <p:commandButton icon="fa fa-edit"
                                  title="Seleccionar movimiento"
                                  actionListener="#{movimientoProduccionBean.seleccionarMovimiento(i)}"
                                  process="@this"
                                  update="@form"  />
 
-                <h:outputLink value="#{application.contextPath}/facturacion/seguimiento-comprobante/#{i.formulario.modfor}/#{i.formulario.codigo}/#{i.numeroFormulario}"
+                <!--
+                <h:outputLink value="#{application.contextPath}/producción/seguimiento-comprobante/#{i.formulario.modfor}/#{i.formulario.codigo}/#{i.numeroFormulario}"
                               styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
                               style="color: white;"
                               title="Ver Seguimiento de comprobante"
@@ -141,6 +146,7 @@
                     <span class="ui-button-icon-left ui-icon ui-c fa fa-list-ul"></span>
                     <span class="ui-button-text ui-c">ui-button</span>                        
                 </h:outputLink>  
+                -->
 
             </p:column>
 

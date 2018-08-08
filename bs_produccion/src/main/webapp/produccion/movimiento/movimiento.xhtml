@@ -153,6 +153,15 @@
                             <f:convertNumber pattern="00000000" />
                         </p:inputText>
                         
+                        <h:outputText value="Fecha" rendered="#{movimientoProduccionBean.muestroCampo('C','FCHMOV')}" />
+                        <p:calendar value="#{movimientoProduccionBean.m.fechaMovimiento}" 
+                                    rendered="#{movimientoProduccionBean.muestroCampo('C','FCHMOV')}" 
+                                    readonly="#{movimientoProduccionBean.m.formulario.modificaFecha eq 'N'}"
+                                    pattern="dd/MM/yyyy" maxdate="#{movimientoProduccionBean.fechaMovimeintoMaxima}" >
+                            <p:ajax process="@this" event="dateSelect" />
+                        </p:calendar>
+                        
+                        <!--
                         <h:outputText value="Prioridad " />
                         <p:selectOneMenu id="priori" value="#{movimientoProduccionBean.m.prioridad}"
                                          rendered="#{movimientoProduccionBean.muestroCampo('C','PRIORI')}"
@@ -164,6 +173,7 @@
 
                             <p:ajax process="@this" />                            
                         </p:selectOneMenu>
+                        -->
                         
                         <h:outputText value="Planta " />
                         <p:autoComplete value="#{movimientoProduccionBean.m.planta}" dropdown="true"                                        
@@ -183,19 +193,6 @@
                             </p:column>
 
                         </p:autoComplete> 
-
-                        <h:outputText value="Fecha"
-                                      rendered="#{movimientoProduccionBean.muestroCampo('C','FCHMOV')}" />
-                        <p:inputText value="#{movimientoProduccionBean.m.fechaMovimiento}" readonly="true"                                     
-                                     rendered="#{movimientoProduccionBean.muestroCampo('C','FCHMOV') and empty movimientoProduccionBean.m.formulario or movimientoProduccionBean.m.formulario.modificaFecha ne 'S'}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </p:inputText>
-
-                        <p:calendar value="#{movimientoProduccionBean.m.fechaMovimiento}" 
-                                    rendered="#{movimientoProduccionBean.muestroCampo('C','FCHMOV') and movimientoProduccionBean.m.formulario.modificaFecha eq 'S'}" 
-                                    pattern="dd/MM/yyyy" maxdate="#{movimientoProduccionBean.fechaMovimeintoMaxima}" >
-                            <p:ajax process="@this" event="dateSelect" />
-                        </p:calendar>
 
                         <h:outputText value="Fecha requerida " />
                         <p:calendar value="#{movimientoProduccionBean.m.fechaRequerida}" pattern="dd/MM/yyyy" size="12" locale="es"

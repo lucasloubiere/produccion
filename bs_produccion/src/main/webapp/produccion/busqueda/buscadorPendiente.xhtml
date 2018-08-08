@@ -69,8 +69,8 @@
                                                          scrollable="true" scrollHeight="250"
                                                          emptyMessage="No se encontraron documentos - HAGA CLIC EN VER PENDIENTES"  >        
 
-                                                <p:column headerText="Formulario"  width="200" >
-                                                    <h:outputText value="#{m.codfor} - #{m.formulario.descripcion}" />
+                                                <p:column headerText="Formulario"  width="90" >
+                                                    <h:outputText value="#{m.codfor}" />
                                                 </p:column>
 
                                                 <p:column headerText="Número" width="70" styleClass="TexAlCenter"  >
@@ -79,23 +79,27 @@
                                                     </h:outputText>
                                                 </p:column>
 
-                                                <p:column headerText="Fecha" width="80" style="text-align: center;" >
+                                                <p:column headerText="Fecha" width="90" style="text-align: center;" >
                                                     <h:outputText value="#{m.fchmov}" >
                                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                                     </h:outputText>
+                                                </p:column>
+                                                
+                                                 <p:column headerText="Planta"  >
+                                                     <h:outputText value="#{m.planta.descripcion}" />
                                                 </p:column>
                                                 
                                                 <p:column headerText="Producto"  >
                                                     <h:outputText value="#{m.descripcion}" />
                                                 </p:column>
 
-                                                <p:column headerText="Cant. Pendientes" width="80" >
+                                                <p:column headerText="Cant. Pendientes" width="90" >
                                                     <h:outputText value="#{m.pendiente}" styleClass="Fright" > 
                                                         <f:convertNumber pattern="#,###,##0.00" />
                                                     </h:outputText>
                                                 </p:column>
 
-                                                <p:column headerText="Seleccionar" width="60" styleClass="TexAlCenter" >
+                                                <p:column headerText="Seleccionar" width="70" styleClass="TexAlCenter" >
                                                     <p:commandButton icon="fa fa-search" id="seleMovim"
                                                                      actionListener="#{movimientoProduccionBean.seleccionarItemPendiente(m, true)}"
                                                                      update="@form" process="@this"
