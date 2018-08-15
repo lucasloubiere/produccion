@@ -120,7 +120,7 @@
 
             <p:remoteCommand name="procesarProducto" process="@this" update="@form" 
                              actionListener="#{movimientoProduccionBean.procesarProducto}" />
-            
+
             <p:remoteCommand name="procesarFormula" process="@this" update="@form" 
                              actionListener="#{movimientoProduccionBean.procesarFormula()}" />
 
@@ -152,7 +152,7 @@
                                      rendered="#{movimientoProduccionBean.muestroCampo('C','NROFOR')}" >
                             <f:convertNumber pattern="00000000" />
                         </p:inputText>
-                        
+
                         <h:outputText value="Fecha" rendered="#{movimientoProduccionBean.muestroCampo('C','FCHMOV')}" />
                         <p:calendar value="#{movimientoProduccionBean.m.fechaMovimiento}" 
                                     rendered="#{movimientoProduccionBean.muestroCampo('C','FCHMOV')}" 
@@ -160,7 +160,7 @@
                                     pattern="dd/MM/yyyy" maxdate="#{movimientoProduccionBean.fechaMovimeintoMaxima}" >
                             <p:ajax process="@this" event="dateSelect" />
                         </p:calendar>
-                        
+
                         <!--
                         <h:outputText value="Prioridad " />
                         <p:selectOneMenu id="priori" value="#{movimientoProduccionBean.m.prioridad}"
@@ -174,7 +174,7 @@
                             <p:ajax process="@this" />                            
                         </p:selectOneMenu>
                         -->
-                        
+
                         <h:outputText value="Planta " />
                         <p:autoComplete value="#{movimientoProduccionBean.m.planta}" dropdown="true"                                        
                                         completeMethod="#{plantaBean.complete}"
@@ -223,6 +223,60 @@
 
                     </p:panelGrid>                                           
                 </p:tab>    
+
+                <p:tab title="Datos adicionales">
+
+                    <p:panelGrid columns="4" layout="grid" 
+                                 styleClass="ui-panelgrid-blank"
+                                 columnClasses="ui-g-2,ui-g-4 ui-datafield,ui-g-2,ui-g-4 ui-datafield" >   
+
+                        <h:outputText value="Deposito" rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento ne 'T'}" />
+                        <p:selectOneMenu value="#{movimientoProduccionBean.m.deposito}" 
+                                         rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento ne 'T' and movimientoProduccionBean.detalleVacio}"
+                                         required="true" requiredMessage="Seleccione el depósito"
+                                         converter="#{conversoresStock.deposito}"                                      
+                                         effect="fade" filter="true" filterMatchMode="contains"  >  
+                            <p:ajax process="@this" update="@form" />
+                            <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                            <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                        </p:selectOneMenu>
+                        <p:inputText value="#{movimientoProduccionBean.m.deposito.descripcion}" readonly="true"
+                                     rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento ne 'T' and not movimientoProduccionBean.detalleVacio}" /> 
+
+                        <h:outputText value="" rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento ne 'T'}" />
+                        <h:outputText value="" rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento ne 'T'}"/>
+
+
+                        <h:outputText value="Deposito egreso" rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento eq 'T'}" />
+                        <p:selectOneMenu value="#{movimientoProduccionBean.m.depositoTransferencia}" 
+                                         rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento eq 'T' and movimientoProduccionBean.detalleVacio}"
+                                         required="true" requiredMessage="Seleccione el depósito de egreso"
+                                         converter="#{conversoresStock.deposito}"                                      
+                                         effect="fade" filter="true" filterMatchMode="contains"  >  
+                            <p:ajax process="@this" update="@form" />
+                            <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                            <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                        </p:selectOneMenu>
+                        <p:inputText value="#{movimientoProduccionBean.m.depositoTransferencia.descripcion}" readonly="true"
+                                     rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento eq 'T' and not movimientoProduccionBean.detalleVacio}" /> 
+
+
+                        <h:outputText value="Deposito ingreso" rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento eq 'T'}" />
+                        <p:selectOneMenu value="#{movimientoProduccionBean.m.deposito}" 
+                                         rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento eq 'T' and movimientoProduccionBean.detalleVacio}"
+                                         required="true" requiredMessage="Seleccione el depósito de ingreso"
+                                         converter="#{conversoresStock.deposito}"                                      
+                                         effect="fade" filter="true" filterMatchMode="contains"   >  
+                            <p:ajax process="@this" update="@form" />
+                            <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                            <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                        </p:selectOneMenu>
+                        <p:inputText value="#{movimientoProduccionBean.m.deposito.descripcion}" readonly="true"
+                                     rendered="#{movimientoProduccionBean.m.comprobanteStock.tipoMovimiento eq 'T' and not movimientoProduccionBean.detalleVacio}" /> 
+
+                    </p:panelGrid>
+
+                </p:tab>
 
             </p:tabView>    
 

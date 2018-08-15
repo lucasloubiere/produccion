@@ -57,3 +57,9 @@ and open the template in the editor.
     margin-left: auto;
     margin-right: auto;
 }
+
+
+/* Text Aligns */
+.TexAlCenter{ text-align:center;}
+.TexAlLeft{ text-align:left;}
+.TexAlRight{ text-align:right !important;}

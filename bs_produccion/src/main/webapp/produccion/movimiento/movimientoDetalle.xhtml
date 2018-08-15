@@ -61,7 +61,7 @@
                                      rendered="#{i.todoOk or not empty i.producto}" /> 
                 </p:column>
 
-                <p:column headerText="Cantidad" width="80" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
+                <p:column headerText="Cantidad" width="100" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
 
                     <p:inputText value="#{i.cantidad}" 
                                  rendered="#{not empty i.producto}" style="text-align: right;" >
@@ -96,7 +96,7 @@
                                 <h:outputText value="#{c.productoComponente.descripcion}"/>
                             </p:column>
 
-                            <p:column headerText="Cantidad" width="70" >
+                            <p:column headerText="Cantidad" width="100" >
                                 <h:outputText value="#{c.cantidadNominal}" styleClass="Fright"  >                                    
                                     <f:convertNumber pattern="###,###,##0.00"  />                                    
                                 </h:outputText>
@@ -147,10 +147,10 @@
                     <h:outputText value="#{i.producto.descripcion}" />
                 </p:column>
 
-                <p:column headerText="Cantidad" width="70" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
+                <p:column headerText="Cantidad" width="100" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
 
                     <p:inputText value="#{i.cantidad}" 
-                                 rendered="#{not empty i.producto}" style="text-align: right;" >
+                                 rendered="#{not empty i.producto}" styleClass="TexAlRight" >
                         <f:convertNumber pattern="###,###,##0.00"  />
                         <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades(i)}" event="keyup" 
                                 update="tb:detalleComponente"/>                                
@@ -163,7 +163,7 @@
                 </p:column>
 
                 <p:column headerText="Detalle" style="width: 50px; text-align: center;" 
-                          rendered="#{tareaBean.muestroCampo('D','DETALL')}"   >
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','DETALL')}"   >
                     <p:rowToggler  />
                 </p:column>
 
@@ -171,13 +171,13 @@
 
                     <div class="Wid60 Fright MarAuto WidAutoOnMobile">
 
-                        <p:dataTable id="detalleItem" value="#{i.itemDetalleTemporal}" var="d" reflow="true"  >                                        
+                        <p:dataTable id="detalleItem" value="#{i.itemDetalle}" var="d" reflow="true"  >                                        
 
                             <f:facet name="footer">                        
                                 <p:commandButton icon="fa fa-plus" value="Agregar item" 
                                                  process="detalleItem" 
                                                  update="detalleItem,message,messageg"
-                                                 actionListener="#{tareaBean.agregarItemDetalleTemporalComponente(i)}" />
+                                                 actionListener="#{movimientoProduccionBean.agregarItemDetalleComponente(i)}" />
 
                             </f:facet>
 
@@ -190,7 +190,7 @@
                                 <p:inputText  value="#{d.atributo2}" readonly="#{empty d.producto}" />                            
                             </p:column>
 
-                            <p:column headerText="Cantidad" width="70" >
+                            <p:column headerText="Cantidad" width="100" >
                                 <p:inputText value="#{d.cantidad}" required="true" styleClass="TexAlRight"
                                              rendered="#{not empty d.producto}"  >
                                     <f:convertNumber pattern="#{d.producto.unidadDeMedida.formato}" />                                    
@@ -204,7 +204,7 @@
                             <p:column headerText="Eliminar" width="50" style="text-align: center;" >
 
                                 <p:commandButton icon="fa fa-close" process="detalleItem" update="detalleItem,message,messageg"
-                                                 actionListener="#{tareaBean.eliminarItemDetalleTemporalComponente(i,d)}"  >
+                                                 actionListener="#{movimientoProduccionBean.eliminarItemDetalleComponente(i, d)}"  >
                                     <p:confirm header="Confirmación" message="Está seguro que desea borrar el item #{d.producto.descripcion}?" icon="ui-icon-alert" />
                                 </p:commandButton>
 
@@ -267,7 +267,7 @@
 
                 </p:autoComplete>
 
-                <p:column headerText="Cantidad" width="70"  >                            
+                <p:column headerText="Cantidad" width="100"  >                            
 
                     <!-- Item sin agregar -->
                     <p:inputText value="#{i.cantidad}" 
@@ -337,7 +337,7 @@
 
                 </p:column>
 
-                <p:column headerText="Cantidad" width="70"  >                            
+                <p:column headerText="Cantidad" width="100"  >                            
 
                     <p:inputText value="#{i.cantidad}" 
                                  rendered="#{not empty i.producto and not empty i.operario }" style="text-align: right;" >

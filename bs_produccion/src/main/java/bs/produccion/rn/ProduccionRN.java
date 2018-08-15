@@ -401,6 +401,9 @@ public class ProduccionRN {
         itemDetalle.setUnidadMedida(itemProducto.getUnidadMedida());
 
         itemDetalle.setItemProducto(itemProducto);
+        
+        sincronizarCantidadesItemDetalleProducto(itemProducto);
+        
         return itemDetalle;
     }
 
@@ -421,6 +424,9 @@ public class ProduccionRN {
         itemDetalle.setUnidadMedida(itemDetalleCopiar.getUnidadMedida());
 
         itemDetalle.setItemProducto(itemProducto);
+        
+        sincronizarCantidadesItemDetalleProducto(itemProducto);
+        
         return itemDetalle;
     }
 
@@ -441,6 +447,8 @@ public class ProduccionRN {
         itemDetalle.setUnidadMedida(itemComponente.getUnidadMedida());
 
         itemDetalle.setItemComponente(itemComponente);
+        
+        sincronizarCantidadesItemDetalleComponente(itemComponente);
 
         return itemDetalle;
     }
@@ -462,6 +470,8 @@ public class ProduccionRN {
         itemDetalle.setUnidadMedida(itemDetalleCopiar.getUnidadMedida());
 
         itemDetalle.setItemComponente(itemComponente);
+        
+        sincronizarCantidadesItemDetalleComponente(itemComponente);
 
         return itemDetalle;
     }
@@ -600,6 +610,8 @@ public class ProduccionRN {
             }
 
             movimiento.getItemsProducto().add((ItemProductoProduccion) itemNuevo);
+            
+            sincronizarCantidadesItemDetalleProducto((ItemProductoProduccion) itemNuevo);
         }
 
         if (itemNuevo instanceof ItemComponenteProduccion) {
@@ -615,6 +627,8 @@ public class ProduccionRN {
             }
 
             movimiento.getItemsComponente().add((ItemComponenteProduccion) itemNuevo);
+            
+            sincronizarCantidadesItemDetalleComponente((ItemComponenteProduccion) itemNuevo);
         }
 
         if (itemNuevo instanceof ItemProcesoProduccion) {
@@ -1300,6 +1314,20 @@ public class ProduccionRN {
 
             movimiento.getItemsComponente().clear();
             agregarComponentesYProcesos(movimiento, nItem);
+        }
+        
+        if(movimiento.getItemsProducto()!=null && !movimiento.getItemsProducto().isEmpty()){
+            
+            for(ItemProductoProduccion item: movimiento.getItemsProducto()){                
+                sincronizarCantidadesItemDetalleProducto(item);
+            }
+        }
+        
+        if(movimiento.getItemsComponente()!=null && !movimiento.getItemsComponente().isEmpty()){
+            
+            for(ItemComponenteProduccion item: movimiento.getItemsComponente()){                
+                sincronizarCantidadesItemDetalleComponente(item);
+            }
         }
 
         if (movimiento.getCircuito().getAutomatizaParteProduccion().equals("S")) {
@@ -2261,30 +2289,43 @@ public class ProduccionRN {
     public ItemComponenteProduccion getItemComponente(Integer id) {
         return produccionDAO.getItemComponente(id);
     }
+    
+    public void sincronizarCantidadesItemDetalleComponente(ItemComponenteProduccion itemComponente) {
+
+        if (itemComponente.getItemDetalle() != null) {
+            if (itemComponente.getItemDetalle().size() == 1) {
+                itemComponente.getItemDetalle().get(0).setCantidad(itemComponente.getProduccion());
+            }            
+        }
+    }
+
+    public void sincronizarCantidadesItemDetalleProducto(ItemProductoProduccion itemProducto) {
+
+        if (itemProducto.getItemDetalle() != null) {
+            if (itemProducto.getItemDetalle().size() == 1) {
+                itemProducto.getItemDetalle().get(0).setCantidad(itemProducto.getProduccion());
+            }            
+        }
+
+    }
 
     public void sincronizarCantidadesItemDetalleTemporalComponente(ItemComponenteProduccion itemComponente) {
 
-        if (itemComponente.getItemDetalleTemporal() == null) {
-            itemComponente.setItemDetalleTemporal(new ArrayList<ItemDetalleComponenteProduccion>());
-            ItemDetalleComponenteProduccion itemDetalle = nuevoItemDetalleItemComponente(itemComponente);
-            itemComponente.getItemDetalleTemporal().add(itemDetalle);
-        }
-
-        if (itemComponente.getItemDetalleTemporal().size() == 1) {
-            itemComponente.getItemDetalleTemporal().get(0).setCantidad(itemComponente.getProduccion());
+        if (itemComponente.getItemDetalleTemporal() != null) {            
+            if (itemComponente.getItemDetalleTemporal().size() == 1) {
+                itemComponente.getItemDetalleTemporal().get(0).setCantidad(itemComponente.getProduccion());
+            }
         }
     }
 
     public void sincronizarCantidadesItemDetalleTemporalProducto(ItemProductoProduccion itemProducto) {
 
-        if (itemProducto.getItemDetalleTemporal() == null) {
-            itemProducto.setItemDetalleTemporal(new ArrayList<ItemDetalleProductoProduccion>());
-            ItemDetalleProductoProduccion itemDetalle = nuevoItemDetalleItemProducto(itemProducto);
-            itemProducto.getItemDetalleTemporal().add(itemDetalle);
+        if (itemProducto.getItemDetalleTemporal() != null) {            
+            if (itemProducto.getItemDetalleTemporal().size() == 1) {
+                itemProducto.getItemDetalleTemporal().get(0).setCantidad(itemProducto.getProduccion());
+            }
         }
 
-        if (itemProducto.getItemDetalleTemporal().size() == 1) {
-            itemProducto.getItemDetalleTemporal().get(0).setCantidad(itemProducto.getProduccion());
-        }
     }
+    
 }

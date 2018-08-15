@@ -88,9 +88,19 @@
                                  required="true" 
                                  requiredMessage="El título es necesario" />
 
-                    <h:outputText value="Deposito egreso" />
+                    <h:outputText value="Deposito" />
+                    <p:selectOneMenu value="#{comprobanteStockBean.comprobante.deposito}" 
+                                     required="false" requiredMessage="Seleccione el depósito"
+                                     converter="#{conversoresStock.deposito}" 
+                                     effect="fade"  filter="true" >  
+                        <p:ajax process="@this" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                    </p:selectOneMenu>
+                    
+                    <h:outputText value="Deposito para transferencia" />
                     <p:selectOneMenu value="#{comprobanteStockBean.comprobante.depositoTransferencia}" 
-                                     required="false" requiredMessage="Seleccione el depósito de egreso"
+                                     required="false" requiredMessage="Seleccione el depósito de transferencia"
                                      converter="#{conversoresStock.deposito}" 
                                      effect="fade"  filter="true" >  
                         <p:ajax process="@this" />
@@ -98,15 +108,6 @@
                         <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
                     </p:selectOneMenu>
 
-                    <h:outputText value="Deposito ingreso" />
-                    <p:selectOneMenu value="#{comprobanteStockBean.comprobante.deposito}" 
-                                     required="false" requiredMessage="Seleccione el depósito de ingreso"
-                                     converter="#{conversoresStock.deposito}" 
-                                     effect="fade"  filter="true" >  
-                        <p:ajax process="@this" />
-                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
-                        <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
-                    </p:selectOneMenu>
 
                     <h:outputText value="Es Comprobante de Reversión *" />
                     <p:selectOneMenu value="#{comprobanteStockBean.comprobante.esComprobanteReversion}" 

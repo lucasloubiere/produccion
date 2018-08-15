@@ -12,20 +12,6 @@
      </application>
     -->
 
-     <!--
-     <component>
-        <component-type>org.primefaces.component.OlymposMenu</component-type>
-        <component-class>org.primefaces.olympos.component.menu.OlymposMenu</component-class>
-    </component>
-    
-    <render-kit>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.OlymposMenuRenderer</renderer-type>
-            <renderer-class>org.primefaces.olympos.component.menu.OlymposMenuRenderer</renderer-class>
-        </renderer>
-    </render-kit>
-    -->
     
     <!-- Exception Handler -->
     <!--
@@ -56,29 +42,7 @@
         </view-handler>
     </application>
     
-    <navigation-rule>
-        
-        <navigation-rule>
-            <from-view-id>/seguridad/login.xhtml</from-view-id>
-            <navigation-case>
-                <from-outcome>home</from-outcome>
-                <to-view-id>/global/index.xhtml</to-view-id>
-                <redirect/>
-            </navigation-case>
-        </navigation-rule>
-
-        <navigation-rule>            
-            <navigation-case>
-                <from-outcome>login</from-outcome>
-                <to-view-id>/seguridad/login.xhtml</to-view-id>
-                <redirect/>
-            </navigation-case>
-        </navigation-rule>
-
-
-        
-    </navigation-rule>
-    
+      
     
     
 </faces-config>
