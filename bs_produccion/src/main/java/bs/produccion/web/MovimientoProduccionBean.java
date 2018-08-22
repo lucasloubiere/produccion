@@ -259,13 +259,9 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
         try {
             m = produccionRN.guardar(m);
-
-            if (m.getComprobante().getModulo().equals("PD")) {
-                JsfUtil.addInfoMessage("El documento " + m.getFormulario().getDescripcion() + "-" + m.getNumeroFormulario() + " se guardó correctamente", "");
-            } else if (m.getMovimientoStock() != null) {
-                JsfUtil.addInfoMessage("El documento " + m.getMovimientoStock().getFormulario().getDescripcion() + "-" + m.getMovimientoStock().getNumeroFormulario() + " se guardó correctamente", "");
-            }
-
+            
+            JsfUtil.addInfoMessage("El documento " + m.getFormulario().getDescripcion() + "-" + m.getNumeroFormulario() + " se guardó correctamente", "");
+            
             if (m.getValeConsumo() != null && m.getValeConsumo().isPersistido()) {
                 JsfUtil.addInfoMessage("El documento " + m.getValeConsumo().getComprobante().getDescripcion() + "-" + m.getValeConsumo().getNumeroFormulario() + " se guardó correctamente", "");
             }
@@ -276,7 +272,8 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
             if (nuevo) {
                 nuevoMovimiento();
-            }
+            }            
+            
 
         } catch (Exception ex) {
 
@@ -472,12 +469,11 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             JsfUtil.addErrorMessage(e.getMessage());
         }
     }
-
-
-    public void actualizarCantidades(ItemProductoProduccion nItem) {
+    
+    public void actualizarCantidades() {
 
         try {
-            produccionRN.actualizarCantidades(m, nItem);
+            produccionRN.actualizarCantidades(m);
         } catch (ExcepcionGeneralSistema ex) {
             JsfUtil.addErrorMessage("Error: " + ex);
         }

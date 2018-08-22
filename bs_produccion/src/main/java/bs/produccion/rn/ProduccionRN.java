@@ -94,11 +94,9 @@ public class ProduccionRN {
         reorganizarNroItem(movimiento);
         generarDatosAdicionales(movimiento);
         controlComprobante(movimiento);
-
         if (movimiento.getId() == null) {
 
             generarMovimientosAdicionales(movimiento);
-
             if (!movimiento.isNoSincronizaNumeroFormulario() && movimiento.getNumeroFormulario() > 0) {
                 tomarNumeroFormulario(movimiento);
             }
@@ -249,10 +247,9 @@ public class ProduccionRN {
         }
 
         MovimientoProduccion m = nuevoMovimiento(circuito, sucursal, sucursalStock);
-        
+
         m.setPlanta(pendienteGrupo.getPlanta());
-        
-        
+
         if (m.getTipoMovimiento().equals(TipoMovimientoProduccion.PP)) {
             generarItemsProductoFromPendiente(m, itemsPendientes);
         }
@@ -369,14 +366,14 @@ public class ProduccionRN {
             nItem.setNroitm(m.getItemsProceso().size() + 1);
             nItem.setMovimiento(m);
             nItem.setMovimientoOriginal(m);
-            
+
             Producto producto = parametroProduccionRN.getParametro().getProductoHorario();
             nItem.setProducto(producto);
             nItem.setProductoOriginal(producto);
-            nItem.setUnidadMedida(producto.getUnidadDeMedida());                        
+            nItem.setUnidadMedida(producto.getUnidadDeMedida());
             nItem.setActualizaStock(producto.getGestionaStock());
             return nItem;
-            
+
         } catch (Exception ex) {
             Logger.getLogger(ProduccionRN.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -401,9 +398,9 @@ public class ProduccionRN {
         itemDetalle.setUnidadMedida(itemProducto.getUnidadMedida());
 
         itemDetalle.setItemProducto(itemProducto);
-        
+
         sincronizarCantidadesItemDetalleProducto(itemProducto);
-        
+
         return itemDetalle;
     }
 
@@ -424,9 +421,9 @@ public class ProduccionRN {
         itemDetalle.setUnidadMedida(itemDetalleCopiar.getUnidadMedida());
 
         itemDetalle.setItemProducto(itemProducto);
-        
+
         sincronizarCantidadesItemDetalleProducto(itemProducto);
-        
+
         return itemDetalle;
     }
 
@@ -447,7 +444,7 @@ public class ProduccionRN {
         itemDetalle.setUnidadMedida(itemComponente.getUnidadMedida());
 
         itemDetalle.setItemComponente(itemComponente);
-        
+
         sincronizarCantidadesItemDetalleComponente(itemComponente);
 
         return itemDetalle;
@@ -470,7 +467,7 @@ public class ProduccionRN {
         itemDetalle.setUnidadMedida(itemDetalleCopiar.getUnidadMedida());
 
         itemDetalle.setItemComponente(itemComponente);
-        
+
         sincronizarCantidadesItemDetalleComponente(itemComponente);
 
         return itemDetalle;
@@ -610,7 +607,7 @@ public class ProduccionRN {
             }
 
             movimiento.getItemsProducto().add((ItemProductoProduccion) itemNuevo);
-            
+
             sincronizarCantidadesItemDetalleProducto((ItemProductoProduccion) itemNuevo);
         }
 
@@ -627,7 +624,7 @@ public class ProduccionRN {
             }
 
             movimiento.getItemsComponente().add((ItemComponenteProduccion) itemNuevo);
-            
+
             sincronizarCantidadesItemDetalleComponente((ItemComponenteProduccion) itemNuevo);
         }
 
@@ -1300,84 +1297,42 @@ public class ProduccionRN {
         }
     }
 
-    public void actualizarCantidades(MovimientoProduccion movimiento, ItemProductoProduccion nItem) throws ExcepcionGeneralSistema {
+    public void actualizarCantidades(MovimientoProduccion movimiento) throws ExcepcionGeneralSistema {
 
-        nItem.setCantidadStock(nItem.getCantidad());
+        if (movimiento.getItemsProducto() != null && !movimiento.getItemsProducto().isEmpty()) {
 
-        //Actualizamos la cantidad original solo si es un movimiento directo
-        if (movimiento.getCircuito().getCircom().equals(movimiento.getCircuito().getCirapl())) {
-            nItem.setCantidadOriginal(nItem.getCantidad());
-        }
+            for (ItemProductoProduccion item : movimiento.getItemsProducto()) {
 
-        //Si es una hoja de ruta vaciamos y volvemos a cargar los componentes
-        if (movimiento.getCircuito().getTipoMovimiento() == TipoMovimientoProduccion.OP) {
+                item.setCantidadStock(item.getCantidad());
+                //Actualizamos la cantidad original solo si es un movimiento directo
+                if (movimiento.getCircuito().getCircom().equals(movimiento.getCircuito().getCirapl())) {
+                    item.setCantidadOriginal(item.getCantidad());
+                }
 
-            movimiento.getItemsComponente().clear();
-            agregarComponentesYProcesos(movimiento, nItem);
-        }
-        
-        if(movimiento.getItemsProducto()!=null && !movimiento.getItemsProducto().isEmpty()){
-            
-            for(ItemProductoProduccion item: movimiento.getItemsProducto()){                
+                //Si es una hoja de ruta vaciamos y volvemos a cargar los componentes
+                if (movimiento.getCircuito().getTipoMovimiento() == TipoMovimientoProduccion.OP) {
+
+                    movimiento.getItemsComponente().clear();
+                    agregarComponentesYProcesos(movimiento, item);
+                }
+
                 sincronizarCantidadesItemDetalleProducto(item);
             }
         }
-        
-        if(movimiento.getItemsComponente()!=null && !movimiento.getItemsComponente().isEmpty()){
-            
-            for(ItemComponenteProduccion item: movimiento.getItemsComponente()){                
+
+        if (movimiento.getItemsComponente() != null && !movimiento.getItemsComponente().isEmpty()) {
+
+            for (ItemComponenteProduccion item : movimiento.getItemsComponente()) {
+
+                item.setCantidadStock(item.getCantidad());
+                //Actualizamos la cantidad original solo si es un movimiento directo
+                if (movimiento.getCircuito().getCircom().equals(movimiento.getCircuito().getCirapl())) {
+                    item.setCantidadOriginal(item.getCantidad());
+                }
+
                 sincronizarCantidadesItemDetalleComponente(item);
             }
-        }
-
-        if (movimiento.getCircuito().getAutomatizaParteProduccion().equals("S")) {
-
-            ComposicionFormula composicionFormula = composicionFormulaRN.getComprosicionFormula(nItem.getProducto().getCodigo(), "STD");
-
-            if (composicionFormula != null) {
-                if (composicionFormula.getItemsComponente() == null) {
-                    JsfUtil.addWarningMessage("La formula del producto seleccionado no contiene componentes");
-
-                } else {
-                    for (ItemComposicionFormula i : composicionFormula.getItemsComponente()) {
-
-                        if (movimiento.getValeConsumo() != null) {
-
-                            //Actualizamos la cantidad para los items materia prima
-                            for (ItemProductoProduccion ivc : movimiento.getValeConsumo().getItemsProducto()) {
-
-                                if (ivc.getProducto().equals(i.getProductoComponente())) {
-
-                                    ivc.setCantidad(nItem.getCantidad().multiply(i.getCantidadNominal()));
-                                    ivc.setCantidadStock(nItem.getCantidad().multiply(i.getCantidadNominal()));
-
-//                                    actualizarAtributos(ivc);
-                                }
-                            }
-                        }
-
-                        //Actualizamos la cantidad para los items proceso
-                        if (movimiento.getParteProceso() != null) {
-
-                            for (ItemProductoProduccion ipp : movimiento.getParteProceso().getItemsProducto()) {
-
-                                if (ipp.getProducto().equals(i.getProductoComponente())) {
-
-                                    ipp.setCantidad(nItem.getCantidad().multiply(i.getCantidadNominal()));
-                                    ipp.setCantidadStock(nItem.getCantidad().multiply(i.getCantidadNominal()));
-
-//                                    actualizarAtributos(ipp);
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                JsfUtil.addWarningMessage("El producto seleccionado no tiene una fórmula de producción definida");
-            }
-        }
-
-//        actualizarAtributos(nItem);
+        }        
     }
 
     /**
@@ -2289,13 +2244,13 @@ public class ProduccionRN {
     public ItemComponenteProduccion getItemComponente(Integer id) {
         return produccionDAO.getItemComponente(id);
     }
-    
+
     public void sincronizarCantidadesItemDetalleComponente(ItemComponenteProduccion itemComponente) {
 
         if (itemComponente.getItemDetalle() != null) {
             if (itemComponente.getItemDetalle().size() == 1) {
                 itemComponente.getItemDetalle().get(0).setCantidad(itemComponente.getProduccion());
-            }            
+            }
         }
     }
 
@@ -2304,14 +2259,14 @@ public class ProduccionRN {
         if (itemProducto.getItemDetalle() != null) {
             if (itemProducto.getItemDetalle().size() == 1) {
                 itemProducto.getItemDetalle().get(0).setCantidad(itemProducto.getProduccion());
-            }            
+            }
         }
 
     }
 
     public void sincronizarCantidadesItemDetalleTemporalComponente(ItemComponenteProduccion itemComponente) {
 
-        if (itemComponente.getItemDetalleTemporal() != null) {            
+        if (itemComponente.getItemDetalleTemporal() != null) {
             if (itemComponente.getItemDetalleTemporal().size() == 1) {
                 itemComponente.getItemDetalleTemporal().get(0).setCantidad(itemComponente.getProduccion());
             }
@@ -2320,12 +2275,12 @@ public class ProduccionRN {
 
     public void sincronizarCantidadesItemDetalleTemporalProducto(ItemProductoProduccion itemProducto) {
 
-        if (itemProducto.getItemDetalleTemporal() != null) {            
+        if (itemProducto.getItemDetalleTemporal() != null) {
             if (itemProducto.getItemDetalleTemporal().size() == 1) {
                 itemProducto.getItemDetalleTemporal().get(0).setCantidad(itemProducto.getProduccion());
             }
         }
 
     }
-    
+
 }

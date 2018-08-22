@@ -8,10 +8,12 @@
 -->
 <urlrewrite> 
         
+    <!--
     <rule>  
       <from>^/principal</from>        
       <to>/global/principal.jsf</to>  
     </rule>
+    -->
     
     <outbound-rule>        
         <from>^/global/principal.jsf</from>

@@ -100,7 +100,8 @@ public class PermisosBean extends GenericBean implements Serializable {
                 hoja.setExpanded(true);
             }
 
-            generarArbol(hoja, m.getMenuItem());
+            List<Menu> menuItems = menuRN.getItemsByMenu(m);
+            generarArbol(hoja, menuItems);
         }
     }
 
