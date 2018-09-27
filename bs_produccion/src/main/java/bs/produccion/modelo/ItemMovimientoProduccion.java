@@ -126,6 +126,14 @@ public abstract class ItemMovimientoProduccion implements Serializable, IAuditab
     @Column(name = "precio", precision = 4, scale = 6)
     private BigDecimal precio;
 
+    @Column(name = "horini")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date horaInicio;
+
+    @Column(name = "horfin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date horaFin;
+
     @Column(name = "fchent")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEntrega;
@@ -538,6 +546,22 @@ public abstract class ItemMovimientoProduccion implements Serializable, IAuditab
         this.composicionFormula = composicionFormula;
     }
 
+    public Date getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(Date horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public Date getHoraFin() {
+        return horaFin;
+    }
+
+    public void setHoraFin(Date horaFin) {
+        this.horaFin = horaFin;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;

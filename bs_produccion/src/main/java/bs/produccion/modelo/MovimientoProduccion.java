@@ -187,6 +187,9 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
 
     @Transient
     private Sucursal sucursalStock;
+    
+    @Transient
+    private Date horaInicio;
 
     @Transient
     private boolean persistido;
@@ -592,6 +595,14 @@ public class MovimientoProduccion implements Serializable, IAuditableEntity {
 
     public void setItemsHorario(List<ItemHorarioProduccion> itemsHorario) {
         this.itemsHorario = itemsHorario;
+    }
+
+    public Date getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(Date horaInicio) {
+        this.horaInicio = horaInicio;
     }
     
     @Override

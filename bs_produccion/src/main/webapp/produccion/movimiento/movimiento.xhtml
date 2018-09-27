@@ -216,10 +216,19 @@
                         <h:outputText value="Solicitante " />
                         <p:inputText id="solici" value="#{movimientoProduccionBean.m.solicitante}" title="Solici" />
 
+                        <h:outputText value="Hora inicio " />
+                        <p:calendar value="#{movimientoProduccionBean.m.horaInicio}" 
+                                    rendered="#{movimientoProduccionBean.muestroCampo('C','HORINI')}"                                     
+                                    pattern="dd/MM/yyyy HH:mm"  >
+                            <p:ajax process="@this" event="dateSelect" />
+                        </p:calendar>
+                        
                         <h:outputText value="Observaciones" />
                         <p:inputTextarea style="width: 100%" rows="3" value="#{movimientoProduccionBean.m.observaciones}" >
                             <p:ajax event="blur" process="@this" />
                         </p:inputTextarea>
+                        
+                        
 
                     </p:panelGrid>                                           
                 </p:tab>    
@@ -236,7 +245,7 @@
                                          required="true" requiredMessage="Seleccione el depósito"
                                          converter="#{conversoresStock.deposito}"                                      
                                          effect="fade" filter="true" filterMatchMode="contains"  >  
-                            <p:ajax process="@this" update="@form" />
+                            <p:ajax process="@this" update="@form"  />
                             <f:selectItem itemValue="" itemLabel="Seleccionar" />
                             <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
                         </p:selectOneMenu>

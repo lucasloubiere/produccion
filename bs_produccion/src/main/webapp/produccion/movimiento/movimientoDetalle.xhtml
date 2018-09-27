@@ -77,6 +77,20 @@
                     <h:outputText  value="#{i.unidadMedida.codigo}" rendered="#{not empty i.producto}" />
                 </p:column>
 
+                <p:column headerText="Hora inicio" width="50" style="text-align: center;" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','HORINI')}">                            
+                    <p:inputText  value="#{i.horaInicio}" >
+                        <f:convertDateTime pattern="HH:mm" />
+                    </p:inputText>                    
+                </p:column>
+                                
+                <p:column headerText="Hora fin" width="50" style="text-align: center;" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','HORFIN')}">                            
+                    <p:inputText  value="#{i.horaFin}" >
+                        <f:convertDateTime pattern="HH:mm" />
+                    </p:inputText>
+                </p:column>
+
                 <p:column headerText="Composición" width="60" styleClass="TexAlCenter" >
                     <p:rowToggler />
                 </p:column>
@@ -160,6 +174,19 @@
 
                 <p:column headerText="U.M." width="50" style="text-align: center;">
                     <h:outputText value="#{i.unidadMedida.codigo}" />
+                </p:column>
+
+                <p:column headerText="Deposito" width="200" style="text-align: center;">
+
+                    <p:selectOneMenu value="#{i.deposito}"                                     
+                                     required="true" requiredMessage="Seleccione el depósito"
+                                     converter="#{conversoresStock.deposito}"                                      
+                                     effect="fade" filter="true" filterMatchMode="contains"  >  
+                        <p:ajax process="@this"  />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                    </p:selectOneMenu>
+
                 </p:column>
 
                 <p:column headerText="Detalle" style="width: 50px; text-align: center;" 

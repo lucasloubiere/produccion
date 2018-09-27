@@ -233,6 +233,9 @@ public class ProduccionRN {
             if (comprobanteST.getDepositoTransferencia() != null) {
                 m.setDepositoTransferencia(comprobanteST.getDepositoTransferencia());
             }
+        }else{
+                m.setDeposito(comprobante.getDeposito());
+                m.setDepositoTransferencia(comprobante.getDepositoTransferencia());
         }
 
         return m;
@@ -318,7 +321,7 @@ public class ProduccionRN {
         }
 
         if (circuito.getCircuitoComienzo().equals(circuito.getCircuitoAplicacion())) {
-            m.getItemsProducto().add((ItemProductoProduccion) nuevoItemProducto(m));
+//            m.getItemsProducto().add((ItemProductoProduccion) nuevoItemProducto(m));
         }
 
         return m;
@@ -331,6 +334,8 @@ public class ProduccionRN {
         nItem.setNroitm(m.getItemsProducto().size() + 1);
         nItem.setMovimiento(m);
         nItem.setMovimientoOriginal(m);
+        nItem.setDeposito(m.getDeposito());   
+        nItem.setHoraInicio(m.getHoraInicio());        
 
         return nItem;
     }
@@ -342,6 +347,7 @@ public class ProduccionRN {
         nItem.setNroitm(m.getItemsComponente().size() + 1);
         nItem.setMovimiento(m);
         nItem.setMovimientoOriginal(m);
+        nItem.setDeposito(m.getDeposito());        
 
         return nItem;
 
@@ -353,7 +359,7 @@ public class ProduccionRN {
 
         nItem.setNroitm(m.getItemsProceso().size() + 1);
         nItem.setMovimiento(m);
-        nItem.setMovimientoOriginal(m);
+        nItem.setMovimientoOriginal(m);        
 
         return nItem;
     }
@@ -1121,7 +1127,10 @@ public class ProduccionRN {
                         itmComp.setUnidadMedida(i.getProductoComponente().getUnidadDeMedida());
                         itmComp.setActualizaStock(i.getProductoComponente().getGestionaStock());
                         itmComp.setGrupo(itemProducto.getGrupo());
-
+                        
+                        System.err.println("movimiento.getDeposito() " + movimiento.getDeposito());
+                        
+                        itmComp.setDeposito(movimiento.getDeposito());
                         movimiento.getItemsComponente().add(itmComp);
                     }
                 }
