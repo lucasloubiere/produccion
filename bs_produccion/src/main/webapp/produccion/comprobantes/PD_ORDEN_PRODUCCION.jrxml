@@ -1,128 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ST_MVH" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="21db4006-82c7-4753-bdd2-6f5767781961">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PD_MVH" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="21db4006-82c7-4753-bdd2-6f5767781961">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="1097"/>
 	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="detalle" uuid="528f0a9f-a722-41b2-beae-6ff7dfb2bc98">
+	<subDataset name="detalle_producto" uuid="528f0a9f-a722-41b2-beae-6ff7dfb2bc98">
 		<parameter name="MODFOR" class="java.lang.String"/>
 		<parameter name="CODFOR" class="java.lang.String"/>
 		<parameter name="NROFOR" class="java.lang.Integer"/>
+		<parameter name="ID_CAB" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
 		<queryString>
-			<![CDATA[SELECT
-     pdrmvi.*,
-(SELECT pdoper.PDOPER_NOMBRE FROM pdoper WHERE pdoper.PDOPER_CODIGO = pdrmvi.PDRMVI_OPERAR) as OPERARIO,
-     stmpdh.`STMPDH_DESCRP` AS STMPDH_DESCRP,
-     stmpdh.`STMPDH_UNIMED` AS STMPDH_UNIMED,
-     stmpdh.`STMPDH_ARTCOD` AS STMPDH_ARTCOD
-FROM
-     `stmpdh` stmpdh INNER JOIN `pdrmvi` pdrmvi ON stmpdh.`STMPDH_TIPPRO` = pdrmvi.`PDRMVI_TIPPRO`
-     AND stmpdh.`STMPDH_ARTCOD` = pdrmvi.`PDRMVI_ARTCOD`
-WHERE
-     PDRMVI_MODFOR = $P{MODFOR}
- AND PDRMVI_CODFOR = $P{CODFOR}
- AND PDRMVI_NROFOR = $P{NROFOR}
- AND PDRMVI_MODAPL = $P{MODFOR}
- AND PDRMVI_CODAPL = $P{CODFOR}
- AND PDRMVI_NROAPL = $P{NROFOR}]]>
+			<![CDATA[select p.codigo, p.descrp, i.* from pd_movimiento_item i inner join st_producto p  on i.artcod = p.codigo
+where i.id_mcab = $P{ID_CAB}]]>
 		</queryString>
-		<field name="PDRMVI_MODFOR" class="java.lang.String"/>
-		<field name="PDRMVI_CODFOR" class="java.lang.String"/>
-		<field name="PDRMVI_NROFOR" class="java.lang.Integer"/>
-		<field name="PDRMVI_NROITM" class="java.lang.Integer"/>
-		<field name="PDRMVI_NIVEXP" class="java.lang.String"/>
-		<field name="PDRMVI_ITMEXP" class="java.lang.Integer"/>
-		<field name="PDRMVI_MODAPL" class="java.lang.String"/>
-		<field name="PDRMVI_CODAPL" class="java.lang.String"/>
-		<field name="PDRMVI_NROAPL" class="java.lang.Integer"/>
-		<field name="PDRMVI_ITMAPL" class="java.lang.Integer"/>
-		<field name="PDRMVI_NIVAPL" class="java.lang.String"/>
-		<field name="PDRMVI_EXPAPL" class="java.lang.Integer"/>
-		<field name="PDRMVI_TIPPRO" class="java.lang.String"/>
-		<field name="PDRMVI_ARTCOD" class="java.lang.String"/>
-		<field name="PDRMVI_TIPORI" class="java.lang.String"/>
-		<field name="PDRMVI_ARTORI" class="java.lang.String"/>
-		<field name="PDRMVI_DEPOSI" class="java.lang.String"/>
-		<field name="PDRMVI_SECTOR" class="java.lang.String"/>
-		<field name="PDRMVI_SUCURS" class="java.lang.String"/>
-		<field name="PDRMVI_CANTID" class="java.math.BigDecimal"/>
-		<field name="PDRMVI_CANTST" class="java.math.BigDecimal"/>
-		<field name="PDRMVI_CNTORI" class="java.math.BigDecimal"/>
-		<field name="PDRMVI_UNIMED" class="java.lang.String"/>
-		<field name="PDRMVI_TIPFOR" class="java.lang.String"/>
-		<field name="PDRMVI_ARTFOR" class="java.lang.String"/>
-		<field name="PDRMVI_FORMUL" class="java.lang.String"/>
-		<field name="PDRMVI_TIPAPL" class="java.lang.String"/>
-		<field name="PDRMVI_ARTAPL" class="java.lang.String"/>
-		<field name="PDRMVI_FORAPL" class="java.lang.String"/>
-		<field name="PDRMVI_SERAPL" class="java.lang.String"/>
-		<field name="PDRMVI_NDEAPL" class="java.lang.String"/>
-		<field name="PDRMVI_ENVAPL" class="java.lang.String"/>
-		<field name="PDRMVI_PREREP" class="java.math.BigDecimal"/>
-		<field name="PDRMVI_PRECIO" class="java.math.BigDecimal"/>
-		<field name="PDRMVI_FCHENT" class="java.sql.Timestamp"/>
-		<field name="PDRMVI_FCHHAS" class="java.sql.Timestamp"/>
-		<field name="PDRMVI_TEXTOS" class="java.lang.String"/>
-		<field name="PDRMVI_OPERAR" class="java.lang.String"/>
-		<field name="PDRMVI_STOCKS" class="java.lang.String"/>
-		<field name="PDRMVI_MODORI" class="java.lang.String"/>
-		<field name="PDRMVI_CODORI" class="java.lang.String"/>
-		<field name="PDRMVI_NROORI" class="java.lang.Integer"/>
-		<field name="PDRMVI_ITMORI" class="java.lang.Integer"/>
-		<field name="PDRMVI_NIVORI" class="java.lang.String"/>
-		<field name="PDRMVI_EXPORI" class="java.lang.Integer"/>
-		<field name="PDRMVI_MODCIE" class="java.lang.String"/>
-		<field name="PDRMVI_CODCIE" class="java.lang.String"/>
-		<field name="PDRMVI_NROCIE" class="java.lang.Integer"/>
-		<field name="PDRMVI_TIPSUS" class="java.lang.String"/>
-		<field name="PDRMVI_ARTSUS" class="java.lang.String"/>
-		<field name="PDRMVI_FACPRO" class="java.math.BigDecimal"/>
-		<field name="PDRMVI_NROINT" class="java.lang.Float"/>
-		<field name="PDRMVI_UNISEC" class="java.lang.String"/>
-		<field name="PDRMVI_FACSEC" class="java.math.BigDecimal"/>
-		<field name="PDRMVI_CNTSEC" class="java.math.BigDecimal"/>
-		<field name="PDRMVI_APLICA" class="java.lang.String"/>
-		<field name="PDRMVI_GENERA" class="java.lang.String"/>
-		<field name="PDRMVI_TIEMPO" class="java.lang.Integer"/>
-		<field name="FECALT" class="java.sql.Timestamp"/>
-		<field name="FECMOD" class="java.sql.Timestamp"/>
-		<field name="USERID" class="java.lang.String"/>
-		<field name="ULTOPR" class="java.lang.String"/>
-		<field name="DEBAJA" class="java.lang.String"/>
-		<field name="OALIAS" class="java.lang.String"/>
-		<field name="TSTAMP" class="java.sql.Timestamp"/>
-		<field name="CODEMP" class="java.lang.String"/>
-		<field name="PDRMVI_HORMOV" class="java.lang.String"/>
-		<field name="PDRMVI_MODULE" class="java.lang.String"/>
-		<field name="PDRMVI_LOTTRA" class="java.lang.String"/>
-		<field name="PDRMVI_LOTREC" class="java.lang.String"/>
-		<field name="PDRMVI_LOTORI" class="java.lang.String"/>
-		<field name="PDRMVI_SYSVER" class="java.lang.String"/>
-		<field name="PDRMVI_CMPVER" class="java.lang.String"/>
-		<field name="PDRMVI_EMPAPL" class="java.lang.String"/>
-		<field name="PDRMVI_EMPORI" class="java.lang.String"/>
-		<field name="PDRMVI_EMPCIE" class="java.lang.String"/>
-		<field name="PDRMVI_CNTPEN" class="java.math.BigDecimal"/>
-		<field name="PDRMVI_MODREQ" class="java.lang.String"/>
-		<field name="PDRMVI_CODREQ" class="java.lang.String"/>
-		<field name="PDRMVI_NROREQ" class="java.lang.Integer"/>
-		<field name="PDRMVI_ITMREQ" class="java.lang.Integer"/>
-		<field name="PDRMVI_EMPREQ" class="java.lang.String"/>
-		<field name="PDRMVI_MODINI" class="java.lang.String"/>
-		<field name="PDRMVI_CODINI" class="java.lang.String"/>
-		<field name="PDRMVI_NROINI" class="java.lang.Integer"/>
-		<field name="PDRMVI_ITMINI" class="java.lang.Integer"/>
-		<field name="PDRMVI_EXPINI" class="java.lang.Integer"/>
-		<field name="PDRMVI_EMPINI" class="java.lang.String"/>
-		<field name="PDRMVI_NIVINI" class="java.lang.String"/>
-		<field name="OPERARIO" class="java.lang.String"/>
-		<field name="STMPDH_DESCRP" class="java.lang.String"/>
-		<field name="STMPDH_UNIMED" class="java.lang.String"/>
-		<field name="STMPDH_ARTCOD" class="java.lang.String"/>
+		<field name="codigo" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="descrp" class="java.lang.String">
+			<fieldDescription><![CDATA[Descripción]]></fieldDescription>
+		</field>
+		<field name="id" class="java.lang.Integer">
+			<fieldDescription><![CDATA[Id]]></fieldDescription>
+		</field>
+		<field name="nroitm" class="java.lang.Integer">
+			<fieldDescription><![CDATA[Número Item]]></fieldDescription>
+		</field>
+		<field name="tipitm" class="java.lang.String">
+			<fieldDescription><![CDATA[Tipo Item]]></fieldDescription>
+		</field>
+		<field name="id_iapl" class="java.lang.Integer">
+			<fieldDescription><![CDATA[Item Aplicación]]></fieldDescription>
+		</field>
+		<field name="itmori" class="java.lang.Integer">
+			<fieldDescription><![CDATA[Item Original]]></fieldDescription>
+		</field>
+		<field name="id_mcab" class="java.lang.Integer">
+			<fieldDescription><![CDATA[Movimiento]]></fieldDescription>
+		</field>
+		<field name="id_mori" class="java.lang.Integer">
+			<fieldDescription><![CDATA[Movimiento Original]]></fieldDescription>
+		</field>
+		<field name="codfor" class="java.lang.String">
+			<fieldDescription><![CDATA[Código Fórmula]]></fieldDescription>
+		</field>
+		<field name="artcod" class="java.lang.String">
+			<fieldDescription><![CDATA[Producto ]]></fieldDescription>
+		</field>
+		<field name="artori" class="java.lang.String">
+			<fieldDescription><![CDATA[Producto Original]]></fieldDescription>
+		</field>
+		<field name="artsus" class="java.lang.String">
+			<fieldDescription><![CDATA[Producto Sustituto]]></fieldDescription>
+		</field>
+		<field name="deposi" class="java.lang.String">
+			<fieldDescription><![CDATA[Deposito]]></fieldDescription>
+		</field>
+		<field name="operar" class="java.lang.String">
+			<fieldDescription><![CDATA[Operario]]></fieldDescription>
+		</field>
+		<field name="cantid" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[Cantidad ]]></fieldDescription>
+		</field>
+		<field name="cantst" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[Cantidad Stock]]></fieldDescription>
+		</field>
+		<field name="cntori" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[Cantidad Original]]></fieldDescription>
+		</field>
+		<field name="cntpen" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[Cantidad Pendiente]]></fieldDescription>
+		</field>
+		<field name="unimed" class="java.lang.String">
+			<fieldDescription><![CDATA[Unidad de Medida]]></fieldDescription>
+		</field>
+		<field name="precio" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[Precio]]></fieldDescription>
+		</field>
+		<field name="presec" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[Precio Secundario]]></fieldDescription>
+		</field>
+		<field name="fchent" class="java.sql.Date">
+			<fieldDescription><![CDATA[Fecha Entrega Desde]]></fieldDescription>
+		</field>
+		<field name="fchhas" class="java.sql.Date">
+			<fieldDescription><![CDATA[Fecha Entrega Hasta]]></fieldDescription>
+		</field>
+		<field name="observ" class="java.lang.String">
+			<fieldDescription><![CDATA[Observaciones]]></fieldDescription>
+		</field>
+		<field name="stocks" class="java.lang.String">
+			<fieldDescription><![CDATA[Actualiza Stock]]></fieldDescription>
+		</field>
+		<field name="DEBAJA" class="java.lang.String">
+			<fieldDescription><![CDATA[Deshabilitado]]></fieldDescription>
+		</field>
+		<field name="TSTAMP" class="java.sql.Timestamp">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="FECALT" class="java.sql.Date">
+			<fieldDescription><![CDATA[Fecha de Alta]]></fieldDescription>
+		</field>
+		<field name="FECMOD" class="java.sql.Date">
+			<fieldDescription><![CDATA[Fecha de Modificacion]]></fieldDescription>
+		</field>
+		<field name="ULTOPR" class="java.lang.String">
+			<fieldDescription><![CDATA[Ultima Operación]]></fieldDescription>
+		</field>
+		<field name="USERID" class="java.lang.String">
+			<fieldDescription><![CDATA[Usuario]]></fieldDescription>
+		</field>
+		<field name="CODEMP" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="grupo" class="java.lang.String">
+			<fieldDescription><![CDATA[Grupo]]></fieldDescription>
+		</field>
+		<field name="cntnom" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[Cantidad Nominal]]></fieldDescription>
+		</field>
 	</subDataset>
 	<parameter name="LOGO" class="java.io.InputStream">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -139,9 +140,7 @@ WHERE
 	<parameter name="EMP_INIACT" class="java.lang.String"/>
 	<parameter name="EMP_IVA" class="java.lang.String"/>
 	<parameter name="EMP_CIUDAD" class="java.lang.String"/>
-	<parameter name="MODFOR" class="java.lang.String"/>
-	<parameter name="CODFOR" class="java.lang.String"/>
-	<parameter name="NROFOR" class="java.lang.Integer"/>
+	<parameter name="ID" class="java.lang.Integer"/>
 	<parameter name="USUARIO" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
@@ -334,26 +333,19 @@ WHERE
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="263" splitType="Stretch">
+		<band height="500" splitType="Stretch">
 			<componentElement>
 				<reportElement x="0" y="12" width="554" height="85" isRemoveLineWhenBlank="true" uuid="47186046-a2f4-4b95-82d7-1c8e79167632"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="detalle" uuid="63b7b6ea-262b-4fa0-a2a0-abc0b3599a0f">
-						<datasetParameter name="MODFOR">
-							<datasetParameterExpression><![CDATA[$P{MODFOR}]]></datasetParameterExpression>
-						</datasetParameter>
-						<datasetParameter name="CODFOR">
-							<datasetParameterExpression><![CDATA[$P{CODFOR}]]></datasetParameterExpression>
-						</datasetParameter>
-						<datasetParameter name="NROFOR">
-							<datasetParameterExpression><![CDATA[$P{NROFOR}]]></datasetParameterExpression>
+					<datasetRun subDataset="detalle_producto" uuid="c13cf41c-f35c-4b2f-974b-d945ccd7bf4a">
+						<datasetParameter name="ID_CAB">
+							<datasetParameterExpression><![CDATA[$P{ID}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="90" uuid="31c63aab-7d3a-4d4a-8abf-10449c7c0a3c">
 						<jr:tableHeader height="15" rowSpan="1"/>
-						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="90" height="30" backcolor="#FFFFFF" uuid="dd217533-8a1e-4392-9c8d-5c0039f124f6"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -362,7 +354,6 @@ WHERE
 								<text><![CDATA[Número de contrato]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter height="30" rowSpan="1"/>
 						<jr:detailCell height="17" rowSpan="1"/>
 					</jr:column>
 					<jr:column width="90" uuid="61d54d6e-97f3-4fe1-9939-4be26d726410">
@@ -383,7 +374,7 @@ WHERE
 									<font size="8"/>
 									<paragraph leftIndent="5"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{PDRMVI_ARTCOD}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{descrp}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -400,7 +391,7 @@ WHERE
 						</jr:columnHeader>
 						<jr:detailCell height="17" rowSpan="1">
 							<textField isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="49" height="16" uuid="ebcf747b-2d59-4d69-83e9-bb9d3da220a6"/>
+								<reportElement x="0" y="0" width="49" height="17" uuid="ebcf747b-2d59-4d69-83e9-bb9d3da220a6"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="5"/>
 								</textElement>
@@ -421,7 +412,7 @@ WHERE
 						</jr:columnHeader>
 						<jr:detailCell height="17" rowSpan="1">
 							<textField pattern="###0.00" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="27" height="16" uuid="b290a680-0027-4513-87ec-19cc458e4fc4"/>
+								<reportElement x="0" y="0" width="40" height="17" uuid="b290a680-0027-4513-87ec-19cc458e4fc4"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph rightIndent="5"/>
@@ -443,50 +434,52 @@ WHERE
 						</jr:columnHeader>
 						<jr:detailCell height="17" rowSpan="1">
 							<textField isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="31" height="16" uuid="3261d92b-2016-479b-a7ee-f88bc87b15c1"/>
+								<reportElement x="0" y="0" width="44" height="17" uuid="3261d92b-2016-479b-a7ee-f88bc87b15c1"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="5"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{STMPDH_UNIMED}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{cantid}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="57" uuid="27cab95c-7dc8-4079-a56b-36483863fcff">
 						<jr:tableHeader height="15" rowSpan="1"/>
-						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="56" height="30" backcolor="#339900" uuid="c633a304-cd65-4d0b-9cea-e464cefa8d16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font isBold="true"/>
+									<font size="8" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Hr. Real. Arranque]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter height="30" rowSpan="1"/>
 						<jr:detailCell height="17" rowSpan="1"/>
 					</jr:column>
 					<jr:column width="53" uuid="3108a161-acf3-4261-af58-6e693115278d">
 						<jr:tableHeader height="15" rowSpan="1"/>
-						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1">
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="53" height="30" backcolor="#339900" uuid="923c942c-9963-468d-8f4a-423d1779c639"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font isBold="true"/>
+									<font size="8" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Hr. Real. Fin]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter height="30" rowSpan="1"/>
 						<jr:detailCell height="17" rowSpan="1"/>
 					</jr:column>
 					<jr:column width="53" uuid="f9e9e467-0dfd-43ac-a8ec-87ab50f2264a">
 						<jr:tableHeader height="15" rowSpan="1"/>
-						<jr:tableFooter height="30" rowSpan="1"/>
-						<jr:columnHeader height="30" rowSpan="1"/>
-						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="53" height="30" backcolor="#339900" uuid="a51ea200-dd85-4563-a784-03fb5025bd6b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Cant. Prod kg]]></text>
+							</staticText>
+						</jr:columnHeader>
 						<jr:detailCell height="17" rowSpan="1"/>
 					</jr:column>
 					<jr:column width="73" uuid="09787a31-4c54-4f96-9212-0651482ca904">
@@ -502,11 +495,11 @@ WHERE
 						</jr:columnHeader>
 						<jr:detailCell height="17" rowSpan="1">
 							<textField isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="73" height="16" uuid="ed9e056d-8543-435b-a162-48c1b79a394b"/>
+								<reportElement x="0" y="0" width="73" height="17" uuid="ed9e056d-8543-435b-a162-48c1b79a394b"/>
 								<textElement textAlignment="Justified" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{PDRMVI_FORMUL}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -519,7 +512,31 @@ WHERE
 				</textElement>
 				<text><![CDATA[PRODUCTOS A FABRICAR]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="97" width="555" height="12" uuid="ea2ddd99-66a3-4c32-bfad-ef5322115640"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lugar de consumo de materia prima]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="44" y="109" width="511" height="44" uuid="6e7ad756-98f5-4c33-8195-1ab906833ea5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PDRMVH_TEXTOS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="109" width="44" height="12" uuid="f768019c-ee65-4e2f-a17a-3698ec17101b"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Operadores]]></text>
+			</staticText>
 		</band>
+		<band height="185"/>
+		<band height="274"/>
 	</detail>
 	<columnFooter>
 		<band splitType="Stretch"/>
