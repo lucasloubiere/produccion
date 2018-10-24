@@ -11,6 +11,7 @@ import bs.global.modelo.Sucursal;
 import bs.global.rn.FormularioPorSituacionIVARN;
 import bs.global.rn.SucursalRN;
 import bs.global.util.JsfUtil;
+import bs.global.util.ReportFactory;
 import bs.global.web.GenericBean;
 import bs.produccion.modelo.CircuitoProduccion;
 import bs.produccion.modelo.DepartamentoProduccion;
@@ -34,7 +35,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -100,6 +103,9 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
     @ManagedProperty(value = "#{formularioProduccionBean}")
     protected FormularioProduccionBean formularioProduccionBean;
+    
+    @ManagedProperty(value = "#{reportFactory}")
+    protected ReportFactory reportFactory;
 
     //Fecha para control
     protected Date fechaMinina;
@@ -691,34 +697,59 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
     public void imprimir(String modulo) {
 
-//        try {
-////            System.out.println("Nombre reporte " + m.getFormulario().getNombreReporte());
-//
-//            if (mov.getFormulario().getNombreReporte()==null){
-//                throw new ExcepcionGeneralSistema("El comprobante no tienen reporte asociado");
-//            }
-//            
-//            //JasperReport masterReport = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("/isd/produccion/reporte/"+ m.getFormulario().getNombreReporte()+".jasper"));
-//            JasperReport masterReport = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream( mov.getFormulario().getNombreReporte()+".jasper"));
-//
-//            Map parameters = new HashMap();
-//            parameters.put("MODFOR", mov.getModfor());
-//            parameters.put("CODFOR", mov.getCodfor());
-//            parameters.put("NROFOR", mov.getNrofor());
-//
-//            empresaRN.cargarDatosEmpresa(parameters);
-//
-//            String nombreArchivo = mov.getComprobante().getCodigo()+"-"+mov.getNrofor();
-//
-//            ReportFactory reportFactory = new ReportFactory();
-//            reportFactory.verReportePDF(masterReport, nombreArchivo, parameters);
-//
-//        } catch (NullPointerException npe) {
-//            JsfUtil.addErrorMessage("No se encontró el archivo: " + mov.getFormulario().getNombreReporte()+".jasper");
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            JsfUtil.addErrorMessage("No se puede imprimir a pdf " + e.getMessage());
-//        }
+        generarReporte(modulo);
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formulario");
+
+        if (muestraReporte) {
+            context.execute("PF('dlg_reporte').show()");
+        }
+    }
+
+    public void generarReporte(String modulo) {
+
+        try {
+
+            Map parameters = new HashMap();
+
+            if (modulo.equals("PD") && m != null) {
+
+                if (m.getFormulario().getReporte() == null) {
+                    throw new ExcepcionGeneralSistema("No se puede imprimir - El formulario de producción no tiene reporte asociado");
+                }
+
+                parameters.put("ID", m.getId());                
+                parameters.put("CANT_COPIAS", m.getComprobante().getCopias());
+
+                nombreArchivo = m.getFormulario().getCodigo() + "-" + m.getNumeroFormulario();
+                reportFactory.exportReportToPdfFile(m.getFormulario().getReporte(), nombreArchivo, parameters);
+            }
+
+            if (modulo.equals("ST") && m.getMovimientoStock() != null) {
+
+                if (m.getMovimientoStock().getFormulario().getReporte() == null) {
+                    throw new ExcepcionGeneralSistema("No se puede imprimir - El formulario de stock no tiene reporte asociado");
+                }
+
+                parameters.put("ID", m.getMovimientoStock().getId());
+                parameters.put("CANT_COPIAS", m.getMovimientoStock().getComprobante().getCopias());
+
+                nombreArchivo = m.getMovimientoStock().getFormulario().getCodigo() + "-" + m.getMovimientoStock().getNumeroFormulario();
+                reportFactory.exportReportToPdfFile(m.getMovimientoStock().getFormulario().getReporte(), nombreArchivo, parameters);
+            }
+
+            muestraReporte = true;
+
+        } catch (NullPointerException npe) {
+            JsfUtil.addErrorMessage("No se encontró el archivo: " + m.getFormulario().getReporte().getPath());
+            muestraReporte = false;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JsfUtil.addErrorMessage("No se puede imprimir a pdf " + ex);
+            muestraReporte = false;
+        }
     }
 
     public void nuevaBusqueda() {
@@ -1108,6 +1139,14 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
     public void setFormulaBean(FormulaBean formulaBean) {
         this.formulaBean = formulaBean;
+    }
+
+    public ReportFactory getReportFactory() {
+        return reportFactory;
+    }
+
+    public void setReportFactory(ReportFactory reportFactory) {
+        this.reportFactory = reportFactory;
     }
     
 }

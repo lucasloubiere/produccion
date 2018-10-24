@@ -157,7 +157,8 @@ public class StockDAO extends BaseDAO {
         try {
                         
             Query q = em.createQuery("SELECT DISTINCT s.producto FROM Stock s "
-                    + "WHERE s.deposi = :codigo "                    
+                    + "WHERE s.deposi = :codigo "
+                    + " AND s.stocks <> 0 "                    
                     + "ORDER BY s.artcod " );
 
             q.setParameter("codigo",codDep);
@@ -238,7 +239,7 @@ public class StockDAO extends BaseDAO {
         
         try {
                         
-            Query q = em.createNativeQuery(" SELECT ARTCOD, DEPOSI, '' AS NATRI1,'' AS NATRI2,'' AS NATRI3,'' AS NATRI4,'' AS NATRI5,'' AS NATRI6,'' AS NATRI7, SUM(STOCKS) AS STOCKS " +
+            Query q = em.createNativeQuery(" SELECT ARTCOD, DEPOSI, '' AS NATRI1,'' AS NATRI2,'' AS NATRI3,'' AS NATRI4,'' AS NATRI5,'' AS NATRI6,'' AS NATRI7, SUM(s.STOCKS) AS STOCKS " +
                                            " FROM st_stock s inner join st_producto p on s.artcod = p.codigo" +
                     " inner join st_deposito d on s.deposi = d.codigo" +
                     " where d.codsec = 'REF' " +
