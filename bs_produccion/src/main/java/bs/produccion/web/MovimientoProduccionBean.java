@@ -350,15 +350,14 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             return;
         }
 
-        if (productoBean.getProducto() != null && m != null) {
+        if (productoBean.getProducto() != null && m != null && itemProducto !=null) {
 
-            Producto p = productoBean.getProducto();
-            ItemProductoProduccion ip = m.getItemsProducto().get(m.getItemsProducto().size() - 1);
-
-            ip.setProducto(p);
-            ip.setProductoOriginal(p);
-            ip.setUnidadMedida(p.getUnidadDeMedida());
-            ip.setActualizaStock(p.getGestionaStock());
+            try {
+                Producto p = productoBean.getProducto();
+                produccionRN.asignarProducto(itemProducto, p);
+            } catch (ExcepcionGeneralSistema ex) {
+                JsfUtil.addErrorMessage("No es posible procesar producto " + ex);
+            }
         }
     }
     
