@@ -67,7 +67,7 @@
                                  rendered="#{not empty i.producto}" style="text-align: right;" >
                         <f:convertNumber pattern="###,###,##0.00"  />
                         <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades()}" event="keyup" 
-                                update="tb:detalleComponente"/>                                
+                                update="detalle"/>                                
                     </p:inputText>
 
                 </p:column>
@@ -83,7 +83,7 @@
                         <f:convertDateTime pattern="HH:mm" />
                     </p:inputText>                    
                 </p:column>
-                                
+
                 <p:column headerText="Hora fin" width="50" style="text-align: center;" 
                           rendered="#{movimientoProduccionBean.muestroCampo('D','HORFIN')}">                            
                     <p:inputText  value="#{i.horaFin}" >
@@ -157,17 +157,18 @@
                 <p:column headerText="Código" width="70" >
                     <h:outputText value="#{i.producto.codigo}" />
                 </p:column>
+
                 <p:column headerText="Descripción" >
                     <h:outputText value="#{i.producto.descripcion}" />
                 </p:column>
-
+                
                 <p:column headerText="Cantidad" width="100" rendered="#{movimientoProduccionBean.muestroCampo('D','CANTID')}" >                            
 
                     <p:inputText value="#{i.cantidad}" 
                                  rendered="#{not empty i.producto}" styleClass="TexAlRight" >
                         <f:convertNumber pattern="###,###,##0.00"  />
                         <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades()}" event="keyup" 
-                                update="tb:detalleComponente"/>                                
+                                process="@this" update="detalleItem" />                                
                     </p:inputText>
 
                 </p:column>
@@ -175,7 +176,7 @@
                 <p:column headerText="U.M." width="50" style="text-align: center;">
                     <h:outputText value="#{i.unidadMedida.codigo}" />
                 </p:column>
-
+                
                 <p:column headerText="Deposito" width="200" style="text-align: center;">
 
                     <p:selectOneMenu value="#{i.deposito}"                                     
@@ -186,8 +187,8 @@
                         <f:selectItem itemValue="" itemLabel="Seleccionar" />
                         <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
                     </p:selectOneMenu>
-
                 </p:column>
+
 
                 <p:column headerText="Detalle" style="width: 50px; text-align: center;" 
                           rendered="#{movimientoProduccionBean.muestroCampo('D','DETALL')}"   >

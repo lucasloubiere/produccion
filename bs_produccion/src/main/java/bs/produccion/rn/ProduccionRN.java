@@ -237,6 +237,8 @@ public class ProduccionRN {
                 m.setDeposito(comprobante.getDeposito());
                 m.setDepositoTransferencia(comprobante.getDepositoTransferencia());
         }
+        
+        System.err.println("Deposito " + m.getDeposito());
 
         return m;
     }
@@ -348,6 +350,8 @@ public class ProduccionRN {
         nItem.setMovimiento(m);
         nItem.setMovimientoOriginal(m);
         nItem.setDeposito(m.getDeposito());        
+        
+        System.err.println("Deposito en item " + nItem.getDeposito());
 
         return nItem;
 
@@ -402,6 +406,7 @@ public class ProduccionRN {
         itemDetalle.setProducto(itemProducto.getProducto());
         itemDetalle.setCantidad(BigDecimal.ZERO);
         itemDetalle.setUnidadMedida(itemProducto.getUnidadMedida());
+        itemDetalle.setDeposito(itemProducto.getDeposito());        
 
         itemDetalle.setItemProducto(itemProducto);
 
@@ -574,7 +579,11 @@ public class ProduccionRN {
     }
 
     public void generarItemFromItemPendiente(MovimientoProduccion movimiento, PendienteProduccionDetalle itemPendiente, ItemMovimientoProduccion itemNuevo) throws ExcepcionGeneralSistema {
-
+        
+        System.err.println("Deposito en mov " + movimiento.getDeposito());
+        System.err.println("Deposito en itemnuevo " + itemNuevo.getDeposito());
+        
+        
         itemNuevo.setProducto(itemPendiente.getProducto());
         itemNuevo.setProductoOriginal(itemPendiente.getProducto());
         itemNuevo.setUnidadMedida(itemPendiente.getUnidadMedida());
@@ -592,7 +601,7 @@ public class ProduccionRN {
 
         itemNuevo.setActualizaStock(itemPendiente.getStocks());
         itemNuevo.setGrupo(itemPendiente.getGrupo());
-
+        
         if (itemPendiente.getFormul() != null && !itemPendiente.getFormul().isEmpty()) {
             ComposicionFormula composicionFormula = composicionFormulaRN.getComprosicionFormula(itemPendiente.getArtcod(), itemPendiente.getFormul());
             itemNuevo.setComposicionFormula(composicionFormula);
@@ -609,11 +618,12 @@ public class ProduccionRN {
             }
 
             if (movimiento.getCircuito().getActualizaStock().equals("S")) {
+                itemNuevo.setDeposito(movimiento.getDeposito());
                 generarItemDetalleItemProducto((ItemProductoProduccion) itemNuevo, null);
             }
 
             movimiento.getItemsProducto().add((ItemProductoProduccion) itemNuevo);
-
+            
             sincronizarCantidadesItemDetalleProducto((ItemProductoProduccion) itemNuevo);
         }
 
@@ -626,6 +636,8 @@ public class ProduccionRN {
             }
 
             if (movimiento.getCircuito().getActualizaStock().equals("S")) {
+                
+                itemNuevo.setDeposito(movimiento.getDeposito());
                 generarItemDetalleItemComponente((ItemComponenteProduccion) itemNuevo, null);
             }
 
@@ -1228,6 +1240,11 @@ public class ProduccionRN {
             for (ItemProductoProduccion i : movimiento.getItemsProducto()) {
 
                 i.setConError(false);
+                
+                if (i.getProducto() == null) {
+                    i.setConError(true);
+                    sErrores += "- El item " + i.getNroitm() + " no tiene un producto asignado\n";
+                }
 
                 if (i.getCantidad() == null || i.getCantidad().compareTo(BigDecimal.ZERO) == 0) {
                     i.setConError(true);

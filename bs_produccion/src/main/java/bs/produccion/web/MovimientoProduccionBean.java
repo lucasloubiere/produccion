@@ -579,6 +579,14 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 
             m = produccionRN.nuevoMovimientoFromPendiente(circuito, sucursal, sucursalStock, movimientoPendiente ,itemsPendiente);
             aplicarDatosPorDefecto();
+            
+            
+            for(ItemComponenteProduccion ic:m.getItemsComponente()){
+                
+                
+                System.err.println("Deposito " + ic.getDeposito());
+            }
+                
 
             context.addCallbackParam("todoOk", true);
 
