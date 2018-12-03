@@ -661,38 +661,6 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
 //        System.err.println(filtroDetalle);
     }
 
-    public void imprimir() {
-
-//        try {
-////            System.out.println("Nombre reporte " + m.getFormulario().getNombreReporte());
-//
-//            if (m.getFormulario().getNombreReporte()==null){
-//                throw new ExcepcionGeneralSistema("El comprobante no tienen reporte asociado");
-//            }
-//
-//            //JasperReport masterReport = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream("/isd/produccion/reporte/"+ m.getFormulario().getNombreReporte()+".jasper"));
-//            JasperReport masterReport = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream( m.getFormulario().getNombreReporte()+".jasper"));
-//
-//            Map parameters = new HashMap();
-//            parameters.put("MODFOR", m.getModfor());
-//            parameters.put("CODFOR", m.getCodfor());
-//            parameters.put("NROFOR", m.getNrofor());
-//
-//            empresaRN.cargarDatosEmpresa(parameters);
-//
-//            String nombreArchivo = m.getComprobante().getCodigo()+"-"+m.getNrofor();
-//
-//            ReportFactory reportFactory = new ReportFactory();
-//            reportFactory.verReportePDF(masterReport, nombreArchivo, parameters);
-//
-//        } catch (NullPointerException npe) {
-//            JsfUtil.addErrorMessage("No se encontró el archivo: " + m.getFormulario().getNombreReporte()+".jasper");
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            JsfUtil.addErrorMessage("No se puede imprimir a pdf " + e.getMessage());
-//        }
-    }
-
     public void imprimir(String modulo) {
 
         generarReporte(modulo);
