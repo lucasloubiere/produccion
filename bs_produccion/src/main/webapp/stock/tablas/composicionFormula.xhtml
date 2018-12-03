@@ -126,6 +126,16 @@
                         <h:outputText value="#{i.productoComponente.unidadDeMedida.codigo}" />
                     </p:column>                    
                     
+                    <p:column headerText="Deposito">                        
+                        <p:selectOneMenu value="#{i.deposito}"                                                                           
+                                     converter="#{conversoresStock.deposito}"                                      
+                                     effect="fade" filter="true" filterMatchMode="contains"  >  
+                        <p:ajax process="@this" />
+                        <f:selectItem itemValue="" itemLabel="Seleccionar" />
+                        <f:selectItems value="#{depositoBean.lista}" var="d" itemLabel="#{d.descripcion}" itemValue="#{d}" />                                    
+                    </p:selectOneMenu>                    
+                    </p:column>
+                    
                     <p:column headerText="Eliminar" width="100">
                         <p:commandButton icon="fa fa-trash" actionListener="#{composicionFormulaBean.eliminarItemComponente(i)}" 
                                          update="@form" process="@form" >

@@ -294,7 +294,6 @@
                             <h:outputText value="#{i.producto.codigo} - #{i.producto.descripcion}" style="width: 90%;" rendered="#{not empty i.producto}"/>                            
                         </p:column>
 
-
                         <p:column headerText="Stock" width="50" style="text-align: center;" >
                             <p:commandButton icon="fa fa-search" 
                                              actionListener="#{consultaStock.verStockPorProducto(i.producto, movimientoStockBean.m.deposito)}"
@@ -304,7 +303,6 @@
                                 <f:setPropertyActionListener value="#{i}" target="#{movimientoStockBean.item}" />                            
                             </p:commandButton>
                         </p:column>
-
 
                         <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" width="120" 
                                   rendered="#{aplicacionBean.parametroStock.administraAtributo1 eq 'S'}" >  
@@ -317,38 +315,6 @@
 
                             <p:inputText  value="#{i.atributo2}" readonly="#{empty i.producto or i.producto.administraAtributo2 eq 'N'}" />                            
                         </p:column>
-
-                        <!--
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo3}" width="120" 
-                                  rendered="#{aplicacionBean.parametroStock.administraAtributo3 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo3}" readonly="#{empty i.producto or i.producto.administraAtributo3 eq 'N'}" />                            
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo4}" width="120" 
-                                  rendered="#{aplicacionBean.parametroStock.administraAtributo4 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo4}" readonly="#{empty i.producto or i.producto.administraAtributo4 eq 'N'}" />                            
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo5}" width="120" 
-                                  rendered="#{aplicacionBean.parametroStock.administraAtributo5 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo5}" readonly="#{empty i.producto or i.producto.administraAtributo5 eq 'N'}" />                            
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo6}" width="120" 
-                                  rendered="#{aplicacionBean.parametroStock.administraAtributo6 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo6}" readonly="#{empty i.producto or i.producto.administraAtributo6 eq 'N'}" />                            
-                        </p:column>
-
-                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo7}" width="120" 
-                                  rendered="#{aplicacionBean.parametroStock.administraAtributo7 eq 'S'}">  
-
-                            <p:inputText  value="#{i.atributo7}" readonly="#{empty i.producto or i.producto.administraAtributo7 eq 'N'}" />                            
-                        </p:column>
-                        -->
 
                         <p:column headerText="Cantidad" width="80" style="text-align: right;"  >
 

@@ -68,7 +68,7 @@ public class ComposicionFormulaBean extends GenericBean implements Serializable 
         try {
             if (composicionFormula != null) {
 
-                composicionFormulaRN.guardar(composicionFormula, esNuevo);
+                composicionFormula = composicionFormulaRN.guardar(composicionFormula, esNuevo);
                 esNuevo = false;
                 JsfUtil.addInfoMessage("Los datos se guardaron correctamente");
 

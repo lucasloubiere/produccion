@@ -44,7 +44,6 @@ public abstract class ItemComposicionFormula implements Serializable {
     @Id
     @Column(name = "NROITM", nullable = false)
     private int nroitm;
-    
 
     /**
      * Composición de codigoa
@@ -79,6 +78,10 @@ public abstract class ItemComposicionFormula implements Serializable {
      */
     @Column(name = "CNTREA", precision = 15, scale = 4)
     private BigDecimal cntrea;
+
+    @JoinColumn(name = "DEPOSI", referencedColumnName = "CODIGO", nullable = true)
+    @ManyToOne(optional = false)
+    private Deposito deposito;
 
     /**
      * Registro de calidad
@@ -280,6 +283,14 @@ public abstract class ItemComposicionFormula implements Serializable {
         this.auditoria = auditoria;
     }
 
+    public Deposito getDeposito() {
+        return deposito;
+    }
+
+    public void setDeposito(Deposito deposito) {
+        this.deposito = deposito;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

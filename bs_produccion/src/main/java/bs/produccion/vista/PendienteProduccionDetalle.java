@@ -7,6 +7,7 @@ package bs.produccion.vista;
 
 import bs.produccion.modelo.MovimientoProduccion;
 import bs.produccion.modelo.Operario;
+import bs.stock.modelo.Deposito;
 import bs.stock.modelo.Producto;
 import bs.stock.modelo.UnidadMedida;
 import java.io.Serializable;
@@ -104,6 +105,10 @@ public class PendienteProduccionDetalle implements Serializable {
     @JoinColumn(name = "artcod", referencedColumnName = "codigo", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Producto producto;
+
+    @JoinColumn(name = "DEPOSI", referencedColumnName = "CODIGO", nullable = false)
+    @ManyToOne
+    private Deposito deposito;
 
     @JoinColumn(name = "operar", referencedColumnName = "codigo", nullable = false)
     @ManyToOne
@@ -296,9 +301,15 @@ public class PendienteProduccionDetalle implements Serializable {
     public void setTipitm(String tipitm) {
         this.tipitm = tipitm;
     }
-    
-    
 
+    public Deposito getDeposito() {
+        return deposito;
+    }
+
+    public void setDeposito(Deposito deposito) {
+        this.deposito = deposito;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;

@@ -5,6 +5,7 @@
  */
 package bs.stock.rn;
 
+import bs.produccion.modelo.ItemDetalleComponenteProduccion;
 import bs.stock.dao.StockDAO;
 import bs.stock.modelo.Deposito;
 import bs.stock.modelo.Producto;
@@ -162,8 +163,21 @@ public class StockRN implements Serializable {
         stockDAO.recalcularStock();
 
     }
+    
+    public void asignarStock(ItemDetalleComponenteProduccion itemDetalle, BigDecimal cantidad) {
+        
+        List<Stock> lista = getStockByProductoDeposito(itemDetalle.getProducto(), itemDetalle.getDeposito());
+        
+        
+        if(lista==null || lista.isEmpty()){
+            return;
+        }
+        
+    }
+
    
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 
+    
 }

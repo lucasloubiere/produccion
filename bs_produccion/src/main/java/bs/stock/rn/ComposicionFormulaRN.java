@@ -29,7 +29,7 @@ public class ComposicionFormulaRN {
     @EJB private ComposicionFormulaDAO composicionFormulaDAO;
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)   
-    public void guardar(ComposicionFormula e, boolean esNuevo)throws ExcepcionGeneralSistema {
+    public ComposicionFormula guardar(ComposicionFormula e, boolean esNuevo)throws ExcepcionGeneralSistema {
         
         borrarItemNoValidos(e);
         
@@ -39,8 +39,10 @@ public class ComposicionFormulaRN {
            }
            composicionFormulaDAO.crear(e);            
         }else{               
-           composicionFormulaDAO.editar(e);
-        }           
+           e = (ComposicionFormula) composicionFormulaDAO.editar(e);
+        }          
+        
+        return e;
     }
     
     private void borrarItemNoValidos(ComposicionFormula c){

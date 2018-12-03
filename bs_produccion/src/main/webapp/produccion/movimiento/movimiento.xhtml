@@ -123,6 +123,8 @@
 
             <p:remoteCommand name="procesarFormula" process="@this" update="@form" 
                              actionListener="#{movimientoProduccionBean.procesarFormula()}" />
+            
+            <p:remoteCommand name="procesarStock" process="@this" update="tb:detalle" actionListener="#{movimientoProduccionBean.procesarStockItemComponente()}" />
 
             <p:messages id="message" showDetail="true" /><p:growl id="messageg" showDetail="true" life="7000" />
 
@@ -217,8 +219,9 @@
                         <p:inputText id="solici" value="#{movimientoProduccionBean.m.solicitante}" title="Solici" />
 
                         <h:outputText value="Hora inicio " />
-                        <p:calendar value="#{movimientoProduccionBean.m.horaInicio}" 
+                        <p:calendar value="#{movimientoProduccionBean.m.horaInicio}"
                                     rendered="#{movimientoProduccionBean.muestroCampo('C','HORINI')}"                                     
+                                    required="true" requiredMessage="La hora de inicio es obligatoria"
                                     pattern="dd/MM/yyyy HH:mm"  >
                             <p:ajax process="@this" event="dateSelect" />
                         </p:calendar>
