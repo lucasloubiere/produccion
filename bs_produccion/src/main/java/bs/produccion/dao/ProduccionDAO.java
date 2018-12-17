@@ -108,8 +108,9 @@ public class ProduccionDAO extends BaseDAO {
     
     public List<PendienteProduccionGrupo> getPendientesGrupo(Map<String, String> filtroGrupo) {
         
-        String sQuery = "SELECT p FROM PendienteProduccionGrupo p ";
-               sQuery += generarStringFiltro(filtroGrupo,"p", true);
+        String sQuery = "SELECT p FROM PendienteProduccionGrupo p "
+                + " WHERE p.pendiente > 0 ";
+               sQuery += generarStringFiltro(filtroGrupo,"p", false);
                sQuery += " order by p.nrofor DESC ";
 
         sincronizacionTemporal("pd_pendiente_grupo");
@@ -121,8 +122,9 @@ public class ProduccionDAO extends BaseDAO {
         
         try {
                     
-            String sQuery = "SELECT i FROM PendienteProduccionDetalle i ";               
-            sQuery += generarStringFiltro(filtroDetalle,"i", true);
+            String sQuery = "SELECT i FROM PendienteProduccionDetalle i "
+                    + " WHERE i.pendiente > 0 ";               
+            sQuery += generarStringFiltro(filtroDetalle,"i", false);
             
             sincronizacionTemporal("pd_pendiente_detalle");
             Query q = em.createQuery(sQuery);            

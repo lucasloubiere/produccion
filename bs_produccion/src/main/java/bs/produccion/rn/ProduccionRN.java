@@ -31,7 +31,6 @@ import bs.produccion.vista.PendienteProduccionGrupo;
 import bs.stock.modelo.ComposicionFormula;
 import bs.stock.modelo.ComprobanteStock;
 import bs.stock.modelo.Formula;
-import bs.stock.modelo.ItemComposicionFormula;
 import bs.stock.modelo.ItemComposicionFormulaComponente;
 import bs.stock.modelo.ItemComposicionFormulaProceso;
 import bs.stock.modelo.MovimientoStock;
@@ -45,9 +44,7 @@ import bs.stock.rn.ParametroStockRN;
 import bs.stock.rn.ProductoRN;
 import bs.stock.rn.StockRN;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -689,31 +686,35 @@ public class ProduccionRN {
             BigDecimal cantNecesaria = item.getCantidad();
 
             for (Stock atributo : listaAtributo) {
-
-                System.err.println("Atributo " + atributo + " Stock " + atributo.getStocks());
-
-                ItemDetalleComponenteProduccion itemDetalle = nuevoItemDetalleItemComponente(item);
-
-                itemDetalle.setAtributo1(atributo.getAtributo1());
-                itemDetalle.setAtributo2(atributo.getAtributo2());               
                 
+                System.err.println("Atributo " + atributo + " Stock " + atributo.getStocks());
+                
+                if(atributo.getStocks().compareTo(BigDecimal.ZERO)<0) {
+                    continue;
+                }                
+                
+                ItemDetalleComponenteProduccion itemDetalle = null;
 
                 if (cantNecesaria.compareTo(atributo.getStocks()) <= 0) {
                     
                     System.out.println(" Cantidad necesaria menor a stock total");
-
+                    
+                    itemDetalle = nuevoItemDetalleItemComponente(item);
+                    itemDetalle.setAtributo1(atributo.getAtributo1());
+                    itemDetalle.setAtributo2(atributo.getAtributo2());               
                     itemDetalle.setCantidad(cantNecesaria);
                     
                     System.err.println("itemDetalle " + itemDetalle.getCantidad());
                     
                     cantNecesaria = BigDecimal.ZERO;
                     
-                    System.err.println("itemDetalle " + itemDetalle.getCantidad());
-                    
                 }else{
                     
                     System.out.println(" Cantidad necesaria mayor a stock total");
                     
+                    itemDetalle = nuevoItemDetalleItemComponente(item);
+                    itemDetalle.setAtributo1(atributo.getAtributo1());
+                    itemDetalle.setAtributo2(atributo.getAtributo2());  
                     itemDetalle.setCantidad(atributo.getStocks());                    
                     cantNecesaria = cantNecesaria.add(atributo.getStocks().negate());
                 }
