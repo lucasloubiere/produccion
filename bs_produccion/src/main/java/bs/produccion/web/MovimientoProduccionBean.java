@@ -287,11 +287,7 @@ public class MovimientoProduccionBean extends GenericBean implements Serializabl
             }
 
         } catch (Exception ex) {
-
-            if (circuito.getPermiteAgregarItems().equals("S")) {
-                //Cargarmos un nuevo item en blanco en caso de que quieran guardar sin agregar un items
-                m.getItemsProducto().add((ItemProductoProduccion) produccionRN.nuevoItemProducto(m));
-            }
+            
             JsfUtil.addErrorMessage(ex.getMessage());
         }
     }

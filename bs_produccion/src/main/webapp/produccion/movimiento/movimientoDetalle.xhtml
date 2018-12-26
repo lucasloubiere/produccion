@@ -10,7 +10,7 @@
                rendered="#{not empty movimientoProduccionBean.m and not movimientoProduccionBean.buscaMovimiento}">
 
         <p:ajax event="tabChange" listener="#{movimientoProduccionBean.onTab1Change}" />
-        
+
         <p:tab id="t0" title="Items"
                rendered="#{movimientoProduccionBean.m.tipoMovimiento eq 'OP' || movimientoProduccionBean.m.tipoMovimiento eq 'PP'}" >  
 
@@ -70,7 +70,7 @@
                                  rendered="#{not empty i.producto}" style="text-align: right;" >
                         <f:convertNumber pattern="###,###,##0.00"  />
                         <p:ajax listener="#{movimientoProduccionBean.actualizarCantidades()}" event="keyup" 
-                                update="detalleFormula,tb:detalleComponente"/>                                
+                                update="tb:detalleComponente"/>                                
                     </p:inputText>
 
                 </p:column>
@@ -94,39 +94,75 @@
                     </p:inputText>
                 </p:column>
 
-                <p:column headerText="Composición" width="60" styleClass="TexAlCenter" >
-                    <p:rowToggler />
+                <p:column headerText="Detalle" style="width: 50px; text-align: center;" 
+                          rendered="#{movimientoProduccionBean.muestroCampo('D','DETALL')}"   >
+                    <p:rowToggler  />
                 </p:column>
 
                 <p:rowExpansion>
 
-                    <div class="Wid90 Fleft MarAuto WidAutoOnMobile">
+                    <p:dataTable id="detalleItemProducto" value="#{i.itemDetalle}" var="d" reflow="true" style="max-width: 900px;" >                                        
 
-                        <p:dataTable id="detalleFormula" value="#{i.composicionFormula.itemsComponente}"  var="c" reflow="true"
-                                     emptyMessage="No se encontraron datos">
+                        <f:facet name="footer">                        
+                            <p:commandButton icon="fa fa-plus" value="Agregar item" 
+                                             process="detalleItemProducto" 
+                                             update="detalleItemProducto,message,messageg"
+                                             actionListener="#{movimientoProduccionBean.agregarItemDetalleProducto(i)}" />
 
-                            <p:column headerText="Código" width="70">
-                                <h:outputText value="#{c.productoComponente.codigo}"/>
-                            </p:column>
+                        </f:facet>
 
-                            <p:column headerText="Descripción" >
-                                <h:outputText value="#{c.productoComponente.descripcion}"/>
-                            </p:column>
+                        <p:column headerText="Stock" width="50" style="text-align: center;" >
+                            <p:commandButton icon="fa fa-search" 
+                                             actionListener="#{consultaStock.verStockPorProducto(i.producto, i.deposito)}"
+                                             update="buscadorStock"
+                                             process="@this" oncomplete="PF('dlgStock').show()"                                              
+                                             rendered="#{not empty i.producto and not empty i.deposito}" >
+                                <f:setPropertyActionListener value="#{i}" target="#{movimientoProduccionBean.itemProducto}" />                            
+                            </p:commandButton>
+                        </p:column>
 
-                            <p:column headerText="Cantidad" width="100" >
-                                <h:outputText value="#{c.cantidadNominal}" styleClass="Fright"  >                                    
-                                    <f:convertNumber pattern="###,###,##0.00"  />                                    
-                                </h:outputText>
-                            </p:column>
+                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo1}" width="80" > 
+                            <p:inputText value="#{d.atributo1}" readonly="#{empty d.producto}" />
+                        </p:column>
 
-                            <p:column headerText="U.M." width="50" style="text-align: center;">
-                                <h:outputText value="#{c.unidadMedidaItem.codigo}"/>                                
-                            </p:column>
-                        </p:dataTable>                        
+                        <p:column headerText="#{aplicacionBean.parametroStock.descripcionAtributo2}" width="80" >  
 
-                    </div>
+                            <p:inputText  value="#{d.atributo2}" readonly="#{empty d.producto}" />                            
+                        </p:column>
+
+                        <p:column headerText="Cantidad" width="100" >
+                            <p:inputText value="#{d.cantidad}" required="true" styleClass="TexAlRight"
+                                         rendered="#{not empty d.producto}"  >
+                                <f:convertNumber pattern="#{d.producto.unidadDeMedida.formato}" />                                    
+                            </p:inputText>
+                        </p:column>
+
+                        <p:column headerText="U.M" width="50"  >        
+                            <h:outputText  value="#{d.unidadMedida.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Eliminar" width="50" style="text-align: center;" >
+
+                            <p:commandButton icon="fa fa-close" process="detalleItemProducto" update="detalleItemProducto,message,messageg"
+                                             actionListener="#{movimientoProduccionBean.eliminarItemDetalleProducto(p, d)}"  >
+                                <p:confirm header="Confirmación" message="Está seguro que desea borrar el item #{d.producto.descripcion}?" icon="ui-icon-alert" />
+                            </p:commandButton>
+
+                        </p:column> 
+
+                    </p:dataTable>
+
 
                 </p:rowExpansion>
+
+                <p:column headerText="Composición" width="50" style="text-align: center;" >
+                    <p:commandButton icon="fa fa-search"                                      
+                                     update="dlgComposicion"
+                                     process="@this" oncomplete="PF('dlgComposicion').show()"                                              
+                                     rendered="#{not empty i.producto and not empty i.deposito}" >
+                        <f:setPropertyActionListener value="#{i}" target="#{movimientoProduccionBean.itemProducto}" />                            
+                    </p:commandButton>
+                </p:column>
 
                 <p:column headerText="" width="50" style="text-align: center;" >
 
@@ -141,6 +177,7 @@
 
         </p:tab>
 
+        <!-- COMPONENTES -->
         <p:tab id="t1"  title="Componentes" 
                rendered="#{movimientoProduccionBean.m.tipoMovimiento eq 'OP' || movimientoProduccionBean.m.tipoMovimiento eq 'VC'}" >
 
@@ -265,6 +302,7 @@
 
         </p:tab>
 
+        <!-- PROCESOS -->
         <p:tab id="t2"  title="Procesos" 
                rendered="#{movimientoProduccionBean.m.tipoMovimiento eq 'OP' || movimientoProduccionBean.m.tipoMovimiento eq 'PR'}" >
 
@@ -339,6 +377,7 @@
 
         </p:tab>
 
+        <!-- OPERARIOS -->
         <p:tab id="t3"  title="Operarios" 
                rendered="#{movimientoProduccionBean.m.tipoMovimiento eq 'OP' || movimientoProduccionBean.m.tipoMovimiento eq 'PH'}" >  
 
@@ -409,6 +448,41 @@
         </p:tab>
 
     </p:tabView>   
+
+
+
+    <p:dialog id="dlgComposicion" header="Composición de Fórmula" modal="true"
+              widgetVar="dlgComposicion"
+              resizable="false"
+              draggable="false"
+              minHeight="400" 
+              responsive="true" 
+              style="max-width: 700px;"
+              showEffect="fade" hideEffect="fade"> 
+
+        <p:dataTable id="detalleFormula" value="#{movimientoProduccionBean.itemProducto.composicionFormula.itemsComponente }"  var="c" reflow="true"
+                     emptyMessage="No se encontraron datos">
+
+            <p:column headerText="Código" width="70">
+                <h:outputText value="#{c.productoComponente.codigo}"/>
+            </p:column>
+
+            <p:column headerText="Descripción" >
+                <h:outputText value="#{c.productoComponente.descripcion}"/>
+            </p:column>
+
+            <p:column headerText="Cantidad" width="100" >
+                <h:outputText value="#{c.cantidadNominal}" styleClass="Fright"  >                                    
+                    <f:convertNumber pattern="###,###,##0.00"  />                                    
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="U.M." width="50" style="text-align: center;">
+                <h:outputText value="#{c.unidadMedidaItem.codigo}"/>                                
+            </p:column>
+        </p:dataTable>   
+
+    </p:dialog>
 
 
 </ui:composition>

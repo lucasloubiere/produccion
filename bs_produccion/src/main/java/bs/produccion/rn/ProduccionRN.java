@@ -493,6 +493,12 @@ public class ProduccionRN {
 
             if (movimiento.getCircuito().getActualizaStock().equals("S")) {
                 itemNuevo.setDeposito(movimiento.getDeposito());
+                
+                String atr2 = itemNuevo.getProducto().getCodigo()+ "-" + movimiento.getNumeroFormulario();
+                
+                itemNuevo.setAtributo1("VICENTIN");                
+                itemNuevo.setAtributo2(atr2);
+                
                 generarItemDetalleItemProducto((ItemProductoProduccion) itemNuevo, null);
             }
 
