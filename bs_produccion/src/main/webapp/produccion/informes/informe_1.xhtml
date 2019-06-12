@@ -1,10 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:bs="http://java.sun.com/jsf/composite/components/beansoft" >
+      xmlns:bs="http://java.sun.com/jsf/composite/components/beansoft">
 
     <ui:composition template="/template.xhtml" >
 
@@ -50,6 +50,66 @@
                         </div>                       
                     </h:panelGroup>
 
+                    <h:outputText value="Incluye Comprobantes de Estadisticas" />
+                    <p:selectOneMenu value="#{reporteService.seIncluyeEnEstadisticas}"  >                        
+                        <f:selectItem itemLabel="Todos" itemValue="" />
+                        <f:selectItem itemLabel="Si" itemValue="S" />
+                        <f:selectItem itemLabel="No" itemValue="N" />
+                        <p:ajax process="@this"  />
+                    </p:selectOneMenu>
+                    
+                    <h:outputText value="Moneda de Registración" />
+                    <p:autoComplete value="#{reporteService.monedaRegistracion}" dropdown="true" forceSelection="true"                           
+                                    completeMethod="#{monedaBean.complete}"                                    
+                                    var="e" itemLabel="#{e.descripcion}" itemValue="#{e}" 
+                                    converter="#{conversoresGeneral.moneda}"  >
+
+                        <p:ajax event="itemSelect" process="@this" update="@form"  />                        
+
+                        <p:column headerText="Código" width="100">
+                            <h:outputText value="#{e.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{e.descripcion}" />
+                        </p:column>
+                    </p:autoComplete>
+                    
+                    <h:outputText value="Unidad de Negocio " />
+                    <p:autoComplete value="#{reporteService.unidadNegocio}" dropdown="true" forceSelection="true"                           
+                                    rendered="#{reporteService.muestroCampo('C','UNINEG')}"
+                                    completeMethod="#{unidadNegocioBean.complete}"
+                                    converter="#{conversoresGeneral.unidadNegocio}"      
+                                    var="p" itemLabel="#{p.nombre}" itemValue="#{p}" >
+                        <p:ajax event="itemSelect" process="@this" />                        
+                    </p:autoComplete> 
+
+                    <h:outputText value="Cliente " />
+                    <p:autoComplete value="#{reporteService.cliente}" dropdown="true" forceSelection="true"                           
+                                    rendered="#{reporteService.muestroCampo('C','NROCTA')}"
+                                    completeMethod="#{clienteBean.complete}"
+                                    var="e" itemLabel="#{e.razonSocial}" itemValue="#{e}" 
+                                    converter="#{conversoresEntidad.entidadComercial}"  >
+
+                        <p:ajax event="itemSelect" process="@this"   />                        
+
+                        <p:column headerText="Nro cuenta" width="100">
+                            <h:outputText value="#{e.nrocta}" />
+                        </p:column>
+
+                        <p:column headerText="Razón social">
+                            <h:outputText value="#{e.razonSocial}" />
+                        </p:column>
+
+                        <p:column headerText="Nombre Fantasía">
+                            <h:outputText value="#{e.nombreFantasia}" />
+                        </p:column>
+
+                        <p:column headerText="Nro doc">
+                            <h:outputText value="#{e.nrodoc}" />
+                        </p:column>
+                    </p:autoComplete>
+
                     <h:outputText value="Producto " 
                                   rendered="#{reporteService.muestroCampo('C','ARTCOD')}" />                        
                     <p:autoComplete value="#{reporteService.producto}" 
@@ -74,7 +134,7 @@
                              styleClass="ui-panelgrid-blank" >
 
                     <p:commandButton value="Ver reporte" icon="fa fa-print"
-                                     actionListener="#{reporteService.reporteToPdf}"
+                                     actionListener="#{reporteService.verReporte}"
                                      update="@form" />
 
                     <p:commandButton value="A Excel" icon="fa fa-file-excel-o"
@@ -94,6 +154,11 @@
 
         </ui:define>
 
+        <ui:define name="dialogos" >
+
+        </ui:define>
+
     </ui:composition>
 
 </html>
+

@@ -41,7 +41,6 @@ import bs.stock.modelo.Stock;
 import bs.stock.rn.ComposicionFormulaRN;
 import bs.stock.rn.MovimientoStockRN;
 import bs.stock.rn.ParametroStockRN;
-import bs.stock.rn.ProductoRN;
 import bs.stock.rn.StockRN;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -80,8 +79,6 @@ public class ProduccionRN {
     private FormularioRN formularioRN;
     @EJB
     private SucursalRN sucursalRN;
-    @EJB
-    private ProductoRN productoRN;
     @EJB
     private StockRN stockRN;
 
@@ -276,6 +273,7 @@ public class ProduccionRN {
 
         MovimientoProduccion m = new MovimientoProduccion();
         Moneda moneda = monedaRN.getMoneda(parametrosRN.getParametro().getCodigoMonedaSecundaria());
+        BigDecimal cotizacion = monedaRN.getCotizacionDia("USD");
 
         m.setPersistido(false);
         m.setCircuito(circuito);
@@ -283,8 +281,9 @@ public class ProduccionRN {
         m.setSucursal(sucursal);
         m.setSucursalStock(sucursalStock);
         m.setTipoMovimiento(tm);
-//        m.setMonedaRegistracion(comprobante.getMonedaRegistracion());
+        m.setMonedaRegistracion(monedaRN.getMoneda("ARS"));
         m.setMonedaSecundaria(moneda);
+        m.setCotizacion(cotizacion);
 
         asignarFormulario(m);
 

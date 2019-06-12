@@ -217,11 +217,11 @@
 
                         <h:outputText value="Solicitante " />
                         <p:inputText id="solici" value="#{movimientoProduccionBean.m.solicitante}" title="Solici" />
-
+                        
                         <h:outputText value="Hora inicio " />
                         <p:calendar value="#{movimientoProduccionBean.m.horaInicio}"
                                     rendered="#{movimientoProduccionBean.muestroCampo('C','HORINI')}"                                     
-                                    required="true" requiredMessage="La hora de inicio es obligatoria"
+                                    required="false" requiredMessage="La hora de inicio es obligatoria"
                                     pattern="dd/MM/yyyy HH:mm"  >
                             <p:ajax process="@this" event="dateSelect" />
                         </p:calendar>

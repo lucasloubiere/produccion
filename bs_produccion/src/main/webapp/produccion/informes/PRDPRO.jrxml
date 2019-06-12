@@ -117,6 +117,7 @@ m.fchmov as fchmov,
 m.fchreq,
 sum(i.cantid) as cant_programada,
 sum(i.cntpen) as cant_pendiente,
+sum(i.cantid - i.cntpen) as cant_produccion,
 i.unimed as unimed,
 case
 when i.tipitm = 'P' then 'Productos'
@@ -129,8 +130,7 @@ INNER JOIN pd_movimiento_item i ON m.id = i.id_mcab
 INNER JOIN st_producto p ON p.codigo = i.artcod
 INNER JOIN pd_circuito c ON c.circom = m.circom and c.cirapl = m.cirapl,
 `ad_empresa` ad_empresa
-WHERE i.cntpen > 0
-and m.codcom = 'OP'
+WHERE m.codcom = 'OP'
 and i.tipitm = 'P'
 AND IF(LENGTH($P{ARTCOD})>0,i.artcod = $P{ARTCOD},1=1)
 GROUP BY p.codigo, p.descrp,m.codfor,m.nrofor,m.fchmov,i.unimed
@@ -152,6 +152,7 @@ ORDER BY i.tipitm desc, i.artcod,m.codfor,m.nrofor,m.fchmov]]>
 	</field>
 	<field name="cant_programada" class="java.math.BigDecimal"/>
 	<field name="cant_pendiente" class="java.math.BigDecimal"/>
+	<field name="cant_produccion" class="java.math.BigDecimal"/>
 	<field name="unimed" class="java.lang.String">
 		<fieldDescription><![CDATA[Unidad de Medida]]></fieldDescription>
 	</field>
@@ -432,7 +433,7 @@ ORDER BY i.tipitm desc, i.artcod,m.codfor,m.nrofor,m.fchmov]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cant_pendiente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cant_produccion}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="16" width="555" height="1" uuid="d518d037-9eb7-41fd-8c77-d10a9f66f1cd"/>

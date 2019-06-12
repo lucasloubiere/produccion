@@ -4,8 +4,8 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui" >
-    
-    
+
+
     <!-- BUSQUEDA -->
     <p:panel id="panelBusqueda" header="Busqueda" rendered="#{movimientoProduccionBean.buscaMovimiento}" >
 
@@ -90,11 +90,7 @@
                              update="@form"                                                                          
                              actionListener="#{movimientoProduccionBean.resetParametros}"   />
 
-            <p:commandButton value="Cancelar" icon="fa fa-close"
-                             immediate="true"
-                             update="@form" >
-                <f:setPropertyActionListener target="#{movimientoProduccionBean.buscaMovimiento}" value="#{false}" />
-            </p:commandButton>
+
 
         </p:panelGrid>
 
@@ -124,7 +120,7 @@
                     <f:convertDateTime pattern="dd/MM/yyyy"/>
                 </h:outputText>                                               
             </p:column>
-            
+
             <p:column headerText="Producto" >    
                 <h:outputText value="#{i.itemsProducto[0].producto.descripcion}"  />   
             </p:column>
@@ -135,18 +131,6 @@
                                  actionListener="#{movimientoProduccionBean.seleccionarMovimiento(i)}"
                                  process="@this"
                                  update="@form"  />
-
-                <!--
-                <h:outputLink value="#{application.contextPath}/producción/seguimiento-comprobante/#{i.formulario.modfor}/#{i.formulario.codigo}/#{i.numeroFormulario}"
-                              styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
-                              style="color: white;"
-                              title="Ver Seguimiento de comprobante"
-                              target="_blank" >
-
-                    <span class="ui-button-icon-left ui-icon ui-c fa fa-list-ul"></span>
-                    <span class="ui-button-text ui-c">ui-button</span>                        
-                </h:outputLink>  
-                -->
 
             </p:column>
 
