@@ -38,6 +38,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(bs.stock.rn.ProductoRN.class);
+        resources.add(bs.stock.rn.StockRN.class);
     }
     
 }

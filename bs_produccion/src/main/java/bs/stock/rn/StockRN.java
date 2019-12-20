@@ -17,16 +17,25 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  *
  * @author lloubiere
  */
 @Stateless
+@Path("/stock")
 public class StockRN implements Serializable {
 
     @EJB
     private StockDAO stockDAO;
+    
+    @EJB 
+    private DepositoRN depositoRN;
 
     public synchronized void guardar(Stock stock) throws Exception {
 
@@ -82,7 +91,7 @@ public class StockRN implements Serializable {
 
         return stockDAO.getStockByProducto(p.getCodigo());
     }
-
+    
     public List<Stock> getStockByProducto(Producto p, boolean conAtributos) {
 
         if (p == null) {
@@ -130,6 +139,24 @@ public class StockRN implements Serializable {
 
     public List<Stock> getStockByDeposito(Deposito d) {
 
+        if (d == null) {
+            return new ArrayList<Stock>();
+        }
+
+        return stockDAO.getStockByDeposito(d.getCodigo());
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Path("/deposito/{coddep}")
+    public List<Stock> getStockByDeposito(@PathParam("coddep") String coddep) {
+        
+        if(coddep==null || coddep.isEmpty()){
+            return new ArrayList<Stock>();
+        }        
+        
+        Deposito d = depositoRN.getDeposito(coddep);
+        
         if (d == null) {
             return new ArrayList<Stock>();
         }

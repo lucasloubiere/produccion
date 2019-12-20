@@ -19,6 +19,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,6 +29,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "st_stock")
 @IdClass(StockPK.class)
+@XmlRootElement
 public class Stock implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,10 +62,12 @@ public class Stock implements Serializable {
     @Column(name = "NATRI7", nullable = false, length = 30)
     private String atributo7;
 
+    @XmlTransient
     @JoinColumn(name = "ARTCOD", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Producto producto;
 
+    @XmlTransient
     @JoinColumn(name = "DEPOSI", referencedColumnName = "CODIGO", nullable = false, insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Deposito deposito;
@@ -70,12 +75,15 @@ public class Stock implements Serializable {
     @Column(name = "STOCKS", precision = 15, scale = 2)
     private BigDecimal stocks;
 
+    @XmlTransient
     @Transient
     List<Stock> atributos;
 
+    @XmlTransient
     @Transient
     private BigDecimal stockDisponible;
 
+    @XmlTransient
     @Embedded
     private Auditoria auditoria;
 
